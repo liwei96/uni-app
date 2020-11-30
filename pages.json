@@ -1,0 +1,402 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index"
+		},
+		{
+			"path": "pages/building/building"
+		},
+		{
+			"path": "pages/home/home"
+		},
+		{
+			"path": "pages/message/message"
+		},
+		{
+			"path": "pages/feature/feature"
+		},
+		{
+			"path": "pages/top/top"
+		},
+		{
+			"path":"pages/special/special"
+		},
+		{
+			"path":"pages/dynamic/dynamic"
+		},
+		{
+			"path":"pages/dynamicdetail/dynamicdetail"
+		},
+		{
+			"path":"pages/help/help"
+		}
+	    ,{
+            "path" : "pages/path/path",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/searchname/searchname",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/article/article",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/info/info",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/weike/weike",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/searcharticle/searcharticle",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/infos/infos",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/searchinfo/searchinfo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+		,{
+		    "path" : "pages/footprint/footprint",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/collect/collect",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/forward/forward",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/alliance/alliance",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/about/about",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/statement/statement",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/protocol/protocol",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/privacy/privacy",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/serve/serve",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/cards/cards",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/feedback/feedback",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/map/map",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/around/around",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"navigationStyle": "custom"
+	},
+	"tabBar": {
+		"custom": true,
+		"color": "#646466",
+		"selectedColor": "#5EBAFF",
+		"backgroundColor": "#FFFFFF",
+		"borderStyle": "white",
+		"iconWidth": "47.8rpx",
+		"list": [{
+				"text": "首页",
+				"pagePath": "pages/index/index",
+				"iconPath": "static/tabs/index.png",
+				"selectedIconPath": "static/tabs/index-active.png"
+			},
+			{
+				"text": "楼盘",
+				"pagePath": "pages/building/building",
+				"iconPath": "static/tabs/building.png",
+				"selectedIconPath": "static/tabs/building-active.png"
+			},
+			{
+				"text": "消息",
+				"pagePath": "pages/message/message",
+				"iconPath": "static/tabs/message.png",
+				"selectedIconPath": "static/tabs/message-active.png"
+			},
+			{
+				"text": "我的",
+				"pagePath": "pages/home/home",
+				"iconPath": "static/tabs/home.png",
+				"selectedIconPath": "static/tabs/home-active.png"
+			}
+		]
+	},
+	"condition": {
+		"current": 0, //当前激活的模式（list 的索引项）
+		"list": [{
+				"name": "特色好房", //模式名称
+				"path": "pages/feature/feature",
+				"query": "interval=4000&autoplay=false"
+			},
+			{
+				"name": "TOP榜", //模式名称
+				"path": "pages/top/top",
+				"query": "interval=4000&autoplay=false"
+			},
+			{
+				"name":"特价房源",
+				"path":"pages/special/special",
+				"query":"id=15"
+			},
+			{
+				"name":"实时动态",
+				"path":"pages/dynamic/dynamic",
+				"query":"id=15"
+			},
+			{
+				"name":"动态详情",
+				"path":"pages/dynamicdetail/dynamicdetail",
+				"query":"id=15"
+			},
+			{
+				"name":"帮我找房",
+				"path":"pages/help/help",
+				"query":"id=15"
+			},
+			{
+				"name":"城市选择",
+				"path":"pages/path/path",
+				"query":"id=15"
+			},
+			{
+				"name":"城市名搜索",
+				"path":"pages/searchname/searchname",
+				"query":"id=15"
+			},
+			{
+				"name":"百科详情",
+				"path":"pages/article/article",
+				"query":"id=15"
+			},
+			{
+				"name":"资讯详情",
+				"path":"pages/info/info",
+				"query":"id=15"
+			},
+			{
+				"name":"百科",
+				"path":"pages/weike/weike",
+				"query":"id=15"
+			},
+			{
+				"name":"搜索百科",
+				"path":"pages/searcharticle/searcharticle",
+				"query":"id=15"
+			},
+			{
+				"name":"房产资讯",
+				"path":"pages/infos/infos",
+				"query":"id=15"
+			},
+			{
+				"name":"资讯搜索",
+				"path":"pages/searchinfo/searchinfo",
+				"query":"id=15"
+			},
+			{
+				"name":"浏览足迹",
+				"path":"pages/footprint/footprint",
+				"query":"id=15"
+			},
+			{
+				"name":"我的收藏",
+				"path":"pages/collect/collect",
+				"query":"id=15"
+			},
+			{
+				"name":"预约看房",
+				"path":"pages/forward/forward",
+				"query":"id=15"
+			},
+			{
+				"name":"城市加盟",
+				"path":"pages/alliance/alliance",
+				"query":"id=15"
+			},
+			{
+				"name":"关于我们",
+				"path":"pages/about/about",
+				"query":"id=15"
+			},
+			{
+				"name":"版权申明",
+				"path":"pages/statement/statement",
+				"query":"id=15"
+			},
+			{
+				"name":"免责协议",
+				"path":"pages/protocol/protocol",
+				"query":"id=15"
+			},
+			{
+				"name":"隐私保护",
+				"path":"pages/privacy/privacy",
+				"query":"id=15"
+			},
+			{
+				"name":"服务协议",
+				"path":"pages/serve/serve",
+				"query":"id=15"
+			},
+			{
+				"name":"我的卡券",
+				"path":"pages/cards/cards",
+				"query":"id=15"
+			},
+			{
+				"name":"意见反馈",
+				"path":"pages/feedback/feedback",
+				"query":"id=15"
+			},
+			{
+				"name":"地图找房",
+				"path":"pages/map/map",
+				"query":"id=15"
+			},
+			{
+				"name":"地图找房",
+				"path":"pages/around/around",
+				"query":"id=15"
+			}
+		]
+	}
+}
