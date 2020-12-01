@@ -1,0 +1,32 @@
+.toptitle {
+  color: #17181A;
+  font-size: 32rpx;
+  padding: 0 29.88rpx;
+  margin-top: 39.84rpx;
+  line-height: 87.64rpx;
+}
+.toptitle image {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 14rpx;
+  margin-bottom: -4rpx;
+}
+.isnull .imgbox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.isnull .imgbox image {
+  margin-top: 190rpx;
+  width: 400rpx;
+  height: 400rpx;
+}
+.isnull .txt {
+  text-align: center;
+  color: #7D7E80;
+  font-size: 26rpx;
+}
+

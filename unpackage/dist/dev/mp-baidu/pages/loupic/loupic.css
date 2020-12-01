@@ -1,0 +1,217 @@
+.loupic .toptitle {
+  color: #17181A;
+  font-size: 29.88rpx;
+  padding: 0 29.88rpx;
+  padding-top: 39.84rpx;
+  line-height: 87.64rpx;
+  background-color: #fff;
+}
+.loupic .toptitle image {
+  width: 31.87rpx;
+  height: 31.87rpx;
+  margin-right: 11.95rpx;
+  margin-bottom: -3.98rpx;
+}
+.loupic .toptitle text {
+  width: 221rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #17181A;
+}
+.loupic .effect:after {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  content: '';
+  clear: both;
+  display: block;
+}
+.loupic .effect {
+  padding-left: 30rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+.loupic .effect .tit {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #2F3133;
+  line-height: 114rpx;
+}
+.loupic .effect .pic_list image {
+  width: 216rpx;
+  height: 160rpx;
+  -webkit-border-radius: 12rpx;
+          border-radius: 12rpx;
+  float: left;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+}
+.loupic .real:after {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  content: '';
+  clear: both;
+  display: block;
+}
+.loupic .real {
+  padding-left: 30rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+.loupic .real .tit {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #2F3133;
+  line-height: 114rpx;
+}
+.loupic .real .pic_list image {
+  width: 216rpx;
+  height: 160rpx;
+  -webkit-border-radius: 12rpx;
+          border-radius: 12rpx;
+  float: left;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+}
+.loupic .template:after {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  content: '';
+  clear: both;
+  display: block;
+}
+.loupic .template {
+  padding-left: 30rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+.loupic .template .tit {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #2F3133;
+  line-height: 114rpx;
+}
+.loupic .template .pic_list image {
+  width: 216rpx;
+  height: 160rpx;
+  -webkit-border-radius: 12rpx;
+          border-radius: 12rpx;
+  float: left;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+}
+.loupic .peitao:after {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  content: '';
+  clear: both;
+  display: block;
+}
+.loupic .peitao {
+  padding-left: 30rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+.loupic .peitao .tit {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #2F3133;
+  line-height: 114rpx;
+}
+.loupic .peitao .pic_list image {
+  width: 216rpx;
+  height: 160rpx;
+  -webkit-border-radius: 12rpx;
+          border-radius: 12rpx;
+  float: left;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+}
+.loupic .traffic:after {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  content: '';
+  clear: both;
+  display: block;
+}
+.loupic .traffic {
+  padding-left: 30rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+.loupic .traffic .tit {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #2F3133;
+  line-height: 114rpx;
+}
+.loupic .traffic .pic_list image {
+  width: 216rpx;
+  height: 160rpx;
+  -webkit-border-radius: 12rpx;
+          border-radius: 12rpx;
+  float: left;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+}
+.loupic .huxing:after {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  content: '';
+  clear: both;
+  display: block;
+}
+.loupic .huxing {
+  padding-left: 30rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  background: #fff;
+  margin-bottom: 120rpx;
+}
+.loupic .huxing .tit {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #2F3133;
+  line-height: 114rpx;
+}
+.loupic .huxing .pic_list .img_box {
+  width: 216rpx;
+  height: 160rpx;
+  background: #d5fa5b;
+  -webkit-border-radius: 12rpx;
+          border-radius: 12rpx;
+  float: left;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+  position: relative;
+}
+.loupic .huxing .pic_list .img_box image {
+  width: 105rpx;
+  height: 160rpx;
+  position: absolute;
+  left: 50%;
+  margin-left: -52.5rpx;
+}
+

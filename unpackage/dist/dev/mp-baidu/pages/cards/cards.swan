@@ -1,0 +1,1 @@
+<view><view class="toptitle"><image src="../../static/all-back.png" mode></image><text>我的卡券</text></view><view class="isnull"><view class="imgbox"><image src="../../static/other/cards-con.png" mode></image></view><view class="txt">您还没有领取的卡券</view></view></view>

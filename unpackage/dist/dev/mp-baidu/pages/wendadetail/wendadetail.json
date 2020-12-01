@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "component": true,
+  "usingComponents": {
+    "bottom": "/components/mine/bottom",
+    "twosee": "/components/mine/twosee"
+  }
+}

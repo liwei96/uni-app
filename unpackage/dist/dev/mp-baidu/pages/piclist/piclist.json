@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "component": true,
+  "usingComponents": {
+    "swiper-nav-bar": "/components/swiperNavBar",
+    "bottom": "/components/mine/bottom"
+  }
+}
