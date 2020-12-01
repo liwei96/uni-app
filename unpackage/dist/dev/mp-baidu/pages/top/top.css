@@ -1,0 +1,183 @@
+.toptitle {
+  color: #FFFFFF;
+  font-size: 29.88rpx;
+  padding: 0 29.88rpx;
+  padding-top: 39.84rpx;
+  line-height: 87.64rpx;
+  background-color: #50B3FD;
+}
+.top-nav {
+  height: 199.2rpx;
+  background: url(/static/feature/feature-top.png);
+  background-size: 100%;
+  position: relative;
+}
+.top-nav .city {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.2);
+  width: 103.58rpx;
+  height: 37.84rpx;
+  -webkit-border-radius: 17.92rpx;
+          border-radius: 17.92rpx;
+  color: #FFFFFF;
+  font-size: 23.9rpx;
+  top: 23.9rpx;
+  left: 29.88rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.top-nav .down {
+  border: 7.96rpx solid transparent;
+  border-top-color: #FFFFFF;
+  margin-top: 9.96rpx;
+  margin-left: 3.98rpx;
+}
+.box {
+  padding: 0 29.88rpx;
+}
+.box .navs {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  height: 87.64rpx;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-bottom: 29.88rpx;
+}
+.box .navs .nav {
+  color: #626466;
+  font-size: 29.88rpx;
+}
+.box .navs .active {
+  color: #3EACF0;
+  font-weight: bold;
+  position: relative;
+  height: 100%;
+  line-height: 87.64rpx;
+}
+.box .navs .active text {
+  display: block;
+  position: absolute;
+  width: 49.8rpx;
+  height: 4.98rpx;
+  -webkit-border-radius: 2.98rpx;
+          border-radius: 2.98rpx;
+  background-color: #3EACF0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -24.9rpx;
+}
+.box .tops .top {
+  padding: 23.9rpx 25.89rpx 35.85rpx 23.9rpx;
+  -webkit-box-shadow: 0px 0px 18.92rpx 0.99rpx rgba(0, 0, 0, 0.03);
+          box-shadow: 0px 0px 18.92rpx 0.99rpx rgba(0, 0, 0, 0.03);
+  -webkit-border-radius: 23.9rpx;
+          border-radius: 23.9rpx;
+  margin-bottom: 29.88rpx;
+}
+.box .tops .top .top-num {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.box .tops .top .top-num image {
+  width: 31.87rpx;
+  height: 31.87rpx;
+}
+.box .tops .top .top-num .nummsg {
+  color: #D58930;
+  font-size: 23.9rpx;
+}
+.box .tops .top .top-num .btn {
+  background-color: #FF6040;
+  display: block;
+  width: 139.44rpx;
+  height: 47.8rpx;
+  -webkit-border-radius: 23.9rpx;
+          border-radius: 23.9rpx;
+  text-align: center;
+  line-height: 47.8rpx;
+  color: #FFFFFF;
+  font-size: 23.9rpx;
+  margin-left: auto;
+}
+.box .build {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin-bottom: 31.87rpx;
+}
+.box .build .img {
+  width: 219.12rpx;
+  height: 159.36rpx;
+  -webkit-border-radius: 11.95rpx;
+          border-radius: 11.95rpx;
+  margin-right: 23.9rpx;
+}
+.box .build .build-msg {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  position: relative;
+  top: -3.98rpx;
+}
+.box .build .build-msg .build-name {
+  position: relative;
+}
+.box .build .build-msg .build-name .name {
+  color: #303233;
+  font-size: 31.87rpx;
+  font-weight: bold;
+}
+.box .build .build-msg .build-name .status {
+  color: #20C657;
+  background-color: #E6FAF0;
+  padding: 5.97rpx 11.95rpx;
+  font-size: 21.91rpx;
+  -webkit-border-radius: 5.97rpx;
+          border-radius: 5.97rpx;
+  float: right;
+}
+.box .build .build-msg .price {
+  color: #FF6040;
+  font-size: 31.87rpx;
+  font-weight: bold;
+}
+.box .build .build-msg .psam {
+  color: #FF6040;
+  font-size: 25.89rpx;
+  font-weight: bold;
+}
+.box .build .build-msg .infos {
+  margin-top: 7.96rpx;
+  color: #646566;
+  font-size: 25.89rpx;
+  margin-bottom: 5.97rpx;
+}
+.box .build .build-msg .icons text {
+  color: #7D7D80;
+  font-size: 23.9rpx;
+  padding: 5.97rpx 9.96rpx;
+  background-color: #F5F5F5;
+  -webkit-border-radius: 5.97rpx;
+          border-radius: 5.97rpx;
+  margin-right: 11.95rpx;
+}
+.box .build .build-msg .icons .zhuang {
+  color: #3EACF0;
+  background-color: #EBF8FF;
+}
+

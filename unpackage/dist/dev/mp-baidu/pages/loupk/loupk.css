@@ -1,0 +1,204 @@
+page {
+  background: #fff;
+}
+.loupk .toptitle {
+  color: #D4D7D9;
+  font-size: 29.88rpx;
+  padding: 0 29.88rpx;
+  padding-top: 39.84rpx;
+  line-height: 87.64rpx;
+  background-color: #fff;
+}
+.loupk .toptitle image {
+  width: 31.87rpx;
+  height: 31.87rpx;
+  margin-right: 11.95rpx;
+  margin-bottom: -3.98rpx;
+}
+.loupk .toptitle text {
+  width: 221rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #17191A;
+}
+.loupk .pro_list {
+  width: 100%;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  position: relative;
+}
+.loupk .pro_list .add_tan {
+  width: 100%;
+  height: 94rpx;
+  background: #F0F4F7;
+  border: 1px solid #40A2F4;
+  -webkit-border-radius: 12rpx;
+          border-radius: 12rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #40A2F4;
+  line-height: 96rpx;
+  text-align: center;
+  margin-top: 48rpx;
+}
+.loupk .pro_list .sel_pro:after {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  clear: both;
+  content: '';
+  display: block;
+}
+.loupk .pro_list movable-area {
+  height: 160rpx;
+  width: 100%;
+  background-color: #FFF;
+  overflow: hidden;
+  margin-top: 59rpx;
+}
+.loupk .pro_list movable-area movable-view {
+  width: 810rpx;
+  height: auto;
+}
+.loupk .pro_list movable-area movable-view .sel_pro {
+  width: 120%;
+  height: auto;
+}
+.loupk .pro_list movable-area movable-view .sel_pro .left_checkbox {
+  float: left;
+  margin-top: 30rpx;
+  margin-right: 13rpx;
+}
+.loupk .pro_list movable-area movable-view .sel_pro .pro_one {
+  float: left;
+}
+.loupk .pro_list movable-area movable-view .sel_pro .pro_one image {
+  width: 220rpx;
+  height: 160rpx;
+  -webkit-border-radius: 12rpx;
+          border-radius: 12rpx;
+  float: left;
+  margin-right: 30rpx;
+}
+.loupk .pro_list movable-area movable-view .sel_pro .pro_one .right_name {
+  width: 610rpx;
+  height: 160rpx;
+}
+.loupk .pro_list movable-area movable-view .sel_pro .pro_one .right_name .name {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #303233;
+  line-height: 30rpx;
+}
+.loupk .pro_list movable-area movable-view .sel_pro .pro_one .right_name .price {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #FF6040;
+  line-height: 54rpx;
+}
+.loupk .pro_list movable-area movable-view .sel_pro .pro_one .right_name .type {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #646566;
+  line-height: 24rpx;
+  margin-bottom: 12rpx;
+}
+.loupk .pro_list movable-area movable-view .sel_pro .pro_one .right_name .type .ge {
+  padding-left: 14rpx;
+  padding-right: 14rpx;
+}
+.loupk .pro_list movable-area movable-view .sel_pro .pro_one .right_name .tese .zhuang {
+  width: 68rpx;
+  height: 36rpx;
+  background: #F0F5F9;
+  -webkit-border-radius: 4rpx;
+          border-radius: 4rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #40A2F4;
+  line-height: 36rpx;
+  text-align: center;
+  display: inline-block;
+  margin-right: 12rpx;
+}
+.loupk .pro_list movable-area movable-view .sel_pro .pro_one .right_name .tese .other {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #7D7E80;
+  padding: 4rpx 12rpx;
+  background: #F5F5F5;
+  margin-right: 12rpx;
+  -webkit-border-radius: 4rpx;
+          border-radius: 4rpx;
+}
+.loupk .pro_list movable-area movable-view .sel_pro .delete {
+  width: 120rpx;
+  height: 160rpx;
+  background: #FF4040;
+  font-size: 28rpx;
+  font-weight: 400;
+  color: #FFFFFF;
+  line-height: 160rpx;
+  text-align: center;
+  float: left;
+}
+.loupk .pro_list .image_wu {
+  width: 400rpx;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+  top: 238rpx;
+}
+.loupk .pro_list .image_wu image {
+  width: 400rpx;
+  height: 400rpx;
+}
+.loupk .pro_list .image_wu .tit {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #323233;
+  line-height: 32rpx;
+  text-align: center;
+}
+.loupk .pro_list .image_wu .pp {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #969799;
+  line-height: 76rpx;
+  text-align: center;
+}
+.loupk .pro_list .tootip {
+  width: 260rpx;
+  height: 100rpx;
+  background: rgba(0, 0, 0, 0.8);
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
+  font-size: 32rpx;
+  font-weight: 400;
+  color: #E6E6E6;
+  line-height: 100rpx;
+  text-align: center;
+  position: absolute;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+  left: 50%;
+}
+.loupk .bottom_btn {
+  width: 690rpx;
+  height: 80rpx;
+  margin-left: 30rpx;
+  background: #B2DCFF;
+  -webkit-border-radius: 12rpx;
+          border-radius: 12rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 80rpx;
+  position: fixed;
+  bottom: 30rpx;
+}
+

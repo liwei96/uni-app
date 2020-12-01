@@ -1,0 +1,37 @@
+
+.show-box{
+	width:96%;
+	overflow: hidden;
+	padding:0 2%;
+}
+.text-box{
+	white-space:nowrap;		
+	line-height: 36rpx;
+	padding:20rpx 0;
+}
+.icon{
+	padding-right:12rpx;		
+	padding-top:28rpx;
+}
+.no-icon{
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;
+}
+.show-info{
+	overflow: hidden;
+}
+.scroll-box{
+	width:94%;
+	overflow: hidden;
+	height:76rpx;
+	line-height: 76rpx;
+}
+.round{
+	-webkit-border-radius: 50rpx;
+	        border-radius: 50rpx;
+}
+.text-box.text-rows{
+	white-space:normal;
+}
+

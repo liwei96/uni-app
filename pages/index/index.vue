@@ -41,11 +41,8 @@
 			<view class="topnew-box">
 				<image class="icon" src="../../static/index/index-topnew.png" mode=""></image>
 				<swiper class="swiper" :vertical="true" :circular="true" :autoplay="true" interval="2000">
-					<swiper-item class="swiper-item">
-						<view class="swiper-item uni-bg-red">2020年杭州市经营性住宅、商服用地出让...2020年杭州市经营性住宅、商服用地出让...</view>
-					</swiper-item>
-					<swiper-item class="swiper-item">
-						<view class="swiper-item uni-bg-red">2020年杭州市经营性住宅、商服用地出让...2020年杭州市经营性住宅、商服用地出让...</view>
+					<swiper-item class="swiper-item" v-for="item in tops" :key="item.id">
+						<view class="swiper-item uni-bg-red">{{item.title}}</view>
 					</swiper-item>
 				</swiper>
 			</view>
@@ -64,15 +61,15 @@
 				</view>
 				<view class="trend-con">
 					<view class="trend-li">
-						<text class="big">28907</text>
+						<text class="big">{{avg_prices.current_price}}</text>
 						<text class="small">元/m²</text>
-						<view class="trend-li-bom">
-							10月均价
+						<view class="trend-li-bom" v-if="avg_prices.time">
+							{{(avg_prices.time).substring(avg_prices.time.length-2)}}月均价
 						</view>
 					</view>
 					<view class="trend-li">
 						<text class="icon"></text>
-						<text class="big">1.04</text>
+						<text class="big">{{avg_prices.last_month_rate}}</text>
 						<text class="small">%</text>
 						<view class="trend-li-bom">
 							环比上月
@@ -80,7 +77,7 @@
 					</view>
 					<view class="trend-li">
 						<text class="down"></text>
-						<text class="big">2.07</text>
+						<text class="big">{{avg_prices.last_year_rate}}</text>
 						<text class="small">%</text>
 						<view class="trend-li-bom">
 							同比去年
@@ -103,7 +100,7 @@
 					</view>
 				</view>
 				<view class="scroll-item">
-					<text class="feature-txt">刚需楼盘</text>
+					<text class="feature-txt">投资地产</text>
 					<view class="feature-imgbox">
 						<image src="../../static/img-2.png" mode=""></image>
 						<image src="../../static/img-2.png" mode=""></image>
@@ -113,7 +110,7 @@
 					</view>
 				</view>
 				<view class="scroll-item">
-					<text class="feature-txt">刚需楼盘</text>
+					<text class="feature-txt">改善住宅</text>
 					<view class="feature-imgbox">
 						<image src="../../static/img-2.png" mode=""></image>
 						<image src="../../static/img-2.png" mode=""></image>
@@ -126,18 +123,20 @@
 		</view>
 		<view class="toplist">
 			<view class="toplist-box">
-				<text class="btn active">
-					热搜榜
-				</text>
-				<text class="btn">
-					人气榜
-				</text>
-				<text class="btn">
-					成交榜
-				</text>
+				<view class="left_btn">
+					<text class="btn active">
+						热搜榜
+					</text>
+					<text class="btn">
+						人气榜
+					</text>
+					<text class="btn">
+						成交榜
+					</text>
+				</view>
 				<view class="more">
 					<text>更多楼盘</text>
-					<!-- <image src="" mode=""></image> -->
+					<image src="../../static/content/right.png" mode=""></image>
 				</view>
 			</view>
 		</view>
@@ -205,7 +204,11 @@
 			<view class="dynamic-box">
 				<view class="dynamic-tit">
 					<text class="title">楼盘动态</text>
-					<text class="more">更多动态</text>
+					<view class="right_t">
+						<text class="more">更多动态</text>
+						<image src="../../static/content/right.png" mode=""></image>
+					</view>
+					
 				</view>
 				<view class="dynamic-con">
 					<view class="con1">
@@ -294,19 +297,51 @@
 	export default {
 		data() {
 			return {
-
+				tops:[],
+				avg_prices:{},
+				rigid_demand:[],
+				investment:[],
+				improvement:[],
+				completed_houses:[],
+				hot_searches:[],
+				popularity:[],
+				deals:[],
+				dynamics:[],
+				recommends:[]
 			}
 		},
 		onLoad() {
 
 		},
+		onReady(){  //监听页面初次渲染完成
+		    console.log(this.base_api);
+			uni.request({
+				url:this.base_api+'applets/first',
+				data:{
+					token:'111',
+					city:'1'
+				},
+				success:(res)=>{
+					console.log(res);
+					if(res.data.code==200){
+						this.tops = res.data.data.tops;
+						this.avg_prices = res.data.data.avg_prices;
+					}
+					
+				}
+				
+			})
+		},
 		methods: {
-
+			
 		}
 	}
 </script>
 
 <style lang="less">
+	page{
+		background: #fff;
+	}
 	.toptitle {
 		color: #17181A;
 		font-size: 29.88rpx;
@@ -611,29 +646,39 @@
 			display: flex;
 			align-items: center;
 			margin-bottom: 47.8rpx;
-
-			.btn {
-				display: block;
-				width: 147.41rpx;
-				height: 55.77rpx;
-				border-radius: 27.88rpx;
-				background: #F2F4F7;
-				color: #646466;
-				font-size: 27.88rpx;
-				text-align: center;
-				line-height: 55.77rpx;
-				margin-right: 23.9rpx;
+			.left_btn{
+				width: 560rpx;
+				float: left;
+				.btn {
+					display: block;
+					width: 147.41rpx;
+					height: 55.77rpx;
+					border-radius: 27.88rpx;
+					background: #F2F4F7;
+					color: #646466;
+					font-size: 27.88rpx;
+					text-align: center;
+					line-height: 55.77rpx;
+					margin-right: 23.9rpx;
+					float: left;
+				}
+				.active {
+					background: linear-gradient(41deg, #2F91FF 0%, #55BDFF 100%);
+					color: #FFFFFF;
+				}
 			}
-
-			.active {
-				background: linear-gradient(41deg, #2F91FF 0%, #55BDFF 100%);
-				color: #FFFFFF;
-			}
-
 			.more {
-				color: #969799;
-				margin-left: auto;
-				font-size: 25.89rpx;
+				display: flex;
+				align-items: center;
+				text{
+					color: #969799;
+					margin-left: auto;
+					font-size: 25.89rpx;
+				}
+				image{
+					width: 24rpx;
+					height: 24rpx;
+				}
 			}
 		}
 
@@ -742,18 +787,24 @@
 			.dynamic-tit {
 				display: flex;
 				margin-bottom: 35.85rpx;
-
+				justify-content: space-between;
 				.title {
 					color: #17181A;
 					font-size: 33.86rpx;
 					font-weight: bold;
 				}
-
-				.more {
-					color: #969799;
-					font-size: 25.89rpx;
-					margin-left: auto;
+				.right_t{
+					.more {
+						color: #969799;
+						font-size: 25.89rpx;
+						margin-left: auto;
+					}
+					image{
+						width:24rpx ;
+						height: 24rpx;
+					}
 				}
+				
 			}
 
 			.dynamic-con {

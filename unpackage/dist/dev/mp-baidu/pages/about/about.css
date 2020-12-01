@@ -1,0 +1,111 @@
+.about {
+  background-color: #FAFAFA;
+}
+.toptitle {
+  color: #17181A;
+  font-size: 32rpx;
+  padding: 0 29.88rpx;
+  margin-top: 39.84rpx;
+  line-height: 87.64rpx;
+}
+.toptitle image {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 14rpx;
+  margin-bottom: -4rpx;
+}
+.topimg {
+  width: 100%;
+  height: 220rpx;
+}
+.con {
+  width: 630rpx;
+  padding: 0 30rpx;
+  height: 1145rpx;
+  -webkit-border-radius: 12rpx;
+          border-radius: 12rpx;
+  -webkit-box-shadow: 0px 0px 38rpx 2rpx rgba(0, 0, 0, 0.03);
+          box-shadow: 0px 0px 38rpx 2rpx rgba(0, 0, 0, 0.03);
+  background-color: #FFFFFF;
+  margin-left: 30rpx;
+  position: relative;
+  top: -36rpx;
+  margin-bottom: 10rpx;
+}
+.con .tit {
+  text-align: center;
+  padding-top: 20rpx;
+  margin-bottom: 2rpx;
+  color: #101214;
+  font-size: 24rpx;
+}
+.con .titabc {
+  color: #101214;
+  font-size: 32rpx;
+  text-align: center;
+  font-weight: 800;
+  margin-bottom: 26rpx;
+}
+.con .toptxt {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin-bottom: 4rpx;
+}
+.con .toptxt .left image {
+  width: 160rpx;
+  height: 160rpx;
+  margin-right: 30rpx;
+}
+.con .toptxt .right {
+  color: #626466;
+  font-size: 26rpx;
+  line-height: 46rpx;
+  position: relative;
+  top: -12rpx;
+}
+.con .item-txt {
+  color: #4D4D4D;
+  font-size: 26rpx;
+  line-height: 46rpx;
+  text-indent: 52rpx;
+  margin-bottom: 16rpx;
+}
+.icons {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  padding-bottom: 40rpx;
+}
+.icons .item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 240rpx;
+}
+.icons .item image {
+  width: 88rpx;
+  height: 88rpx;
+  margin-bottom: 20rpx;
+}
+.icons .item .icon-tit {
+  color: #101214;
+  font-size: 28rpx;
+  margin-bottom: 8rpx;
+}
+.icons .item .icon-txt {
+  color: #626466;
+  font-size: 20rpx;
+  text-align: center;
+  line-height: 28rpx;
+}
+

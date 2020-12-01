@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "component": true,
+  "usingComponents": {
+    "htz-rate": "/components/htz-rate/htz-rate",
+    "bottom": "/components/mine/bottom"
+  }
+}

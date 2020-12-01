@@ -1,0 +1,232 @@
+{
+    "appInfo": {},
+    "appid": "17767960",
+    "appkey": "",
+    "compilation-args": {
+        "common": {},
+        "options": [
+            {
+                "extra": {
+                    "compileArgs": "--module cmd",
+                    "ext": {},
+                    "index": "pages/map/map",
+                    "query": "",
+                    "scene": {}
+                },
+                "id": 0,
+                "text": "pages/map/map"
+            },
+            {
+                "extra": {
+                    "compileArgs": "--module cmd",
+                    "ext": {},
+                    "index": "pages/around/around",
+                    "query": "",
+                    "scene": {}
+                },
+                "id": 1,
+                "text": "pages/around/around"
+            },
+            {
+                "extra": {
+                    "compileArgs": "--module cmd",
+                    "ext": {},
+                    "index": "pages/index/index",
+                    "query": "",
+                    "scene": {},
+                    "isUpdate": false
+                },
+                "id": 2,
+                "text": "pages/index/index"
+            }
+        ],
+        "selected": 2
+    },
+    "condition": {
+        "swan": {
+            "current": 0,
+            "list": [
+                {
+                    "id": 0,
+                    "name": "特色好房",
+                    "pathName": "pages/feature/feature",
+                    "query": "interval=4000&autoplay=false"
+                },
+                {
+                    "id": 1,
+                    "name": "TOP榜",
+                    "pathName": "pages/top/top",
+                    "query": "interval=4000&autoplay=false"
+                },
+                {
+                    "id": 2,
+                    "name": "特价房源",
+                    "pathName": "pages/special/special",
+                    "query": "id=15"
+                },
+                {
+                    "id": 3,
+                    "name": "实时动态",
+                    "pathName": "pages/dynamic/dynamic",
+                    "query": "id=15"
+                },
+                {
+                    "id": 4,
+                    "name": "动态详情",
+                    "pathName": "pages/dynamicdetail/dynamicdetail",
+                    "query": "id=15"
+                },
+                {
+                    "id": 5,
+                    "name": "帮我找房",
+                    "pathName": "pages/help/help",
+                    "query": "id=15"
+                },
+                {
+                    "id": 6,
+                    "name": "城市选择",
+                    "pathName": "pages/path/path",
+                    "query": "id=15"
+                },
+                {
+                    "id": 7,
+                    "name": "城市名搜索",
+                    "pathName": "pages/searchname/searchname",
+                    "query": "id=15"
+                },
+                {
+                    "id": 8,
+                    "name": "百科详情",
+                    "pathName": "pages/article/article",
+                    "query": "id=15"
+                },
+                {
+                    "id": 9,
+                    "name": "资讯详情",
+                    "pathName": "pages/info/info",
+                    "query": "id=15"
+                },
+                {
+                    "id": 10,
+                    "name": "百科",
+                    "pathName": "pages/weike/weike",
+                    "query": "id=15"
+                },
+                {
+                    "id": 11,
+                    "name": "搜索百科",
+                    "pathName": "pages/searcharticle/searcharticle",
+                    "query": "id=15"
+                },
+                {
+                    "id": 12,
+                    "name": "房产资讯",
+                    "pathName": "pages/infos/infos",
+                    "query": "id=15"
+                },
+                {
+                    "id": 13,
+                    "name": "资讯搜索",
+                    "pathName": "pages/searchinfo/searchinfo",
+                    "query": "id=15"
+                },
+                {
+                    "id": 14,
+                    "name": "浏览足迹",
+                    "pathName": "pages/footprint/footprint",
+                    "query": "id=15"
+                },
+                {
+                    "id": 15,
+                    "name": "我的收藏",
+                    "pathName": "pages/collect/collect",
+                    "query": "id=15"
+                },
+                {
+                    "id": 16,
+                    "name": "预约看房",
+                    "pathName": "pages/forward/forward",
+                    "query": "id=15"
+                },
+                {
+                    "id": 17,
+                    "name": "城市加盟",
+                    "pathName": "pages/alliance/alliance",
+                    "query": "id=15"
+                },
+                {
+                    "id": 18,
+                    "name": "关于我们",
+                    "pathName": "pages/about/about",
+                    "query": "id=15"
+                },
+                {
+                    "id": 19,
+                    "name": "版权申明",
+                    "pathName": "pages/statement/statement",
+                    "query": "id=15"
+                },
+                {
+                    "id": 20,
+                    "name": "免责协议",
+                    "pathName": "pages/protocol/protocol",
+                    "query": "id=15"
+                },
+                {
+                    "id": 21,
+                    "name": "隐私保护",
+                    "pathName": "pages/privacy/privacy",
+                    "query": "id=15"
+                },
+                {
+                    "id": 22,
+                    "name": "服务协议",
+                    "pathName": "pages/serve/serve",
+                    "query": "id=15"
+                },
+                {
+                    "id": 23,
+                    "name": "我的卡券",
+                    "pathName": "pages/cards/cards",
+                    "query": "id=15"
+                },
+                {
+                    "id": 24,
+                    "name": "意见反馈",
+                    "pathName": "pages/feedback/feedback",
+                    "query": "id=15"
+                },
+                {
+                    "id": 25,
+                    "name": "地图找房",
+                    "pathName": "pages/map/map",
+                    "query": "id=15"
+                },
+                {
+                    "id": 26,
+                    "name": "地图找房",
+                    "pathName": "pages/around/around",
+                    "query": "id=15"
+                },
+                {
+                    "id": 27,
+                    "name": "项目详情页",
+                    "pathName": "pages/content/content",
+                    "query": "id=5"
+                }
+            ]
+        }
+    },
+    "host": "baiduboxapp",
+    "libVersion": "",
+    "projectname": "jiayuan",
+    "setting": {
+        "urlCheck": false
+    },
+    "swan": {
+        "baiduboxapp": {
+            "extensionJsVersion": "1.19.4",
+            "swanJsVersion": "3.230.33"
+        }
+    }
+}

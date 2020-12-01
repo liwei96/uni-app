@@ -1,0 +1,70 @@
+page {
+  background: #000000;
+}
+.piclist .toptitle {
+  color: #D4D7D9;
+  font-size: 29.88rpx;
+  padding: 0 29.88rpx;
+  padding-top: 39.84rpx;
+  line-height: 87.64rpx;
+  background-color: #000000;
+}
+.piclist .toptitle image {
+  width: 31.87rpx;
+  height: 31.87rpx;
+  margin-right: 11.95rpx;
+  margin-bottom: -3.98rpx;
+}
+.piclist .toptitle text {
+  width: 221rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #D4D7D9;
+}
+.piclist .swiperMain {
+  width: 100%;
+  position: relative;
+  margin-top: 29rpx;
+  background: #000000;
+}
+.piclist .swiperHead {
+  width: 660rpx;
+}
+.piclist .caidan {
+  position: absolute;
+  right: 30rpx;
+  top: 15rpx;
+}
+.piclist .caidan image {
+  width: 36rpx;
+  height: 36rpx;
+}
+.piclist .swiperTab {
+  background: #000000;
+}
+.piclist .swiperCont {
+  width: 100%;
+  margin-top: 250rpx;
+}
+.piclist .swiper {
+  width: 100%;
+  height: 400rpx;
+}
+.piclist .swiperItem {
+  height: 500rpx;
+  line-height: 500rpx;
+  overflow: auto;
+  background: #00B26A;
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 30rpx;
+}
+.piclist .swiperItem image {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.piclist .bottom_fixed {
+  background: #000;
+}
+
