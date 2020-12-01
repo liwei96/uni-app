@@ -1,0 +1,332 @@
+<template>
+	<view class="allwenda">
+		<view class="toptitle">
+			<image src="../../static/all-back1.png" mode=""></image>
+			<text>楼盘问问</text>
+		</view>
+		<view class="img_box">
+			<image src="../../static/other/all_wen_top.png" mode=""></image>
+		</view>
+		<view class="wen_list">
+			<view class="list_one">
+					<view class="tit">
+						<text class="wen">问</text>
+						 本项目厨房管道的排风原理和方式是什么？会不
+						会出现油烟倒灌情况?
+					</view>
+					<view class="da">
+						<view class="top">
+							<image src="../../static/content/ping_img.png" mode=""></image>
+							<view class="rig">
+								<view class="name_box">
+									李聪然
+									<text>专业解答</text>
+								</view>
+								<view class="pp">
+									咨询师帮您在线解答
+								</view>
+							</view>
+						</view>
+						<view class="bottom">
+							厨房排气道采用等截面变压式排气道，并在进气口设置可调变压防火止回阀，在管道内部，气...
+						</view>
+					</view>
+		    </view>
+			<!-- 没回答的 -->
+			<view class="list_one_no">
+					<view class="tit">
+						<text class="wen">问</text>
+						      我宁可去买周边二手房了，二手房投资更划算
+					</view>
+					<view class="da_box">
+						<view class="da">
+							我来回答
+						</view>
+					</view>
+			</view>
+			<!-- 允家房友 -->
+			<view class="list_one_yun">
+					<view class="tit">
+						<text class="wen">问</text>
+						 本项目厨房管道的排风原理和方式是什么？会不
+						会出现油烟倒灌情况?
+					</view>
+					<view class="da">
+						<view class="top">
+							<image src="../../static/content/ping_img.png" mode=""></image>
+							<view class="rig">
+								<view class="name_box">
+									167****4567
+								</view>
+								<view class="pp">
+									允家房友
+								</view>
+							</view>
+						</view>
+						<view class="bottom">
+							厨房排气道采用等截面变压式排气道，并在进气口设置可调变压防火止回阀，在管道内部，气...
+						</view>
+					</view>
+			</view>
+			<!-- 写问答 -->
+			<view class="white_wen">
+				<image src="../../static/other/white.png" mode=""></image>
+			</view>
+			
+			<bottom></bottom>
+		</view>
+	</view>
+</template>
+
+<script>
+import  bottom from '../../components/mine/bottom.vue'
+export default {
+	data() {
+		return {
+			
+		};
+	},
+	components:{
+		bottom
+	}
+}
+</script>
+
+<style lang="less">
+	page{
+		background: #fff;
+	}
+.allwenda{
+	.toptitle{
+		color: #fff;
+		font-size: 29.88rpx;
+		padding: 0 29.88rpx;
+		padding-top: 39.84rpx;
+		line-height: 87.64rpx;
+		background-color: #36ACE7;
+		image{
+		 width: 31.87rpx;
+		 height: 31.87rpx;
+		 margin-right: 11.95rpx;
+		 margin-bottom: -3.98rpx;
+		}
+		text{
+		  width: 221rpx;
+		  font-size: 32rpx;
+		  font-weight: 500;
+		  color: #fff;
+		}
+	}
+	.img_box{
+		image{
+		   width: 100%;
+		   height: 200rpx;
+		}
+	}
+	.wen_list{
+		padding-left: 30rpx;
+		padding-right: 30rpx;
+		box-sizing: border-box;
+		width: 100%;
+		background:#fff;
+		padding-bottom: 109rpx;
+		.list_one{
+			.tit{
+				.wen{
+					width: 30rpx;
+					height: 30rpx;
+					background: #FF5454;
+					border-radius: 4rpx;
+					font-size: 20rpx;
+					font-weight: 500;
+					color: #FFFFFF;
+					display: inline-block;
+					text-align: center;
+					line-height: 30rpx;
+					margin-right: 25rpx;
+				}
+				font-size: 30rpx;
+				font-weight: bold;
+				color: #323233;
+				line-height: 45rpx;
+				margin-bottom: 32rpx;
+				margin-top: 32rpx;
+			}
+			.da{
+				.top{
+					width: 660rpx;
+					height: 66rpx;
+					padding-top: 30rpx;
+					background:#F7F7F7 ;
+					padding-left: 30rpx;
+					border-radius:24rpx 24rpx 0rpx  0rpx;
+					image{
+						width: 64rpx;
+						height: 64rpx;
+						border-radius: 32rpx;
+						float: left;
+						margin-right: 20rpx;
+					}
+					.rig{
+						float: left;
+						.name_box{
+							font-size: 30rpx;
+							font-weight: bold;
+							color: #121212;
+							text{
+								width: 92rpx;
+								height: 28rpx;
+								background: #FFC654;
+								border-radius: 4rpx;
+								font-size: 20rpx;
+								font-weight: 400;
+								color: #FFFFFF;
+								text-align: center;
+								line-height: 28rpx;
+								margin-left: 8rpx;
+							}
+						}
+						.pp{
+							font-size: 24rpx;
+							font-weight: 500;
+							color: #7D7E80;
+							line-height: 30rpx;
+						}
+						
+					}
+				}
+				.bottom{
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #4B4C4D;
+					line-height: 42rpx;
+					background-color:#F7F7F7 ;
+					padding-left: 30rpx;
+					padding-bottom: 30rpx;
+					padding-top: 21rpx;
+					border-radius:0rpx 0rpx 24rpx  24rpx;
+				}
+			}
+	  }
+	  .list_one_no{
+		  .tit{
+		  	.wen{
+		  		width: 30rpx;
+		  		height: 30rpx;
+		  		background: #FF5454;
+		  		border-radius: 4rpx;
+		  		font-size: 20rpx;
+		  		font-weight: 500;
+		  		color: #FFFFFF;
+		  		display: inline-block;
+		  		text-align: center;
+		  		line-height: 30rpx;
+		  		margin-right: 25rpx;
+		  	}
+		  	font-size: 30rpx;
+		  	font-weight: bold;
+		  	color: #323233;
+		  	line-height: 45rpx;
+		  	margin-bottom: 32rpx;
+		  	margin-top: 32rpx;
+		  }
+		  .da_box{
+			  width: 100%;
+			  height: 52rpx;
+			  .da{
+				  width: 140rpx;
+				  height: 52rpx;
+				  border: 1rpx solid #AFB0B3;
+				  border-radius: 26rpx;
+				  font-size: 24rpx;
+				  font-weight: 500;
+				  color: #4B4C4D;
+				  text-align: center;
+				  line-height: 52rpx;
+				  float: right;
+			  }
+		  }
+		  
+	  }
+	  .list_one_yun{
+		  .tit{
+		  	.wen{
+		  		width: 30rpx;
+		  		height: 30rpx;
+		  		background: #FF5454;
+		  		border-radius: 4rpx;
+		  		font-size: 20rpx;
+		  		font-weight: 500;
+		  		color: #FFFFFF;
+		  		display: inline-block;
+		  		text-align: center;
+		  		line-height: 30rpx;
+		  		margin-right: 25rpx;
+		  	}
+		  	font-size: 30rpx;
+		  	font-weight: bold;
+		  	color: #323233;
+		  	line-height: 45rpx;
+		  	margin-bottom: 32rpx;
+		  	margin-top: 32rpx;
+		  }
+		 .da{
+				.top{
+					width: 660rpx;
+					height: 66rpx;
+					padding-top: 30rpx;
+					background:#F7F7F7 ;
+					padding-left: 30rpx;
+					border-radius:24rpx 24rpx 0rpx  0rpx;
+					image{
+						width: 64rpx;
+						height: 64rpx;
+						border-radius: 32rpx;
+						float: left;
+						margin-right: 20rpx;
+					}
+					.rig{
+						float: left;
+						.name_box{
+							font-size: 30rpx;
+							font-weight: bold;
+							color: #121212;
+							line-height: 30rpx;
+						}
+						.pp{
+							font-size: 24rpx;
+							font-weight: 500;
+							color: #7D7E80;
+							line-height: 24rpx;
+							margin-top: 14rpx;
+						}
+						
+					}
+				}
+				.bottom{
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #4B4C4D;
+					line-height: 42rpx;
+					background-color:#F7F7F7 ;
+					padding-left: 30rpx;
+					padding-bottom: 30rpx;
+					padding-top: 21rpx;
+					border-radius:0rpx 0rpx 24rpx  24rpx;
+				}
+			}
+	  }
+	  .white_wen{
+		  width: 100rpx;
+		  height: 100rpx;
+		  position: fixed;
+		  bottom: 160rpx;
+		  right: 30rpx;
+		  image{
+			  width: 100rpx;
+			  height: 100rpx;
+		  }
+	  }
+	}
+}
+</style>
