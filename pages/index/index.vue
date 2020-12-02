@@ -171,30 +171,30 @@
 				<view class="dynamic-con">
 					<view class="con1">
 						<view class="con1-top">
-							<image src="../../static/img-2.png" mode=""></image>
-							<text class="title">禹洲宋都望林府</text>
+							<image :src="dynamics[0].img" mode=""></image>
+							<text class="title">{{dynamics[0].name}}</text>
 						</view>
 						<view class="con1-bom">
-							<text class="txt">现推出6套特惠房源在 售,总价1250000起...</text>
+							<text class="txt">{{dynamics[0].introduce}}</text>
 						</view>
 					</view>
 					<view class="right">
 						<view class="con2">
 							<view class="con2-left">
-								<text class="msg">周末狂欢，凡周末来 售楼部看房可参加...</text>
+								<text class="msg">{{dynamics[1].introduce}}</text>
 							</view>
 							<view class="con2-right">
-								<image src="../../static/img-2.png" mode=""></image>
-								<text>金隅森临澜府</text>
+								<image :src="dynamics[1].img" mode=""></image>
+								<text>{{dynamics[1].name}}</text>
 							</view>
 						</view>
 						<view class="con2 con3">
 							<view class="con2-left">
-								<text class="msg">周末狂欢，凡周末来 售楼部看房可参加...</text>
+								<text class="msg">{{dynamics[2].introduce}}</text>
 							</view>
 							<view class="con2-right">
-								<image src="../../static/img-2.png" mode=""></image>
-								<text>金隅森临澜府</text>
+								<image :src="dynamics[2].img" mode=""></image>
+								<text>{{dynamics[2].name}}</text>
 							</view>
 						</view>
 					</view>
@@ -204,19 +204,19 @@
 		<view class="recommend">
 			<text class="tit">为你推荐</text>
 			<view class="recommend-box">
-				<view class="item">
+				<view class="item" v-for="item in recommends" :key="item.id">
 					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="item.img" mode=""></image>
 					</view>
 					<view class="right">
 						<view class="right-name">
-							<text class="name">武林ONE</text>
-							<text class="status">在售</text>
+							<text class="name">{{item.name}}</text>
+							<text class="status">{{item.state}}</text>
 						</view>
-						<text class="price">17000</text>
+						<text class="price">{{item.price}}</text>
 						<text class="psam">元/m²</text>
 						<view>
-							<text class="right-msg">住宅 | 杭州-江干 | 80-140m²</text>
+							<text class="right-msg">{{item.type}} | {{item.city}}-{{item.country}} | {{item.area}}m²</text>
 						</view>
 						<view class="right-icons">
 							<text class="jing">精装</text>
@@ -225,27 +225,8 @@
 						</view>
 					</view>
 				</view>
-				<view class="item">
-					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
-					</view>
-					<view class="right">
-						<view class="right-name">
-							<text class="name">武林ONE</text>
-							<text class="status">在售</text>
-						</view>
-						<text class="price">17000</text>
-						<text class="psam">元/m²</text>
-						<view>
-							<text class="right-msg">住宅 | 杭州-江干 | 80-140m²</text>
-						</view>
-						<view class="right-icons">
-							<text class="jing">精装</text>
-							<text>1号线</text>
-							<text>地铁楼盘</text>
-						</view>
-					</view>
-				</view>
+				
+				
 			</view>
 		</view>
 	</view>
@@ -266,7 +247,8 @@
 				deals:[],
 				dynamics:[],
 				recommends:[],
-				common:[]
+				common:[],
+				dynamics:[],
 				
 				style_list:{
 					hot:true,
@@ -301,6 +283,8 @@
 						this.common = this.hot_searches;
 						this.popularity = res.data.data.popularity;
 						this.deals = res.data.data.deals;
+						this.dynamics = res.data.data.dynamics;
+						this.recommends = res.data.data.recommends;
 					}
 					
 				}
@@ -309,20 +293,20 @@
 		},
 		methods: {
 			hotSearch(){
-				this.hot_searches = this.hot_searches;
+				this.common = this.hot_searches;
 				this.style_list.hot =true;
 				this.style_list.people =false;
 				this.style_list.jiao =false;
 				
 			},
 			peopleClick(){
-				this.hot_searches = this.popularity;
+				this.common = this.popularity;
 				this.style_list.hot =false;
 				this.style_list.people =true;
 				this.style_list.jiao =false;
 			},
 			jiaoClick(){
-				this.hot_searches = this.deals;
+				this.common = this.deals;
 				this.style_list.hot =false;
 				this.style_list.people =false;
 				this.style_list.jiao =true;
@@ -752,6 +736,7 @@
 						color: #969799;
 						font-size: 21.91rpx;
 						margin-right: 19.92rpx;
+						margin-top:10rpx ;
 					}
 				}
 			}

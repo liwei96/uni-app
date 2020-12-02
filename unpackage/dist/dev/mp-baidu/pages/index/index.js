@@ -143,9 +143,323 @@ __webpack_require__.r(__webpack_exports__);
   !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!G:/yun_cheng/uni-app/pages/index/index.vue?vue&type=script&lang=js& ***!
   \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js):\nSyntaxError: Unexpected token, expected \",\" (271:3)\n    at Object._raise (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:746:17)\n    at Object.raiseWithData (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:739:17)\n    at Object.raise (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:733:17)\n    at Object.unexpected (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:8807:16)\n    at Object.expect (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:8793:28)\n    at Object.parseObj (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10439:14)\n    at Object.parseExprAtom (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10055:28)\n    at Object.parseExprSubscripts (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9656:23)\n    at Object.parseMaybeUnary (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9636:21)\n    at Object.parseMaybeUnary (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:6877:20)\n    at Object.parseExprOps (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9506:23)\n    at Object.parseMaybeConditional (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9479:23)\n    at Object.parseMaybeAssign (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9434:21)\n    at Object.parseMaybeAssign (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:6822:20)\n    at Object.parseExpression (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9386:23)\n    at Object.parseReturnStatement (C:\\Users\\Administrator\\Downloads\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11523:28)");
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default =
+{
+  data: function data() {var _ref;
+    return _ref = {
+      tops: [],
+      avg_prices: {},
+      rigid_demand: [],
+      investment: [],
+      improvement: [],
+      completed_houses: [],
+      hot_searches: [],
+      popularity: [],
+      deals: [],
+      dynamics: [],
+      recommends: [],
+      common: [] }, _defineProperty(_ref, "dynamics",
+    []), _defineProperty(_ref, "style_list",
+
+    {
+      hot: true,
+      people: false,
+      jiao: false }), _ref;
+
+
+
+
+  },
+  onLoad: function onLoad() {
+
+  },
+  onReady: function onReady() {var _this = this; //监听页面初次渲染完成
+    console.log(this.base_api);
+    uni.request({
+      url: this.base_api + 'applets/first',
+      data: {
+        token: '111',
+        city: '1' },
+
+      success: function success(res) {
+        console.log(res);
+        if (res.data.code == 200) {
+          _this.tops = res.data.data.tops;
+          _this.avg_prices = res.data.data.avg_prices;
+          _this.rigid_demand = res.data.data.rigid_demand;
+          _this.investment = res.data.data.investment;
+          _this.improvement = res.data.data.improvement;
+          _this.hot_searches = res.data.data.hot_searches;
+
+          _this.common = _this.hot_searches;
+          _this.popularity = res.data.data.popularity;
+          _this.deals = res.data.data.deals;
+          _this.dynamics = res.data.data.dynamics;
+          _this.recommends = res.data.data.recommends;
+        }
+
+      } });
+
+
+  },
+  methods: {
+    hotSearch: function hotSearch() {
+      this.common = this.hot_searches;
+      this.style_list.hot = true;
+      this.style_list.people = false;
+      this.style_list.jiao = false;
+
+    },
+    peopleClick: function peopleClick() {
+      this.common = this.popularity;
+      this.style_list.hot = false;
+      this.style_list.people = true;
+      this.style_list.jiao = false;
+    },
+    jiaoClick: function jiaoClick() {
+      this.common = this.deals;
+      this.style_list.hot = false;
+      this.style_list.people = false;
+      this.style_list.jiao = true;
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-baidu/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 17 */

@@ -398,6 +398,7 @@ page {
   color: #969799;
   font-size: 21.91rpx;
   margin-right: 19.92rpx;
+  margin-top: 10rpx ;
 }
 .toplist-swiper .scroll-view .scroll-item:nth-of-type(2) .top text {
   background-color: #CBEAFF;
