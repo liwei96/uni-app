@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   tTable: function() {
-    return __webpack_require__.e(/*! import() | components/t-table/t-table */ "components/t-table/t-table").then(__webpack_require__.bind(null, /*! @/components/t-table/t-table.vue */ 423))
+    return __webpack_require__.e(/*! import() | components/t-table/t-table */ "components/t-table/t-table").then(__webpack_require__.bind(null, /*! @/components/t-table/t-table.vue */ 430))
   }
 }
 var render = function() {
@@ -682,7 +682,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _uChartsMin = _interopRequireDefault(__webpack_require__(/*! @/components/u-charts/u-charts/u-charts.min.js */ 265));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 423));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 430));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 437));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 444));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var sempNoticeBar = function sempNoticeBar() {__webpack_require__.e(/*! require.ensure | components/semp-notice-bar/semp-notice-bar */ "components/semp-notice-bar/semp-notice-bar").then((function () {return resolve(__webpack_require__(/*! @/components/semp-notice-bar/semp-notice-bar.vue */ 451));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _uChartsMin = _interopRequireDefault(__webpack_require__(/*! @/components/u-charts/u-charts/u-charts.min.js */ 265));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 430));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 437));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 444));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 451));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var sempNoticeBar = function sempNoticeBar() {__webpack_require__.e(/*! require.ensure | components/semp-notice-bar/semp-notice-bar */ "components/semp-notice-bar/semp-notice-bar").then((function () {return resolve(__webpack_require__(/*! @/components/semp-notice-bar/semp-notice-bar.vue */ 458));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 var _self;
 var canvaColumn = null;
 //let mapSearch = weex.requireModule('mapSearch')  
@@ -696,17 +696,9 @@ var _default = {
 
   data: function data() {
     return {
-      total: '13',
-      pro_img: [{
-        'img': 'http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png' },
-
-      {
-        'img': 'http://api.jy1980.com/uploads/20191231/thumb_800_9pzi63wd.jpg' },
-
-      {
-        'img': 'http://api.jy1980.com/uploads/20191231/thumb_800_uf3vdbqu.png' }],
-
-
+      total: '',
+      pro_img: [],
+      detail: {},
       tableList: [{
         id: 304,
         area: '38.3',
@@ -746,27 +738,7 @@ var _default = {
 
       xiaoxi: '房号304已售罄,房号309、307只剩下一套活动时间仅剩2天',
       color: '#000',
-      goodsList: [{
-        image: 'http://api.jy1980.com/uploads/20200728/thumb_400_3eb0jzih.jpg',
-        name: '3室2厅2卫',
-        area: '22' },
-
-      {
-        image: 'http://api.jy1980.com/uploads/20200728/thumb_400_3eb0jzih.jpg',
-        name: '3室2厅2卫',
-        area: '22' },
-
-      {
-        image: 'http://api.jy1980.com/uploads/20200728/thumb_400_3eb0jzih.jpg',
-        name: '3室2厅2卫',
-        area: '22' },
-
-      {
-        image: 'http://api.jy1980.com/uploads/20200728/thumb_400_3eb0jzih.jpg',
-        name: '3室2厅2卫',
-        area: '22' }],
-
-
+      goodsList: [],
       dongtai: [{
         "content": '住宅产品静待推出，均价18590元/㎡，主要户型为建筑面积80-115㎡三居主要户型为建筑面积80-115㎡三居...',
         "time": '2019-04-08',
@@ -811,8 +783,12 @@ var _default = {
 
 
 
+
+
+
   },
-  onLoad: function onLoad() {
+  onLoad: function onLoad(option) {var _this = this;
+    console.log(option);
     _self = this;
 
 
@@ -839,9 +815,32 @@ var _default = {
     // 	},
     // 	key: "公交",
     //     success: res=>{
-    // 	   console.log(res,'res');
+    // 	   console.log(res,'中心点');
     // 	}
     // });
+    var id = option.id;
+    uni.request({
+      url: this.base_api + 'applets/building/detail',
+      data: {
+        id: id,
+        other: '123',
+        ip: '255' },
+      success: function success(res) {
+        if (res.data.code == 200) {
+          console.log(res, "res");
+          var data = res.data.data;
+          _this.pro_img = data.imgs.img.effects;
+          _this.total = data.imgs.num;
+          _this.detail = data.abstract;
+          _this.goodsList = data.house_types;
+          _this.dongtai = data.dynamics;
+        }
+      } });
+
+    //console.log(ip_arr["ip"]);
+
+
+
 
   },
   onReady: function onReady() {
@@ -849,7 +848,7 @@ var _default = {
     this.map = nmap;
     nmap.getCenterLocation({
       success: function success(res) {
-        console.log(res, 'res');
+        console.log(res, '中心点');
       } });
 
 
@@ -867,12 +866,6 @@ var _default = {
     // 	   console.log(res,'res');
     // 	}
     // });
-    uni.request({
-      url: 'http://39.98.227.114:9560/applets/first?city=1',
-      data: {},
-      success: function success(res) {
-        console.log(res);
-      } });
 
 
 

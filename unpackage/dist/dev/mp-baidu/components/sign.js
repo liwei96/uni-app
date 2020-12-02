@@ -114,7 +114,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var jiuaicheckbox = function jiuaicheckbox() {__webpack_require__.e(/*! require.ensure | components/jiuai-checkbox/jiuai-checkbox */ "components/jiuai-checkbox/jiuai-checkbox").then((function () {return resolve(__webpack_require__(/*! @/components/jiuai-checkbox/jiuai-checkbox.vue */ 395));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var toast = function toast() {__webpack_require__.e(/*! require.ensure | components/mytoast/mytoast */ "components/mytoast/mytoast").then((function () {return resolve(__webpack_require__(/*! @/components/mytoast/mytoast.vue */ 388));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var jiuaicheckbox = function jiuaicheckbox() {__webpack_require__.e(/*! require.ensure | components/jiuai-checkbox/jiuai-checkbox */ "components/jiuai-checkbox/jiuai-checkbox").then((function () {return resolve(__webpack_require__(/*! @/components/jiuai-checkbox/jiuai-checkbox.vue */ 395));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var toast = function toast() {__webpack_require__.e(/*! require.ensure | components/mytoast/mytoast */ "components/mytoast/mytoast").then((function () {return resolve(__webpack_require__(/*! @/components/mytoast/mytoast.vue */ 388));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -156,8 +156,20 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     title: {
       type: String },
 
-    text: {
-      type: String } },
+    type: {
+      type: Number },
+
+    pid: {
+      type: Number },
+
+    name: {
+      type: String },
+
+    remark: {
+      type: String },
+
+    position: {
+      type: Number } },
 
 
   data: function data() {
@@ -169,7 +181,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       checked: true,
       teltxt: '',
       timetxt: '',
-      istime: false };
+      istime: false,
+      text: '' };
 
   },
   components: {
@@ -201,33 +214,107 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
         this.$refs.toast.show();
         return;
       }
-      this.teltxt = phone.substr(0, 3) + "****" + phone.substr(7, 11);
-      var time = 60;
-      var fn = function fn() {
-        time--;
-        if (time > 0) {
-          that.istime = true;
-          that.timetxt = "\u91CD\u65B0\u53D1\u9001".concat(time, "s");
-        } else {
-          that.istime = false;
-          clearInterval(interval);
-          that.timetxt = "\u83B7\u53D6\u9A8C\u8BC1\u7801";
-        }
-      };
-      fn();
-      var interval = setInterval(fn, 1000);
-      this.iscode = true;
+      var kid = uni.getStorageInfoSync('kid') || null;
+      var other = uni.getStorageInfoSync('other') || null;
+      var ip = '';
+      var city = uni.getStorageInfoSync('city') || 1;
+      uni.request({
+        url: that.putserve + '/getIp.php',
+        method: 'GET',
+        success: function success(res) {
+          ip = res.data;
+          ip = ip.split('=')[1].split(':')[1];
+          ip = ip.substring(1);
+          ip = ip.slice(0, -3);
+          uni.request({
+            url: that.putserve + '/front/flow/sign',
+            data: {
+              city: city,
+              page: 11,
+              project: that.pid,
+              remark: that.remark,
+              source: '线上推广2',
+              name: that.name,
+              ip: ip,
+              position: that.position,
+              tel: phone,
+              kid: kid,
+              other: other },
+
+            method: "GET",
+            success: function success(res) {
+              if (res.data.code == 500) {
+                that.toasttxt = res.data.msg;
+                that.$refs.toast.show();
+              } else {
+                that.teltxt = phone.substr(0, 3) + "****" + phone.substr(7, 11);
+                var time = 60;
+                var fn = function fn() {
+                  time--;
+                  if (time > 0) {
+                    that.istime = true;
+                    that.timetxt = "\u91CD\u65B0\u53D1\u9001".concat(time, "s");
+                  } else {
+                    that.istime = false;
+                    clearInterval(interval);
+                    that.timetxt = "\u83B7\u53D6\u9A8C\u8BC1\u7801";
+                  }
+                };
+                fn();
+                var interval = setInterval(fn, 1000);
+                that.iscode = true;
+              }
+
+            } });
+
+          uni.request({
+            url: that.apiserve + '/send',
+            method: "POST",
+            data: {
+              ip: ip,
+              phone: phone,
+              source: 3 },
+
+            success: function success(res) {
+              console.log(res);
+            } });
+
+        } });
+
     },
     sure: function sure() {
+      var that = this;
       if (!this.code) {
         this.toasttxt = "请输入验证码";
         this.$refs.toast.show();
         return;
       }
-      this.toasttxt = "订阅成功";
-      this.$refs.toast.show();
-      return;
-      this.$emit('closethis', true);
+      var phone = this.tel;
+      uni.request({
+        url: that.apiserve + '/sure',
+        method: "POST",
+        data: {
+          phone: phone,
+          source: 3,
+          code: that.code },
+
+        success: function success(res) {
+          console.log(res);
+          if (res.data.code === 500) {
+            that.toasttxt = res.data.msg;
+            that.$refs.toast.show();
+          } else {
+            that.toasttxt = "订阅成功";
+            that.$refs.toast.show();
+            that.$emit('closethis', true);
+            if (!uni.getStorageInfoSync('token')) {
+              uni.setStorageSync('token', res.data.token);
+              uni.setStorageSync('usertel', that.tel);
+            }
+          }
+
+        } });
+
     } },
 
   mounted: function mounted() {
@@ -253,7 +340,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       this.text = "一键预约看房免费小车上门接送，可带家人一起参观多个热门楼盘";
     } else if (type == "领取优惠") {
       this.text = "专享限时优惠折扣，家园专场推出，早抢早优惠";
-      $cookies.set("have", 1);
     } else if (type == "免费领取") {
       this.text = "精准匹配房源，免费接送一次看完好房";
     } else if (type == "获取详细分析报告") {
@@ -280,6 +366,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
         this.iscode = false;
       }
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-baidu/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

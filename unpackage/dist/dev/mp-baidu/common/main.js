@@ -15,7 +15,7 @@ _vue.default.prototype.base_api = 'http://39.98.227.114:9560/';
 
 _App.default.mpType = 'app';
 _vue.default.prototype.apiserve = 'http://39.98.227.114:9560';
-
+// Vue.prototype.ip = ip_arr['ip'];
 var app = new _vue.default(_objectSpread({},
 _App.default));
 
