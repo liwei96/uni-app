@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "bom-nav": "/components/bomnav"
-  }
-}

@@ -35,7 +35,7 @@
 							<text class="big">{{(item.diff/10000).toFixed(1)}}</text>
 							<text class="small">万</text>
 						</view>
-						<view class="btn" @tap="show(item.id)">立即领</view>
+						<view class="btn" @tap="show(item.id,'特价房源页+立即领')">立即领</view>
 						<text class="bommsg">已有{{item.count}}人领取</text>
 					</view>
 				</view>
@@ -60,7 +60,7 @@
 						<view class="leftmsg">优惠盘</view>
 					</view>
 					<view class="bom">
-						<view class="btn">
+						<view class="btn" @tap="show(item.id,'特价房源页+领优惠')">
 							领优惠
 						</view>
 						<text>{{item.count}}人已领取</text>
@@ -108,7 +108,7 @@
 					<view class="notice-content">
 						<uni-notice-bar class="notice" background-color="#F7F7F7" color="#646566" :showIcon="true" :scrollable="true" :single="true" :text="item.dynamic" :speed="50"></uni-notice-bar>
 					</view>
-					<view class="btn">
+					<view class="btn" @tap="show(item.id,'特价房源页+马上抢')">
 						马上抢
 					</view>
 				</view>
@@ -228,9 +228,9 @@
 			setpop(e) {
 				this.$refs.popup.hide()
 			},
-			show(id) {
+			show(id,txt) {
 				this.pid = id
-				this.remark = '特价房源页+立即领'
+				this.remark = txt
 				this.position = 94
 				console.log(this.pid)
 				this.$refs.popup.show()
