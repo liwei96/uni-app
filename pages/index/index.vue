@@ -92,8 +92,8 @@
 				<view class="scroll-item">
 					<text class="feature-txt">刚需楼盘</text>
 					<view class="feature-imgbox">
-						<image src="../../static/img-2.png" mode=""></image>
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="rigid_demand[0].img" mode=""></image>
+						<image :src="rigid_demand[1].img" mode=""></image>
 					</view>
 					<view class="bombox">
 						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
@@ -102,8 +102,8 @@
 				<view class="scroll-item">
 					<text class="feature-txt">投资地产</text>
 					<view class="feature-imgbox">
-						<image src="../../static/img-2.png" mode=""></image>
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="investment[0].img" mode=""></image>
+						<image :src="investment[1].img" mode=""></image>
 					</view>
 					<view class="bombox">
 						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
@@ -112,8 +112,8 @@
 				<view class="scroll-item">
 					<text class="feature-txt">改善住宅</text>
 					<view class="feature-imgbox">
-						<image src="../../static/img-2.png" mode=""></image>
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="improvement[0].img" mode=""></image>
+						<image :src="improvement[1].img" mode=""></image>
 					</view>
 					<view class="bombox">
 						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
@@ -124,13 +124,13 @@
 		<view class="toplist">
 			<view class="toplist-box">
 				<view class="left_btn">
-					<text class="btn active">
+					<text :class="{active:style_list.hot}" @click="hotSearch">
 						热搜榜
 					</text>
-					<text class="btn">
+					<text :class="{active:style_list.people}" @click="peopleClick">
 						人气榜
 					</text>
-					<text class="btn">
+					<text :class="{active:style_list.jiao}" @click="jiaoClick">
 						成交榜
 					</text>
 				</view>
@@ -142,59 +142,17 @@
 		</view>
 		<view class="toplist-swiper">
 			<scroll-view class="scroll-view" scroll-x="true">
-				<view class="scroll-item">
+				<view class="scroll-item" v-for="(item,index) in common" :key="item.id" >
 					<view class="top">
-						<image src="../../static/img-2.png" mode=""></image>
-						<text>TOP1</text>
+						<image :src="item.img" mode=""></image>
+						<text>TOP{{index+1}}</text>
 					</view>
 					<view class="bom">
-						<text class="name">中天雅境</text>
+						<text class="name">{{item.name}}</text>
 						<view>
-							<text class="price">18500</text>
+							<text class="price">{{item.price}}</text>
 							<text class="psam">元/m²</text>
-							<text class="area">临安区</text>
-						</view>
-					</view>
-				</view>
-				<view class="scroll-item">
-					<view class="top">
-						<image src="../../static/img-2.png" mode=""></image>
-						<text>TOP2</text>
-					</view>
-					<view class="bom">
-						<text class="name">中天雅境</text>
-						<view>
-							<text class="price">18500</text>
-							<text class="psam">元/m²</text>
-							<text class="area">临安区</text>
-						</view>
-					</view>
-				</view>
-				<view class="scroll-item">
-					<view class="top">
-						<image src="../../static/img-2.png" mode=""></image>
-						<text>TOP3</text>
-					</view>
-					<view class="bom">
-						<text class="name">中天雅境</text>
-						<view>
-							<text class="price">18500</text>
-							<text class="psam">元/m²</text>
-							<text class="area">临安区</text>
-						</view>
-					</view>
-				</view>
-				<view class="scroll-item">
-					<view class="top">
-						<image src="../../static/img-2.png" mode=""></image>
-						<text>TOP4</text>
-					</view>
-					<view class="bom">
-						<text class="name">中天雅境</text>
-						<view>
-							<text class="price">18500</text>
-							<text class="psam">元/m²</text>
-							<text class="area">临安区</text>
+							<text class="area">{{item.country}}</text>
 						</view>
 					</view>
 				</view>
@@ -307,7 +265,16 @@
 				popularity:[],
 				deals:[],
 				dynamics:[],
-				recommends:[]
+				recommends:[],
+				common:[]
+				
+				style_list:{
+					hot:true,
+					people:false,
+					jiao:false,
+				}
+				
+				
 			}
 		},
 		onLoad() {
@@ -326,6 +293,14 @@
 					if(res.data.code==200){
 						this.tops = res.data.data.tops;
 						this.avg_prices = res.data.data.avg_prices;
+						this.rigid_demand = res.data.data.rigid_demand;
+						this.investment = res.data.data.investment;
+						this.improvement = res.data.data.improvement;
+						this.hot_searches = res.data.data.hot_searches;
+						
+						this.common = this.hot_searches;
+						this.popularity = res.data.data.popularity;
+						this.deals = res.data.data.deals;
 					}
 					
 				}
@@ -333,7 +308,25 @@
 			})
 		},
 		methods: {
-			
+			hotSearch(){
+				this.hot_searches = this.hot_searches;
+				this.style_list.hot =true;
+				this.style_list.people =false;
+				this.style_list.jiao =false;
+				
+			},
+			peopleClick(){
+				this.hot_searches = this.popularity;
+				this.style_list.hot =false;
+				this.style_list.people =true;
+				this.style_list.jiao =false;
+			},
+			jiaoClick(){
+				this.hot_searches = this.deals;
+				this.style_list.hot =false;
+				this.style_list.people =false;
+				this.style_list.jiao =true;
+			}
 		}
 	}
 </script>
@@ -625,9 +618,17 @@
 
 				.bombox {
 					position: absolute;
-					width: 262.94rpx;
-					word-break: break-all;
-					word-wrap: break-word;
+					width: 280rpx;
+					height: 80rpx;
+					// word-break: break-all;
+					// word-wrap: break-word;
+					text{
+						width: 280rpx;
+						font-size: 24rpx;
+						font-weight: 500;
+						color: #646466;
+						line-height: 32rpx;
+					}
 				}
 			}
 
@@ -649,7 +650,7 @@
 			.left_btn{
 				width: 560rpx;
 				float: left;
-				.btn {
+				text{
 					display: block;
 					width: 147.41rpx;
 					height: 55.77rpx;
