@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "jiuaicheckbox": "/components/jiuai-checkbox/jiuai-checkbox",
-    "toast": "/components/mytoast/mytoast"
-  }
-}

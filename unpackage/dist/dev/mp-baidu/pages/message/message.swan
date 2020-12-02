@@ -1,1 +1,0 @@
-<view class="meaasage"><view class="toptitle"><text>我的消息</text></view><view class="content"><image src="../../static/message/message-null.png" mode></image></view><view class="text">您还没有联系人</view></view>

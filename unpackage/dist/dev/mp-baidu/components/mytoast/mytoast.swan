@@ -1,1 +1,0 @@
-<block s-if="{{showtaost}}"><view class="toast">{{''+(txt||55555)+''}}</view></block>

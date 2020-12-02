@@ -1,1 +1,0 @@
-<view><view class="toptitle"><image src="../../static/all-back.png" mode></image><text>意见反馈</text></view><view class="box"><textarea value="" placeholder="输入您的宝贵建议" placeholder-class="test"></textarea><view class="txt">您有任何问题需要帮助可以写在这里，我们的人员将在最短时间内回复您，感谢您对允家新房的支持！</view><view class="btn">确定</view></view></view>
