@@ -92,8 +92,12 @@
 				<view class="scroll-item">
 					<text class="feature-txt">刚需楼盘</text>
 					<view class="feature-imgbox">
-						<image :src="rigid_demand[0].img" mode=""></image>
-						<image :src="rigid_demand[1].img" mode=""></image>
+						<navigator :url="`../content/content?id=${rigid_demand[0].id}`" class="nav_to">
+							<image :src="rigid_demand[0].img" mode=""></image>
+						</navigator>
+						<navigator :url="`../content/content?id=${rigid_demand[1].id}`" class="nav_to">
+						    <image :src="rigid_demand[1].img" mode=""></image>
+						</navigator>
 					</view>
 					<view class="bombox">
 						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
@@ -102,8 +106,12 @@
 				<view class="scroll-item">
 					<text class="feature-txt">投资地产</text>
 					<view class="feature-imgbox">
-						<image :src="investment[0].img" mode=""></image>
-						<image :src="investment[1].img" mode=""></image>
+						<navigator :url="`../content/content?id=${investment[0].id}`" class="nav_to">
+						  <image :src="investment[0].img" mode=""></image>
+						</navigator>
+						<navigator :url="`../content/content?id=${investment[1].id}`" class="nav_to">
+						    <image :src="investment[1].img" mode=""></image>
+						</navigator>
 					</view>
 					<view class="bombox">
 						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
@@ -112,8 +120,12 @@
 				<view class="scroll-item">
 					<text class="feature-txt">改善住宅</text>
 					<view class="feature-imgbox">
-						<image :src="improvement[0].img" mode=""></image>
-						<image :src="improvement[1].img" mode=""></image>
+						<navigator :url="`../content/content?id=${improvement[0].id}`" class="nav_to">
+						   <image :src="improvement[0].img" mode=""></image>
+						</navigator>
+						<navigator :url="`../content/content?id=${improvement[1].id}`" class="nav_to">
+						   <image :src="improvement[1].img" mode=""></image>
+						</navigator>
 					</view>
 					<view class="bombox">
 						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
@@ -219,9 +231,9 @@
 							<text class="right-msg">{{item.type}} | {{item.city}}-{{item.country}} | {{item.area}}m²</text>
 						</view>
 						<view class="right-icons">
-							<text class="jing">精装</text>
-							<text>1号线</text>
-							<text>地铁楼盘</text>
+							<text class="jing">没有</text>
+							<text>{{item.railway}}</text>
+							<text>{{item.feature}}</text>
 						</view>
 					</view>
 				</view>
@@ -263,7 +275,7 @@
 
 		},
 		onReady(){  //监听页面初次渲染完成
-		    console.log(this.base_api);
+		    console.log(this.base_api,'你是最棒的');
 			uni.request({
 				url:this.base_api+'applets/first',
 				data:{
@@ -573,18 +585,19 @@
 
 				.feature-imgbox {
 					margin-top: 11.95rpx;
-
-					image {
-						width: 137.45rpx;
-						height: 109.56rpx;
+					display: flex;
+					.nav_to{
+						image {
+							width: 137.45rpx;
+							height: 109.56rpx;
+						}
 					}
-
-					image:nth-of-type(1) {
+					.nav_to:nth-of-type(1) image{
 						margin-right: 3.98rpx;
 						border-radius: 11.95rpx 1.99rpx 1.99rpx 11.95rpx;
 					}
 
-					image:nth-of-type(2) {
+					.nav_to:nth-of-type(2) image{
 						border-radius: 1.99rpx 11.95rpx 11.95rpx 1.99rpx;
 					}
 				}
