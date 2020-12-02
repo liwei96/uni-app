@@ -273,10 +273,29 @@
 </template>
 
 <script>
+	var that
 	export default {
 		data() {
 			return {
 				time: 0
+			}
+		},
+		onLoad() {
+			that = this
+			this.getdata()
+		},
+		methods:{
+			getdata(){
+				uni.request({
+					url: that.apiserve+'/applets/discounts?city=1',
+					method:"GET",
+					success: (res) => {
+						console.log(res)
+					},
+					fail: (err) => {
+						console.log(err)
+					}
+				})
 			}
 		},
 		mounted() {

@@ -404,13 +404,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-var _default =
+
+var that;var _default =
 {
   data: function data() {
     return {
       time: 0 };
 
   },
+  onLoad: function onLoad() {
+    that = this;
+    this.getdata();
+  },
+  methods: {
+    getdata: function getdata() {
+      uni.request({
+        url: that.apiserve + '/applets/discounts?city=1',
+        method: "GET",
+        success: function success(res) {
+          console.log(res);
+        },
+        fail: function fail(err) {
+          console.log(err);
+        } });
+
+    } },
+
   mounted: function mounted() {var _this = this;
     var query = uni.createSelectorQuery().in(this);
     query.select('#notice').boundingClientRect(function (data) {

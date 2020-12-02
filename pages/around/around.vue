@@ -10,9 +10,10 @@
 		</view>
 		<view class="bom">
 			<view class="swiper">
-				<scroll-view :scroll-top="scrollTop" scroll-x="true">
-					<view class="item" @tap="search(item)" v-for="(item,key) in list" :key="key">
+				<scroll-view :scroll-top="scrollTop" scroll-x="true" class="swiper-box">
+					<view :class="name == item ? 'item active' :'item'" @tap="search(item)" v-for="(item,key) in list" :key="key">
 						{{item}}(6)
+						<view class="line"></view>
 					</view>
 				</scroll-view>
 			</view>
@@ -92,7 +93,8 @@
 					'购物',
 					'美食',
 					'娱乐'
-				]
+				],
+				name: '公交'
 			}
 		},
 		methods: {
@@ -151,12 +153,31 @@
 			height: 100rpx;
 			display: flex;
 			align-items: center;
-
+			border-bottom: 1rpx solid #F5F5F5;
+			.swiper-box {
+				height: 60rpx;
+			}
 			.item {
 				display: inline-block;
 				color: #323233;
 				font-size: 30rpx;
 				padding: 0 35rpx;
+			}
+			.active {
+				color: #3EACF0;
+				font-size: 30rpx;
+				font-weight: bold;
+				position: relative;
+				.line {
+					width: 50rpx;
+					height: 4rpx;
+					border-radius: 2rpx;
+					background-color: #3EACF0;
+					position: absolute;
+					left: 50%;
+					margin-left: -25rpx;
+					bottom: -10rpx;
+				}
 			}
 		}
 
@@ -165,7 +186,7 @@
 			overflow: auto;
 
 			.li {
-				padding: 20rpx 30rpx;
+				padding: 16rpx 30rpx;
 
 				.tit {
 					color: #303233;

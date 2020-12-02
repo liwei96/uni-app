@@ -9,6 +9,7 @@
                 "extra": {
                     "compileArgs": "--module cmd",
                     "ext": {},
+<<<<<<< HEAD
                     "index": "pages/map/map",
                     "query": "",
                     "scene": {}
@@ -32,15 +33,26 @@
                     "compileArgs": "--module cmd",
                     "ext": {},
                     "index": "pages/index/index",
+=======
+                    "index": "pages/special/special",
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
                     "query": "",
                     "scene": {},
                     "isUpdate": false
                 },
+<<<<<<< HEAD
                 "id": 2,
                 "text": "pages/index/index"
             }
         ],
         "selected": 2
+=======
+                "id": 0,
+                "text": "pages/special/special"
+            }
+        ],
+        "selected": 0
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
     },
     "condition": {
         "swan": {

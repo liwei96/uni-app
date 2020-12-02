@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 page {
   background: #fff;
 }
+=======
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
 .toptitle {
   color: #17181A;
   font-size: 29.88rpx;
@@ -288,11 +291,15 @@ page {
           align-items: center;
   margin-bottom: 47.8rpx;
 }
+<<<<<<< HEAD
 .toplist .toplist-box .left_btn {
   width: 560rpx;
   float: left;
 }
 .toplist .toplist-box .left_btn .btn {
+=======
+.toplist .toplist-box .btn {
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
   display: block;
   width: 147.41rpx;
   height: 55.77rpx;
@@ -304,14 +311,20 @@ page {
   text-align: center;
   line-height: 55.77rpx;
   margin-right: 23.9rpx;
+<<<<<<< HEAD
   float: left;
 }
 .toplist .toplist-box .left_btn .active {
+=======
+}
+.toplist .toplist-box .active {
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
   background: -webkit-linear-gradient(49deg, #2F91FF 0%, #55BDFF 100%);
   background: linear-gradient(41deg, #2F91FF 0%, #55BDFF 100%);
   color: #FFFFFF;
 }
 .toplist .toplist-box .more {
+<<<<<<< HEAD
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -320,14 +333,19 @@ page {
           align-items: center;
 }
 .toplist .toplist-box .more text {
+=======
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
   color: #969799;
   margin-left: auto;
   font-size: 25.89rpx;
 }
+<<<<<<< HEAD
 .toplist .toplist-box .more image {
   width: 24rpx;
   height: 24rpx;
 }
+=======
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
 .toplist-swiper {
   margin-bottom: 67.72rpx;
 }
@@ -413,24 +431,34 @@ page {
   display: -webkit-flex;
   display: flex;
   margin-bottom: 35.85rpx;
+<<<<<<< HEAD
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
           justify-content: space-between;
+=======
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
 }
 .dynamic .dynamic-box .dynamic-tit .title {
   color: #17181A;
   font-size: 33.86rpx;
   font-weight: bold;
 }
+<<<<<<< HEAD
 .dynamic .dynamic-box .dynamic-tit .right_t .more {
+=======
+.dynamic .dynamic-box .dynamic-tit .more {
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
   color: #969799;
   font-size: 25.89rpx;
   margin-left: auto;
 }
+<<<<<<< HEAD
 .dynamic .dynamic-box .dynamic-tit .right_t image {
   width: 24rpx ;
   height: 24rpx;
 }
+=======
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
 .dynamic .dynamic-box .dynamic-con {
   display: -webkit-box;
   display: -webkit-flex;

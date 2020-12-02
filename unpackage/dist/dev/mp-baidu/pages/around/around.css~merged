@@ -36,10 +36,13 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+<<<<<<< HEAD
+=======
   border-bottom: 1px solid #F5F5F5;
 }
 .bom .swiper .swiper-box {
   height: 60rpx;
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
 }
 .bom .swiper .item {
   display: inline-block;
@@ -47,6 +50,8 @@
   font-size: 30rpx;
   padding: 0 35rpx;
 }
+<<<<<<< HEAD
+=======
 .bom .swiper .active {
   color: #3EACF0;
   font-size: 30rpx;
@@ -64,12 +69,17 @@
   margin-left: -25rpx;
   bottom: -10rpx;
 }
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
 .bom .ll {
   height: 348rpx;
   overflow: auto;
 }
 .bom .ll .li {
+<<<<<<< HEAD
+  padding: 20rpx 30rpx;
+=======
   padding: 16rpx 30rpx;
+>>>>>>> 9110391ca28a4c0a5f2173465c78fca27dd87d3c
 }
 .bom .ll .li .tit {
   color: #303233;

@@ -14,6 +14,7 @@ _vue.default.config.productionTip = false;
 _vue.default.prototype.base_api = 'http://39.98.227.114:9560/';
 
 _App.default.mpType = 'app';
+_vue.default.prototype.apiserve = 'http://39.98.227.114:9560';
 
 var app = new _vue.default(_objectSpread({},
 _App.default));
