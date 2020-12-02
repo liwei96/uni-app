@@ -1,14 +1,14 @@
 <template>
-	<view class="detail">
+	<view class="detail" >
 		<view class="toptitle">
 			<image src="../../static/all-back.png" mode=""></image>
-			<text>宋都弘阳济宸府</text>
+			<text>{{detail.name}}</text>
 		</view>
 		<view class="lunbo">
 			<swiper class="swiper" :autoplay="true">
 				<swiper-item v-for="item in pro_img">
 					<view class="swiper-item uni-bg-red">
-						<image :src="item.img" mode=""></image>
+						<image :src="item.small" mode=""></image>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -20,12 +20,12 @@
 		<view class="name_box">
 			<view class="top">
 				<view class="top_name">
-					<view class="name">锦云澜天里</view>
+					<view class="name">{{detail.name}}</view>
 					<text class="tese">
-						<text class="one">在售</text>
-						<text class="other">住宅</text>
-						<text class="other">5号线</text>
-						<text class="other">地铁沿线</text>
+						<text class="one">{{detail.state}}</text>
+						<text class="other">{{detail.type}}</text>
+						<text class="other">{{detail.railway}}</text>
+						<text class="other" v-for="(item,index) in detail.features" :key="index" >{{item}}</text>
 					</text>
 				</view>
 				<view class="right_gong">
@@ -43,13 +43,13 @@
 				<view class="list_top">
 					<view class="list_left">
 						<view class="price">
-							<text class="left">均价:</text> <text class="strong_price">17800</text><text class="dan">元/m²</text>
+							<text class="left">均价:</text> <text class="strong_price">{{detail.single_price}}</text><text class="dan">元/m²</text>
 						</view>
 						<view class="kai_time">
 							<text class="left">开盘:</text> <text class="com">2010年8月</text>
 						</view>
 						<view class="address">
-							<text class="left">地址:</text> <text class="com">艮山西路凯旋交叉口</text>
+							<text class="left">地址:</text> <text class="com">{{detail.address}}</text>
 						</view>
 						<view class="zhu">
 							<text>注：</text> <text>以上价格为开发商报价，可联系咨询师咨询最低价</text>
@@ -179,15 +179,15 @@
 				<view class="scoll-wrapper">
 					<view v-for="(item, index) in goodsList" :key="index" class="floor-item">
 						<view class="bg_image">
-							<image :src="item.image" mode="aspectFill"></image>
+							<image :src="item.big" mode="aspectFill"></image>
 						</view>
 						<view class="bottom">
-							<view class="title clamp">{{item.name}}
-								<text class="status">在售</text>
+							<view class="title clamp">{{item.title}}
+								<text class="status">{{item.state}}</text>
 							</view>
 							<view class="area">面积 {{item.area}}m²</view>
 							<view class="yue">约
-								<text class="num">{{item.area}}</text>
+								<text class="num">{{item.price}}</text>
 								万/套
 							</view>
 						</view>
@@ -212,7 +212,7 @@
 
 			<view class="dong_list">
 				<view class="dong_one" v-for="item in dongtai" :key="item.id">
-					<view class="dong">{{item.content}}</view>
+					<view class="dong">{{item.introduce}}</view>
 					<view class="time">{{item.time}}</view>
 					<image :src="item.img" mode=""></image>
 				</view>
@@ -406,7 +406,7 @@
 						<view class="top_tit">
 							<text class="tel">154****3787</text>
 							<text class="zan">
-								<image src="../../static/components/zan.png" mode=""></image>
+								<image src="../../static/content/zan.png" mode=""></image>
 								赞(2)
 							</text>
 						</view>
@@ -427,7 +427,7 @@
 						<view class="top_tit">
 							<text class="tel">154****3787</text>
 							<text class="zan">
-								<image src="../../static/components/zan.png" mode=""></image>
+								<image src="../../static/content/zan.png" mode=""></image>
 								赞(2)
 							</text>
 						</view>
@@ -560,17 +560,9 @@
 		},
 		data() {
 			return {
-				total: '13',
-				pro_img: [{
-						'img': 'http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png'
-					},
-					{
-						'img': 'http://api.jy1980.com/uploads/20191231/thumb_800_9pzi63wd.jpg'
-					},
-					{
-						'img': 'http://api.jy1980.com/uploads/20191231/thumb_800_uf3vdbqu.png'
-					}
-				],
+				total: '',
+				pro_img: [],
+				detail:{},
 				tableList: [{
 						id: 304,
 						area: '38.3',
@@ -610,27 +602,7 @@
 				],
 				xiaoxi: '房号304已售罄,房号309、307只剩下一套活动时间仅剩2天',
 				color: '#000',
-				goodsList: [{
-						image: 'http://api.jy1980.com/uploads/20200728/thumb_400_3eb0jzih.jpg',
-						name: '3室2厅2卫',
-						area: '22'
-					},
-					{
-						image: 'http://api.jy1980.com/uploads/20200728/thumb_400_3eb0jzih.jpg',
-						name: '3室2厅2卫',
-						area: '22'
-					},
-					{
-						image: 'http://api.jy1980.com/uploads/20200728/thumb_400_3eb0jzih.jpg',
-						name: '3室2厅2卫',
-						area: '22'
-					},
-					{
-						image: 'http://api.jy1980.com/uploads/20200728/thumb_400_3eb0jzih.jpg',
-						name: '3室2厅2卫',
-						area: '22'
-					},
-				],
+				goodsList: [],
 				dongtai: [{
 						"content": '住宅产品静待推出，均价18590元/㎡，主要户型为建筑面积80-115㎡三居主要户型为建筑面积80-115㎡三居...',
 						"time": '2019-04-08',
@@ -671,14 +643,17 @@
 					latitude: 39.90,
 					longitude: 116.39,
 					iconPath: '../../../static/location.png'
-				}]
+				}],
+				
+				
+				
 
 
 			};
 		},
-		onLoad(options) {
+		onLoad(option) {
+			console.log(option);
 			_self = this;
-			console.log(options)
 			//#ifdef MP-ALIPAY
 			uni.getSystemInfo({
 				success: function(res) {
@@ -704,17 +679,40 @@
 			// 	},
 			// 	key: "公交",
 			//     success: res=>{
-			// 	   console.log(res,'res');
+			// 	   console.log(res,'中心点');
 			// 	}
 			// });
-
+			let  id = option.id;
+			uni.request({
+				url:this.base_api+'applets/building/detail',
+				data:{
+					id:id,
+					other:'123',
+					ip:'255'
+				},success:(res)=>{
+					if(res.data.code==200){
+						console.log(res,"res");
+						let data = res.data.data;
+						this.pro_img =data.imgs.img.effects;
+						this.total = data.imgs.num;
+						this.detail = data.abstract;
+						this.goodsList = data.house_types;
+						this.dongtai = data.dynamics;
+					}
+				}
+			})
+			//console.log(ip_arr["ip"]);
+			
+			
+			
+			
 		},
 		onReady() {
 			var nmap = uni.createMapContext('my_map',this);
 			this.map= nmap;
 			nmap.getCenterLocation({
 				success(res) {
-					console.log(res,'res');
+					console.log(res,'中心点');
 				}
 			})
 		 
@@ -732,13 +730,7 @@
 			 // 	   console.log(res,'res');
 			 // 	}
 			 // });
-			 uni.request({
-				 url:'http://39.98.227.114:9560/applets/first?city=1',
-				 data:{},
-				 success :function(res){
-					 console.log(res);
-				 }
-			 })
+			 
 			 
 		
 		},
@@ -1064,7 +1056,10 @@
 
 						.address {
 							line-height: 58rpx;
-
+							width: 570rpx;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
 							.left {
 								font-size: 28rpx;
 								font-weight: 500;
@@ -1638,6 +1633,10 @@
 						font-weight: 500;
 						color: #646466;
 						line-height: 44rpx;
+						display: -webkit-box; 
+						 -webkit-box-orient: vertical;
+						 -webkit-line-clamp: 2;
+						  overflow: hidden;
 					}
 
 					.time {
