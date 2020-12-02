@@ -411,7 +411,7 @@ var _default =
 
   },
   onReady: function onReady() {var _this = this; //监听页面初次渲染完成
-    console.log(this.base_api);
+    console.log(this.base_api, '你是最棒的');
     uni.request({
       url: this.base_api + 'applets/first',
       data: {

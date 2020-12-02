@@ -220,8 +220,8 @@
 						</view>
 						<view class="right-icons">
 							<text class="jing">精装</text>
-							<text>1号线</text>
-							<text>地铁楼盘</text>
+							<text>{{item.railway}}</text>
+							<text>{{item.feature}}</text>
 						</view>
 					</view>
 				</view>
@@ -263,7 +263,7 @@
 
 		},
 		onReady(){  //监听页面初次渲染完成
-		    console.log(this.base_api);
+		    console.log(this.base_api,'你是最棒的');
 			uni.request({
 				url:this.base_api+'applets/first',
 				data:{
