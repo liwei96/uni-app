@@ -206,6 +206,10 @@
 }
 .detail .name_box .detail_list .list_top .list_left .address {
   line-height: 58rpx;
+  width: 570rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .detail .name_box .detail_list .list_top .list_left .address .left {
   font-size: 28rpx;
@@ -721,6 +725,10 @@
   font-weight: 500;
   color: #646466;
   line-height: 44rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 .detail .dongtai .dong_list .dong_one .time {
   font-size: 24rpx;
