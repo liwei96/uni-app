@@ -676,8 +676,9 @@
 
 			};
 		},
-		onLoad() {
+		onLoad(options) {
 			_self = this;
+			console.log(options)
 			//#ifdef MP-ALIPAY
 			uni.getSystemInfo({
 				success: function(res) {

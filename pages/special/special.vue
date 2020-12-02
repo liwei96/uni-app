@@ -9,120 +9,38 @@
 				<text class="title">限时特价房</text>
 				<view class="right">
 					<text class="msg">距结束仅剩</text>
-					<text class="date">20</text>
+					<text class="date">{{day}}</text>
 					<text class="msg">天</text>
-					<text class="box one">02</text>
+					<text class="box one">{{hour}}</text>
 					<text class="mao">:</text>
-					<text class="box">02</text>
+					<text class="box">{{min}}</text>
 					<text class="mao">:</text>
-					<text class="box">02</text>
+					<text class="box">{{second}}</text>
 				</view>
 			</view>
 			<view class="limit-content">
-				<view class="item">
+				<view class="item" v-for="(item,key) in limits" :key="key">
 					<view class="down">
 					</view>
 					<view class="center">
-						<view class="name">嘉合未来金...</view>
-						<text class="path">城东路与城南路交叉口...</text>
+						<view class="top" @tap="gobuild(item.id)">
+							<view class="name">{{item.name}}</view>
+							<image src="../../static/special/spcial-round.png" mode=""></image>
+						</view>
+						<text class="path">{{item.address}}</text>
 					</view>
 					<view class="up">
 						<view class="topmsg">
 							<text class="small">立省</text>
-							<text class="big">5.2</text>
+							<text class="big">{{(item.diff/10000).toFixed(1)}}</text>
 							<text class="small">万</text>
 						</view>
-						<view class="btn">立即领</view>
-						<text class="bommsg">已有35人领取</text>
-					</view>
-				</view>
-				<view class="item">
-					<view class="down">
-					</view>
-					<view class="center">
-						<view class="name">嘉合未来金...</view>
-						<text class="path">城东路与城南路交叉口...</text>
-					</view>
-					<view class="up">
-						<view class="topmsg">
-							<text class="small">立省</text>
-							<text class="big">5.2</text>
-							<text class="small">万</text>
-						</view>
-						<view class="btn">立即领</view>
-						<text class="bommsg">已有35人领取</text>
-					</view>
-				</view>
-				<view class="item">
-					<view class="down">
-					</view>
-					<view class="center">
-						<view class="name">嘉合未来金...</view>
-						<text class="path">城东路与城南路交叉口...</text>
-					</view>
-					<view class="up">
-						<view class="topmsg">
-							<text class="small">立省</text>
-							<text class="big">5.2</text>
-							<text class="small">万</text>
-						</view>
-						<view class="btn">立即领</view>
-						<text class="bommsg">已有35人领取</text>
-					</view>
-				</view>
-				<view class="item">
-					<view class="down">
-					</view>
-					<view class="center">
-						<view class="name">嘉合未来金...</view>
-						<text class="path">城东路与城南路交叉口...</text>
-					</view>
-					<view class="up">
-						<view class="topmsg">
-							<text class="small">立省</text>
-							<text class="big">5.2</text>
-							<text class="small">万</text>
-						</view>
-						<view class="btn">立即领</view>
-						<text class="bommsg">已有35人领取</text>
-					</view>
-				</view>
-				<view class="item">
-					<view class="down">
-					</view>
-					<view class="center">
-						<view class="name">嘉合未来金...</view>
-						<text class="path">城东路与城南路交叉口...</text>
-					</view>
-					<view class="up">
-						<view class="topmsg">
-							<text class="small">立省</text>
-							<text class="big">5.2</text>
-							<text class="small">万</text>
-						</view>
-						<view class="btn">立即领</view>
-						<text class="bommsg">已有35人领取</text>
-					</view>
-				</view>
-				<view class="item">
-					<view class="down">
-					</view>
-					<view class="center">
-						<view class="name">嘉合未来金...</view>
-						<text class="path">城东路与城南路交叉口...</text>
-					</view>
-					<view class="up">
-						<view class="topmsg">
-							<text class="small">立省</text>
-							<text class="big">5.2</text>
-							<text class="small">万</text>
-						</view>
-						<view class="btn">立即领</view>
-						<text class="bommsg">已有35人领取</text>
+						<view class="btn" @tap="show(item.id)">立即领</view>
+						<text class="bommsg">已有{{item.count}}人领取</text>
 					</view>
 				</view>
 			</view>
-			<view class="change">
+			<view class="change" @tap="changemsg">
 				换一批
 			</view>
 		</view>
@@ -130,138 +48,65 @@
 			<view class="discount-tit">
 				<text class="name">优惠好盘</text>
 				<image src="../../static/special/special-msg.png" mode="" class="img"></image>
-				<view class="right">
+				<view class="right" @tap="gosearch">
 					更多楼盘
 					<image src="../../static/special/special-back.png" mode=""></image>
 				</view>
 			</view>
 			<scroll-view class="scroll-view" scroll-x="true">
-				<view class="scroll-item">
-					<view class="top">
-						<image src="../../static/img-2.png" mode=""></image>
+				<view class="scroll-item" v-for="item in discounts" :key="item.id">
+					<view class="top" @tap="gobuild(item.id)">
+						<image :src="item.img" mode=""></image>
 						<view class="leftmsg">优惠盘</view>
 					</view>
 					<view class="bom">
 						<view class="btn">
 							领优惠
 						</view>
-						<text>56人已领取</text>
+						<text>{{item.count}}人已领取</text>
 					</view>
 				</view>
-				<view class="scroll-item">
-					<view class="top">
-						<image src="../../static/img-2.png" mode=""></image>
-						<view class="leftmsg">优惠盘</view>
-					</view>
-					<view class="bom">
-						<view class="btn">
-							领优惠
-						</view>
-						<text>56人已领取</text>
-					</view>
-				</view>
-				<view class="scroll-item">
-					<view class="top">
-						<image src="../../static/img-2.png" mode=""></image>
-						<view class="leftmsg">优惠盘</view>
-					</view>
-					<view class="bom">
-						<view class="btn">
-							领优惠
-						</view>
-						<text>56人已领取</text>
-					</view>
-				</view>
-			</scroll-view>
+				</scroll-view>
 		</view>
 		<view class="selection">
 			<text class="tit">精选特价房</text>
-			<view class="item">
-				<view class="top">
+			
+			<view class="item" v-for="item in specials" :key="item.id">
+				<view class="top" @tap="gobuild(item.id)">
 					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="item.img" mode=""></image>
 					</view>
 					<view class="right">
 						<view>
-							<text class="name">武林ONE</text>
+							<text class="name">{{item.name}}</text>
 							<view class="save">
-								立省5万
+								立省{{parseInt(item.diff/10000)}}万
 							</view>
 						</view>
 						<view class="price">
 							<view class="old">
 								<text class="small">原价</text>
-								<text class="big">217</text>
+								<text class="big">{{parseInt(item.original/10000)}}</text>
 								<text class="small">万元</text>
 							</view>
 							<view class="new">
-								<text class="small">原价</text>
-								<text class="big">217</text>
+								<text class="small">现价</text>
+								<text class="big">{{parseInt(item.now/10000)}}</text>
 								<text class="small">万元</text>
 							</view>
 						</view>
 						<view>
-							<text class="msg">住宅 | 杭州-江干 | 80-140m²</text>
+							<text class="msg">住宅 | {{item.city}}-{{item.country}} | {{item.area}}m²</text>
 						</view>
 						<view class="icons">
-							<text class="status">精装</text>
-							<text>住宅</text>
-							<text>地铁楼盘</text>
+							<text class="status">{{item.decorate}}</text>
+							<text v-for="val in item.features">{{val}}</text>
 						</view>
 					</view>
 				</view>
 				<view class="bom">
 					<view class="notice-content">
-						<image src="../../static/special/special-sang.png" mode=""></image>
-						<view class="text-wrap">
-							<view :style="{animation: `noticeAnimation ${time}s linear 1s infinite`}" id="notice">房号304已售罄,房号309、307只剩下一套活动房号304已售罄,房号309、307只剩下一套活动</view>
-						</view>
-					</view>
-					<view class="btn">
-						马上抢
-					</view>
-				</view>
-			</view>
-			<view class="item">
-				<view class="top">
-					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
-					</view>
-					<view class="right">
-						<view>
-							<text class="name">武林ONE</text>
-							<view class="save">
-								立省5万
-							</view>
-						</view>
-						<view class="price">
-							<view class="old">
-								<text class="small">原价</text>
-								<text class="big">217</text>
-								<text class="small">万元</text>
-							</view>
-							<view class="new">
-								<text class="small">原价</text>
-								<text class="big">217</text>
-								<text class="small">万元</text>
-							</view>
-						</view>
-						<view>
-							<text class="msg">住宅 | 杭州-江干 | 80-140m²</text>
-						</view>
-						<view class="icons">
-							<text class="status">精装</text>
-							<text>住宅</text>
-							<text>地铁楼盘</text>
-						</view>
-					</view>
-				</view>
-				<view class="bom">
-					<view class="notice-content">
-						<image src="../../static/special/special-sang.png" mode=""></image>
-						<view class="text-wrap">
-							<view :style="{animation: `noticeAnimation ${time}s linear 1s infinite`}" id="notice">房号304已售罄,房号309、307只剩下一套活动房号304已售罄,房号309、307只剩下一套活动</view>
-						</view>
+						<uni-notice-bar class="notice" background-color="#F7F7F7" color="#646566" :showIcon="true" :scrollable="true" :single="true" :text="item.dynamic" :speed="50"></uni-notice-bar>
 					</view>
 					<view class="btn">
 						马上抢
@@ -269,42 +114,141 @@
 				</view>
 			</view>
 		</view>
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="'领取优惠'" :pid="pid" :remark="remark" :position="position"></sign>
+		</wyb-popup>
 	</view>
 </template>
 
 <script>
+	import uniNoticeBar from '@/components/uni-notice-bar/uni-notice-bar.vue'
+	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	import sign from '@/components/sign.vue'
 	var that
 	export default {
 		data() {
 			return {
-				time: 0
+				time: 0,
+				day: 0,
+				hour: '00',
+				min: '00',
+				second: '00',
+				limits: [],
+				specials: [],
+				discounts: [],
+				page: 2,
+				total: 0,
+				pid: 0,
+				codenum: 1,
+				remark: "",
+				position: 0
 			}
 		},
 		onLoad() {
 			that = this
 			this.getdata()
 		},
+		components: {uniNoticeBar,sign,wybPopup},
 		methods:{
 			getdata(){
+				uni.showLoading({
+				    title: '加载中',
+					mask: true
+				});
 				uni.request({
 					url: that.apiserve+'/applets/discounts?city=1',
 					method:"GET",
 					success: (res) => {
-						console.log(res)
-					},
-					fail: (err) => {
-						console.log(err)
+						let data = res.data.data
+						that.limits = data.limit_time_specials.data
+						let all = data.limit_time_specials.total
+						that.total = Math.ceil(all/6)
+						console.log(that.total)
+						that.settime(data.endline)
+						that.specials = data.specials
+						that.discounts = data.discounts
+						console.log(data)
+						uni.hideLoading()
 					}
 				})
-			}
+			},
+			settime(date) {
+				let end = new Date(date).getTime()
+				let now = new Date().getTime()
+				let time = (end-now)/1000
+				that.day = parseInt(time/(60*60*24))
+				that.hour = parseInt(time/(60*60)%24)
+				that.min = parseInt(time/60%60)
+				that.secnod = parseInt(time%60)
+				console.log(that.second)
+				setInterval(()=>{
+					let now = new Date().getTime()
+					let time = (end-now)/1000
+					that.day = parseInt(time/(60*60*24))
+					that.hour = parseInt(time/(60*60)%24)
+					that.min = parseInt(time/60%60)
+					that.secnod = parseInt(time%60)
+				},1000)
+			},
+			changemsg() {
+				uni.showLoading({
+				    title: '加载中',
+					mask: true
+				});
+				uni.request({
+					url: that.apiserve+'/applets/discounts/info',
+					data:{
+						city: 1,
+						page: that.page,
+						limit: 6
+					},
+					method:"GET",
+					success: (res) => {
+						that.page = that.page + 1
+						if(that.page > that.total) {
+							that.page = 1
+						}
+						let data = res.data.data
+						that.limits = data.data
+						console.log(data,res)
+						uni.hideLoading()
+					}
+				})
+			},
+			gosearch() {
+				uni.switchTab({
+					url:"/pages/building/building"
+				})
+			},
+			gobuild(id) {
+				uni.redirectTo({
+					url:"/pages/content/content?id="+id
+				})
+			},
+			setpop(e) {
+				this.$refs.popup.hide()
+			},
+			show(id) {
+				this.pid = id
+				this.remark = '特价房源页+立即领'
+				this.position = 94
+				console.log(this.pid)
+				this.$refs.popup.show()
+			},
+			setiscode() {
+				this.codenum = 0
+			},
 		},
 		mounted() {
-			const query = uni.createSelectorQuery().in(this);
-			query.select('#notice').boundingClientRect(data => {
-				if (data.width - 264 > 0) { //计算文本长度
-					this.time = (5 * data.width / 264).toFixed(2) //动画过渡时间
-				}
-			}).exec();
+			
+		},
+		updated() {
+			// const query = uni.createSelectorQuery().in(this);
+			// query.select('#notice').boundingClientRect(data => {
+			// 	if (data.width - 264 > 0) { //计算文本长度
+			// 		this.time = (5 * data.width / 264).toFixed(2) //动画过渡时间
+			// 	}
+			// }).exec();
 		}
 	}
 </script>
@@ -412,6 +356,16 @@
 						white-space: nowrap;
 						margin-left: 13.94rpx;
 						margin-top: 7.96rpx;
+					}
+					.top {
+						display: flex;
+						image {
+							width: 20rpx;
+							height: 20rpx;
+							margin-left: auto;
+							margin-top: 16rpx;
+							margin-right: 8rpx;
+						}
 					}
 
 					.path {
@@ -566,6 +520,18 @@
 						left: 0;
 						top: 0;
 					}
+					.zhao {
+						width: 100%;
+						height: 80rpx;
+						bottom: 0;
+						background: linear-gradient(0deg, #000000);
+						position: absolute;
+					}
+					.tit {
+						color: #FFFFFF;
+						font-size: 28rpx;
+						font-weight: bold;
+					}
 				}
 
 				.bom {
@@ -714,33 +680,13 @@
 
 				.notice-content {
 					width: 466.13rpx;
-					height: 35.85rpx;
-					border-radius: 1.99rpx;
-					background-color: #F7F7F7;
-					display: flex;
-					align-items: center;
-
-					.text-wrap,
-					#notice {
-						font-size: 28upx;
-						opacity: 0.8;
-						white-space: nowrap;
-					}
-
-					.text-wrap {
-						width: 528upx;
-						overflow: hidden;
-					}
-
-					#notice {
-						display: inline-block;
-					}
-
-					image {
-						width: 23.9rpx;
-						height: 23.9rpx;
-						margin-right: 3.98rpx;
-						opacity: 0.8;
+					height: 36rpx;
+					// border-radius: 1.99rpx;
+					// background-color: #F7F7F7;
+					// display: flex;
+					// align-items: center;
+					.notice {
+						font-size: 20rpx;
 					}
 				}
 

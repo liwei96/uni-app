@@ -812,8 +812,9 @@ var _default = {
 
 
   },
-  onLoad: function onLoad() {
+  onLoad: function onLoad(options) {
     _self = this;
+    console.log(options);
 
 
 

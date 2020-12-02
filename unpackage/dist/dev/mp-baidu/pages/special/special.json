@@ -1,4 +1,8 @@
 {
   "component": true,
-  "usingComponents": {}
+  "usingComponents": {
+    "uni-notice-bar": "/components/uni-notice-bar/uni-notice-bar",
+    "wyb-popup": "/components/wyb-popup/wyb-popup",
+    "sign": "/components/sign"
+  }
 }
