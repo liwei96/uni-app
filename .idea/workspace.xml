@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="35b61e4b-2c31-4962-a86d-1cdceed34db2" name="Default Changelist" comment="commit">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uni-app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/.swan/editor.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/common/vendor.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/common/vendor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/bomnav.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/bomnav.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/htz-rate/htz-rate.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/htz-rate/htz-rate.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/jiuai-checkbox/jiuai-checkbox.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/jiuai-checkbox/jiuai-checkbox.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/mine/bottom.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/mine/bottom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/mine/twosee.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/mine/twosee.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/mytoast/mytoast.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/mytoast/mytoast.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/semp-notice-bar/semp-notice-bar.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/semp-notice-bar/semp-notice-bar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/sign.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/sign.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/swiperNavBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/swiperNavBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/t-table/t-table.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/t-table/t-table.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/t-table/t-td.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/t-table/t-td.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/t-table/t-th.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/t-table/t-th.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/t-table/t-tr.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/t-table/t-tr.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/uni-icon/uni-icon.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/uni-icon/uni-icon.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/wyb-popup/wyb-popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/components/wyb-popup/wyb-popup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/about/about.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/about/about.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/addlou/addlou.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/addlou/addlou.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/alliance/alliance.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/alliance/alliance.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/allwenda/allwenda.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/allwenda/allwenda.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/around/around.css~merged" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/around/around.js~merged" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/around/around.swan~merged" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/article/article.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/article/article.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/building/building.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/building/building.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/cards/cards.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/cards/cards.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/collect/collect.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/collect/collect.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/content/content.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/content/content.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/diandetail/diandetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/diandetail/diandetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/dynamic/dynamic.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/dynamic/dynamic.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/dynamicdetail/dynamicdetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/dynamicdetail/dynamicdetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/feature/feature.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/feature/feature.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/feedback/feedback.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/feedback/feedback.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/footprint/footprint.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/footprint/footprint.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/forward/forward.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/forward/forward.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/help/help.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/help/help.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/home/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/home/home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/hudetail/hudetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/hudetail/hudetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/info/info.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/info/info.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/infos/infos.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/infos/infos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/loudian/loudian.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/loudian/loudian.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/loudong/loudong.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/loudong/loudong.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/loupic/loupic.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/loupic/loupic.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/loupk/loupk.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/loupk/loupk.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/loupkdetail/loupkdetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/loupkdetail/loupkdetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/map/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/map/map.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/message/message.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/message/message.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/path/path.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/path/path.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/piclist/piclist.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/piclist/piclist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/privacy/privacy.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/privacy/privacy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/prodetail/prodetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/prodetail/prodetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/protocol/protocol.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/protocol/protocol.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/searcharticle/searcharticle.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/searcharticle/searcharticle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/searchinfo/searchinfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/searchinfo/searchinfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/searchname/searchname.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/searchname/searchname.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/senddian/senddian.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/senddian/senddian.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/serve/serve.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/serve/serve.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/statement/statement.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/statement/statement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/tiwen/tiwen.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/tiwen/tiwen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/top/top.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/top/top.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/weike/weike.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/weike/weike.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/wendadetail/wendadetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/wendadetail/wendadetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/wenhui/wenhui.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/pages/wenhui/wenhui.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/project.swan.json" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/mp-baidu/project.swan.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="ProjectId" id="1l5emViKx33EjOS7IX98e3CCo0c" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="35b61e4b-2c31-4962-a86d-1cdceed34db2" name="Default Changelist" comment="" />
+      <created>1606891539419</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1606891539419</updated>
+      <workItem from="1606891541360" duration="326000" />
+      <workItem from="1606893222141" duration="184000" />
+    </task>
+    <task id="LOCAL-00001" summary="commit">
+      <created>1606891601079</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1606891601079</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="xiaoyan" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit" />
+  </component>
+</project>

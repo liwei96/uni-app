@@ -1,3 +1,6 @@
+page {
+  background: #fff;
+}
 .toptitle {
   color: #17181A;
   font-size: 29.88rpx;
@@ -264,9 +267,15 @@
 }
 .feature .scroll-view .scroll-item .bombox {
   position: absolute;
-  width: 262.94rpx;
-  word-break: break-all;
-  word-wrap: break-word;
+  width: 280rpx;
+  height: 80rpx;
+}
+.feature .scroll-view .scroll-item .bombox text {
+  width: 280rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #646466;
+  line-height: 32rpx;
 }
 .feature .scroll-view .scroll-item:nth-of-type(1) {
   margin-left: 29.88rpx;
@@ -285,7 +294,11 @@
           align-items: center;
   margin-bottom: 47.8rpx;
 }
-.toplist .toplist-box .btn {
+.toplist .toplist-box .left_btn {
+  width: 560rpx;
+  float: left;
+}
+.toplist .toplist-box .left_btn text {
   display: block;
   width: 147.41rpx;
   height: 55.77rpx;
@@ -297,16 +310,29 @@
   text-align: center;
   line-height: 55.77rpx;
   margin-right: 23.9rpx;
+  float: left;
 }
-.toplist .toplist-box .active {
+.toplist .toplist-box .left_btn .active {
   background: -webkit-linear-gradient(49deg, #2F91FF 0%, #55BDFF 100%);
   background: linear-gradient(41deg, #2F91FF 0%, #55BDFF 100%);
   color: #FFFFFF;
 }
 .toplist .toplist-box .more {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.toplist .toplist-box .more text {
   color: #969799;
   margin-left: auto;
   font-size: 25.89rpx;
+}
+.toplist .toplist-box .more image {
+  width: 24rpx;
+  height: 24rpx;
 }
 .toplist-swiper {
   margin-bottom: 67.72rpx;
@@ -372,6 +398,7 @@
   color: #969799;
   font-size: 21.91rpx;
   margin-right: 19.92rpx;
+  margin-top: 10rpx ;
 }
 .toplist-swiper .scroll-view .scroll-item:nth-of-type(2) .top text {
   background-color: #CBEAFF;
@@ -393,16 +420,23 @@
   display: -webkit-flex;
   display: flex;
   margin-bottom: 35.85rpx;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
 }
 .dynamic .dynamic-box .dynamic-tit .title {
   color: #17181A;
   font-size: 33.86rpx;
   font-weight: bold;
 }
-.dynamic .dynamic-box .dynamic-tit .more {
+.dynamic .dynamic-box .dynamic-tit .right_t .more {
   color: #969799;
   font-size: 25.89rpx;
   margin-left: auto;
+}
+.dynamic .dynamic-box .dynamic-tit .right_t image {
+  width: 24rpx ;
+  height: 24rpx;
 }
 .dynamic .dynamic-box .dynamic-con {
   display: -webkit-box;

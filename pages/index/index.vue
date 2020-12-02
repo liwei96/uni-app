@@ -41,11 +41,8 @@
 			<view class="topnew-box">
 				<image class="icon" src="../../static/index/index-topnew.png" mode=""></image>
 				<swiper class="swiper" :vertical="true" :circular="true" :autoplay="true" interval="2000">
-					<swiper-item class="swiper-item">
-						<view class="swiper-item uni-bg-red">2020年杭州市经营性住宅、商服用地出让...2020年杭州市经营性住宅、商服用地出让...</view>
-					</swiper-item>
-					<swiper-item class="swiper-item">
-						<view class="swiper-item uni-bg-red">2020年杭州市经营性住宅、商服用地出让...2020年杭州市经营性住宅、商服用地出让...</view>
+					<swiper-item class="swiper-item" v-for="item in tops" :key="item.id">
+						<view class="swiper-item uni-bg-red">{{item.title}}</view>
 					</swiper-item>
 				</swiper>
 			</view>
@@ -64,15 +61,15 @@
 				</view>
 				<view class="trend-con">
 					<view class="trend-li">
-						<text class="big">28907</text>
+						<text class="big">{{avg_prices.current_price}}</text>
 						<text class="small">元/m²</text>
-						<view class="trend-li-bom">
-							10月均价
+						<view class="trend-li-bom" v-if="avg_prices.time">
+							{{(avg_prices.time).substring(avg_prices.time.length-2)}}月均价
 						</view>
 					</view>
 					<view class="trend-li">
 						<text class="icon"></text>
-						<text class="big">1.04</text>
+						<text class="big">{{avg_prices.last_month_rate}}</text>
 						<text class="small">%</text>
 						<view class="trend-li-bom">
 							环比上月
@@ -80,7 +77,7 @@
 					</view>
 					<view class="trend-li">
 						<text class="down"></text>
-						<text class="big">2.07</text>
+						<text class="big">{{avg_prices.last_year_rate}}</text>
 						<text class="small">%</text>
 						<view class="trend-li-bom">
 							同比去年
@@ -95,28 +92,28 @@
 				<view class="scroll-item">
 					<text class="feature-txt">刚需楼盘</text>
 					<view class="feature-imgbox">
-						<image src="../../static/img-2.png" mode=""></image>
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="rigid_demand[0].img" mode=""></image>
+						<image :src="rigid_demand[1].img" mode=""></image>
 					</view>
 					<view class="bombox">
 						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
 					</view>
 				</view>
 				<view class="scroll-item">
-					<text class="feature-txt">刚需楼盘</text>
+					<text class="feature-txt">投资地产</text>
 					<view class="feature-imgbox">
-						<image src="../../static/img-2.png" mode=""></image>
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="investment[0].img" mode=""></image>
+						<image :src="investment[1].img" mode=""></image>
 					</view>
 					<view class="bombox">
 						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
 					</view>
 				</view>
 				<view class="scroll-item">
-					<text class="feature-txt">刚需楼盘</text>
+					<text class="feature-txt">改善住宅</text>
 					<view class="feature-imgbox">
-						<image src="../../static/img-2.png" mode=""></image>
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="improvement[0].img" mode=""></image>
+						<image :src="improvement[1].img" mode=""></image>
 					</view>
 					<view class="bombox">
 						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
@@ -126,76 +123,36 @@
 		</view>
 		<view class="toplist">
 			<view class="toplist-box">
-				<text class="btn active">
-					热搜榜
-				</text>
-				<text class="btn">
-					人气榜
-				</text>
-				<text class="btn">
-					成交榜
-				</text>
+				<view class="left_btn">
+					<text :class="{active:style_list.hot}" @click="hotSearch">
+						热搜榜
+					</text>
+					<text :class="{active:style_list.people}" @click="peopleClick">
+						人气榜
+					</text>
+					<text :class="{active:style_list.jiao}" @click="jiaoClick">
+						成交榜
+					</text>
+				</view>
 				<view class="more">
 					<text>更多楼盘</text>
-					<!-- <image src="" mode=""></image> -->
+					<image src="../../static/content/right.png" mode=""></image>
 				</view>
 			</view>
 		</view>
 		<view class="toplist-swiper">
 			<scroll-view class="scroll-view" scroll-x="true">
-				<view class="scroll-item">
+				<view class="scroll-item" v-for="(item,index) in common" :key="item.id" >
 					<view class="top">
-						<image src="../../static/img-2.png" mode=""></image>
-						<text>TOP1</text>
+						<image :src="item.img" mode=""></image>
+						<text>TOP{{index+1}}</text>
 					</view>
 					<view class="bom">
-						<text class="name">中天雅境</text>
+						<text class="name">{{item.name}}</text>
 						<view>
-							<text class="price">18500</text>
+							<text class="price">{{item.price}}</text>
 							<text class="psam">元/m²</text>
-							<text class="area">临安区</text>
-						</view>
-					</view>
-				</view>
-				<view class="scroll-item">
-					<view class="top">
-						<image src="../../static/img-2.png" mode=""></image>
-						<text>TOP2</text>
-					</view>
-					<view class="bom">
-						<text class="name">中天雅境</text>
-						<view>
-							<text class="price">18500</text>
-							<text class="psam">元/m²</text>
-							<text class="area">临安区</text>
-						</view>
-					</view>
-				</view>
-				<view class="scroll-item">
-					<view class="top">
-						<image src="../../static/img-2.png" mode=""></image>
-						<text>TOP3</text>
-					</view>
-					<view class="bom">
-						<text class="name">中天雅境</text>
-						<view>
-							<text class="price">18500</text>
-							<text class="psam">元/m²</text>
-							<text class="area">临安区</text>
-						</view>
-					</view>
-				</view>
-				<view class="scroll-item">
-					<view class="top">
-						<image src="../../static/img-2.png" mode=""></image>
-						<text>TOP4</text>
-					</view>
-					<view class="bom">
-						<text class="name">中天雅境</text>
-						<view>
-							<text class="price">18500</text>
-							<text class="psam">元/m²</text>
-							<text class="area">临安区</text>
+							<text class="area">{{item.country}}</text>
 						</view>
 					</view>
 				</view>
@@ -205,35 +162,39 @@
 			<view class="dynamic-box">
 				<view class="dynamic-tit">
 					<text class="title">楼盘动态</text>
-					<text class="more">更多动态</text>
+					<view class="right_t">
+						<text class="more">更多动态</text>
+						<image src="../../static/content/right.png" mode=""></image>
+					</view>
+					
 				</view>
 				<view class="dynamic-con">
 					<view class="con1">
 						<view class="con1-top">
-							<image src="../../static/img-2.png" mode=""></image>
-							<text class="title">禹洲宋都望林府</text>
+							<image :src="dynamics[0].img" mode=""></image>
+							<text class="title">{{dynamics[0].name}}</text>
 						</view>
 						<view class="con1-bom">
-							<text class="txt">现推出6套特惠房源在 售,总价1250000起...</text>
+							<text class="txt">{{dynamics[0].introduce}}</text>
 						</view>
 					</view>
 					<view class="right">
 						<view class="con2">
 							<view class="con2-left">
-								<text class="msg">周末狂欢，凡周末来 售楼部看房可参加...</text>
+								<text class="msg">{{dynamics[1].introduce}}</text>
 							</view>
 							<view class="con2-right">
-								<image src="../../static/img-2.png" mode=""></image>
-								<text>金隅森临澜府</text>
+								<image :src="dynamics[1].img" mode=""></image>
+								<text>{{dynamics[1].name}}</text>
 							</view>
 						</view>
 						<view class="con2 con3">
 							<view class="con2-left">
-								<text class="msg">周末狂欢，凡周末来 售楼部看房可参加...</text>
+								<text class="msg">{{dynamics[2].introduce}}</text>
 							</view>
 							<view class="con2-right">
-								<image src="../../static/img-2.png" mode=""></image>
-								<text>金隅森临澜府</text>
+								<image :src="dynamics[2].img" mode=""></image>
+								<text>{{dynamics[2].name}}</text>
 							</view>
 						</view>
 					</view>
@@ -243,48 +204,29 @@
 		<view class="recommend">
 			<text class="tit">为你推荐</text>
 			<view class="recommend-box">
-				<view class="item">
+				<view class="item" v-for="item in recommends" :key="item.id">
 					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="item.img" mode=""></image>
 					</view>
 					<view class="right">
 						<view class="right-name">
-							<text class="name">武林ONE</text>
-							<text class="status">在售</text>
+							<text class="name">{{item.name}}</text>
+							<text class="status">{{item.state}}</text>
 						</view>
-						<text class="price">17000</text>
+						<text class="price">{{item.price}}</text>
 						<text class="psam">元/m²</text>
 						<view>
-							<text class="right-msg">住宅 | 杭州-江干 | 80-140m²</text>
+							<text class="right-msg">{{item.type}} | {{item.city}}-{{item.country}} | {{item.area}}m²</text>
 						</view>
 						<view class="right-icons">
 							<text class="jing">精装</text>
-							<text>1号线</text>
-							<text>地铁楼盘</text>
+							<text>{{item.railway}}</text>
+							<text>{{item.feature}}</text>
 						</view>
 					</view>
 				</view>
-				<view class="item">
-					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
-					</view>
-					<view class="right">
-						<view class="right-name">
-							<text class="name">武林ONE</text>
-							<text class="status">在售</text>
-						</view>
-						<text class="price">17000</text>
-						<text class="psam">元/m²</text>
-						<view>
-							<text class="right-msg">住宅 | 杭州-江干 | 80-140m²</text>
-						</view>
-						<view class="right-icons">
-							<text class="jing">精装</text>
-							<text>1号线</text>
-							<text>地铁楼盘</text>
-						</view>
-					</view>
-				</view>
+				
+				
 			</view>
 		</view>
 	</view>
@@ -294,19 +236,89 @@
 	export default {
 		data() {
 			return {
-
+				tops:[],
+				avg_prices:{},
+				rigid_demand:[],
+				investment:[],
+				improvement:[],
+				completed_houses:[],
+				hot_searches:[],
+				popularity:[],
+				deals:[],
+				dynamics:[],
+				recommends:[],
+				common:[],
+				dynamics:[],
+				
+				style_list:{
+					hot:true,
+					people:false,
+					jiao:false,
+				}
+				
+				
 			}
 		},
 		onLoad() {
 
 		},
+		onReady(){  //监听页面初次渲染完成
+		    console.log(this.base_api,'你是最棒的');
+			uni.request({
+				url:this.base_api+'applets/first',
+				data:{
+					token:'111',
+					city:'1'
+				},
+				success:(res)=>{
+					console.log(res);
+					if(res.data.code==200){
+						this.tops = res.data.data.tops;
+						this.avg_prices = res.data.data.avg_prices;
+						this.rigid_demand = res.data.data.rigid_demand;
+						this.investment = res.data.data.investment;
+						this.improvement = res.data.data.improvement;
+						this.hot_searches = res.data.data.hot_searches;
+						
+						this.common = this.hot_searches;
+						this.popularity = res.data.data.popularity;
+						this.deals = res.data.data.deals;
+						this.dynamics = res.data.data.dynamics;
+						this.recommends = res.data.data.recommends;
+					}
+					
+				}
+				
+			})
+		},
 		methods: {
-
+			hotSearch(){
+				this.common = this.hot_searches;
+				this.style_list.hot =true;
+				this.style_list.people =false;
+				this.style_list.jiao =false;
+				
+			},
+			peopleClick(){
+				this.common = this.popularity;
+				this.style_list.hot =false;
+				this.style_list.people =true;
+				this.style_list.jiao =false;
+			},
+			jiaoClick(){
+				this.common = this.deals;
+				this.style_list.hot =false;
+				this.style_list.people =false;
+				this.style_list.jiao =true;
+			}
 		}
 	}
 </script>
 
 <style lang="less">
+	page{
+		background: #fff;
+	}
 	.toptitle {
 		color: #17181A;
 		font-size: 29.88rpx;
@@ -590,9 +602,17 @@
 
 				.bombox {
 					position: absolute;
-					width: 262.94rpx;
-					word-break: break-all;
-					word-wrap: break-word;
+					width: 280rpx;
+					height: 80rpx;
+					// word-break: break-all;
+					// word-wrap: break-word;
+					text{
+						width: 280rpx;
+						font-size: 24rpx;
+						font-weight: 500;
+						color: #646466;
+						line-height: 32rpx;
+					}
 				}
 			}
 
@@ -611,29 +631,39 @@
 			display: flex;
 			align-items: center;
 			margin-bottom: 47.8rpx;
-
-			.btn {
-				display: block;
-				width: 147.41rpx;
-				height: 55.77rpx;
-				border-radius: 27.88rpx;
-				background: #F2F4F7;
-				color: #646466;
-				font-size: 27.88rpx;
-				text-align: center;
-				line-height: 55.77rpx;
-				margin-right: 23.9rpx;
+			.left_btn{
+				width: 560rpx;
+				float: left;
+				text{
+					display: block;
+					width: 147.41rpx;
+					height: 55.77rpx;
+					border-radius: 27.88rpx;
+					background: #F2F4F7;
+					color: #646466;
+					font-size: 27.88rpx;
+					text-align: center;
+					line-height: 55.77rpx;
+					margin-right: 23.9rpx;
+					float: left;
+				}
+				.active {
+					background: linear-gradient(41deg, #2F91FF 0%, #55BDFF 100%);
+					color: #FFFFFF;
+				}
 			}
-
-			.active {
-				background: linear-gradient(41deg, #2F91FF 0%, #55BDFF 100%);
-				color: #FFFFFF;
-			}
-
 			.more {
-				color: #969799;
-				margin-left: auto;
-				font-size: 25.89rpx;
+				display: flex;
+				align-items: center;
+				text{
+					color: #969799;
+					margin-left: auto;
+					font-size: 25.89rpx;
+				}
+				image{
+					width: 24rpx;
+					height: 24rpx;
+				}
 			}
 		}
 
@@ -706,6 +736,7 @@
 						color: #969799;
 						font-size: 21.91rpx;
 						margin-right: 19.92rpx;
+						margin-top:10rpx ;
 					}
 				}
 			}
@@ -742,18 +773,24 @@
 			.dynamic-tit {
 				display: flex;
 				margin-bottom: 35.85rpx;
-
+				justify-content: space-between;
 				.title {
 					color: #17181A;
 					font-size: 33.86rpx;
 					font-weight: bold;
 				}
-
-				.more {
-					color: #969799;
-					font-size: 25.89rpx;
-					margin-left: auto;
+				.right_t{
+					.more {
+						color: #969799;
+						font-size: 25.89rpx;
+						margin-left: auto;
+					}
+					image{
+						width:24rpx ;
+						height: 24rpx;
+					}
 				}
+				
 			}
 
 			.dynamic-con {

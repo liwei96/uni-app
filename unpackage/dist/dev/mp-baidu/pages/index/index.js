@@ -104,6 +104,17 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var g0 = _vm.avg_prices.time
+    ? _vm.avg_prices.time.substring(_vm.avg_prices.time.length - 2)
+    : null
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        g0: g0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -135,65 +146,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
 //
 //
 //
@@ -429,15 +382,84 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 var _default =
 {
-  data: function data() {
-    return {};
+  data: function data() {var _ref;
+    return _ref = {
+      tops: [],
+      avg_prices: {},
+      rigid_demand: [],
+      investment: [],
+      improvement: [],
+      completed_houses: [],
+      hot_searches: [],
+      popularity: [],
+      deals: [],
+      dynamics: [],
+      recommends: [],
+      common: [] }, _defineProperty(_ref, "dynamics",
+    []), _defineProperty(_ref, "style_list",
+
+    {
+      hot: true,
+      people: false,
+      jiao: false }), _ref;
+
+
 
 
   },
   onLoad: function onLoad() {
 
   },
-  methods: {} };exports.default = _default;
+  onReady: function onReady() {var _this = this; //监听页面初次渲染完成
+    console.log(this.base_api, '你是最棒的');
+    uni.request({
+      url: this.base_api + 'applets/first',
+      data: {
+        token: '111',
+        city: '1' },
+
+      success: function success(res) {
+        console.log(res);
+        if (res.data.code == 200) {
+          _this.tops = res.data.data.tops;
+          _this.avg_prices = res.data.data.avg_prices;
+          _this.rigid_demand = res.data.data.rigid_demand;
+          _this.investment = res.data.data.investment;
+          _this.improvement = res.data.data.improvement;
+          _this.hot_searches = res.data.data.hot_searches;
+
+          _this.common = _this.hot_searches;
+          _this.popularity = res.data.data.popularity;
+          _this.deals = res.data.data.deals;
+          _this.dynamics = res.data.data.dynamics;
+          _this.recommends = res.data.data.recommends;
+        }
+
+      } });
+
+
+  },
+  methods: {
+    hotSearch: function hotSearch() {
+      this.common = this.hot_searches;
+      this.style_list.hot = true;
+      this.style_list.people = false;
+      this.style_list.jiao = false;
+
+    },
+    peopleClick: function peopleClick() {
+      this.common = this.popularity;
+      this.style_list.hot = false;
+      this.style_list.people = true;
+      this.style_list.jiao = false;
+    },
+    jiaoClick: function jiaoClick() {
+      this.common = this.deals;
+      this.style_list.hot = false;
+      this.style_list.people = false;
+      this.style_list.jiao = true;
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-baidu/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 17 */
