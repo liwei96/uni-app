@@ -6,10 +6,10 @@
 		</view>
 		<view class="tit">
 			<image src="../../static/other/weike-search.png" mode=""></image>
-			<input type="text" value="" placeholder="搜搜你想要了解的房产知识吧" placeholder-class="txt"/>
+			<input type="text" value="" placeholder="搜搜你想要了解的房产知识吧" placeholder-class="txt" />
 		</view>
 		<view class="uls">
-			<view :class="num === 0 ? 'active':''" @click="num = 0">
+			<view :class="num === 0 ? 'active':''" @click="setnum(0)">
 				<view class="top">
 					买房前
 				</view>
@@ -17,7 +17,7 @@
 					相关政策、买房流程
 				</view>
 			</view>
-			<view :class="num === 1 ? 'active1':''" @click="num = 1">
+			<view :class="num === 1 ? 'active1':''" @click="setnum(1)">
 				<view class="top">
 					买房中
 				</view>
@@ -25,7 +25,7 @@
 					新房签约、贷款政策
 				</view>
 			</view>
-			<view :class="num === 2 ? 'active2':''" @click="num = 2">
+			<view :class="num === 2 ? 'active2':''" @click="setnum(2)">
 				<view class="top">
 					买房后
 				</view>
@@ -37,7 +37,7 @@
 		<view class="box">
 			<view class="left">
 				<view :class="listnum === key ? 'active':''" v-for="(item,key) in list" :key="key" @click="listnum = key">
-					{{item}}
+					{{item.name}}
 					<view class="sp">
 					</view>
 				</view>
@@ -154,15 +154,89 @@
 
 <script>
 	export default {
+		onLoad(options) {
+			console.log(options)
+			if(options){
+				this.list = this.going
+			}
+		},
 		data() {
 			return {
 				num: 0,
-				list: ['买房资格','买房能力','买房政策','买房流程'],
-				listnum: 0
+				list: ['买房资格', '买房能力', '买房政策', '买房流程'],
+				listnum: 0,
+				before: [{
+						name: "买房资格",
+						id: 56,
+					},
+					{
+						name: "买房能力",
+						id: 57,
+					},
+					{
+						name: "买房政策",
+						id: 58,
+					},
+					{
+						name: "买房流程",
+						id: 59,
+					},
+				],
+				going: [{
+						name: "新房签约",
+						id: 60,
+					},
+					{
+						name: "缴纳定金",
+						id: 61,
+					},
+					{
+						name: "贷款政策",
+						id: 62,
+					},
+					{
+						name: "商业贷款",
+						id: 63,
+					},
+					{
+						name: "公积金贷款",
+						id: 64,
+					},
+				],
+				after: [{
+						name: "还款",
+						id: 65,
+					},
+					{
+						name: "全款",
+						id: 66,
+					},
+					{
+						name: "新房验房",
+						id: 67,
+					},
+					{
+						name: "物业",
+						id: 68,
+					},
+					{
+						name: "退房流程",
+						id: 69,
+					},
+					{
+						name: "落户",
+						id: 70,
+					},
+				],
 			}
 		},
 		methods: {
-
+			setnum(num) {
+				this.num = num
+				uni.redirectTo({
+					url:"/pages/weike/weike?type="+num+'&position=56'
+				})
+			}
 		}
 	}
 </script>
@@ -173,6 +247,7 @@
 		flex-direction: column;
 		height: 100vh;
 	}
+
 	.toptitle {
 		color: #17181A;
 		font-size: 32rpx;
@@ -187,6 +262,7 @@
 			margin-bottom: -4rpx;
 		}
 	}
+
 	.tit {
 		width: 92%;
 		margin-left: 4%;
@@ -196,20 +272,24 @@
 		display: flex;
 		align-items: center;
 		margin-top: 12rpx;
+
 		image {
 			width: 32rpx;
 			height: 32rpx;
 			margin-left: 140rpx;
 			margin-right: 10rpx;
 		}
+
 		.txt {
 			color: #969799;
 			font-size: 28rpx;
 		}
+
 		input {
 			font-size: 28rpx;
 		}
 	}
+
 	.uls {
 		display: flex;
 		padding: 0 30rpx;
@@ -217,9 +297,11 @@
 		padding-top: 40rpx;
 		border: 1rpx solid #F2F2F2;
 		height: 132rpx;
+
 		view {
 			width: 214rpx;
 			margin-right: 24rpx;
+
 			.top {
 				height: 92rpx;
 				border-radius: 12rpx 12rpx 0 0;
@@ -228,6 +310,7 @@
 				line-height: 92rpx;
 				color: #969899;
 			}
+
 			.bom {
 				height: 36rpx;
 				background-color: #40A2F4;
@@ -240,54 +323,64 @@
 				border: 2rpx solid #40A2F4;
 			}
 		}
+
 		view:nth-of-type(2) {
 			.top {
 				border-color: #F2F2F2;
 			}
+
 			.bom {
 				background-color: #2AC66D;
 				border: 2rpx solid #2AC66D;
 			}
 		}
+
 		view:nth-of-type(3) {
 			.top {
 				border-color: #F2F2F2;
 			}
+
 			.bom {
 				background-color: #FF7D26;
 				border: 2rpx solid #FF7D26;
 			}
 		}
+
 		.active {
 			.top {
 				color: #323333;
 				font-weight: 800;
-				border-color: #40A2F4!important;
+				border-color: #40A2F4 !important;
 			}
 		}
+
 		.active1 {
 			.top {
 				color: #323333;
 				font-weight: 800;
-				border-color: #2AC66D!important;
+				border-color: #2AC66D !important;
 			}
 		}
+
 		.active2 {
 			.top {
 				color: #323333;
 				font-weight: 800;
-				border-color: #FF7D26!important;
+				border-color: #FF7D26 !important;
 			}
 		}
 	}
+
 	.box {
 		flex: 1;
 		display: flex;
 		overflow: auto;
+
 		.left {
 			width: 150rpx;
 			height: 100%;
 			background-color: #F2F2F2;
+
 			view {
 				height: 110rpx;
 				text-align: center;
@@ -295,12 +388,14 @@
 				color: #646566;
 				font-size: 26rpx;
 			}
+
 			.active {
 				position: relative;
 				color: #40A2F4;
 				font-weight: 800;
 				font-size: 26rpx;
 				background-color: #FFFFFF;
+
 				.sp {
 					position: absolute;
 					width: 6rpx;
@@ -312,43 +407,51 @@
 				}
 			}
 		}
+
 		.right {
 			flex: 1;
 			overflow: auto;
 			height: 100%;
+
 			.li {
 				display: flex;
 				padding-top: 30rpx;
+
 				.img {
 					margin-right: 24rpx;
 					padding-left: 24rpx;
+
 					image {
 						width: 132rpx;
 						height: 100rpx;
 						border-radius: 6rpx;
 					}
 				}
+
 				.msg {
 					flex: 1;
 					padding-bottom: 28rpx;
 					border-bottom: 1rpx solid #F2F2F2;
 					position: relative;
 					top: -4rpx;
+
 					.info-tit {
 						color: #323233;
 						font-size: 28rpx;
 						font-weight: bold;
 						overflow: hidden;
-						text-overflow:ellipsis;
+						text-overflow: ellipsis;
 						white-space: nowrap;
 						margin-bottom: 16rpx;
 						width: 384rpx;
 					}
+
 					.time {
 						color: #969699;
 						font-size: 22rpx;
 						margin-bottom: 4rpx;
 					}
+
 					.icons {
 						text {
 							color: #7D7F80;
