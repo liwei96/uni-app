@@ -4,7 +4,7 @@
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>买房百科</text>
 		</view>
-		<view class="tit">
+		<view class="tit" @tap="gosearch">
 			<image src="../../static/other/weike-search.png" mode=""></image>
 			<input type="text" value="" placeholder="搜搜你想要了解的房产知识吧" placeholder-class="txt" />
 		</view>
@@ -36,135 +36,82 @@
 		</view>
 		<view class="box">
 			<view class="left">
-				<view :class="listnum === key ? 'active':''" v-for="(item,key) in list" :key="key" @click="listnum = key">
+				<view :class="listnum === item.id ? 'active':''" v-for="(item,key) in list" :key="key" @click="change(item.id)">
 					{{item.name}}
 					<view class="sp">
 					</view>
 				</view>
 			</view>
 			<view class="right">
-				<view class="allbox">
-					<view class="li">
+				<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll" @scrolltolower="lower">
+					<view class="li" v-for="item in infos" :key="item.id" @click="goinfo(item.id)">
 						<view class="img">
-							<image src="../../static/img-2.png" mode=""></image>
+							<image :src="item.img" mode=""></image>
 						</view>
 						<view class="msg">
 							<view class="info-tit">
-								杭州外地人买房需要什么条件
+								{{item.title}}
 							</view>
 							<view class="time">
-								2020-08-17
+								{{item.begin}}
 							</view>
 							<view class="icons">
-								<text>楼盘签约</text>
-								<text>楼盘签约</text>
+								<text v-for="(val,key) in item.tags">{{val}}</text>
 							</view>
 						</view>
 					</view>
-					<view class="li">
-						<view class="img">
-							<image src="../../static/img-2.png" mode=""></image>
-						</view>
-						<view class="msg">
-							<view class="info-tit">
-								杭州外地人买房需要什么条件
-							</view>
-							<view class="time">
-								2020-08-17
-							</view>
-							<view class="icons">
-								<text>楼盘签约</text>
-								<text>楼盘签约</text>
-							</view>
-						</view>
-					</view>
-					<view class="li">
-						<view class="img">
-							<image src="../../static/img-2.png" mode=""></image>
-						</view>
-						<view class="msg">
-							<view class="info-tit">
-								杭州外地人买房需要什么条件
-							</view>
-							<view class="time">
-								2020-08-17
-							</view>
-							<view class="icons">
-								<text>楼盘签约</text>
-								<text>楼盘签约</text>
-							</view>
-						</view>
-					</view>
-					<view class="li">
-						<view class="img">
-							<image src="../../static/img-2.png" mode=""></image>
-						</view>
-						<view class="msg">
-							<view class="info-tit">
-								杭州外地人买房需要什么条件
-							</view>
-							<view class="time">
-								2020-08-17
-							</view>
-							<view class="icons">
-								<text>楼盘签约</text>
-								<text>楼盘签约</text>
-							</view>
-						</view>
-					</view>
-					<view class="li">
-						<view class="img">
-							<image src="../../static/img-2.png" mode=""></image>
-						</view>
-						<view class="msg">
-							<view class="info-tit">
-								杭州外地人买房需要什么条件
-							</view>
-							<view class="time">
-								2020-08-17
-							</view>
-							<view class="icons">
-								<text>楼盘签约</text>
-								<text>楼盘签约</text>
-							</view>
-						</view>
-					</view>
-					<view class="li">
-						<view class="img">
-							<image src="../../static/img-2.png" mode=""></image>
-						</view>
-						<view class="msg">
-							<view class="info-tit">
-								杭州外地人买房需要什么条件
-							</view>
-							<view class="time">
-								2020-08-17
-							</view>
-							<view class="icons">
-								<text>楼盘签约</text>
-								<text>楼盘签约</text>
-							</view>
-						</view>
-					</view>
-				</view>
+				</scroll-view>
+				<!-- <view class="allbox" id="box">
+
+				</view> -->
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	var that
 	export default {
 		onLoad(options) {
-			console.log(options)
-			if(options){
-				this.list = this.going
+			that = this
+			if (options.num) {
+				uni.showLoading({
+					title: '加载中'
+				})
+				if (Number(options.num) === 1) {
+					this.list = this.going
+				} else if (Number(options.num) === 0) {
+					this.list = this.before
+				} else if (Number(options.num) === 2) {
+					this.list = this.after
+				}
+				this.num = Number(options.num)
+				this.listnum = Number(options.position)
+				uni.hideLoading()
 			}
+			this.getlist()
 		},
 		data() {
 			return {
 				num: 0,
-				list: ['买房资格', '买房能力', '买房政策', '买房流程'],
-				listnum: 0,
+				list: [{
+						name: "买房资格",
+						id: 56,
+					},
+					{
+						name: "买房能力",
+						id: 57,
+					},
+					{
+						name: "买房政策",
+						id: 58,
+					},
+					{
+						name: "买房流程",
+						id: 59,
+					},
+				],
+				listnum: 56,
 				before: [{
 						name: "买房资格",
 						id: 56,
@@ -228,15 +175,99 @@
 						id: 70,
 					},
 				],
+				page: 1,
+				infos: []
 			}
 		},
 		methods: {
 			setnum(num) {
-				this.num = num
+				// this.num = num
+				let position = 56
+				if (num === 0) {
+					position = 56
+				} else if (num === 1) {
+					position = 60
+				} else if (num === 2) {
+					position = 65
+				}
 				uni.redirectTo({
-					url:"/pages/weike/weike?type="+num+'&position=56'
+					url: "/pages/weike/weike?num=" + num + '&position=' + position
+				})
+			},
+			getlist() {
+				uni.showLoading({
+					title: '加载中'
+				})
+				let token = uni.getStorageInfoSync('token')
+				uni.request({
+					url: that.apiserve + '/applets/article/info',
+					method: 'GET',
+					data: {
+						city: 1,
+						position: that.listnum,
+						page: that.page,
+						limit: 10,
+						token: token
+					},
+					success: (res) => {
+						console.log(res)
+						that.total = res.data.total
+						that.infos = res.data.data
+						uni.hideLoading()
+					}
+				})
+			},
+			getmore() {
+				uni.showLoading({
+					title: '加载中'
+				})
+				let token = uni.getStorageInfoSync('token')
+				uni.request({
+					url: that.apiserve + '/applets/article/info',
+					method: 'GET',
+					data: {
+						city: 1,
+						position: that.listnum,
+						page: that.page,
+						limit: 10,
+						token: token
+					},
+					success: (res) => {
+						console.log(res)
+						that.total = res.data.total
+						that.infos = that.infos.concat(res.data.data)
+						uni.hideLoading()
+					}
+				})
+			},
+			change(id) {
+				this.listnum = id
+				this.page = 1
+				this.getlist()
+			},
+			lower() {
+				this.page = this.page+1
+				this.getmore()
+			},
+			goinfo(id) {
+				uni.navigateTo({
+					url: "/pages/article/article?id="+id
+				})
+			},
+			gosearch() {
+				uni.navigateTo({
+					url: "/pages/searcharticle/searcharticle"
 				})
 			}
+		},
+		onReachBottom() {
+			console.log(5555)
+		},
+		onPageScroll: function(e) {
+			console.log(e)
+		},
+		mounted() {
+			
 		}
 	}
 </script>
@@ -410,9 +441,11 @@
 
 		.right {
 			flex: 1;
-			overflow: auto;
+			// overflow: auto;
 			height: 100%;
-
+			.scroll {
+				height: 100%;
+			}
 			.li {
 				display: flex;
 				padding-top: 30rpx;

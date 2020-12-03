@@ -6,35 +6,33 @@
 		</view>
 		<view class="box">
 			<view class="tit">
-				无法使用住房公积金贷款买房？一定要注意 这几种情况！
+				{{info.title}}
 			</view>
 			<view class="infos">
-				<text>发布：2019-05-24 来源：允家</text>
-				<text class="right">浏览：167</text>
+				<text>发布：{{info.begin}} 来源：{{info.source}}</text>
+				<text class="right">浏览：{{info.visit_num}}</text>
 			</view>
 			<view class="txtbox">
 				<text>
 					摘要：
 				</text>
-				我们都知道公积金贷款利率远低于商业贷款，提前还贷也没有违约金等，是贷款买房的首选。但是，公积金贷款买房并非易事，一旦遇到以下这几种情况
+				{{info.description}}
 			</view>
-			<view class="" v-html="jkl">
+			<view class="" v-html="info.content">
 			</view>
 			<view class="label">
 				<text class="label-tit">标签：</text>
-				<text class="label-li">买房</text>
-				<text class="label-li">买房</text>
-				<text class="label-li">买房</text>
+				<text class="label-li" v-for="(item,key) in info.tags" :key="key">{{item}}</text>
 			</view>
 			<view class="label-icon">
 				<image src="../../static/other/article-label.png" mode=""></image>
-				<text>买房资格</text>
+				<text>{{info.keywords}}</text>
 			</view>
 			<view class="agree">
 				<view class="agree-box">
 					<image src="../../static/other/article-agree.png" mode=""></image>
 					<view class="agree-num">
-						45
+						{{info.like_num}}
 					</view>
 				</view>
 			</view>
@@ -50,32 +48,17 @@
 				大家都在看
 			</view>
 			<view class="other">
-				<view class="other-li">
+				<view class="other-li" v-for="item in others" :key="item.id" @tap="go(item.id)">
 					<view class="left">
 						<view class="li-tit">
-							学区房可不是那么好买的！这篇防坑指南请收好学区房可不是那么好买的！这篇防坑指南请收好
+							{{item.title}}
 						</view>
 						<view class="li-icons">
-							<text>楼盘签约</text>
-							<text>楼盘签约</text>
+							<text v-for="(val,key) in item.tags" :key="key">{{val}}</text>
 						</view>
 					</view>
 					<view class="right">
-						<image src="../../static/img-2.png" mode=""></image>
-					</view>
-				</view>
-				<view class="other-li">
-					<view class="left">
-						<view class="li-tit">
-							学区房可不是那么好买的！这篇防坑指南请收好学区房可不是那么好买的！这篇防坑指南请收好
-						</view>
-						<view class="li-icons">
-							<text>楼盘签约</text>
-							<text>楼盘签约</text>
-						</view>
-					</view>
-					<view class="right">
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="item.img" mode=""></image>
 					</view>
 				</view>
 			</view>
@@ -84,14 +67,48 @@
 </template>
 
 <script>
+	var that
 	export default {
+		onLoad(options) {
+			console.log(options)
+			that = this
+			this.id = options.id
+			this.getinfo()
+		},
 		data() {
 			return {
-				jkl: '<p>5555555</p>'
+				jkl: '<p>5555555</p>',
+				id: 0,
+				info: {},
+				others: []
 			}
 		},
 		methods: {
-
+			getinfo() {
+				let city = uni.getStorageInfoSync('city')
+				let other = uni.getStorageInfoSync('other')
+				let token = uni.getStorageInfoSync('token')
+				uni.request({
+					url: that.apiserve+"/applets/article/detail",
+					method:"GET",
+					data: {
+						id: that.id,
+						city: city,
+						other: other,
+						token: token
+					},
+					success: (res) => {
+						that.info = res.data.article
+						that.others = res.data.others
+						console.log(res)
+					}
+				})
+			},
+			go(id) {
+				uni.redirectTo({
+					url: "/pages/article/article?id="+id
+				})
+			}
 		}
 	}
 </script>

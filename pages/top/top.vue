@@ -11,34 +11,34 @@
 		</view>
 		<view class="box">
 			<view class="navs">
-				<view class="nav active">
+				<view :class="num == 1 ? 'nav active':'nav'" @click="setnum(1)">
 					热搜榜
 					<text></text>
 				</view>
-				<view class="nav">
+				<view :class="num == 2 ? 'nav active':'nav'" @click="setnum(2)">
 					人气榜
 					<text></text>
 				</view>
-				<view class="nav">
+				<view :class="num == 3 ? 'nav active':'nav'" @click="setnum(3)">
 					成交榜
 					<text></text>
 				</view>
 			</view>
 			<view class="tops">
-				<view class="top">
-					<view class="build">
-						<image src="../../static/img-2.png" mode="" class="img"></image>
+				<view class="top" v-for="(item,key) in tops" :key="item.id">
+					<view class="build" @tap="go(item.id)">
+						<image :src="item.img" mode="" class="img"></image>
 						<view class="build-msg">
 							<view class="build-name">
-								<text class="name">荣盛檀越府</text>
-								<text class="status">在售</text>
+								<text class="name">{{item.name}}</text>
+								<text class="status">{{item.status}}</text>
 							</view>
-							<text class="price">17000</text><text class="psam">元/m²</text>
+							<text class="price">{{item.price}}</text><text class="psam">元/m²</text>
 							<view class="infos">
-								住宅 | 杭州-江干 | 80-140m²
+								{{item.decorate}} | {{item.city}}-{{item.country}} | {{parseInt(item.area_min)}}-{{parseInt(item.area_max)}}m²
 							</view>
 							<view class="icons">
-								<text class="zhuang">精装</text>
+								<text class="zhuang">{{item.decorate}}</text>
 								<text>4号线</text>
 								<text>地铁楼盘</text>
 							</view>
@@ -46,41 +46,82 @@
 					</view>
 					<view class="top-num">
 						<image src="../../static/feature/feature-card.png" mode=""></image>
-						<text class="nummsg">人气榜第1名</text>
-						<text class="btn">查底价</text>
-					</view>
-				</view>
-				<view class="top">
-					<view class="build">
-						<image src="../../static/img-2.png" mode="" class="img"></image>
-						<view class="build-msg">
-							<view class="build-name">
-								<text class="name">荣盛檀越府</text>
-								<text class="status">在售</text>
-							</view>
-							<text class="price">17000</text><text class="psam">元/m²</text>
-							<view class="infos">
-								住宅 | 杭州-江干 | 80-140m²
-							</view>
-							<view class="icons">
-								<text class="zhuang">精装</text>
-								<text>4号线</text>
-								<text>地铁楼盘</text>
-							</view>
-						</view>
-					</view>
-					<view class="top-num">
-						<image src="../../static/feature/feature-card.png" mode=""></image>
-						<text class="nummsg">人气榜第1名</text>
-						<text class="btn">查底价</text>
+						<text class="nummsg">{{num == 0 ? '热搜榜' : num == 1 ? '人气榜' : '成交榜'}}第{{key+1}}名</text>
+						<text class="btn" @tap="show(item.id,'榜单页+查低价')">查底价</text>
 					</view>
 				</view>
 			</view>
 		</view>
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="'查低价'" :pid="pid" :remark="remark" :position="position"></sign>
+		</wyb-popup>
 	</view>
 </template>
 
 <script>
+	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	import sign from '@/components/sign.vue'
+	var that
+	export default {
+		onLoad() {
+			that = this
+			this.getlist()
+		},
+		components: {
+			sign,
+			wybPopup
+		},
+		data() {
+			return {
+				num: 1,
+				tops: [],
+				pid: 0,
+				codenum: 1
+			}
+		},
+		methods: {
+			go(id) {
+				uni.redirectTo({
+					url:"/pages/content/content?id="+id
+				})
+			},
+			setnum(num) {
+				this.num = num
+				this.getlist()
+			},
+			getlist() {
+				let city = uni.getStorageInfoSync('city')
+				let token = uni.getStorageInfoSync('token')
+				uni.showLoading({
+					title: '加载中'
+				})
+				uni.request({
+					url: that.apiserve + "/applets/tops",
+					method: "GET",
+					data: {
+						city: city,
+						type: that.num,
+						token: token
+					},
+					success: (res) => {
+						that.tops = res.data.data
+						console.log(res)
+						uni.hideLoading()
+					}
+				})
+			},
+			show(id, txt) {
+				this.pid = id
+				this.remark = txt
+				this.position = 104
+				console.log(this.pid)
+				this.$refs.popup.show()
+			},
+			setiscode() {
+				this.codenum = 0
+			}
+		}
+	}
 </script>
 
 <style lang="less">

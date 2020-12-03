@@ -237,7 +237,7 @@
 			},
 			setiscode() {
 				this.codenum = 0
-			},
+			}
 		},
 		mounted() {
 			
