@@ -29,7 +29,9 @@
 			 </view>
 			 <view class="tit mine">楼盘评价</text>
 			 <view class="star">
-			 	评分 
+			 	<uni-rate v-model="value" :margin="7"
+			 	color="#E8EBED" active-color="#FF7519" 
+			 	 :size="24" @change="rateValue"></uni-rate>
 			 </view>
 			 <view class="textarea_box">
 			 	<textarea
@@ -54,11 +56,20 @@
 </template>
 
 <script>
+	import uniRate from '@/components/uni-rate/uni-rate.vue';
 	export default {
+		components:{
+			uniRate
+		},
 		data() {
 			return {
 				text_value:''
 			};
+		},
+		methods:{
+			rateValue(num){
+				console.log(num,'评分');
+			}
 		}
 	}
 </script>

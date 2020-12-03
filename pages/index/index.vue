@@ -61,7 +61,7 @@
 				</view>
 				<view class="trend-con">
 					<view class="trend-li">
-						<text class="big">{{avg_prices.current_price}}</text>
+						<text class="big">{{parseInt(avg_prices.current_price)}}</text>
 						<text class="small">元/m²</text>
 						<view class="trend-li-bom" v-if="avg_prices.time">
 							{{(avg_prices.time).substring(avg_prices.time.length-2)}}月均价
@@ -155,19 +155,22 @@
 		<view class="toplist-swiper">
 			<scroll-view class="scroll-view" scroll-x="true">
 				<view class="scroll-item" v-for="(item,index) in common" :key="item.id" >
-					<view class="top">
-						<image :src="item.img" mode=""></image>
-						<text>TOP{{index+1}}</text>
-					</view>
-					<view class="bom">
-						<text class="name">{{item.name}}</text>
-						<view>
-							<text class="price">{{item.price}}</text>
-							<text class="psam">元/m²</text>
-							<text class="area">{{item.country}}</text>
+					<navigator :url="`../content/content?id=${item.id}`">
+						<view class="top">
+							<image :src="item.img" mode=""></image>
+							<text>TOP{{index+1}}</text>
 						</view>
-					</view>
+						<view class="bom">
+							<text class="name">{{item.name}}</text>
+							<view>
+								<text class="price">{{item.price}}</text>
+								<text class="psam">元/m²</text>
+								<text class="area">{{item.country}}</text>
+							</view>
+						</view>
+					</navigator>
 				</view>
+				
 			</scroll-view>
 		</view>
 		<view class="dynamic">
@@ -217,6 +220,8 @@
 			<text class="tit">为你推荐</text>
 			<view class="recommend-box">
 				<view class="item" v-for="item in recommends" :key="item.id">
+				  <navigator :url="`../content/content?id=${item.id}`" class="nav_to">
+					  
 					<view class="left">
 						<image :src="item.img" mode=""></image>
 					</view>
@@ -236,6 +241,8 @@
 							<text>{{item.feature}}</text>
 						</view>
 					</view>
+					
+					</navigator>
 				</view>
 				
 				
@@ -275,9 +282,8 @@
 
 		},
 		onReady(){  //监听页面初次渲染完成
-		    console.log(this.base_api,'你是最棒的');
 			uni.request({
-				url:this.base_api+'applets/first',
+				url:this.apiserve+'/applets/first',
 				data:{
 					token:'111',
 					city:'1'
@@ -940,9 +946,11 @@
 		}
 
 		.item {
-			display: flex;
+			//display: flex;
 			margin-bottom: 59.76rpx;
-
+           .nav_to{
+			   width: 100%;
+			   display: flex;
 			.left {
 				margin-right: 27.88rpx;
 
@@ -1017,6 +1025,7 @@
 					}
 				}
 			}
+		  }
 		}
 	}
 </style>

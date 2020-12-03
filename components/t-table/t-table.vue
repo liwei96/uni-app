@@ -75,7 +75,7 @@
 	}
 
 	.t-table>>>t-tr:nth-child(2n) {
-		background: #f5f5f5;
+		/* //background: #f5f5f5; */
 	}
 
 	/* #ifdef H5 */

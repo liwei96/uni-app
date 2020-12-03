@@ -1,8 +1,10 @@
 <template>
 	<view class="detail" >
 		<view class="toptitle">
-			<image src="../../static/all-back.png" mode=""></image>
-			<text>{{detail.name}}</text>
+			<navigator url="../index/index" class="nav_top" open-type="switchTab">
+				<image src="../../static/all-back.png" mode=""></image>
+				<text>{{detail.name}}</text>
+			</navigator>
 		</view>
 		<view class="lunbo">
 			<swiper class="swiper" :autoplay="true">
@@ -12,8 +14,8 @@
 					</view>
 				</swiper-item>
 			</swiper>
-			<text class="xiao">效果图</text>
-			<text class="huxing">户型图</text>
+			<text :class="{xiao:style_list.effect,active:style_list.e_active}" @tap="showEffect">效果图</text>
+			<text :class="{huxing:style_list.huxing,hu_active:style_list.hu_active}" @tap="showHuxing">户型图</text>
 			<text class="total">共{{total}}张</text>
 		</view>
 		<!-- 项目信息 -->
@@ -26,8 +28,8 @@
 						<text class="other">{{detail.type}}</text>
 						<text class="other">{{detail.railway}}</text>
 						<text class="other" v-for="(item,index) in detail.features" :key="index" >{{item}}</text>
-					</text>
-				</view>
+					</text> 
+				</view>       
 				<view class="right_gong">
 					<view class="duibi">
 						<image src="../../static/content/duibi.png"></image>
@@ -46,7 +48,7 @@
 							<text class="left">均价:</text> <text class="strong_price">{{detail.single_price}}</text><text class="dan">元/m²</text>
 						</view>
 						<view class="kai_time">
-							<text class="left">开盘:</text> <text class="com">2010年8月</text>
+							<text class="left">开盘:</text> <text class="com">{{detail.opentime}}</text>
 						</view>
 						<view class="address">
 							<text class="left">地址:</text> <text class="com">{{detail.address}}</text>
@@ -75,7 +77,7 @@
 					<view class="tel_box">
 						<view class="left">
 							<view class="tel">
-								400 718 6686 转 7786
+								{{telphone.replace(',','转')}}
 							</view>
 							<view class="pp">
 								致电售楼处了解更多信息
@@ -128,37 +130,38 @@
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 今日特价房 -->
-		<view class="tejia">
+		<view class="tejia" v-if="tejia.length>0">
 			<view class="tit">
 				<text class="left">今日特价房<text class="small">4小时前更新</text></text>
-				<text class="right">最高立减<text class="ref">68000</text>元</text>
+				<text class="right">最高立减<text class="ref">{{specials.max_diff}}</text>元</text>
 			</view>
 			<view class="table_box">
 				<view class="table">
-					<t-table border=1>
-						<t-tr>
+					<t-table border=1 border-color="#fff">
+						<t-tr font-size="14" color="#4B4B4D">
 							<t-th>房号</t-th>
 							<t-th>面积</t-th>
 							<t-th>原总价</t-th>
-							<t-th>特价</t-th>
-							<t-th>立减</t-th>
+							<t-th class="te">特价</t-th>
+							<t-th class="te">立减</t-th>
 						</t-tr>
-						<t-tr v-for="(item,index) in tableList" :key="item.id" v-if="index<num">
-							<t-td>{{ item.id }}</t-td>
-							<t-td>{{ item.area }}m²</t-td>
-							<t-td>{{ item.old_price }}万</t-td>
-							<t-td>{{ item.te_price }}万</t-td>
-							<t-td>{{ item.jian }}</t-td>
+						<t-tr v-for="(item,index) in tableList" :key="item.id" v-if="index<=num" font-size="12" color="#646466">
+							<t-td>{{ (item.number).slice(2) }}</t-td>
+							<t-td>{{ parseInt(item.area) }}m²</t-td>
+							<t-td>{{ ((item.original_total)/10000).toFixed(1) }}万</t-td>
+							<t-td>{{ ((item.total)/10000).toFixed(1) }}万</t-td>
+							<t-td>{{ item.diff}}</t-td>
 						</t-tr>
 					</t-table>
 				</view>
-				<view class="yincang" @click="showTable" v-show="table_show">
+				<view class="yincang" @tap="showTable" v-show="table_show">
 					<image src="../../static/content/xia.png" mode=""></image>
 				</view>
 			</view>
-			<!-- <view class="xiaoxi">
-				<semp-notice-bar  :strText="xiaoxi" scrollable showType="slider" ></semp-notice-bar>
-			</view> -->
+			<view class="xiaoxi">
+				<uni-notice-bar  :text="specials.dynamic" scrollable showType="slider" background-color="#fff"
+				:showIcon="true" color="#646466" :speed="50" v-if="specials.dynamic" :single="true"></uni-notice-bar>
+			</view>
 			<view class="button">
 				咨询特价房
 			</view>
@@ -237,22 +240,18 @@
 				<view class="table">
 					<t-table border=1>
 						<t-tr>
-							<t-th>房号</t-th>
-							<t-th>面积</t-th>
-							<t-th>原总价</t-th>
-							<t-th>特价</t-th>
-							<t-th>立减</t-th>
+							<t-th>日期</t-th>
+							<t-th>成交套数</t-th>
+							<t-th>成交金额</t-th>
 						</t-tr>
-						<t-tr v-for="(item,index) in tableList" :key="item.id" v-if="index<num">
-							<t-td>{{ item.id }}</t-td>
-							<t-td>{{ item.area }}m²</t-td>
-							<t-td>{{ item.old_price }}万</t-td>
-							<t-td>{{ item.te_price }}万</t-td>
-							<t-td>{{ item.jian }}</t-td>
+						<t-tr v-for="(item,index) in deal_prices" :key="item.id" v-if="index<num2">
+							<t-td>{{ item.time }}</t-td>
+							<t-td>{{ item.num }}套</t-td>
+							<t-td>***万</t-td>
 						</t-tr>
 					</t-table>
 				</view>
-				<view class="yincang" @click="showTable" v-show="table_show">
+				<view class="yincang" @tap="showPrice" v-show="table_show2">
 					<image src="../../static/content/xia.png" mode=""></image>
 				</view>
 			</view>
@@ -268,15 +267,15 @@
 				楼盘分析资料
 			</view>
 			<view class="sel">
-				<text :class={yiju:class_active.yiju,active:class_active.active,yi} @click="class_qie(1)">投资分析</text>
-				<text :class={yiju:class_active.yiju2,active:class_active.active2} @click="class_qie(2)">宜居分析</text>
+				<text :class={yiju:class_active.yiju,active:class_active.active} @tap="class_qie(1)">投资分析</text>
+				<text :class={yiju:class_active.yiju2,active:class_active.active2} @tap="class_qie(2)">宜居分析</text>
 			</view>
 			<view class="content">
-				<view class="pp1">
-					1、2017年杭州总价“地王”项目，打造体量约74万方TOD大盘，坐拥未来科技城地标
+				<view class="pp1" v-if="fenxi_data[0]">
+					1、{{fenxi_data[0].content}}
 				</view>
-				<view class="pp2">
-					2、地铁5号线葛巷站站上盖项目，自带6.5万方购物中心，五公里生活圈内万达广场、亲
+				<view class="pp2" v-if="fenxi_data[1]">
+					2、{{fenxi_data[1].content}}
 				</view>
 			</view>
 			<view class="btn">
@@ -304,29 +303,12 @@
 				</view>
 			</view>
 
-			<view class="ye_one">
-				<image src="../../static/content/ping_img.png" mode="" class="head_img"></image>
+			<view class="ye_one" v-if="staff">
+				<image :src="staff.img" mode="" class="head_img"></image>
 				<view class="peo">
 					<view class="top">
-						李聪然
-						<text>满意度5分</text>
-					</view>
-
-					<view class="bottom">
-						了解房源特色，专业挑好房
-					</view>
-				</view>
-				<view class="bo_tel">
-					<image src="../../static/content/zixun.png" mode="" class="bo_zi"></image>
-					<image src="../../static/content/tel.png" mode=""></image>
-				</view>
-			</view>
-			<view class="ye_one">
-				<image src="../../static/content/ping_img.png" mode="" class="head_img"></image>
-				<view class="peo">
-					<view class="top">
-						李聪然
-						<text>满意度5分</text>
+						{{staff.name}}
+						<text>满意度{{staff.num}}分</text>
 					</view>
 					<view class="bottom">
 						了解房源特色，专业挑好房
@@ -337,6 +319,7 @@
 					<image src="../../static/content/tel.png" mode=""></image>
 				</view>
 			</view>
+	
 
 		</view>
 		<view class="bg_hui"></view>
@@ -398,48 +381,33 @@
 				</view>
 			</view>
 			<view class="bottom">
-				<view class="ping_one">
+				<view class="ping_one" v-for="item in comments" :key="item.id">
 					<view class="left">
 						<image src="../../static/content/ping_img.png" mode=""></image>
 					</view>
 					<view class="right">
 						<view class="top_tit">
-							<text class="tel">154****3787</text>
-							<text class="zan">
+							<text class="tel">{{item.mobile}}</text>
+							<view class="no_zan" v-if="item.my_like==0">
+								<image src="../../static/content/no_zan.png" mode=""></image>
+								赞({{item.like_num}})
+							</view>
+							<view class="zan" v-if="item.my_like==1">
 								<image src="../../static/content/zan.png" mode=""></image>
-								赞(2)
-							</text>
+								赞({{item.like_num}})
+							</view>
 						</view>
 						<view class="content">
-							马上要推出小户型了吧，感觉买个89平的楼盘就可以了，不知道公摊要多少
+						{{item.content}}
 						</view>
 						<view class="time_box">
-							<text class="time">2020-06-09</text>
-							<text class="delete">删除</text>
+							<text class="time">{{item.time}}</text>
+							<text class="delete" v-if="item.mine==true">删除</text>
 						</view>
 					</view>
 				</view>
-				<view class="ping_one">
-					<view class="left">
-						<image src="../../static/content/ping_img.png" mode=""></image>
-					</view>
-					<view class="right">
-						<view class="top_tit">
-							<text class="tel">154****3787</text>
-							<text class="zan">
-								<image src="../../static/content/zan.png" mode=""></image>
-								赞(2)
-							</text>
-						</view>
-						<view class="content">
-							马上要推出小户型了吧，感觉买个89平的楼盘就可以了，不知道公摊要多少
-						</view>
-						<view class="time_box">
-							<text class="time">2020-06-09</text>
-							<text class="delete">删除</text>
-						</view>
-					</view>
-				</view>
+				
+				
 			</view>
 
 
@@ -461,19 +429,10 @@
 			</view>
 
 			<view class="wen_list">
-				<view class="wen_one">
+				<view class="wen_one" v-for="item in questions" :key="item.id">
 					<view class="wen_top">
 						<text class="wen">问</text>
-						<text class="wen_t">苕溪学府住宅是否可以在安装防盗窗，是否可以把封 闭阳台?</text>
-					</view>
-					<view class="da">
-						共1个回答
-					</view>
-				</view>
-				<view class="wen_one">
-					<view class="wen_top">
-						<text class="wen">问</text>
-						<text class="wen_t">融创运河印:我宁可去买周边二手房了</text>
+						<text class="wen_t">{{item.question}}</text>
 					</view>
 					<view class="da">
 						共1个回答
@@ -491,32 +450,22 @@
 				看了该楼盘的人还看了
 			</view>
 			<view class="pro_list">
-				<view class="peo_one">
-					<image src="http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png" mode=""></image>
+				<view class="peo_one" v-for="item in recommends" :key="item.id">
+					<image :src="item.img" mode=""></image>
 					<view class="right_pro">
-						<view class="pro_name">武林ONE<text class="status">在售</text></view>
-						<view class="price">17000元/m²</view>
-						<view class="type">住宅<text>|</text>杭州-江干<text>|</text>80-140m² </view>
+						<view class="pro_name">{{item.name}}<text class="status">{{item.status}}</text></view>
+						<view class="price">{{item.single_price}}元/m²</view>
+						<view class="type">{{item.type}}<text>|</text>{{item.city}}-{{item.country}}<text>|</text>{{item.area}}m² </view>
 						<view class="tese">
-							<text class="zhuang">精装</text>
-							<text class="other">1号线</text>
-							<text class="other">地铁楼盘</text>
+							<text class="zhuang"  v-if="item.decorate">{{item.decorate}}</text>
+							<text class="other" v-if="item.railway">{{item.railway}}</text>
+							<text class="other" v-for="(ite,index) in item.features" :key="index" v-if="index==0">{{ite}}</text>
 						</view>
 					</view>
 				</view>
-				<view class="peo_one">
-					<image src="http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png" mode=""></image>
-					<view class="right_pro">
-						<view class="pro_name">武林ONE<text class="status">在售</text></view>
-						<view class="price">17000元/m²</view>
-						<view class="type">住宅<text>|</text>杭州-江干<text>|</text>80-140m² </view>
-						<view class="tese">
-							<text class="zhuang">精装</text>
-							<text class="other">1号线</text>
-							<text class="other">地铁楼盘</text>
-						</view>
-					</view>
-				</view>
+				
+				
+				
 			</view>
 		</view>
 
@@ -545,7 +494,7 @@
 	import tTh from '@/components/t-table/t-th.vue';
 	import tTr from '@/components/t-table/t-tr.vue';
 	import tTd from '@/components/t-table/t-td.vue';
-	import sempNoticeBar from "@/components/semp-notice-bar/semp-notice-bar.vue";
+	import uniNoticeBar from "@/components/uni-notice-bar/uni-notice-bar.vue";
 	import uCharts from '@/components/u-charts/u-charts/u-charts.min.js'
 	var _self;
 	var canvaColumn = null;
@@ -556,66 +505,22 @@
 			tTh,
 			tTr,
 			tTd,
-			sempNoticeBar
+			uniNoticeBar
 		},
 		data() {
 			return {
 				total: '',
 				pro_img: [],
 				detail:{},
-				tableList: [{
-						id: 304,
-						area: '38.3',
-						old_price: '33.0',
-						te_price: '29.8',
-						jian: '420**'
-					},
-					{
-						id: 305,
-						area: '37',
-						old_price: '28.2',
-						te_price: '680**',
-						jian: '420**'
-					},
-					{
-						id: 306,
-						area: '36.9',
-						old_price: '31.9',
-						te_price: '28.2',
-						jian: '420**'
-					},
-					{
-						id: 306,
-						area: '36.9',
-						old_price: '31.9',
-						te_price: '28.2',
-						jian: '420**'
-					},
-					{
-						id: 306,
-						area: '36.9',
-						old_price: '31.9',
-						te_price: '28.2',
-						jian: '420**'
-					},
-
-				],
-				xiaoxi: '房号304已售罄,房号309、307只剩下一套活动时间仅剩2天',
+				tableList: [],
+				xiaoxi: '',
 				color: '#000',
 				goodsList: [],
-				dongtai: [{
-						"content": '住宅产品静待推出，均价18590元/㎡，主要户型为建筑面积80-115㎡三居主要户型为建筑面积80-115㎡三居...',
-						"time": '2019-04-08',
-						'img': 'http://api.jy1980.com/uploads/20191231/thumb_800_9dqjzpz7.jpg'
-					},
-					{
-						"content": '住宅产品静待推出，均价18590元/㎡，主要户型为建筑面积80-115㎡三居主要户型为建筑面积80-115㎡',
-						"time": '2019-04-08',
-						'img': 'http://api.jy1980.com/uploads/20191231/thumb_800_9dqjzpz7.jpg'
-					}
-				],
+				dongtai: [],
 				num: 3,
+				num2:3,
 				table_show: true,
+				table_show2:true,
 
 
 				cWidth: '',
@@ -626,10 +531,8 @@
 				class_active: {
 					yiju: false,
 					active: true,
-
 					yiju2: true,
 					active2: false,
-
 				},
 				//地图部分
 				latitude: 39.909,
@@ -644,9 +547,29 @@
 					longitude: 116.39,
 					iconPath: '../../../static/location.png'
 				}],
+				style_list:{
+					effect:false,
+					e_active:true,
+					huxing:true,
+					hu_active:false,
+				},
+				effects:[],
+				house_types:[],
 				
-				
-				
+				fenxi_data:[],
+				fenxi_tou:[],
+				fenxi_yiju:[],
+				staff:{},
+				comments:[],
+				questions:[],
+				recommends:[],
+				common:{},
+				telphone:'',
+				specials:{},
+				deal_prices:[],
+				Column:[],
+				tejia:[],
+				echarts_year:""
 
 
 			};
@@ -667,7 +590,7 @@
 			//#endif
 			this.cWidth = uni.upx2px(750);
 			this.cHeight = uni.upx2px(500);
-			this.getServerData();
+			
 
 			
 			
@@ -684,7 +607,7 @@
 			// });
 			let  id = option.id;
 			uni.request({
-				url:this.base_api+'applets/building/detail',
+				url:this.apiserve+'/applets/building/detail',
 				data:{
 					id:id,
 					other:'123',
@@ -694,10 +617,79 @@
 						console.log(res,"res");
 						let data = res.data.data;
 						this.pro_img =data.imgs.img.effects;
+						
+						this.effects= data.imgs.img.effects;						this.house_types= data.imgs.img.house_types;
+						
 						this.total = data.imgs.num;
 						this.detail = data.abstract;
 						this.goodsList = data.house_types;
 						this.dongtai = data.dynamics;
+						this.staff = data.staff;
+						this.comments  = data.comments;
+						this.questions = data.questions;
+						this.recommends = data.recommends;
+						this.common = data.common;
+						this.telphone= data.common.phone;
+						this.specials = data.specials;
+						this.tejia = data.specials.data;
+						this.deal_prices = data.deal_prices;
+						
+						let _self = this;
+						
+						let  arr_data = data.deal_prices;
+						let time = [];
+						let num =[];
+						arr_data.map(n=>{
+							num.push(n.price);
+							let str = n.time.substring(n.time.length-5);
+							let strr = str.replace("-",'.');
+							time.push(strr);
+							let year = n.time.substring(0,4);
+							this.echarts_year = year;
+						})
+						
+						
+						let Column ={
+							categories:[],
+							series:[]
+						};
+						Column.series = [{
+							"name": this.echarts_year+"年",
+							"textColor":"#fff",
+							"data": num,
+						}, ];
+						
+						Column.categories = time;
+						this.Column =Column;
+						console.log(Column);
+					    _self.showColumn("canvasColumn", Column);
+						
+						
+						
+						let arr = data.specials.data;
+						if(arr){
+							arr.map(p=>{
+								let str = p.diff.toString();
+								p.diff = str.substring(0,str.length-2)+'**'
+							})
+							this.tableList = arr;
+						}
+						
+						let  analysis = data.analysis;
+						let fenxi_tou =[];
+						let fenxi_yiju =[];
+						analysis.map(m=>{
+							if(m.type==1){//投资分析
+								fenxi_tou.push(m);
+							}else if(m.type==2){//宜居分析
+								fenxi_yiju.push(m)
+							}
+						})
+						
+						this.fenxi_data = fenxi_tou;
+						this.fenxi_tou = fenxi_tou;
+						this.fenxi_yiju = fenxi_yiju;
+						
 					}
 				}
 			})
@@ -739,34 +731,9 @@
 				this.num = this.tableList.length;
 				this.table_show = false;
 			},
-			getServerData() {
-				uni.request({
-					url: 'https://www.easy-mock.com/mock/5cc586b64fc5576cba3d647b/uni-wx-charts/chartsdata2',
-					data: {},
-					success: function(res) {
-						console.log(res.data.data)
-						//下面这个根据需要保存后台数据，我是为了模拟更新柱状图，所以存下来了
-						_self.serverData = res.data.data;
-						let Column = {
-							categories: [],
-							series: []
-						};
-						//这里我后台返回的是数组，所以用等于，如果您后台返回的是单条数据，需要push进去
-						//Column.categories=res.data.data.Column.categories;
-						//这里的series数据是后台做好的，如果您的数据没有和前面我注释掉的格式一样，请自行拼接数据
-						Column.series = [{
-							"name": '成交价',
-							"data": [300, 200, 150, 350, 380, 190, 180]
-						}, ];
-
-						Column.categories = ['10.13', '10.14', '10.15', '10.16', '10.17', '10.18', '10.19'];
-
-						_self.showColumn("canvasColumn", Column);
-					},
-					fail: () => {
-						console.log("网络错误，小程序端请检查合法域名");
-					},
-				});
+			showPrice(){
+				this.num2 = this.deal_prices.length;
+				this.table_show2 = false;
 			},
 			showColumn(canvasId, chartData) {
 				canvaColumn = new uCharts({
@@ -784,7 +751,11 @@
 						disableGrid: true,
 						rotateLabel: true
 					},
-					yAxis: {},
+					yAxis: {
+						data:[{
+						  format:val=>{return val+" w"}
+						}]
+					},
 					dataLabel: true,
 					width: _self.cWidth * _self.pixelRatio,
 					height: _self.cHeight * _self.pixelRatio,
@@ -808,13 +779,32 @@
 
 					this.class_active.active2 = false;
 					this.class_active.yiju2 = true;
+					
+					this.fenxi_data = this.fenxi_tou;
 				} else if (num == 2) {
 					this.class_active.active2 = true;
 					this.class_active.yiju2 = false;
 
 					this.class_active.active = false;
 					this.class_active.yiju = true;
+					
+					this.fenxi_data = this.fenxi_yiju;
 				}
+			},
+			showEffect(){
+				this.style_list.effect = false;
+				this.style_list.e_active = true;
+				this.style_list.huxing = true;
+				this.style_list.hu_active = false;
+				this.pro_img = this.effects;
+			},
+			showHuxing(){
+				this.style_list.effect = true;
+				this.style_list.e_active = false;
+				
+				this.style_list.huxing = false;
+				this.style_list.hu_active = true;
+				this.pro_img = this.house_types;
 			}
 		},
 
@@ -830,19 +820,21 @@
 			padding-top: 39.84rpx;
 			line-height: 87.64rpx;
 			background-color: #fff;
+			.nav_top{
+				display: inline-block;
+				image {
+					width: 31.87rpx;
+					height: 31.87rpx;
+					margin-right: 11.95rpx;
+					margin-bottom: -3.98rpx;
+				}
 
-			image {
-				width: 31.87rpx;
-				height: 31.87rpx;
-				margin-right: 11.95rpx;
-				margin-bottom: -3.98rpx;
-			}
-
-			text {
-				width: 221rpx;
-				font-size: 32rpx;
-				font-weight: 500;
-				color: #17181A;
+				text {
+					width: 221rpx;
+					font-size: 32rpx;
+					font-weight: 500;
+					color: #17181A;
+				}
 			}
 		}
 
@@ -864,7 +856,19 @@
 			.xiao {
 				width: 92rpx;
 				height: 40rpx;
-				background: #3EACF0;
+				background: #FFFFFF;
+				border-radius: 20rpx;
+				font-size: 20rpx;
+				color: #646566;
+				position: absolute;
+				bottom: 20rpx;
+				left: 271rpx;
+				line-height: 40rpx;
+				text-align: center;
+			}
+			.active{
+				width: 92rpx;
+				height: 40rpx;
 				border-radius: 20rpx;
 				font-size: 20rpx;
 				color: #fff;
@@ -873,6 +877,7 @@
 				left: 271rpx;
 				line-height: 40rpx;
 				text-align: center;
+				background: #3EACF0;
 			}
 
 			.huxing {
@@ -882,6 +887,19 @@
 				border-radius: 20rpx;
 				font-size: 20rpx;
 				color: #646566;
+				position: absolute;
+				bottom: 20rpx;
+				left: 387rpx;
+				text-align: center;
+				line-height: 40rpx;
+			}
+			.hu_active{
+				width: 92rpx;
+				height: 40rpx;
+				background: #3EACF0;
+				border-radius: 20rpx;
+				font-size: 20rpx;
+				color: #fff;
 				position: absolute;
 				bottom: 20rpx;
 				left: 387rpx;
@@ -1354,9 +1372,9 @@
 		//  今日特价房 
 		.tejia {
 			width: 100%;
-			height: 678rpx;
+			height:auto;
 			background: #fff;
-
+			padding-bottom: 40rpx;
 			.tit {
 				width: 100%;
 				padding-left: 30rpx;
@@ -1407,6 +1425,11 @@
 				.table {
 					width: 100%;
 					height: auto;
+					border:1rpx solid #E6E6E6;
+					border-radius: 12rpx 12rpx 0rpx 0rpx;
+					.te{
+						color:#FF6040 ;
+					}
 				}
 
 				.yincang {
@@ -1433,7 +1456,7 @@
 				width: 100%;
 				padding-left: 26rpx;
 				height: 36rpx;
-
+				margin-top: 37rpx;
 				.semp-notice-bar {
 					width: 100%;
 					padding-left: 26rpx;
@@ -1797,10 +1820,9 @@
 					line-height: 56rpx;
 					text-align: center;
 				}
-
-				.yi {
-					margin-right: 30rpx;
-				}
+			}
+			.sel text:first-child{
+				margin-right: 30rpx;
 			}
 
 			.content {
@@ -1817,6 +1839,10 @@
 					color: #4B4B4D;
 					line-height: 44rpx;
 					margin-bottom: 22rpx;
+					display: -webkit-box;
+					 -webkit-box-orient: vertical;
+					 -webkit-line-clamp: 2;
+					  overflow: hidden;
 				}
 
 				.pp2 {
@@ -1824,6 +1850,10 @@
 					font-weight: 500;
 					color: #4B4B4D;
 					line-height: 44rpx;
+					display: -webkit-box;
+					 -webkit-box-orient: vertical;
+					 -webkit-line-clamp: 2;
+					  overflow: hidden;
 				}
 			}
 
@@ -1928,11 +1958,10 @@
 						color: #323233;
 
 						text {
-							width: 108rpx;
+							width: 115rpx;
 							height: 30rpx;
 							background: #FA941B;
 							border-radius: 6rpx;
-
 							font-size: 20rpx;
 							font-weight: 500;
 							color: #FFFFFF;
@@ -2150,7 +2179,20 @@
 								font-weight: 400;
 								color: #3EACF0;
 								float: right;
-
+								display: flex;
+								align-items: center;
+								image {
+									width: 32rpx;
+									height: 32rpx;
+								}
+							}
+							.no_zan{
+								font-size: 24rpx;
+								font-weight: 400;
+								color: #B2B2B6;
+								float: right;
+								display: flex;
+								align-items: center;
 								image {
 									width: 32rpx;
 									height: 32rpx;
@@ -2164,6 +2206,10 @@
 							font-weight: 500;
 							color: #333333;
 							line-height: 44rpx;
+							display: -webkit-box;
+							 -webkit-box-orient: vertical;
+							 -webkit-line-clamp: 2;
+							  overflow: hidden;
 						}
 
 						.time_box {
@@ -2390,7 +2436,8 @@
 			padding-left: 45rpx;
 			padding-top: 19rpx;
 			background-color: #fff;
-
+			position: fixed;
+			bottom: 0rpx;
 			.zixun {
 				font-size: 24rpx;
 				font-weight: 500;

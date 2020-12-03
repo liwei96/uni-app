@@ -10,14 +10,12 @@
 					<image src="../../static/content/ping_img.png" mode=""></image>
 					<view class="right_tel">
 						<text class="tel">154****3787</text>
-						评分
-						<!-- <view class="rate" >
-							<template v-for="item in ceshi1">
-							   <image src="../../static/htz-rate/rate1_1.png" mode="" ></image>
-							</template>
-							<image src="../../static/htz-rate/rate1_0.png" mode=""></image>
-						</view> -->
-						<!-- <htz-rate v-model="ceshi1" :readonly='true'></htz-rate> -->
+						<view class="rate" >
+							<uni-rate v-model="value" :margin="7" 
+							color="#E8EBED" active-color="#FF7519" 
+							readonly="true" :size="18"></uni-rate>
+						</view>
+						
 					</view>
 				</view>
 				<text class="con">马上要推出小户型了吧，感觉买个89平的楼盘就可以了，不知道公摊要多少</text>
@@ -44,13 +42,11 @@
 					<image src="../../static/content/ping_img.png" mode=""></image>
 					<view class="right_tel">
 						<text class="tel">154****3787</text>
-						评分
-						<!-- <view class="rate" >
-							<template v-for="item in ceshi1">
-							   <image src="../../static/htz-rate/rate1_1.png" mode="" ></image>
-							</template>
-							<image src="../../static/htz-rate/rate1_0.png" mode=""></image>
-						</view> -->
+						<view class="rate" >
+						  <uni-rate v-model="value" :margin="7"
+						  color="#E8EBED" active-color="#FF7519" 
+						  readonly="true" :size="18"></uni-rate>
+						</view>
 						
 					</view>
 				</view>
@@ -84,8 +80,8 @@
 </template>
 
 <script>
-import htzRate from '@/components/htz-rate/htz-rate.vue';
-import bottom from '../../components/mine/bottom.vue'
+import uniRate from '@/components/uni-rate/uni-rate.vue';
+import bottom from '../../components/mine/bottom.vue';
 	export default {
 		data() {
 			return {
@@ -94,7 +90,7 @@ import bottom from '../../components/mine/bottom.vue'
 			};
 		},
 		components:{
-			htzRate,
+		    uniRate,
 			bottom
 		},
 	}
