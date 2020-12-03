@@ -5,54 +5,27 @@
 		</view>
 		<image src="../../static/dynamic/dynamic-top.png" mode="" class="topimg"></image>
 		<view class="box">
-			<view class="item">
+			<view class="item" v-for="item in list" :key="item.id">
 				<view class="top">
-					<image src="../../static/img-2.png" mode=""></image>
+					<image :src="item.img" mode=""></image>
 					<view class="zhao"></view>
 					<view class="topicon">
 						最新
 					</view>
 					<view class="name">
-						锦云澜天里
+						{{item.title}}
 					</view>
 					<view class="msg">
-						<text>临安</text>
-						<text>面积 90-180m²</text>
-						<text>均价：17500元/m²</text>
+						<text>{{item.country.substr(0,2)}}</text>
+						<text>面积 {{item.area}}m²</text>
+						<text>均价：{{item.price}}元/m²</text>
 					</view>
 				</view>
 				<view class="bom">
-					<view class="name">锦云澜天里最新在售房源</view>
-					<text class="txt">住宅产品静待推出，均价18590元/㎡，主要户型为建筑面积80-115㎡三居（以上信息仅供参考，具体一房一价...</text>
+					<view class="name">{{item.title}}</view>
+					<text class="txt">{{item.content}}</text>
 					<view class="time">
-						2019-04-08
-					</view>
-					<view class="btn">
-						订阅此楼盘动态
-					</view>
-				</view>
-			</view>
-			<view class="item">
-				<view class="top">
-					<image src="../../static/img-2.png" mode=""></image>
-					<view class="zhao"></view>
-					<view class="topicon">
-						最新
-					</view>
-					<view class="name">
-						锦云澜天里
-					</view>
-					<view class="msg">
-						<text>临安</text>
-						<text>面积 90-180m²</text>
-						<text>均价：17500元/m²</text>
-					</view>
-				</view>
-				<view class="bom">
-					<view class="name">锦云澜天里最新在售房源</view>
-					<text class="txt">住宅产品静待推出，均价18590元/㎡，主要户型为建筑面积80-115㎡三居（以上信息仅供参考，具体一房一价...</text>
-					<view class="time">
-						2019-04-08
+						{{item.time}}
 					</view>
 					<view class="btn">
 						订阅此楼盘动态
@@ -61,14 +34,77 @@
 			</view>
 		</view>
 		<bom-nav></bom-nav>
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="'咨询服务'" :pid="pid" :remark="remark" :position="position"></sign>
+		</wyb-popup>
 	</view>
 </template>
 
 <script>
 	import bomnav from "@/components/bomnav.vue"
+	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	import sign from '@/components/sign.vue'
+	var that
 	export default {
 		components:{
-			"bom-nav":bomnav
+			"bom-nav":bomnav,
+			sign,
+			wybPopup
+		},
+		onLoad() {
+			that = this
+			this.getdata()
+		},
+		data() {
+			return {
+				page: 1,
+				list: []
+			}
+		},
+		onReachBottom() {
+			this.getmore()
+		},
+		methods:{
+			getdata() {
+				uni.showLoading({
+					title:"加载中"
+				})
+				let city = uni.getStorageInfoSync('city')
+				uni.request({
+					url:that.apiserve+'/applets/dynamic/info',
+					method:'GET',
+					data:{
+						city: city,
+						page: that.page,
+						limit: 10
+					},
+					success: (res) => {
+						console.log(res)
+						that.list = res.data.data
+						uni.hideLoading()
+					}
+				})
+			},
+			getmore() {
+				uni.showLoading({
+					title:"加载中"
+				})
+				that.page = that.page+1
+				let city = uni.getStorageInfoSync('city')
+				uni.request({
+					url:that.apiserve+'/applets/dynamic/info',
+					method:'GET',
+					data:{
+						city: city,
+						page: that.page,
+						limit: 10
+					},
+					success: (res) => {
+						that.list = that.list.concat(res.data.data)
+						uni.hideLoading()
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -88,6 +124,7 @@
 	.box {
 		padding: 0 49.8rpx;
 		padding-bottom: 119.52rpx;
+		padding-top: 42rpx;
 		.item {
 			background: #FFFFFF;
 			box-shadow: 0px 0px 18.92rpx 0.99rpx rgba(0, 0, 0, 0.04);

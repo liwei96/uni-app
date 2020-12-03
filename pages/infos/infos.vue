@@ -12,54 +12,43 @@
 			<swiper :autoplay="true" :interval="3000" :duration="1000" :circular="true" previous-margin="60rpx" next-margin="60rpx"
 			 @change="setnum">
 				<swiper-item v-for="(item,key) in tops" :key="key">
-					<view class="swiper-item">
+					<view class="swiper-item" @tap="go(item.id)">
 						<image :src="item.img" mode=""></image>
 						<view class="img-msg">
-							{{item.txt}}
+							{{item.title}}
 						</view>
 					</view>
 				</swiper-item>
 			</swiper>
+			<view class="swiper-num">
+				<view v-for="(item,key) in tops" :key="key" :class="key === currentnum ? 'active' : ''"></view>
+			</view>
 		</view>
-		<view class="swiper-num">
-			<view v-for="(item,key) in tops" :key="key" :class="key === currentnum ? 'active' : ''"></view>
-		</view>
+
 		<view class="swiper-nav">
 			<swiper :interval="3000" :duration="1000" display-multiple-items="4" next-margin="76rpx" previous-margin="30rpx">
 				<swiper-item v-for="(item,key) in navs" :key="key">
-					<view :class="navnum === key ? 'swiper-item active' : ''">{{item.name}}<view class="bom">
-					</view></view>
+					<view :class="navnum === item.id ? 'swiper-item active' : ''" @click="setnavnum(item.id)">{{item.name}}
+						<view class="bom">
+						</view>
+					</view>
 				</swiper-item>
 			</swiper>
 		</view>
 		<view class="lists">
 			<view class="other">
-				<view class="other-li">
+				<view class="other-li" v-for="(item,key) in infos" :key="item.id" @tap="go(item.id)">
 					<view class="left">
 						<view class="li-tit">
-							<view>新</view>学区房可不是那么好买的！这篇防坑指南请收好学区房可不是那么好买的！这篇防坑指南请收好
+							<view v-if="key == 0">新</view>{{item.title}}
 						</view>
 						<view class="li-icons">
-							<text>允家新房</text>
-							<text>2019-05-24</text>
+							<text>{{item.source}}</text>
+							<text>{{item.begin}}</text>
 						</view>
 					</view>
 					<view class="right">
-						<image src="../../static/img-2.png" mode=""></image>
-					</view>
-				</view>
-				<view class="other-li">
-					<view class="left">
-						<view class="li-tit">
-							学区房可不是那么好买的！这篇防坑指南请收好学区房可不是那么好买的！这篇防坑指南请收好
-						</view>
-						<view class="li-icons">
-							<text>楼盘签约</text>
-							<text>楼盘签约</text>
-						</view>
-					</view>
-					<view class="right">
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="item.img" mode=""></image>
 					</view>
 				</view>
 			</view>
@@ -68,9 +57,19 @@
 </template>
 
 <script>
+	var that
 	export default {
+		onLoad(options) {
+			that = this
+			this.gettop()
+			if(options.infos) {
+				this.navnum = options.infos
+			}
+			this.getdata()
+		},
 		data() {
 			return {
+				isok: true,
 				currentnum: 0,
 				tops: [{
 						img: '../../static/img-2.png',
@@ -116,18 +115,96 @@
 					{
 						id: "52",
 						name: "土拍成交",
-					},
-					{
-						id: "52",
-						name: "楼盘动态",
-					},
+					}
 				],
-				navnum:0
+				navnum: '46',
+				page: 1,
+				infos: [],
+				total: 0
 			}
+		},
+		onReachBottom(e) {
+			this.getmore()
 		},
 		methods: {
 			setnum(e) {
 				this.currentnum = e.detail.current
+			},
+			gettop() {
+				let city = uni.getStorageInfoSync('city')
+				let token = uni.getStorageInfoSync('token')
+				uni.request({
+					url: that.apiserve + "/applets/article/news",
+					method: "GET",
+					data: {
+						city: city,
+						token: token
+					},
+					success: (res) => {
+						that.tops = res.data.tops
+						console.log(res)
+					}
+				})
+			},
+			getdata() {
+				uni.showLoading({
+					title: '加载中'
+				})
+				let token = uni.getStorageInfoSync('token')
+				uni.request({
+					url: that.apiserve + '/applets/article/info',
+					method: 'GET',
+					data: {
+						city: 1,
+						position: that.navnum,
+						page: that.page,
+						limit: 10,
+						token: token
+					},
+					success: (res) => {
+						console.log(res)
+						that.total = res.data.total
+						that.infos = res.data.data
+						uni.hideLoading()
+					}
+				})
+			},
+			getmore() {
+				this.page = this.page+1
+				uni.showLoading({
+					title: '加载中'
+				})
+				let token = uni.getStorageInfoSync('token')
+				uni.request({
+					url: that.apiserve + '/applets/article/info',
+					method: 'GET',
+					data: {
+						city: 1,
+						position: that.navnum,
+						page: that.page,
+						limit: 10,
+						token: token
+					},
+					success: (res) => {
+						console.log(res)
+						that.total = res.data.total
+						that.infos = that.infos.concat(res.data.data)
+						uni.hideLoading()
+					}
+				})
+			},
+			go(id) {
+				uni.navigateTo({
+					url: "/pages/info/info?id="+id
+				})
+			},
+			setnavnum(id) {
+				this.navnum = id
+				this.page = 1
+				this.getdata()
+				// uni.navigateTo({
+				// 	url: "/pages/infos/infos?infos="+id
+				// })
 			}
 		}
 	}
@@ -178,6 +255,9 @@
 	}
 
 	.swiper {
+		padding-bottom: 50rpx;
+		position: relative;
+
 		.swiper-item {
 			position: relative;
 			border-radius: 12rpx;
@@ -207,46 +287,54 @@
 				bottom: 0;
 			}
 		}
+
+		.swiper-num {
+			display: flex;
+			justify-content: center;
+			position: absolute;
+			width: 100%;
+			bottom: 30rpx;
+
+			view {
+				width: 12rpx;
+				height: 4rpx;
+				border-radius: 2rpx;
+				background: #F0F0F2;
+				margin-right: 8rpx;
+			}
+
+			.active {
+				width: 24rpx;
+				height: 4rpx;
+				background-color: #40A2F4;
+			}
+		}
 	}
 
-	.swiper-num {
-		display: flex;
-		justify-content: center;
-		margin-bottom: 40rpx;
 
-		view {
-			width: 12rpx;
-			height: 4rpx;
-			border-radius: 2rpx;
-			background: #F0F0F2;
-			margin-right: 8rpx;
-		}
-
-		.active {
-			width: 24rpx;
-			height: 4rpx;
-			background-color: #40A2F4;
-		}
-	}
 
 	.swiper-nav {
 		white-space: nowrap;
 		height: 60rpx;
 		margin-bottom: 50rpx;
+
 		swiper {
 			height: 60rpx;
 		}
+
 		.swiper-item {
 			color: #646566;
 			font-size: 30rpx;
 			margin-right: 36rpx;
 			height: 60rpx;
 		}
+
 		.active {
 			color: #40A2F4;
 			font-size: 32rpx;
 			font-weight: 800;
 			position: relative;
+
 			.bom {
 				position: absolute;
 				width: 50rpx;
@@ -259,13 +347,17 @@
 			}
 		}
 	}
+
 	.other {
 		padding: 0 30rpx;
+
 		.other-li {
 			display: flex;
 			margin-bottom: 18rpx;
+
 			.left {
 				flex: 1;
+
 				.li-tit {
 					color: #303233;
 					font-size: 28rpx;
@@ -275,6 +367,7 @@
 					-webkit-line-clamp: 2;
 					overflow: hidden;
 					margin-bottom: 20rpx;
+
 					view {
 						font-size: 24rpx;
 						color: #FFFFFF;
@@ -287,6 +380,7 @@
 						line-height: 30rpx;
 					}
 				}
+
 				.li-icons {
 					text {
 						color: #626466;
@@ -295,9 +389,11 @@
 					}
 				}
 			}
+
 			.right {
 				width: 200rpx;
 				margin-left: 42rpx;
+
 				image {
 					width: 100%;
 					height: 140rpx;

@@ -6,58 +6,54 @@
 		</view>
 		<view class="box">
 			<view class="tit">
-				无法使用住房公积金贷款买房？一定要注意 这几种情况！
+				{{info.title}}
 			</view>
 			<view class="infos">
-				<text>发布：2019-05-24 来源：允家</text>
-				<text class="right">浏览：167</text>
+				<text>发布：{{info.begin}} 来源：{{info.source}}</text>
+				<text class="right">浏览：{{info.visit_num}}</text>
 			</view>
 			<view class="txtbox">
 				<text>
 					摘要：
 				</text>
-				我们都知道公积金贷款利率远低于商业贷款，提前还贷也没有违约金等，是贷款买房的首选。但是，公积金贷款买房并非易事，一旦遇到以下这几种情况
-
+				{{info.description}}
 			</view>
-			<view class="" v-html="jkl">
+			<view class="" v-html="info.content">
 			</view>
 			<view class="label">
 				<text class="label-tit">标签：</text>
-				<text class="label-li">买房</text>
-				<text class="label-li">买房</text>
-				<text class="label-li">买房</text>
+				<text class="label-li" v-for="(item,key) in info.tags" :key="key">{{item}}</text>
 			</view>
-			<view class="build">
-				<view class="top">
+			<view class="build" v-if="build.length != 0">
+				<view class="top" @tap="gobuild(build.id)">
 					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="build.img" mode=""></image>
 					</view>
 					<view class="right">
 						<view class="right-tit">
-							荣盛檀越府
+							{{build.name}}
 							<view class="status">
-								在售
+								{{build.state}}
 							</view>
 						</view>
 						<view class="price">
-							<text class="big">17000</text>
+							<text class="big">{{build.price}}</text>
 							<text>元/m²</text>
 						</view>
 						<view class="right-infos">
-							住宅 | 杭州-江干 | 80-140m²
+							{{build.type}} | {{build.city}}-{{build.country}} | {{build.area}}m²
 						</view>
 						<view class="right-icons">
-							<text class="zhuang">精装</text>
-							<text>刚需楼盘</text>
-							<text>刚需楼盘</text>
+							<text class="zhuang">{{build.decorate}}</text>
+							<text v-for="(item,key) in build.features">{{item}}</text>
 						</view>
 					</view>
 				</view>
 				<view class="bom">
-					<view class="btn">
+					<view class="btn" @tap="show(build.id,'文章详情页+在线问')">
 						在线问
 					</view>
-					<view class="tel">
+					<view class="tel" @tap="call">
 						电话咨询
 					</view>
 				</view>
@@ -67,10 +63,10 @@
 				<text>楼盘导购</text>
 			</view>
 			<view class="agree">
-				<view class="agree-box">
+				<view class="agree-box" @tap="agree">
 					<image src="../../static/other/article-agree.png" mode=""></image>
 					<view class="agree-num">
-						45
+						{{info.like_num}}
 					</view>
 				</view>
 			</view>
@@ -80,54 +76,145 @@
 				</text>
 				凡本站注明
 				“来自：XXX(非允家新房)”的资讯稿件和图片作品，系本站转载自其它媒体，转载目的在于信息传递，并不代表本站赞同其观点和对其真实性负责。如有资讯稿件和图片作品的内容、版权以及其它问题的，请联系本站，电话：400-966-9995
-
 			</view>
 			<view class="other-tit">
 				大家都在看
 			</view>
 			<view class="other">
-				<view class="other-li">
+				<view class="other-li" v-for="item in others" :key="item.id" @tap="go(item.id)">
 					<view class="left">
 						<view class="li-tit">
-							学区房可不是那么好买的！这篇防坑指南请收好学区房可不是那么好买的！这篇防坑指南请收好
+							{{item.title}}
 						</view>
 						<view class="li-icons">
-							<text>允家新房</text>
-							<text>2019-05-24</text>
+							<text>{{item.source}}</text>
+							<text>{{item.time}}</text>
 						</view>
 					</view>
 					<view class="right">
-						<image src="../../static/img-2.png" mode=""></image>
-					</view>
-				</view>
-				<view class="other-li">
-					<view class="left">
-						<view class="li-tit">
-							学区房可不是那么好买的！这篇防坑指南请收好学区房可不是那么好买的！这篇防坑指南请收好
-						</view>
-						<view class="li-icons">
-							<text>楼盘签约</text>
-							<text>楼盘签约</text>
-						</view>
-					</view>
-					<view class="right">
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="item.img" mode=""></image>
 					</view>
 				</view>
 			</view>
 		</view>
+		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">getPhoneNumber</button>
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="'咨询服务'" :pid="pid" :remark="remark" :position="position"></sign>
+		</wyb-popup>
 	</view>
 </template>
 
 <script>
+	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	import sign from '@/components/sign.vue'
+	var that
 	export default {
+		onLoad(options) {
+			that = this
+			this.id = options.id
+			this.getinfo()
+		},
 		data() {
 			return {
-				jkl: '<p>5555555</p>'
+				jkl: '<p>5555555</p>',
+				id: 0,
+				info: {},
+				others: [],
+				build: {},
+				pid: 0,
+				codenum: 1
 			}
 		},
+		components: {sign,wybPopup},
 		methods: {
-
+			getinfo() {
+				let city = uni.getStorageInfoSync('city')
+				let other = uni.getStorageInfoSync('other')
+				let token = uni.getStorageInfoSync('token')
+				uni.request({
+					url: that.apiserve+"/applets/article/detail",
+					method:"GET",
+					data: {
+						id: that.id,
+						city: city,
+						other: other,
+						token: token
+					},
+					success: (res) => {
+						that.info = res.data.article
+						that.others = res.data.others
+						that.build = res.data.project_info
+						that.tel = res.data.common.phone
+						console.log(res)
+					}
+				})
+			},
+			go(id) {
+				uni.redirectTo({
+					url: "/pages/article/article?id="+id
+				})
+			},
+			gobuild(id) {
+				uni.redirectTo({
+					url: "/pages/content/content?id="+id
+				})
+			},
+			show(id,txt) {
+				this.pid = id
+				this.remark = txt
+				this.position = 104
+				console.log(this.pid)
+				this.$refs.popup.show()
+			},
+			setiscode() {
+				this.codenum = 0
+			},
+			call() {
+				uni.makePhoneCall({
+				 	// 手机号
+				    phoneNumber: that.tel, 
+					// 成功回调
+					success: (res) => {
+						console.log('调用成功!')	
+					},
+					// 失败回调
+					fail: (res) => {
+						console.log('调用失败!')
+					}
+					
+				  });
+			},
+			agree() {
+				// if(!this.isok) {
+				// 	return
+				// }
+				let token = uni.getStorageInfoSync('token')
+				this.isok = false
+				if(!token){
+					
+				}
+				uni.request({
+					url: that.apiserve+"/jy/article/like",
+					method:'POST',
+					data: {
+						id: that.info.id,
+						token: token
+					},
+					success: (res) => {
+						console.log(res)
+						if(that.info.my_like == 0) {
+							that.info.like_num++
+						}else{
+							that.info.like_num--
+						}
+						that.isok = true
+					}
+				})
+			},
+			getPhoneNumber(e){
+				console.log(e)
+				
+			}
 		}
 	}
 </script>
