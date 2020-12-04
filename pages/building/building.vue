@@ -293,83 +293,33 @@
 				{{item}}
 			</view>
 		</view>
-		<view class="box" v-if="false">
-			<view class="item">
+		<view class="box">
+			<view class="item" v-for="item in builds" :key="item.id">
 				<view class="left">
-					<image src="../../static/img-2.png" mode=""></image>
+					<image :src="item.img" mode=""></image>
 				</view>
 				<view class="right">
 					<view class="tit">
-						武林ONE
+						{{item.name}}
 						<view class="status">
-							在售
+							{{item.state}}
 						</view>
 					</view>
 					<view class="price">
-						<text class="big">17000</text>
+						<text class="big">{{item.price}}</text>
 						<text class="small">元/m²</text>
 					</view>
 					<view class="msg">
-						住宅 | 杭州-江干 | 80-140m²
+						{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²
 					</view>
 					<view class="type">
-						<text class="zhuang">精装</text>
+						<text class="zhuang">{{item.decorate}}</text>
 						<text>1号线</text>
-						<text>地铁楼盘</text>
+						<text v-for="(val,key) in item.features" :key="key">{{val}}</text>
 					</view>
 				</view>
 			</view>
-			<view class="item">
-				<view class="left">
-					<image src="../../static/img-2.png" mode=""></image>
-				</view>
-				<view class="right">
-					<view class="tit">
-						武林ONE
-						<view class="status">
-							在售
-						</view>
-					</view>
-					<view class="price">
-						<text class="big">17000</text>
-						<text class="small">元/m²</text>
-					</view>
-					<view class="msg">
-						住宅 | 杭州-江干 | 80-140m²
-					</view>
-					<view class="type">
-						<text class="zhuang">精装</text>
-						<text>1号线</text>
-						<text>地铁楼盘</text>
-					</view>
-				</view>
-			</view>
-			<view class="item">
-				<view class="left">
-					<image src="../../static/img-2.png" mode=""></image>
-				</view>
-				<view class="right">
-					<view class="tit">
-						武林ONE
-						<view class="status">
-							在售
-						</view>
-					</view>
-					<view class="price">
-						<text class="big">17000</text>
-						<text class="small">元/m²</text>
-					</view>
-					<view class="msg">
-						住宅 | 杭州-江干 | 80-140m²
-					</view>
-					<view class="type">
-						<text class="zhuang">精装</text>
-						<text>1号线</text>
-						<text>地铁楼盘</text>
-					</view>
-				</view>
-			</view>
-			<view class="loading">
+			<view class="loading" v-if="isloading">
 				加载中...
 			</view>
 		</view>
@@ -440,7 +390,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="box">
+		<view class="box" v-if="false">
 			<view class="li">
 				<view class="left">
 					<image src="../../static/img-2.png" mode=""></image>
@@ -545,7 +495,13 @@
 <script>
 	import toast from '@/components/mytoast/mytoast.vue'
 	import jiuaicheckbox from '@/components/jiuai-checkbox/jiuai-checkbox.vue'
+	var that
 	export default {
+		onLoad(options) {
+			that = this
+			console.log(options)
+			this.getinfo()
+		},
 		data() {
 			return {
 				types: ['住宅', '特价房', '刚需', '近地铁'],
@@ -559,8 +515,13 @@
 				areatype: false,
 				moretype: false,
 				sorttype: false,
-				shownum: 10
+				shownum: 10,
+				builds: [],
+				isloading: false
 			}
+		},
+		onReachBottom() {
+			this.isloading = true
 		},
 		onShow() {
 			var animation = uni.createAnimation({
@@ -596,9 +557,19 @@
 			scaleAndScale() {
 				// 定义动画内容
 				this.hutype = true
-				// this.animation.translateX(500).step({duration:1000}).translateX(0).opacity(0).step({duration:0})
-				// // 导出动画数据传递给data层
-				// this.animationData = this.animation.export(); //每次执行导出动画时 会覆盖之前的动画
+			},
+			getinfo() {
+				uni.request({
+					url:that.apiserve+"/applets/search/info",
+					method:"GET",
+					data:{
+						
+					},
+					success: (res) => {
+						console.log(res)
+						that.builds = res.data.info
+					}
+				})
 			}
 		}
 	}

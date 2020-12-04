@@ -11,72 +11,47 @@
 		</view>
 		<view class="box">
 			<view class="navs">
-				<view class="nav active">
+				<view :class="num == 3 ? 'nav active' : 'nav'" @click="setnum(3,'刚需')">
 					刚需楼盘
 					<text></text>
 				</view>
-				<view class="nav">
+				<view :class="num == 5 ? 'nav active' : 'nav'"  @click="setnum(5,'投资')">
 					投资地产
 					<text></text>
 				</view>
-				<view class="nav">
+				<view :class="num == 2 ? 'nav active' : 'nav'"  @click="setnum(2,'改善')">
 					改善地产
 					<text></text>
 				</view>
-				<view class="nav">
+				<view :class="num == 8 ? 'nav active' : 'nav'"  @click="setnum(8,'现房')">
 					现房
 					<text></text>
 				</view>
 			</view>
 			<view class="tops">
-				<view class="top">
-					<view class="build">
-						<image src="../../static/img-2.png" mode="" class="img"></image>
-						<view class="build-msg">
+				<view class="top" v-for="(item,key) in features" :key="item.id">
+					<view class="build" @tap="go(item.id)">
+						<image :src="item.img" mode="" class="img"></image>
+						<view class="build-msg" @tap="go(item.id)">
 							<view class="build-name">
-								<text class="name">荣盛檀越府</text>
+								<text class="name">{{item.name}}</text>
 								<text class="status">在售</text>
 							</view>
 							<text class="price">17000</text><text class="psam">元/m²</text>
 							<view class="infos">
-								住宅 | 杭州-江干 | 80-140m²
+								住宅 | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²
 							</view>
 							<view class="icons">
 								<text class="zhuang">精装</text>
-								<text>4号线</text>
-								<text>地铁楼盘</text>
+								<text>{{item.railway}}</text>
+								<text>{{item.feature}}</text>
 							</view>
 						</view>
 					</view>
 					<view class="top-num">
 						<image src="../../static/feature/feature-card.png" mode=""></image>
-						<text class="nummsg">人气榜第1名</text>
-						<text class="btn">查底价</text>
-					</view>
-				</view>
-				<view class="top">
-					<view class="build">
-						<image src="../../static/img-2.png" mode="" class="img"></image>
-						<view class="build-msg">
-							<view class="build-name">
-								<text class="name">荣盛檀越府</text>
-								<text class="status">在售</text>
-							</view>
-							<text class="price">17000</text><text class="psam">元/m²</text>
-							<view class="infos">
-								住宅 | 杭州-江干 | 80-140m²
-							</view>
-							<view class="icons">
-								<text class="zhuang">精装</text>
-								<text>4号线</text>
-								<text>地铁楼盘</text>
-							</view>
-						</view>
-					</view>
-					<view class="top-num">
-						<image src="../../static/feature/feature-card.png" mode=""></image>
-						<text class="nummsg">人气榜第1名</text>
-						<text class="btn">查底价</text>
+						<text class="nummsg">{{tit}}榜第{{key+1}}名</text>
+						<text class="btn" @tap="show(item.id,'特色房源页+查底价')">查底价</text>
 					</view>
 				</view>
 			</view>
@@ -85,30 +60,103 @@
 		<view class="box">
 			<view class="guess">
 				<view class="title">猜你喜欢</view>
-				<view class="build">
-					<image src="../../static/img-2.png" mode="" class="img"></image>
+				<view class="build" v-for="item in other" :key="item.id" @tap="go(item.id)">
+					<image :src="item.img" mode="" class="img"></image>
 					<view class="build-msg">
 						<view class="build-name">
-							<text class="name">荣盛檀越府</text>
-							<text class="status">在售</text>
+							<text class="name">{{item.name}}</text>
+							<text class="status">{{item.state}}</text>
 						</view>
-						<text class="price">17000</text><text class="psam">元/m²</text>
+						<text class="price">{{item.price}}</text><text class="psam">元/m²</text>
 						<view class="infos">
-							住宅 | 杭州-江干 | 80-140m²
+							{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²
 						</view>
 						<view class="icons">
 							<text class="zhuang">精装</text>
-							<text>4号线</text>
-							<text>地铁楼盘</text>
+							<text>{{item.railway}}</text>
+							<text>{{item.feature}}</text>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="'查低价'" :pid="pid" :remark="remark" :position="position"></sign>
+		</wyb-popup>
 	</view>
 </template>
 
 <script>
+	var that
+	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	import sign from '@/components/sign.vue'
+	export default {
+		components:{
+			sign,
+			wybPopup
+		},
+		onLoad() {
+			that = this
+			this.getdata()
+		},
+		data(){
+			return {
+				num: 3,
+				features: [],
+				other: [],
+				pid: 0,
+				remark: '',
+				codenum: 1,
+				position: 0,
+				tit: '刚需'
+			}
+		},
+		methods:{
+			setnum(num,txt) {
+				this.num = num
+				this.tit = txt
+				this.getdata()
+			},
+			getdata() {
+				uni.showLoading({
+					title:"加载中"
+				})
+				let token = uni.getStorageInfoSync('token')
+				let city = uni.getStorageInfoSync('city')
+				uni.request({
+					url:that.apiserve+"/applets/tops/feature",
+					method:'GET',
+					data:{
+						token: token,
+						city: city,
+						type: that.num
+					},
+					success: (res) => {
+						console.log(res)
+						that.features = res.data.data.features
+						that.other = res.data.data.recommends
+						uni.hideLoading()
+					}
+				})
+			},
+			show(id,txt) {
+				this.pid = id
+				this.remark = txt
+				this.position = 98
+				this.title = '订阅实时动态'
+				console.log(this.pid)
+				this.$refs.popup.show()
+			},
+			setiscode() {
+				this.codenum = 0
+			},
+			go(id) {
+				uni.redirectTo({
+					url: "/pages/content/content?id="+id
+				})
+			}
+		}
+	}
 </script>
 
 <style lang="less">
