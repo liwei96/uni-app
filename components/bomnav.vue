@@ -9,11 +9,11 @@
 				1
 			</view>
 		</view>
-		<view class="btn">
+		<view class="btn" @tap="call">
 			<image src="../static/components/component-tel.png" mode=""></image>
 			<text>电话咨询</text>
 		</view>
-		<view class="btn btn2">
+		<view class="btn btn2" @tap="sign">
 			<image src="../static/components/component-yue.png" mode=""></image>
 			<text>预约看房</text>
 		</view>
@@ -21,6 +21,29 @@
 </template>
 
 <script>
+	export default {
+		props: {
+			tel:{
+				type:String
+			}
+		},
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			call() {
+				let that = this
+				uni.makePhoneCall({
+				    phoneNumber:  that.tel
+				});
+			},
+			sign() {
+				this.$emit('show',{position: 103,title:'预约看房'})
+			}
+		}
+	}
 </script>
 
 <style lang="less">

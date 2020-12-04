@@ -6,7 +6,7 @@
 		<image src="../../static/dynamic/dynamic-top.png" mode="" class="topimg"></image>
 		<view class="box">
 			<view class="item" v-for="item in list" :key="item.id">
-				<view class="top">
+				<view class="top" @tap="go(item.id)">
 					<image :src="item.img" mode=""></image>
 					<view class="zhao"></view>
 					<view class="topicon">
@@ -27,15 +27,15 @@
 					<view class="time">
 						{{item.time}}
 					</view>
-					<view class="btn">
+					<view class="btn" @tap="show(item.bid,'动态页+订阅楼盘动态')">
 						订阅此楼盘动态
 					</view>
 				</view>
 			</view>
 		</view>
-		<bom-nav></bom-nav>
+		<bom-nav :tel="'400-718-6686'" @show="nav"></bom-nav>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="'咨询服务'" :pid="pid" :remark="remark" :position="position"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="title" :pid="pid" :remark="remark" :position="position"></sign>
 		</wyb-popup>
 	</view>
 </template>
@@ -58,7 +58,12 @@
 		data() {
 			return {
 				page: 1,
-				list: []
+				list: [],
+				pid: 0,
+				remark: '',
+				codenum: 1,
+				title: '',
+				position: 0
 			}
 		},
 		onReachBottom() {
@@ -104,6 +109,30 @@
 						uni.hideLoading()
 					}
 				})
+			},
+			show(id,txt) {
+				this.pid = id
+				this.remark = txt
+				this.position = 98
+				this.title = '订阅实时动态'
+				console.log(this.pid)
+				this.$refs.popup.show()
+			},
+			setiscode() {
+				this.codenum = 0
+			},
+			go(id) {
+				uni.redirectTo({
+					url:"/pages/dynamicdetail/dynamicdetail?id="+id
+				})
+			},
+			nav(e) {
+				console.log(e)
+				this.pid = this.build.id
+				this.position = 103
+				this.remark = '动态页+预约看房'
+				this.title = e.title
+				this.$refs.popup.show()
 			}
 		}
 	}

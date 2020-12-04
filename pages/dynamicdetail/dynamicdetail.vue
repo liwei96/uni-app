@@ -4,32 +4,31 @@
 			<text>动态详情</text>
 		</view>
 		<view class="box">
-			<view class="dynamic-tit">锦云澜天里最新在售房源</view>
-			<text class="txt">锦云澜天里预售证以出，一房一价表以出，首开80-89方户型三开间朝南，亚运分会场，自带大型综合体投资自住、不二之选，地铁0距离，重点学区，目前登记已经结束，24号启动摇号，26号正式开盘。详情请咨询售楼部！</text>
-			<view class="time">2019-04-08</view>
-			<view class="btn">
+			<view class="dynamic-tit">{{info.title}}</view>
+			<text class="txt">{{info.content}}</text>
+			<view class="time">{{info.time}}</view>
+			<view class="btn" @tap="show(build.id,'订阅实时动态','动态详情页+订阅楼盘动态')">
 				订阅最新动态
 			</view>
-			<view class="build">
+			<view class="build" @tap="gobuild(build.id)">
 				<view class="left">
-					<image src="../../static/img-2.png" mode=""></image>
+					<image :src="build.img" mode=""></image>
 				</view>
 				<view class="right">
 					<view class="right-tit">
-						<text class="name">锦云澜天里</text>
-						<view class="status">在售</view>
+						<text class="name">{{build.name}}</text>
+						<view class="status">{{build.status}}</view>
 					</view>
 					<view>
-						<text class="big">17000</text>
+						<text class="big">{{build.price}}</text>
 						<text class="small">元/m²</text>
 					</view>
 					<view class="build-msg">
-						住宅 | 杭州-江干 | 80-140m²
+						{{build.type}} | {{build.cityname}}-{{build.country}} | {{build.area}}m²
 					</view>
 					<view class="icons">
-						<text class="zhuang">精装</text>
-						<text>住宅</text>
-						<text>地铁楼盘</text>
+						<text class="zhuang">{{build.decorate}}</text>
+						<text v-for="(item,key) in build.features">{{item}}</text>
 					</view>
 				</view>
 			</view>
@@ -42,7 +41,7 @@
 						为客户提供专业的购房建议
 					</view>
 				</view>
-				<view class="staffbtn">
+				<view class="staffbtn" @tap="show(build.id,'免费咨询','动态详情页+免费咨询')">
 					免费咨询
 				</view>
 			</view>
@@ -51,98 +50,121 @@
 		<view class="box">
 			<view class="other">
 				<view class="tit">本楼盘户型</view>
-				<view class="other-item">
+				<view class="other-item" v-for="item in other" :key="item.id" @tap="gohu(item.id)">
 					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="item.img" mode=""></image>
 					</view>
 					<view class="right">
 						<view class="right-tit">
-							<text class="name">3室2厅2卫</text>
+							<text class="name">{{item.title}}</text>
 							<view class="status">
-								在售
+								{{item.status}}
 							</view>
 						</view>
 						<view class="list">
 							<text class="type">建面：</text>
-							<text class="key">89m²</text>
+							<text class="key">{{item.area}}m²</text>
 						</view>
 						<view class="list">
 							<text class="type">类型：</text>
-							<text class="key">loft</text>
+							<text class="key">{{item.type}}</text>
 						</view>
 						<view class="list">
 							<text class="type">总价：</text>
 							<text class="key">约</text>
-							<text class="big">290</text>
-							<text class="key">万/套</text>
-						</view>
-					</view>
-				</view>
-				<view class="other-item">
-					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
-					</view>
-					<view class="right">
-						<view class="right-tit">
-							<text class="name">3室2厅2卫</text>
-							<view class="status">
-								在售
-							</view>
-						</view>
-						<view class="list">
-							<text class="type">建面：</text>
-							<text class="key">89m²</text>
-						</view>
-						<view class="list">
-							<text class="type">类型：</text>
-							<text class="key">loft</text>
-						</view>
-						<view class="list">
-							<text class="type">总价：</text>
-							<text class="key">约</text>
-							<text class="big">290</text>
-							<text class="key">万/套</text>
-						</view>
-					</view>
-				</view>
-				<view class="other-item">
-					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
-					</view>
-					<view class="right">
-						<view class="right-tit">
-							<text class="name">3室2厅2卫</text>
-							<view class="status">
-								在售
-							</view>
-						</view>
-						<view class="list">
-							<text class="type">建面：</text>
-							<text class="key">89m²</text>
-						</view>
-						<view class="list">
-							<text class="type">类型：</text>
-							<text class="key">loft</text>
-						</view>
-						<view class="list">
-							<text class="type">总价：</text>
-							<text class="key">约</text>
-							<text class="big">290</text>
+							<text class="big">{{item.price}}</text>
 							<text class="key">万/套</text>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<bom-nav></bom-nav>
+		<bom-nav :tel="tel" @show="nav"></bom-nav>
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="title" :pid="pid" :remark="remark" :position="position"></sign>
+		</wyb-popup>
 	</view>
 </template>
 
 <script>
 	import bomnav from "@/components/bomnav.vue"
+	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	import sign from '@/components/sign.vue'
+	var that
 	export default {
+		onLoad(options) {
+			this.id = options.id
+			that = this
+			this.getinfo()
+		},
 		components:{
-			"bom-nav":bomnav
+			"bom-nav":bomnav,
+			sign,
+			wybPopup
+		},
+		data() {
+			return {
+				id: 0,
+				info: {},
+				build: {},
+				other: [],
+				pid: 0,
+				remark: '',
+				codenum: 1,
+				tel: '',
+				title: '',
+				position: 0
+			}
+		},
+		methods:{
+			getinfo() {
+				let other = uni.getStorageInfoSync('other')
+				let token = uni.getStorageInfoSync('token')
+				uni.request({
+					url:that.apiserve+"/applets/dynamic/detail",
+					method:"GET",
+					data:{
+						id: that.id,
+						other: other,
+						token: token
+					},
+					success: (res) => {
+						console.log(res)
+						that.info = res.data.info
+						that.build = res.data.building
+						that.other = res.data.house_types
+						that.tel = res.data.common.phone
+					}
+				})
+			},
+			gobuild(id) {
+				uni.redirectTo({
+					url:"/pages/content/content?id="+id
+				})
+			},
+			show(id,title,txt) {
+				this.pid = id
+				this.remark = txt
+				this.position = 98
+				this.title = title
+				this.$refs.popup.show()
+			},
+			setiscode() {
+				this.codenum = 0
+			},
+			nav(e) {
+				console.log(e)
+				this.pid = 0
+				this.position = 103
+				this.remark = '动态详情页+预约看房'
+				this.title = e.title
+				this.$refs.popup.show()
+			},
+			gohu(id) {
+				uni.redirectTo({
+					url: "/pages/hudetail/hudetail?id="+id
+				})
+			}
 		}
 	}
 </script>
