@@ -8,11 +8,10 @@
 			<image src="../../static/other/all_wen_top.png" mode=""></image>
 		</view>
 		<view class="wen_list">
-			<view class="list_one">
+			<view class="list_one" v-for="item in data" :key="item.id">
 					<view class="tit">
 						<text class="wen">问</text>
-						 本项目厨房管道的排风原理和方式是什么？会不
-						会出现油烟倒灌情况?
+						{{item.question}}
 					</view>
 					<view class="da">
 						<view class="top">
@@ -83,12 +82,41 @@ import  bottom from '../../components/mine/bottom.vue'
 export default {
 	data() {
 		return {
-			
+			data:[],
 		};
+	},
+	onLoad: (option) => {
+		console.log(option);
+		this.getdata(option.id);
 	},
 	components:{
 		bottom
-	}
+	},
+	methods:{
+		getdata(id){
+			uni.request({
+				url:this.apiserve+"/applets/question/list",
+				data:{
+					city:'1',
+					page:'1',
+					limit:"10",
+					project:id,  //如果是全部问答project 传0
+					other:'',
+					token:'',
+				},
+				method:"GET",
+				success: (res) => {
+					if(res.data.code==200){
+						 console.log(res);
+					}
+				},
+				fail: (error) => {
+					console.log(error);
+				}
+			})
+		}
+	},
+	
 }
 </script>
 

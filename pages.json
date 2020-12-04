@@ -267,7 +267,9 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "enablePullDownRefresh": false,
+				"backgroundTextStyle":"dark",
+				"onReachBottomDistance":"50px"
             }
             
         }
@@ -354,6 +356,15 @@
         }
         ,{
             "path" : "pages/loupkdetail/loupkdetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/prohuxing/prohuxing",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",

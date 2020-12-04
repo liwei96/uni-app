@@ -1,69 +1,43 @@
 <template>
 	<view class="loudian">
 		<view class="toptitle">
-			<image src="../../static/all-back.png" mode=""></image>
-			<text>楼盘点评</text>
+		  <navigator :url="`../content/content?id=${project_id}`" class="nav_top" open-type="navigate">
+				<image src="../../static/all-back.png" mode=""></image>
+				<text>楼盘点评</text>
+		   </navigator>
 		</view>
 		<view class="dian_list">
-			<view class="dian_one">
+			<view class="dian_one" v-for="item in data" :key="item.id">
 				<view class="top">
 					<image src="../../static/content/ping_img.png" mode=""></image>
 					<view class="right_tel">
-						<text class="tel">154****3787</text>
+						<text class="tel">{{item.name}}</text>
 						<view class="rate" >
-							<uni-rate v-model="value" :margin="7" 
+							<uni-rate v-model="item.score" :margin="7" 
 							color="#E8EBED" active-color="#FF7519" 
 							readonly="true" :size="18"></uni-rate>
 						</view>
 						
 					</view>
 				</view>
-				<text class="con">马上要推出小户型了吧，感觉买个89平的楼盘就可以了，不知道公摊要多少</text>
+				<text class="con">{{item.content}}</text>
 				<view class="gong">
 					<view class="left">
-						<text class="time">2020-06-09</text>
-						<text class="shan">删除</text>
+						<text class="time">{{item.time}}</text>
+						<text class="shan" v-if="item.mine==1">删除</text>
 					</view>
 					<view class="zan">
-						<view class="zan_box">
+						<view class="zan_box_no" v-if="item.my_like==0">
 							<image src="../../static/content/no_zan.png" mode=""></image>
-							2
+							{{item.like_num}}
+						</view>
+						<view class="zan_box_zan" v-if="item.my_like==1">
+							<image src="../../static/content/zan.png" mode=""></image>
+							{{item.like_num}}
 						</view>
 						<view class="dianping">
 							<image src="../../static/liu.png" mode=""></image>
-							0
-						</view>
-					</view>
-				</view>
-			</view>
-			
-			<view class="dian_one">
-				<view class="top">
-					<image src="../../static/content/ping_img.png" mode=""></image>
-					<view class="right_tel">
-						<text class="tel">154****3787</text>
-						<view class="rate" >
-						  <uni-rate v-model="value" :margin="7"
-						  color="#E8EBED" active-color="#FF7519" 
-						  readonly="true" :size="18"></uni-rate>
-						</view>
-						
-					</view>
-				</view>
-				<text class="con">马上要推出小户型了吧，感觉买个89平的楼盘就可以了，不知道公摊要多少</text>
-				<view class="gong">
-					<view class="left">
-						<text class="time">2020-06-09</text>
-						<text class="shan">删除</text>
-					</view>
-					<view class="zan">
-						<view class="zan_box">
-							<image src="../../static/content/no_zan.png" mode=""></image>
-							2
-						</view>
-						<view class="dianping">
-							<image src="../../static/liu.png" mode=""></image>
-							0
+							{{item.children.length}}
 						</view>
 					</view>
 				</view>
@@ -86,13 +60,44 @@ import bottom from '../../components/mine/bottom.vue';
 		data() {
 			return {
 				 ceshi1: 3,
-				 value:3
+				 value:3,
+				 data:[],
+				 project_id:""
 			};
 		},
 		components:{
 		    uniRate,
 			bottom
 		},
+		onLoad(option){
+			this.project_id = option.id;
+			this.getdata(option.id);
+		},
+		methods:{
+			getdata(id){
+				uni.request({
+					url:this.apiserve+"/applets/comment/list",
+					data:{
+						id:id,   //项目id
+						page:1,  //第几页
+						limit:10, //每页几条
+						token:'',
+						other:'',
+					},
+					method:"GET",
+					success: (res) => {
+						if(res.data.code==200){
+							 console.log(res);
+							 this.data = res.data.data;
+						}
+					},
+					fail: (error) => {
+						console.log(error);
+					}
+				})
+			}
+			
+		}
 	}
 </script>
 
@@ -108,17 +113,19 @@ import bottom from '../../components/mine/bottom.vue';
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
-		image{
-		 width: 31.87rpx;
-		 height: 31.87rpx;
-		 margin-right: 11.95rpx;
-		 margin-bottom: -3.98rpx;
-		}
-		text{
-		  width: 221rpx;
-		  font-size: 32rpx;
-		  font-weight: 500;
-		  color: #17181A;
+		.nav_top{
+			image{
+			 width: 31.87rpx;
+			 height: 31.87rpx;
+			 margin-right: 11.95rpx;
+			 margin-bottom: -3.98rpx;
+			}
+			text{
+			  width: 221rpx;
+			  font-size: 32rpx;
+			  font-weight: 500;
+			  color: #17181A;
+			}
 		}
 	}
 	.dian_list{
@@ -126,6 +133,7 @@ import bottom from '../../components/mine/bottom.vue';
 		padding-right: 30rpx;
 		box-sizing: border-box;
 		background: #fff;
+		padding-bottom: 130rpx;
 		.dian_one{
 			margin-top: 30rpx;
 			.top:after{
@@ -187,7 +195,7 @@ import bottom from '../../components/mine/bottom.vue';
 					float: right;
 					align-items: center;
 					display: flex;
-					.zan_box{
+					.zan_box_no{
 						display: flex;
 						align-items: center;
 						margin-right: 20rpx;
@@ -199,6 +207,20 @@ import bottom from '../../components/mine/bottom.vue';
 						font-size: 24rpx;
 						font-weight: 400;
 						color: #95989D;
+						line-height: 24rpx;
+					}
+					.zan_box_zan{
+						display: flex;
+						align-items: center;
+						margin-right: 20rpx;
+						image{
+							width: 32rpx;
+							height: 32rpx;
+							margin-right:11rpx;
+						}
+						font-size: 24rpx;
+						font-weight: 400;
+						color: #40A2F4;
 						line-height: 24rpx;
 					}
 					.dianping{

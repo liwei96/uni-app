@@ -1,8 +1,10 @@
 <template>
 	<view class="loudong">
 	    <view class="toptitle">
-	    	<image src="../../static/all-back.png" mode=""></image>
-	    	<text>最新动态</text>
+			<navigator url="../content/content" class="nav_top" open-type="navigate">
+				<image src="../../static/all-back.png" mode=""></image>
+				<text>最新动态</text>
+			</navigator>
 	    </view>
 		<view class="dong_nav" >
 				<view :class="{active:dong_show}"  @click="dongClick">
@@ -20,42 +22,24 @@
 		</view>
 	   <!-- 动态列表 -->
 	   <view class="dong_list" v-show='dong_show'>
-		   <view class="dong_list_one">
-				<view class="time">2019-04-08</view>
+		   <view class="dong_list_one" v-for="item in data" :key="item.id">
+				<view class="time">{{item.time}}</view>
 					<view class="tit">
 						<text class="box">
 						</text>
-						锦云澜天里最新在售房源
+						{{item.title}}
 					</view>
 					
 					<view class="border_box">
 						<view class="con">
-							住宅产品静待推出，均价18590元/㎡，主要户型为建筑面积80-115㎡三居（以上信息仅供参考，具体一房一...
+							{{item.content}}
 						</view>
 						<view class="img">
-							<image src="http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png" mode=""></image>
-							<image src="http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png" mode=""></image>
-							<image src="http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png" mode=""></image>
+							<image :src="item.img" mode=""></image>
 						</view>
 					</view>
 		 </view>
-		 <view class="dong_list_one">
-				<view class="time">2019-04-08</view>
-					<view class="tit">
-						<text class="box">
-						</text>
-						锦云澜天里最新在售房源
-					</view>
-					
-					<view class="border_box">
-						<view class="con">
-							住宅产品静待推出，均价18590元/㎡，主要户型为建筑面积80-115㎡三居（以上信息仅供参考，具体一房一...
-						</view>
-						<view class="img">
-							<image src="http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png" mode=""></image>
-						</view>
-					</view>
-		 </view>
+		
 	   </view>
 	  <!-- 加推时间 -->
 	  <view class="push_time" v-show='push_time_show'>
@@ -98,12 +82,52 @@
 				push_time_show:false,
 				jiao_time_show:false,
 				wu_zheng_show:false,
+				data:[],
+				total:''
 			};
 		},
 		components:{
 			bottom
 		},
+		onLoad(option){
+			console.log(option.id);
+			this.getdata(option.id);
+		},
+		// onPullDownRefresh (){
+		// 	console.log("触发下拉刷新了");
+		// },
+		onReachBottom(){
+			console.log("触底了");
+		},
 		methods:{
+			startPull(){
+				uni.startPullDownRefresh({
+					
+				})
+			},
+			getdata(id){
+				uni.request({
+					url:this.apiserve+"/applets/dynamic/info",
+					data:{
+						// id 项目id
+						// city 城市id
+						// page 第几页
+						// limit 每页几条
+						id:id,
+						city:"1",
+						page:1, 
+						limit:10, 
+					},
+					method:'GET',
+					success: (res) => {
+						if(res.data.code==200){
+							console.log(res);
+							this.data = res.data.data;
+							this.total = res.data.total;
+						}
+					}
+				})
+			},
 			dongClick(){
 				this.dong_show =true;
 				this.push_time_show=false;
@@ -144,17 +168,19 @@
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
-		image{
-		 width: 31.87rpx;
-		 height: 31.87rpx;
-		 margin-right: 11.95rpx;
-		 margin-bottom: -3.98rpx;
-		}
-		text{
-		  width: 221rpx;
-		  font-size: 32rpx;
-		  font-weight: 500;
-		  color: #17181A;
+		.nav_top{
+			image{
+			 width: 31.87rpx;
+			 height: 31.87rpx;
+			 margin-right: 11.95rpx;
+			 margin-bottom: -3.98rpx;
+			}
+			text{
+			  width: 221rpx;
+			  font-size: 32rpx;
+			  font-weight: 500;
+			  color: #17181A;
+			}
 		}
 	}
 	.dong_nav{
@@ -192,6 +218,7 @@
 		padding-right: 30rpx;
 		background: #fff;
 		box-sizing: border-box;
+		padding-bottom:110rpx ;
 		.dong_list_one{
 			margin-bottom: 36rpx;
 				.time{

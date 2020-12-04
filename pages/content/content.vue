@@ -58,7 +58,7 @@
 						</view>
 					</view>
 					<view class="right_nav">
-						<view class="ref_nav">
+						<view class="ref_nav" @tap="goDetail">
 							<text>详细信息</text>
 							<image src="../../static/content/right.png" mode="" class="nav"></image>
 						</view>
@@ -173,7 +173,7 @@
 				<view class="left">
 					主力户型
 				</view>
-				<view class="right">
+				<view class="right" @tap="moreHuxing(detail.id)">
 					<text>全部户型</text>
 					<image src="../../static/content/you.png" mode=""></image>
 				</view>
@@ -207,7 +207,7 @@
 		<view class="dongtai">
 			<view class="title">
 				<text class="dong_left">最新动态</text>
-				<view class="dong_right">
+				<view class="dong_right" @tap="allDong(detail.id)">
 					全部动态
 					<image src="../../static/content/you.png" mode=""></image>
 				</view>
@@ -375,7 +375,7 @@
 				<view class="tit">
 					楼盘点评
 				</view>
-				<view class="other">
+				<view class="other" @click="allDian(detail.id)">
 					全部点评
 					<image src="../../static/content/right.png" mode=""></image>
 				</view>
@@ -422,7 +422,7 @@
 				<text class="title_l">
 					楼盘问答
 				</text>
-				<view class="all_wen">
+				<view class="all_wen" @tap="louwen(detail.id)">
 					全部问答
 					<image src="../../static/content/right.png" mode=""></image>
 				</view>
@@ -569,7 +569,8 @@
 				deal_prices:[],
 				Column:[],
 				tejia:[],
-				echarts_year:""
+				echarts_year:"",
+				project_id:"",
 
 
 			};
@@ -580,7 +581,7 @@
 			//#ifdef MP-ALIPAY
 			uni.getSystemInfo({
 				success: function(res) {
-					if (res.pixelRatio > 1) {
+					if (res.pixelRatio > 1) { //设备像素比
 						//正常这里给2就行，如果pixelRatio=3性能会降低一点
 						//_self.pixelRatio =res.pixelRatio;
 						_self.pixelRatio = 2;
@@ -736,6 +737,7 @@
 				this.table_show2 = false;
 			},
 			showColumn(canvasId, chartData) {
+				console.log(_self.cWidth * _self.pixelRatio,'111')
 				canvaColumn = new uCharts({
 					$this: _self,
 					canvasId: canvasId,
@@ -805,7 +807,33 @@
 				this.style_list.huxing = false;
 				this.style_list.hu_active = true;
 				this.pro_img = this.house_types;
-			}
+			},
+			goDetail(){
+				let  id = this.detail.id;
+				uni.navigateTo({
+					url:"../prodetail/prodetail?id="+id
+				})
+			},
+			moreHuxing(id){
+				uni.navigateTo({
+					url:"../prohuxing/prohuxing?id="+id
+				})
+			},
+			allDong(id){
+				uni.navigateTo({
+					url:"../loudong/loudong?id="+id
+				})
+			},
+			allDian(id){
+				uni.navigateTo({
+					url:"../loudian/loudian?id="+id
+				})
+			},
+			louwen(id){
+				uni.navigateTo({
+					url:"../loudian/loudian?id="+id
+				})
+			},
 		},
 
 	}
