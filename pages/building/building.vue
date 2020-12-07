@@ -50,49 +50,19 @@
 					</view>
 					<view class="right">
 						<view v-if="pricenum == 0">
-							<view class="li active">
+							<view :class="search.total_price == 0 ? 'li active' : 'li'" @click="search.total_price = 0">
 								不限
 							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
+							<view :class="search.total_price == item.id ? 'li active' : 'li'" v-for="item in totals" :key="item.id" @click="search.total_price = item.id">
+								{{item.name}}
 							</view>
 						</view>
 						<view v-if="pricenum == 1">
-							<view class="li active">
+							<view :class="search.single_price == 0 ? 'li active' : 'li'" @click="search.single_price = 0">
 								不限
 							</view>
-							<view class="li">
-								不限1
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
+							<view :class="search.single_price == item.id ? 'li active' : 'li'" v-for="item in singles" :key="item.id" @click="search.single_price = item.id">
+								{{item.name}}
 							</view>
 						</view>
 					</view>
@@ -107,7 +77,7 @@
 					<view class="numbox">
 						<input type="text" value="" placeholder="最高总价" placeholder-class="numtxt" />
 					</view>
-					<view class="btn">
+					<view class="btn" @tap="shownum = 10">
 						确定
 					</view>
 				</view>
@@ -126,91 +96,47 @@
 					</view>
 					<view class="right">
 						<view v-if="areanum == 0">
-							<view class="li active">
+							<view :class="search.country == 0 ? 'li active' : 'li'" @tap="search.country = 0">
 								不限
 							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
+							<view :class="search.country == item.id ? 'li active' : 'li'" v-for="item in citys" :key="item.id" @click="search.country = item.id">
+								{{item.name}}
 							</view>
 						</view>
 						<view v-if="areanum == 1">
-							<view class="li active">
+							<view :class="search.railway == 0 ? 'li active' : 'li'" @tap="search.railway = 0">
 								不限
 							</view>
-							<view class="li">
-								不限1
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
-							</view>
-							<view class="li">
-								不限
+							<view :class="search.railway == item.id ? 'li active' : 'li'" v-for="item in railways" :key="item.id" @click="search.railway = item.id">
+								{{item.name}}
 							</view>
 						</view>
 					</view>
 				</view>
 				<view class="bom">
-					<view class="resert">
+					<view class="resert" @tap="clear(0)">
 						重置
 					</view>
-					<view class="button">
+					<view class="button" @tap="shownum = 10">
 						确定
 					</view>
 				</view>
 			</view>
 			<view class="hus" :animation="animationData" v-if="shownum === 2">
 				<view class="top">
-					<view class="list">
-						<view class="txt">一室</view>
+					<view class="list" v-for="item in houses" :key="item.id">
+						<view class="txt">{{item.name}}</view>
 						<view class="checkbox">
-							<jiuaicheckbox @change='changeBox' borderStyle='1px solid #D4D7D9' color='#40A2F4' :checked='true' :borderRadius='6'
-							 :fontSize='20' :checkBoxSize='30'></jiuaicheckbox>
-						</view>
-					</view>
-					<view class="list">
-						<view class="txt">一室</view>
-						<view class="checkbox">
-							<jiuaicheckbox @change='changeBox' borderStyle='1px solid #D4D7D9' color='#40A2F4' :checked='true' :borderRadius='6'
-							 :fontSize='20' :checkBoxSize='30'></jiuaicheckbox>
-						</view>
-					</view>
-					<view class="list">
-						<view class="txt">一室</view>
-						<view class="checkbox">
-							<jiuaicheckbox @change='changeBox' borderStyle='1px solid #D4D7D9' color='#40A2F4' :checked='true' :borderRadius='6'
-							 :fontSize='20' :checkBoxSize='30'></jiuaicheckbox>
+							<jiuaicheckbox @change='changeBox' borderStyle='1px solid #D4D7D9' color='#40A2F4' :checked='false' :borderRadius='6'
+							 :fontSize='20' :checkBoxSize='30' :value="item.id"></jiuaicheckbox>
 						</view>
 					</view>
 				</view>
 				<view class="bom">
-					<view class="resert">
+					<view class="resert" @tap="clear(1)">
 						重置
 					</view>
-					<view class="button">
+					<view class="button" @tap="shownum = 10">
 						确定
 					</view>
 				</view>
@@ -221,34 +147,21 @@
 						面积
 					</view>
 					<view class="more-icon">
-						<view class="active">50m²以下</view>
-						<view>50-70m²</view>
-						<view>70-100m²</view>
-						<view>100m²以上</view>
+						<view :class="item.id == search.area ? 'active' : ''" v-for="item in areas" :key="item.id" @tap="search.area = item.id">{{item.name}}</view>
 					</view>
 					<view class="more-tit">
 						类型
 					</view>
 					<view class="more-icon">
-						<view>50m²以下</view>
-						<view>50-70m²</view>
-						<view>70-100m²</view>
-						<view>100m²以上</view>
+						<view :class="item.type == search.type ? 'active' : ''" v-for="(item,key) in types1" :key="key" @tap="search.type = item.type">{{item.type}}</view>
 					</view>
 					<view class="more-tit">
 						特色
 					</view>
 					<view class="more-icon">
-						<view>50m²以下</view>
-						<view>50-70m²</view>
-						<view>70-100m²</view>
-						<view>100m²以上</view>
-						<view>50m²以下</view>
-						<view>50-70m²</view>
-						<view>70-100m²</view>
-						<view>100m²以上</view>
+						<view :class="item.id == search.feature ? 'active' : ''" v-for="(item,key) in features" :key="key" @tap="search.feature = item.id">{{item.name}}</view>
 					</view>
-					<view class="more-tit">
+					<!-- <view class="more-tit">
 						装修
 					</view>
 					<view class="more-icon">
@@ -256,32 +169,32 @@
 						<view>50-70m²</view>
 						<view>70-100m²</view>
 						<view>100m²以上</view>
-					</view>
+					</view> -->
 				</view>
 				<view class="bom">
-					<view class="resert">
+					<view class="resert" @tap="clear(2)">
 						重置
 					</view>
-					<view class="button">
+					<view class="button" @tap="shownum = 10">
 						确定
 					</view>
 				</view>
 			</view>
 			<view class="sort" v-if="shownum === 4">
 				<view class="sort-box">
-					<view class="li active">
+					<view :class="search.order == 0 ? 'li active' : 'li'" @tap="search.order = 0">
 						默认排序
 					</view>
-					<view class="li">
+					<view :class="search.order == 1 ? 'li active' : 'li'" @tap="search.order = 1">
 						单价从低到高
 					</view>
-					<view class="li">
+					<view :class="search.order == 3 ? 'li active' : 'li'" @tap="search.order = 3">
 						单价从高到低
 					</view>
-					<view class="li">
+					<view :class="search.order == 4 ? 'li active' : 'li'" @tap="search.order = 4">
 						开盘时间从近到远
 					</view>
-					<view class="li">
+					<view :class="search.order == 2 ? 'li active' : 'li'" @tap="search.order = 2">
 						开盘时间从远到近
 					</view>
 				</view>
@@ -289,12 +202,21 @@
 			
 		</view>
 		<view class="types">
-			<view :class="typenum == key ? 'active':''" v-for="(item,key) in types" :key="key" @tap="settype(key,item)">
-				{{item}}
+			<view :class="search.type == '住宅' ? 'active':''" @tap="settype('住宅')">
+				住宅
+			</view>
+			<view :class="search.special_discount == 1 ? 'active':''" @tap="settype('特价房')">
+				特价房
+			</view>
+			<view :class="search.feature == 3 ? 'active':''" @tap="settype('刚需')">
+				刚需
+			</view>
+			<view :class="search.near_railway == 1 ? 'active':''" @tap="settype('近地铁')">
+				近地铁
 			</view>
 		</view>
-		<view class="box">
-			<view class="item" v-for="item in builds" :key="item.id">
+		<view class="box" v-if="isnormal">
+			<view class="item" v-for="item in builds" :key="item.id" @tap="go(item.id)">
 				<view class="left">
 					<image :src="item.img" mode=""></image>
 				</view>
@@ -323,11 +245,11 @@
 				加载中...
 			</view>
 		</view>
-		<view class="box" v-if="false">
+		<view class="box" v-if="isnull">
 			<view class="imgbox">
 				<image src="../../static/search/search-isnull.png" mode=""></image>
 				<view class="msg">
-					没有找到相关内容，<text>清空条件</text> 再次搜索
+					没有找到相关内容，<text @tap="clearall">清空条件</text> 再次搜索
 					或者让我们来为您推荐寻找合适的楼盘
 				</view>
 				<view class="btn" @tap="gohelp">
@@ -338,69 +260,44 @@
 				<view class="guess-tit">
 					猜你喜欢
 				</view>
-				<view class="item">
+				<view class="item" v-for="item in other" :key="item.id" @tap="go(item.id)">
 					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="item.img" mode=""></image>
 					</view>
 					<view class="right">
 						<view class="tit">
-							武林ONE
+							{{item.name}}
 							<view class="status">
-								在售
+								{{item.state}}
 							</view>
 						</view>
 						<view class="price">
-							<text class="big">17000</text>
+							<text class="big">{{item.price}}</text>
 							<text class="small">元/m²</text>
 						</view>
 						<view class="msg">
-							住宅 | 杭州-江干 | 80-140m²
+							{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²
 						</view>
 						<view class="type">
-							<text class="zhuang">精装</text>
+							<text class="zhuang">{{item.decorate}}</text>
 							<text>1号线</text>
-							<text>地铁楼盘</text>
-						</view>
-					</view>
-				</view>
-				<view class="item">
-					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
-					</view>
-					<view class="right">
-						<view class="tit">
-							武林ONE
-							<view class="status">
-								在售
-							</view>
-						</view>
-						<view class="price">
-							<text class="big">17000</text>
-							<text class="small">元/m²</text>
-						</view>
-						<view class="msg">
-							住宅 | 杭州-江干 | 80-140m²
-						</view>
-						<view class="type">
-							<text class="zhuang">精装</text>
-							<text>1号线</text>
-							<text>地铁楼盘</text>
+							<text v-for="(val,key) in item.features" :key="key">{{val}}</text>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="box" v-if="false">
-			<view class="li">
+		<view class="box" v-if="isspecial">
+			<view class="li" v-for="item in builds" :key="item.id" @tap="go(item.id)">
 				<view class="left">
-					<image src="../../static/img-2.png" mode=""></image>
+					<image :src="item.img" mode=""></image>
 					<view class="leftmsg">
 						特价房
 					</view>
 				</view>
 				<view class="right">
 					<view class="tit">
-						武林ONE
+						{{item.name}}
 						<view class="status">
 							立省5万
 						</view>
@@ -414,81 +311,17 @@
 						</view>
 					</view>
 					<view class="msg">
-						住宅 | 杭州-江干 | 80-140m²
+						{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²
 					</view>
 					<view class="type">
-						<text class="zhuang">精装</text>
+						<text class="zhuang">{{item.decorate}}</text>
 						<text>1号线</text>
-						<text>地铁楼盘</text>
-					</view>
-				</view>
-			</view>
-			<view class="li">
-				<view class="left">
-					<image src="../../static/img-2.png" mode=""></image>
-					<view class="leftmsg">
-						特价房
-					</view>
-				</view>
-				<view class="right">
-					<view class="tit">
-						武林ONE
-						<view class="status">
-							立省5万
-						</view>
-					</view>
-					<view class="price">
-						<view class="old">
-							原价<text>230</text>万
-						</view>
-						<view class="new">
-							特价<text>217</text>万
-						</view>
-					</view>
-					<view class="msg">
-						住宅 | 杭州-江干 | 80-140m²
-					</view>
-					<view class="type">
-						<text class="zhuang">精装</text>
-						<text>1号线</text>
-						<text>地铁楼盘</text>
-					</view>
-				</view>
-			</view>
-			<view class="li">
-				<view class="left">
-					<image src="../../static/img-2.png" mode=""></image>
-					<view class="leftmsg">
-						特价房
-					</view>
-				</view>
-				<view class="right">
-					<view class="tit">
-						武林ONE
-						<view class="status">
-							立省5万
-						</view>
-					</view>
-					<view class="price">
-						<view class="old">
-							原价<text>230</text>万
-						</view>
-						<view class="new">
-							特价<text>217</text>万
-						</view>
-					</view>
-					<view class="msg">
-						住宅 | 杭州-江干 | 80-140m²
-					</view>
-					<view class="type">
-						<text class="zhuang">精装</text>
-						<text>1号线</text>
-						<text>地铁楼盘</text>
+						<text v-for="(val,key) in item.features" :key="key">{{val}}</text>
 					</view>
 				</view>
 			</view>
 		</view>
-		<toast ref="toast" :txt="'为您找到233个楼盘'"></toast>
+		<toast ref="toast" :txt="toasttxt"></toast>
 	</view>
 </template>
 
@@ -504,7 +337,7 @@
 		},
 		data() {
 			return {
-				types: ['住宅', '特价房', '刚需', '近地铁'],
+				toasttxt: '为您找到233个楼盘',
 				typenum: 0,
 				pricenum: 0,
 				areanum: 0,
@@ -517,10 +350,37 @@
 				sorttype: false,
 				shownum: 10,
 				builds: [],
-				isloading: false
+				isloading: false,
+				citys: [],
+				railways: [],
+				singles: [],
+				totals: [],
+				houses: [],
+				areas: [],
+				features: [],
+				types1: [],
+				search: {
+					order: 0,
+					country: 0,
+					railway: 0,
+					total_price: 0,
+					single_price: 0,
+					area: 0,
+					type: '',
+					feature: 0,
+					limit: 10,
+					page: 1,
+					near_railway: 0,
+					special_discount: 0
+				},
+				isspecial: false,
+				isnormal: true,
+				isnull: false,
+				other: []
 			}
 		},
 		onReachBottom() {
+			this.getmore()
 			this.isloading = true
 		},
 		onShow() {
@@ -535,11 +395,82 @@
 			"jiuaicheckbox": jiuaicheckbox
 		},
 		methods: {
-			settype(key, item) {
-				this.typenum = key
+			go(id) {
+				uni.redirectTo({
+					url:"/pages/content/content?id="+id
+				})
+			},
+			clearall() {
+				this.search = {
+					order: 0,
+					country: 0,
+					railway: 0,
+					total_price: 0,
+					single_price: 0,
+					area: 0,
+					type: '',
+					feature: 0,
+					limit: 10,
+					page: 1,
+					near_railway: 0,
+					special_discount: 0
+				}
+				this.getinfo()
+			},
+			clear(num) {
+				switch(num) {
+					case 0:
+						this.search.country = 0
+						this.search.railway = 0
+					break;
+					case 1:
+						this.search.house_type = 0
+					break;
+					case 2:
+						this.search.area = 0
+						this.search.type = ''
+						this.search.feature = 0
+					break;
+				}
+			},
+			settype(item) {
+				switch(item) {
+					case '住宅':
+					if(this.search.type == item) {
+						this.search.type = ''
+					}else {
+						this.search.type = item
+					}
+					break;
+					case '刚需':
+						if(this.search.feature == 3) {
+							this.search.feature = 0
+						}else {
+							this.search.feature = 3
+						}
+					break;
+					case '特价房':
+						if(this.search.special_discount == 1) {
+							this.search.special_discount = 0
+						}else {
+							this.search.special_discount = 1
+						}
+						this.isspecial = true
+						this.isnormal = false
+					break;
+					case '近地铁':
+						if(this.search.near_railway == 1) {
+							this.search.near_railway = 0
+						}else {
+							this.search.near_railway = 1
+						}
+					break;
+				}
 			},
 			gohelp() {
-				this.$refs.toast.show()
+				uni.redirectTo({
+					url:"/pages/help/help"
+				})
 			},
 			setpricenum(num) {
 				this.pricenum = num
@@ -559,17 +490,80 @@
 				this.hutype = true
 			},
 			getinfo() {
+				let city = uni.getStorageSync('city')
+				let token = uni.getStorageSync('token')
+				uni.request({
+					url:that.apiserve+"/jy/phone/search/conditions",
+					method:"GET",
+					data:{
+						city: city,
+						token:token
+					},
+					success: (res) => {
+						that.citys = res.data.conditions.countries
+						that.railways = res.data.conditions.railways
+						that.singles = res.data.conditions.single_prices
+						that.totals = res.data.conditions.total_prices
+						that.houses = res.data.conditions.house_types
+						that.areas = res.data.conditions.areas
+						that.types1 = res.data.conditions.types
+						that.features = res.data.conditions.features
+						console.log(res)
+					}
+				})
+				let data = this.search
+				data.city = city
 				uni.request({
 					url:that.apiserve+"/applets/search/info",
 					method:"GET",
-					data:{
-						
-					},
+					data:data,
 					success: (res) => {
 						console.log(res)
 						that.builds = res.data.info
+						if(that.builds.length == 0) {
+							that.isnull = true
+							uni.request({
+								url:that.apiserve+'/jy/recommend',
+								method:"GET",
+								data:{
+									city: city,
+									count: 4
+								},
+								success: (response) => {
+									console.log(response)
+									that.other = response.data.recommends
+								}
+							})
+						}else {
+							that.toasttxt = `为您找到${res.data.total}个楼盘`
+							that.$refs.toast.show()
+						}
 					}
 				})
+			},
+			getmore() {
+				let city = uni.getStorageSync('city')
+				let data = this.search
+				data.city = city
+				uni.request({
+					url:that.apiserve+"/applets/search/info",
+					method:"GET",
+					data:data,
+					success: (res) => {
+						console.log(res)
+						that.builds = that.builds.concat(res.data.info)
+						that.isloading = false
+					}
+				})
+			}
+		},
+		watch:{
+			search:{
+				handler(val) {
+					console.log(val)
+					this.getinfo()
+				},
+				deep:true
 			}
 		}
 	}
