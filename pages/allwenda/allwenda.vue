@@ -1,50 +1,61 @@
 <template>
 	<view class="allwenda">
 		<view class="toptitle">
-			<image src="../../static/all-back1.png" mode=""></image>
-			<text>楼盘问问</text>
+			<navigator :url="`../content/content?id=${project_id}`" class="nav_top" open-type="navigate">
+				<image src="../../static/all-back1.png" mode=""></image>
+				<text>楼盘问问</text>
+			</navigator>
 		</view>
 		<view class="img_box">
 			<image src="../../static/other/all_wen_top.png" mode=""></image>
 		</view>
 		<view class="wen_list">
-			<view class="list_one" v-for="item in data" :key="item.id">
-					<view class="tit">
-						<text class="wen">问</text>
-						{{item.question}}
-					</view>
-					<view class="da">
-						<view class="top">
-							<image src="../../static/content/ping_img.png" mode=""></image>
-							<view class="rig">
-								<view class="name_box">
-									李聪然
-									<text>专业解答</text>
-								</view>
-								<view class="pp">
-									咨询师帮您在线解答
+			<template v-for="item in data">
+				<view class="list_one" v-if="item.answer!==''" :key="item.id">
+					<navigator :url="`../wendadetail/wendadetail?id=${item.id}`">
+						<view class="tit">
+							<text class="wen">问</text>
+							{{item.question}}
+						</view>
+						<view class="da">
+							<view class="top">
+								<image :src="item.staff.head_img" mode=""></image>
+								<view class="rig">
+									<view class="name_box">
+									    {{item.staff.name}}
+										<text>专业解答</text>
+									</view>
+									<view class="pp">
+										咨询师帮您在线解答
+									</view>
 								</view>
 							</view>
+							<view class="bottom" >
+								{{item.answer.substring(0,42)}}
+								<text v-if="item.answer.length>=42" >[全文]</text>
+							</view>
 						</view>
-						<view class="bottom">
-							厨房排气道采用等截面变压式排气道，并在进气口设置可调变压防火止回阀，在管道内部，气...
-						</view>
-					</view>
-		    </view>
+					</navigator>
+				</view>
+			</template>
 			<!-- 没回答的 -->
-			<view class="list_one_no">
-					<view class="tit">
-						<text class="wen">问</text>
-						      我宁可去买周边二手房了，二手房投资更划算
-					</view>
-					<view class="da_box">
-						<view class="da">
-							我来回答
+			<template v-for="item in data">
+				<view class="list_one_no" v-if="item.answer==''">
+						<view class="tit">
+							<navigator :url="`../wendadetail/wendadetail?id=${item.id}`">
+							     <text class="wen">问</text>
+								  {{item.question}}
+							</navigator>
 						</view>
-					</view>
-			</view>
+						<view class="da_box">
+							<view class="da">
+								我来回答
+							</view>
+						</view>
+				</view>
+			</template>
 			<!-- 允家房友 -->
-			<view class="list_one_yun">
+			<!-- <view class="list_one_yun">
 					<view class="tit">
 						<text class="wen">问</text>
 						 本项目厨房管道的排风原理和方式是什么？会不
@@ -65,8 +76,8 @@
 						<view class="bottom">
 							厨房排气道采用等截面变压式排气道，并在进气口设置可调变压防火止回阀，在管道内部，气...
 						</view>
-					</view>
-			</view>
+					</view> -->
+<!-- 			</view> -->
 			<!-- 写问答 -->
 			<view class="white_wen">
 				<image src="../../static/other/white.png" mode=""></image>
@@ -83,14 +94,15 @@ export default {
 	data() {
 		return {
 			data:[],
+			project_id:'',
 		};
-	},
-	onLoad: (option) => {
-		console.log(option);
-		this.getdata(option.id);
 	},
 	components:{
 		bottom
+	},
+	onLoad(option) {
+	  this.getdata(option.id);
+	  this.project_id = option.id;
 	},
 	methods:{
 		getdata(id){
@@ -108,13 +120,18 @@ export default {
 				success: (res) => {
 					if(res.data.code==200){
 						 console.log(res);
+						 this.data = res.data.data;
 					}
 				},
 				fail: (error) => {
 					console.log(error);
 				}
 			})
-		}
+		},
+		// showQuan(){
+		// 	this.old_flag = false;
+		// 	this.quan_false = true;
+		// }
 	},
 	
 }
@@ -132,17 +149,19 @@ export default {
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #36ACE7;
-		image{
-		 width: 31.87rpx;
-		 height: 31.87rpx;
-		 margin-right: 11.95rpx;
-		 margin-bottom: -3.98rpx;
-		}
-		text{
-		  width: 221rpx;
-		  font-size: 32rpx;
-		  font-weight: 500;
-		  color: #fff;
+		.nav_top{
+			image{
+			 width: 31.87rpx;
+			 height: 31.87rpx;
+			 margin-right: 11.95rpx;
+			 margin-bottom: -3.98rpx;
+			}
+			text{
+			  width: 221rpx;
+			  font-size: 32rpx;
+			  font-weight: 500;
+			  color: #fff;
+			}
 		}
 	}
 	.img_box{
@@ -233,6 +252,9 @@ export default {
 					padding-bottom: 30rpx;
 					padding-top: 21rpx;
 					border-radius:0rpx 0rpx 24rpx  24rpx;
+					text{
+						color: #628BB9;
+					}
 				}
 			}
 	  }

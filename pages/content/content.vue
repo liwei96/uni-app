@@ -10,7 +10,9 @@
 			<swiper class="swiper" :autoplay="true">
 				<swiper-item v-for="item in pro_img">
 					<view class="swiper-item uni-bg-red">
-						<image :src="item.small" mode=""></image>
+						<navigator :url="`../piclist/piclist?id=${detail.id}`" >
+					    	<image :src="item.small" mode=""></image>
+						</navigator>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -453,7 +455,7 @@
 				<view class="peo_one" v-for="item in recommends" :key="item.id">
 					<image :src="item.img" mode=""></image>
 					<view class="right_pro">
-						<view class="pro_name">{{item.name}}<text class="status">{{item.status}}</text></view>
+						<view class="pro_name"><text class="name">{{item.name}}</text><text class="status">{{item.status}}</text></view>
 						<view class="price">{{item.single_price}}元/m²</view>
 						<view class="type">{{item.type}}<text>|</text>{{item.city}}-{{item.country}}<text>|</text>{{item.area}}m² </view>
 						<view class="tese">
@@ -831,7 +833,7 @@
 			},
 			louwen(id){
 				uni.navigateTo({
-					url:"../loudian/loudian?id="+id
+					url:"../allwenda/allwenda?id="+id
 				})
 			},
 		},
@@ -2379,6 +2381,14 @@
 			}
 
 			.pro_list {
+				.peo_one:after{
+					content:'';
+					height:0;
+					clear:both;
+					overflow:hidden;
+					visibility: hidden;
+					display: block;
+				}
 				.peo_one {
 					margin-bottom: 60rpx;
 
@@ -2391,11 +2401,23 @@
 					}
 
 					.right_pro {
+						width: 440rpx;
+						float: right;
 						.pro_name {
-							font-size: 32rpx;
-							font-weight: 800;
-							color: #303233;
-							line-height: 32rpx;
+							display: flex;
+							justify-content: space-between;
+							.name{
+								font-size: 32rpx;
+								font-weight: 800;
+								color: #303233;
+								line-height: 32rpx;
+								width: 352rpx;
+								overflow: hidden;
+								white-space: nowrap;
+								text-overflow: ellipsis;
+								display: block;
+							}
+							
 
 							.status {
 								width: 68rpx;

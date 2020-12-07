@@ -78,16 +78,52 @@
 				currentSwiperLineActiveHeight:'6rpx',//当前选中的导航栏线条的高度度 upx rpx px
 				currentSwiperLineAnimatie: 300,//当前选中的导航栏线条过渡效果
 				
+				traffic:[],
+				effect:[],
+				real:[],
+				example:[],
+				matching:[],
+				departments:[],
 				
 				//（全屏出现滚动条 去掉paddingTop 但导航栏会遮住部分内容 自行改.swiperCont .swiper里css）
 				//也可获取导航栏的高度  屏幕高度减去导航栏高度 = 你的内容全屏高度  不会出现滚动条
+				
 			};
+		},
+		onLoad(option){
+			console.log(option);
+			this.getdata(option.id);
 		},
 		components:{
 			swiperNavBar,
 			bottom
 		},
 		methods:{
+			getdata(id){
+				uni.request({
+					url:this.apiserve+"/applets/img/list",
+					data:{
+						id:id,
+						other:'',
+						token:''
+					},
+					method:"GET",
+					success: (res) => {
+						if(res.data.code==200){
+							 console.log(res);
+							 this.traffic= res.data.imgs.traffic;
+							 this.effect= res.data.imgs.effect;
+							 this.real= res.data.imgs.real;
+							 this.example= res.data.imgs.example;
+							 this.matching= res.data.imgs.matching;
+							 this.departments= res.data.imgs.departments;
+						}
+					},
+					fail: (error) => {
+						console.log(error);
+					}
+				})
+			},
 		   //tab点击事件 自行完善需要的代码
 		   CurrentTab:function(index,item){
 		   	this.swiperTabIdx = index;

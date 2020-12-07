@@ -4,32 +4,20 @@
 			{{title}}
 		</view>
 		<view class="pro_list">
-			<view class="peo_one">
-				<image src="http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png" mode=""></image>
+			<view class="peo_one" v-for="item in project" :key="item.id">
+				<image :src="item.img" mode=""></image>
 				<view class="right_pro">
-					<view class="pro_name">武林ONE<text class="status">在售</text></view>
-					<view class="price">17000元/m²</view>
-					<view class="type">住宅<text>|</text>杭州-江干<text>|</text>80-140m² </view>
+					<view class="pro_name"><text class="name">{{item.name}}</text><text class="status">{{item.status}}</text></view>
+					<view class="price">{{item.single_price}}元/m²</view>
+					<view class="type">{{item.type}}<text>|</text>{{item.city}}-{{item.country}}<text>|</text>{{item.area}}m² </view>
 					<view class="tese">
-						<text class="zhuang">精装</text> 
-						<text class="other">1号线</text>
-						<text class="other">地铁楼盘</text>
+						<text class="zhuang">{{item.decorate}}</text> 
+						<text class="other" v-if="item.railway">{{item.railway}}</text>
+						<text class="other" v-for="ite in item.features">{{ite}}</text>
 					</view>
 				</view>
 			</view>
-			<view class="peo_one">
-				<image src="http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png" mode=""></image>
-				<view class="right_pro">
-					<view class="pro_name">武林ONE<text class="status">在售</text></view>
-					<view class="price">17000元/m²</view>
-					<view class="type">住宅<text>|</text>杭州-江干<text>|</text>80-140m² </view>
-					<view class="tese">
-						<text class="zhuang">精装</text> 
-						<text class="other">1号线</text>
-						<text class="other">地铁楼盘</text>
-					</view>
-				</view>
-			</view>
+		
 		</view>
 	</view>
 </template>
@@ -41,7 +29,7 @@ export default {
 			
 		}
 	},
-	props:['title']
+	props:['title','project']
 }
 
 </script>
@@ -61,6 +49,14 @@ export default {
 		line-height: 114rpx;
 	}
 	.pro_list{
+		.peo_one:after{
+			content:'';
+			height:0;
+			clear:both;
+			overflow:hidden;
+			visibility: hidden;
+			display: block;
+		}
 		.peo_one{
 			margin-bottom: 60rpx;
 			image{
@@ -71,11 +67,22 @@ export default {
 				margin-right: 30rpx;
 			}
 			.right_pro{
+				width: 440rpx;
+				float: right;
 				.pro_name{
-					 font-size: 32rpx;
-					 font-weight: 800;
-					 color: #303233;
-					 line-height: 32rpx;
+					display: flex;
+					justify-content: space-between;
+					 .name{
+						 font-size: 32rpx;
+						 font-weight: 800;
+						 color: #303233;
+						 line-height: 32rpx;
+						 width: 352rpx;
+						 overflow: hidden;
+						 white-space: nowrap;
+						 text-overflow: ellipsis;
+						 display: block;
+					 }
 					 .status{
 					 width: 68rpx;
 					 height: 36rpx;
@@ -107,7 +114,6 @@ export default {
 				}
 				.tese{
 					.zhuang{
-						width: 68rpx;
 						height: 36rpx;
 						background: #EBF8FF;
 						border-radius: 6rpx;
@@ -115,7 +121,7 @@ export default {
 						font-weight: 500;
 						color: #3EACF0;
 						line-height: 36rpx;
-						margin-right: 12rpx;
+						margin-right: 10rpx;
 						display: inline-block;
 						text-align: center;
 					}

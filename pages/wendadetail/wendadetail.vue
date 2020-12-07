@@ -1,44 +1,46 @@
 <template>
 	<view class="wendadetail">
 		<view class="toptitle">
-			<image src="../../static/all-back.png" mode=""></image>
-			<text>问答详情</text>
+			<navigator :url="`../allwenda/allwenda?id=${data.bid}`" class="nav_top" open-type="navigate">
+				<image src="../../static/all-back.png" mode=""></image>
+				<text>问答详情</text>
+			</navigator>
 		</view>
 		<view class="wen_top">
 			<view class="tit">
 				<text class="wen">问</text>
-				 本项目厨房管道的排风原理和方式是什么？会不
-				会出现油烟倒灌情况?
+				 {{data.question}}
 			</view>
 			
 			<view class="pro_one">
-				<image src="http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png" mode=""></image>
+				<image :src="building.img" mode=""></image>
 				<view class="right_pro">
-					<view class="pro_name">武林ONE<text class="status">在售</text></view>
-					<view class="price">17000元/m²</view>
-					<view class="type">住宅<text>|</text>杭州-江干<text>|</text>80-140m² </view>
+					<view class="pro_name">{{building.name}}<text class="status">{{building.state}}</text></view>
+					<view class="price">{{building.price}}元/m²</view>
+					<view class="type">{{building.type}}<text>|</text>{{building.city_name}}-{{building.country}}<text>|</text>{{building.area}}m² </view>
 					<view class="tese">
-						<text class="zhuang">精装</text> 
+						<text class="zhuang">{{building.decorate}}</text> 
 						<text class="other">1号线</text>
-						<text class="other">地铁楼盘</text>
+						<text class="other" v-for="item in building.feature">{{item}}</text>
 					</view>
 				</view>
 			</view>
-			<view class="huifu_btn">
+			<!-- 没回复-->
+			<view class="huifu_btn" v-if="data.answer==''">
 				我来回答
 			</view>
 			<!-- 免费咨询 -->
-			<view class="da" v-show="true">
+			<view class="da" v-show="data.answer!==''">
 				<view class="top">
 					<view class="left_box">
-						<image src="../../static/content/ping_img.png" mode=""></image>
+						<image :src="staff.staff.head_img" mode=""></image>
 						<view class="rig">
 							<view class="name_box">
-								李聪然
+								{{staff.staff.name}}
 								<text>专业解答</text>
 							</view>
 							<view class="pp">
-								最近咨询<text>147</text>人
+								最近咨询<text>{{staff.num}}</text>人
 							</view>
 						</view>
 					</view>
@@ -46,7 +48,8 @@
 						免费咨询
 					</view>
 				</view>
-				<view class="top">
+				<!-- 允家房友-->
+          <!-- <view class="top">
 					<view class="left_box">
 						<image src="../../static/content/ping_img.png" mode=""></image>
 						<view class="rig">
@@ -58,18 +61,22 @@
 							</view>
 						</view>
 					</view>
-				</view>
+				</view> -->
 				<view class="bottom">
-					厨房排气道采用等截面变压式排气道，并在进气口设置可调变压防火止回阀，在管道内部，气...
+					{{data.answer}}
 				</view>
 				
 				<view class="time_box">
 					<view class="time">
-						2019-06-08
+						{{data.time}}
 					</view>
-					<view class="zan">
+					<view class="zan" v-if="data.my_like==1">
 						<image src="../../static/content/zan.png" mode=""></image>
-						有用(12)
+						有用({{data.like_num}})
+					</view>
+					<view class="nozan" v-if="data.my_like==0">
+						<image src="../../static/content/no_zan.png" mode=""></image>
+						有用({{data.like_num}})
 					</view>
 				</view>
 			</view>
@@ -80,26 +87,17 @@
 		<view class="title">
 			相关楼盘问答
 		</view>
-		<view class="wen_tit">
+		<view class="wen_tit" v-for="item in relevant" :key="item.id">
 			<text class="wen">问</text>
-			 本项目厨房管道的排风原理和方式是什么？会不
-			会出现油烟倒灌情况?
+			{{item.question}}
 		</view>
-		<view class="wen_tit">
-			<text class="wen">问</text>
-			融创运河印：我宁可去买周边二手房了，二手房岂不是投资更划算
-		</view>
-		<view class="wen_tit">
-			<text class="wen">问</text>
-			融创运河印:你们的底商什么时候开卖？
-		</view>
-		<view class="btn">
+		<view class="btn" @tap="showAllwen">
 			查看杭州全部楼盘问答
 		</view>
 	</view>
 	<view class="hui_bg"></view>
 	<!-- 猜你喜欢 -->	
-	<twosee :title="title"></twosee>
+	<twosee :title="title" :project="recommends"></twosee>
 	<bottom></bottom>
 	</view>
 </template>
@@ -110,12 +108,55 @@ import twosee from '../../components/mine/twosee.vue';
 	export default {
 		data() {
 			return {
-				title:'猜你喜欢'
+				title:'猜你喜欢',
+				building:{},
+				data:[],
+				recommends:[],
+				relevant:[],
+				staff:{},
 			};
 		},
 		components:{
 			bottom,
 			twosee,
+		},
+		onLoad(option){
+			console.log(option);
+			this.getdata(option.id)
+		},
+		methods:{
+			getdata(id){
+				uni.request({
+					url:this.apiserve+"/applets/question/detail",
+					data:{
+						id:id,
+						other:'',
+						token:''
+					},
+					method:"GET",
+					success: (res) => {
+						if(res.data.code==200){
+							 console.log(res);
+						   this.building = res.data.building;
+						   this.data = res.data.data;
+						   this.recommends = res.data.recommends;
+						   this.relevant = res.data.relevant;
+						   this.staff = res.data.common.staff;
+						}
+					},
+					fail: (error) => {
+						console.log(error);
+					}
+				})
+			},
+			showAllwen(){
+				uni.navigateTo({
+					url:"../allwenda/allwenda?id=0"
+				})
+			}
+			
+			
+			
 		}
 	}
 </script>
@@ -132,17 +173,19 @@ import twosee from '../../components/mine/twosee.vue';
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #FFF;
-		image{
-		 width: 31.87rpx;
-		 height: 31.87rpx;
-		 margin-right: 11.95rpx;
-		 margin-bottom: -3.98rpx;
-		}
-		text{
-		  width: 221rpx;
-		  font-size: 32rpx;
-		  font-weight: 500;
-		  color: #17181A;
+		.nav_top{
+			image{
+			 width: 31.87rpx;
+			 height: 31.87rpx;
+			 margin-right: 11.95rpx;
+			 margin-bottom: -3.98rpx;
+			}
+			text{
+			  width: 221rpx;
+			  font-size: 32rpx;
+			  font-weight: 500;
+			  color: #17181A;
+			}
 		}
 	}
 	.wen_top{
@@ -225,7 +268,6 @@ import twosee from '../../components/mine/twosee.vue';
 		   	}
 		   	.tese{
 		   		.zhuang{
-		   			width: 68rpx;
 		   			height: 36rpx;
 		   			background: #EBF8FF;
 		   			border-radius: 6rpx;
@@ -236,6 +278,8 @@ import twosee from '../../components/mine/twosee.vue';
 		   			margin-right: 12rpx;
 		   			display: inline-block;
 		   			text-align: center;
+					padding-left: 8rpx;
+					padding-right: 8rpx;
 		   		}
 		   		.other{
 		   			font-size: 22rpx;
@@ -357,6 +401,20 @@ import twosee from '../../components/mine/twosee.vue';
 				font-size: 22rpx;
 				font-weight: 500;
 				color: #40A2F4;
+				line-height: 100rpx;
+			}
+			.nozan{
+				float: right;
+				display: flex;
+				align-items: center;
+				image{
+					width: 32rpx;
+					height: 32rpx;
+					margin-right: 8rpx;
+				}
+				font-size: 22rpx;
+				font-weight: 500;
+				color:#969799;
 				line-height: 100rpx;
 			}
 		}
