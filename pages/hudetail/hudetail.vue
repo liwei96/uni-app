@@ -1,26 +1,28 @@
 <template>
 	<view class="hu_detail">
 		<view class="toptitle">
-			<image src="../../static/all-back.png" mode=""></image>
-			<text>楼盘相册</text>
+			<navigator :url="`../content/content?id=${one.bid}`" class="nav_top" open-type="navigate">
+				<image src="../../static/all-back.png" mode=""></image>
+				<text>户型详情</text>
+			</navigator>
 		</view>
 		<view class="top_img">
-			<image src="http://api.jy1980.com/uploads/20191025/thumb_800_k8w4cc6l.jpeg" mode=""></image>
+			<image :src="one.big" mode=""></image>
 		</view>
 		<view class="name_box">
-			<view class="name">3室2厅2卫 <text>在售</text></view>
-			<view class="price">约 <text>450</text>万/套</view>
+			<view class="name">{{one.title}} <text>{{one.state}}</text></view>
+			<view class="price">约 <text>{{one.price}}</text>万/套</view>
 			<view class="jian_box">
-				<view class="line"> <text>建面：</text>80m²</view>
+				<view class="line"> <text>建面：</text>{{one.area}}m²</view>
 				<view class="line"> <text>朝向：</text>南</view>
-				<view class="line"> <text>类型：</text>平层</view>
-				<view class="line"> <text>层高：</text>3m</view>
-				<view class="line"> <text>特色：</text>小户型舒适、宜居</view>
+				<view class="line"> <text>类型：</text>{{one.type}}</view>
+				<view class="line"> <text>层高：</text>{{one.height}}</view>
 			</view>
+			<view class="tese_one"> <text>特色：</text>{{one.special}}</view>
 			<view class="address">
 				<view class="left">
 					<image src="../../static/address.png" mode="" class="icon_ad"></image>
-					艮山西路凯旋交叉口
+					<text>{{one.address}}</text>
 				</view>
 			
 				<image src="../../static/content/right.png" mode="" class="right"></image>
@@ -53,11 +55,11 @@
 				 </view>
 			</view>
 			<view class="ye_one">
-				<image src="../../static/content/ping_img.png" mode="" class="head_img"></image>
+				<image :src="staff.head_img" mode="" class="head_img"></image>
 				<view class="peo">
 					<view class="top">
-						李聪然
-						<text>满意度5分</text>
+					    {{staff.name}}
+						<text>满意度{{staff.num}}分</text>
 					</view>
 					<view class="bottom">
 						了解房源特色，专业挑好房
@@ -72,11 +74,11 @@
 			<view class="hu_fen">
 				<view class="tit">户型分析</view>
 				<view class="content_01">
-					1.双卧朝北，三口之家均可居住在南向卧室。有两个卫生间，可供三口之家同时洗漱。
+					1.{{one.analysis}}
 				</view>
-				<view class="content_02">
-					2.有两个卫生间，可供三口之家同时洗漱。
-				</view>
+				<!-- <view class="content_02">
+					2.{{one.analysis[1].content}}
+				</view> -->
 			</view>
 		</view>
 		<view class="bg_hui"></view>
@@ -90,14 +92,14 @@
 				<text class="text">
 					售楼处专供允家平台客户
 					<text class="jie">
-						（8月15日截止）
+						（{{num.dead_line}}截止）
 					</text>
 				</text>
 				<view class="right">
 					<view class="ling_btn">
 						领取优惠
 					</view>
-					<text>67人已领取</text>
+					<text>{{num.receive_num}}人已领取</text>
 				</view>
 			</view>
 			<view class="youhui_02">
@@ -111,7 +113,7 @@
 					<view class="ling_btn">
 						免费领取
 					</view>
-					<text>39人已领取</text>
+					<text>{{num.remain_num}}人已领取</text>
 				</view>
 			</view>
 		</view>
@@ -122,59 +124,36 @@
 				本楼盘其它户型
 			</view>
 			<view class="hu_list">
-				<view class="hu_one">
+				<view class="hu_one" v-for="item in other_rooms" :key="item.id">
 					<view class="left_pro">
-						<image src="http://api.jy1980.com/uploads/20191025/thumb_800_k8w4cc6l.jpeg" mode=""></image>
+						<image :src="item.small" mode=""></image>
 					</view>
 					<view class="right_pro">
 						 <view class="name_box_box">
-						 	  <text class="name">3室2厅2卫</text>
-							  <text class="status">在售</text>
+						 	  <text class="name">{{item.title}}</text>
+							  <text class="status">{{item.state}}</text>
 						 </view>
 						 <view class="mian">
 						 	<text class="left">建面:</text>
-						 	<text class="right">135m²</text>
+						 	<text class="right">{{item.area}}m²</text>
 						 </view>
 						 <view class="type">
 						 	<text class="left">类型：</text>
-						 	<text class="right">平层</text>
+						 	<text class="right">{{item.type}}</text>
 						 </view>
 						 <view class="price">
 						 	<text class="left">总价：</text>
-						 	<text class="right">约 <text class="em">388</text>万/套</text>
+						 	<text class="right">约 <text class="em">{{item.price}}</text>万/套</text>
 						 </view>
 					</view>
 				</view>
 				
-				<view class="hu_one">
-					<view class="left_pro">
-						<image src="http://api.jy1980.com/uploads/20191025/thumb_800_k8w4cc6l.jpeg" mode=""></image>
-					</view>
-					<view class="right_pro">
-						 <view class="name_box_box">
-						 	  <text class="name">3室2厅2卫</text>
-							  <text class="status">在售</text>
-						 </view>
-						 <view class="mian">
-						 	<text class="left">建面：</text>
-						 	<text class="right">135m²</text>
-						 </view>
-						 <view class="type">
-						 	<text class="left">类型：</text>
-						 	<text class="right">平层</text>
-						 </view>
-						 <view class="price">
-						 	<text class="left">总价：</text>
-						 	<text class="right">约 <text class="em">388</text>万/套</text>
-						 </view>
-					</view>
-				</view>
 			</view>
 		</view>
 		<view class="bg_hui"></view>
 	  <!-- 看了该楼盘的人还看了 -->
 	     <view class="see_box">
-	     	<seebottom :title="title"></seebottom>
+	     	<seebottom :title="title" :project="recommends"></seebottom>
 	     </view>
 		<bottom></bottom>
 		
@@ -191,8 +170,44 @@ import bottom from '../../components/mine/bottom.vue'
 		},
 		data() {
 			return {
-				title:"看了该楼盘的人还看了"
+				title:"看了该楼盘的人还看了",
+				num:'',
+				
+				one:{},
+				other_rooms:[],
+				recommends:[],
+				num:{},
+				common:{},
+				staff:{},
 			};
+		},
+		onLoad(option){
+			console.log(option);
+			this.getdata(option.id);
+		},
+		methods:{
+			getdata(id){
+				uni.request({
+					url:this.apiserve+"/applets/house/one",
+				    data:{
+						id:id,
+						other:'',
+						token:''
+					},
+					method:"GET",
+					success: (res) => {
+						if(res.data.code==200){
+							console.log(res);
+					        this.one = res.data.one,
+							this.common = res.data.common;
+							this.other_rooms = res.data.other_rooms;
+							this.recommends = res.data.recommends;
+							this.num = res.data.num;
+							this.staff = res.data.common.staff;
+						}
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -206,17 +221,19 @@ import bottom from '../../components/mine/bottom.vue'
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
-		image{
-		 width: 31.87rpx;
-		 height: 31.87rpx;
-		 margin-right: 11.95rpx;
-		 margin-bottom: -3.98rpx;
-		}
-		text{
-		  width: 221rpx;
-		  font-size: 32rpx;
-		  font-weight: 500;
-		  color: #17181A;
+		.nav_top{
+			image{
+			 width: 31.87rpx;
+			 height: 31.87rpx;
+			 margin-right: 11.95rpx;
+			 margin-bottom: -3.98rpx;
+			}
+			text{
+			  width: 221rpx;
+			  font-size: 32rpx;
+			  font-weight: 500;
+			  color: #17181A;
+			}
 		}
 	}
 	.top_img{
@@ -236,7 +253,7 @@ import bottom from '../../components/mine/bottom.vue'
 		padding-left: 30rpx;
 		padding-right: 30rpx;
 		box-sizing: border-box;
-		height: 528rpx;
+		height: 538rpx;
 		width: 100%;
 		background-color: #fff;
 		padding-top: 50rpx;
@@ -294,22 +311,48 @@ import bottom from '../../components/mine/bottom.vue'
 				}
 			}
 		}
+		.tese_one{
+			text{
+				font-size: 26rpx;
+				font-weight: 500;
+				color: #7D7E80;
+			}
+			font-size: 26rpx;
+			font-weight: 500;
+			color: #323233;
+			width:100%;
+			float: left;
+			line-height: 51rpx;
+		}
 		.address{
 			display: flex;
 			align-items: center;
-			line-height: 92rpx;
-			margin-bottom: 20rpx;
+			// line-height: 92rpx;
+			// margin-bottom: 20rpx;
 			justify-content: space-between;
+			width: 100%;
 			.left{
 				.icon_ad{
 					width: 32rpx;
 					height: 32rpx;
 					margin-right: 12rpx;
+					margin-bottom: 28rpx;
 				}
 				font-size: 32rpx;
 				font-weight: 500;
 				color: #323233;
-				
+				// line-height: 92rpx;
+				text{
+					font-size: 32rpx;
+					font-weight: 500;
+					color: #323233;
+					width:620rpx ;
+					overflow: hidden;
+					text-overflow:ellipsis ;
+					white-space: nowrap;
+					display: inline-block;
+					line-height: 92rpx;
+				}
 				
 			}
 		
@@ -317,6 +360,7 @@ import bottom from '../../components/mine/bottom.vue'
 				 width: 24rpx;
 				 height: 24rpx;
 				 float: right;
+				 // margin-bottom: rpx;
 			}
 		}
 		.bot{

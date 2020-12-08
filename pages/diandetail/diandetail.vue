@@ -1,71 +1,78 @@
 <template>
 	<view class="diandetail">
 		<view class="toptitle">
-			<image src="../../static/all-back.png" mode=""></image>
-			<text>点评详情</text>
+			<navigator :url="`../content/content?id=${project_id}`" class="nav_top" open-type="navigate">
+				<image src="../../static/all-back.png" mode=""></image>
+				<text>点评详情</text>
+			</navigator>
 		</view>
 		<view class="top_box">
 			<view class="dian_one">
 				<view class="top">
 					<image src="../../static/content/ping_img.png" mode=""></image>
 					<view class="right_tel">
-						<text class="tel">154****3787</text>
+						<text class="tel">{{comment.name}}</text>
 						<view class="rate" >
-							<uni-rate v-model="value" :margin="7"
+							<uni-rate v-model="comment.score" :margin="7"
 							color="#E8EBED" active-color="#FF7519" 
 							readonly="true" :size="16"></uni-rate>
 						</view>
-						
 					</view>
 				</view>
-				<text class="con">马上要推出小户型了吧，感觉买个89平的楼盘就可以了，不知道公摊要多少</text>
+				<text class="con">{{comment.content}}</text>
 				<view class="gong">
 					<view class="left">
-						<text class="time">2020-06-09</text>
+						<text class="time">{{comment.time}}</text>
 					</view>
 					<view class="zan">
-						<view class="zan_box">
-							<image src="../../static/content/no_zan.png" mode=""></image>
-							2
+						
+						<view class="zan_box" v-if="comment.my_like==1">
+							<image src="../../static/content/zan.png" mode=""></image>
+							{{comment.like_num}}
 						</view>
+						<view class="zan_box_no" v-if="comment.my_like==0">
+							<image src="../../static/content/no_zan.png" mode=""></image>
+							{{comment.like_num}}
+						</view>
+						
 						<view class="dianping">
 							<image src="../../static/liu.png" mode=""></image>
-							0
+							{{hui_num}}
 						</view>
 					</view>
 				</view>
 			<!-- 	回复框 -->
-				<view class="huifu">
-					<text class="phone">137****3844:</text>
-					<text class="con">需要连续足额缴存24个月，纳税或社保连年，需要连续足额缴存24个月不知道公摊要多少</text>
+				<view class="huifu" v-for="ite in comment.children" :key="ite.id">
+					<text class="phone">{{ite.name}}:</text>
+					<text class="con">{{ite.content}}</text>
 					<view class="time_box">
-						<text class="time"> 2019-04-17</text>
-						<text class='shan'>删除</text>
+						<text class="time"> {{ite.time}}</text>
+						<text class='shan' v-if="ite.mine==1">删除</text>
 					</view>
 				</view>
 			</view>
 			
 			<view class="pro_one">
-				<image src="http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png" mode=""></image>
+				<image :src="building.img" mode=""></image>
 				<view class="right_pro">
-					<view class="pro_name">武林ONE<text class="status">在售</text></view>
-					<view class="price">17000元/m²</view>
-					<view class="type">住宅<text>|</text>杭州-江干<text>|</text>80-140m² </view>
+					<view class="pro_name">{{building.name}}<text class="status">{{building.state}}</text></view>
+					<view class="price">{{building.price}}元/m²</view>
+					<view class="type">{{building.type}}<text>|</text>{{building.cityname}}-{{building.country}}<text>|</text>{{building.area}}m² </view>
 					<view class="tese">
-						<text class="zhuang">精装</text> 
-						<text class="other">1号线</text>
-						<text class="other">地铁楼盘</text>
+						<text class="zhuang">{{building.decorate}}</text> 
+						<text class="other" v-if="building.railway">{{building.railway}}</text>
+						<text class="other" v-for="itm in building.features">{{item.value}}</text>
 					</view>
 				</view>
 			</view>
 			<!-- 免费咨询 -->
 		    <view class="zixun_top">
-		    	<image src="../../static/content/ping_img.png" mode=""></image>
+		    	<image :src="staff.head_img" mode=""></image>
 				<view class="name_box">
 					<view class="name">
 						<view class="top">
-							李聪然
-							<text>满意度5分</text>
+							{{staff.name}}
+							<text>满意度{{staff.num}}分</text>
 						</view>
 						<view class="bottom">
 							为客户提供专业的购房建议
@@ -79,7 +86,7 @@
 		</view>
 		<view class="bg_hui"></view>
 		<view class="prolist">
-				<twosee :title="title"></twosee>
+				<twosee :title="title" :project="recommends"></twosee>
 		</view>
 		<bottom></bottom>
 	</view>
@@ -91,14 +98,53 @@
 	export default {
 		data() {
 			return {
-				title:"猜你喜欢"
+				title:"猜你喜欢",
+				
+				common:{},
+				building:{},
+				comment:{},
+				recommends:[],
+				hui_num:0,
+				staff:{},
+				project_id:''
 			};
 		},
 		components:{
 			twosee,
 			bottom,
 			uniRate
+		},
+		onLoad(option) {
+			console.log(option.id);
+			this.getdata(option.id);
+			this.project_id = option.id;
+		},
+		methods:{
+			getdata(id){
+				uni.request({
+					url:this.apiserve+"/applets/comment/detail",
+				    data:{
+						id:id,
+						other:'',
+						token:''
+					},
+					method:"GET",
+					success: (res) => {
+						if(res.data.code==200){
+							console.log(res);
+							this.common = res.data.common;
+							this.building= res.data.building;
+							this.comment= res.data.comment;
+							this.recommends = res.data.recommends;
+							console.log(res.data.comment.children,'hui');
+							this.hui_num =  res.data.comment.children.length;
+							this.staff = res.data.common.staff;
+						}
+					}
+				})
+			},
 		}
+		
 	}
 </script>
 
@@ -114,17 +160,19 @@ page{
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
-		image{
-		 width: 31.87rpx;
-		 height: 31.87rpx;
-		 margin-right: 11.95rpx;
-		 margin-bottom: -3.98rpx;
-		}
-		text{
-		  width: 221rpx;
-		  font-size: 32rpx;
-		  font-weight: 500;
-		  color: #17181A;
+		.nav_top{
+			image{
+			 width: 31.87rpx;
+			 height: 31.87rpx;
+			 margin-right: 11.95rpx;
+			 margin-bottom: -3.98rpx;
+			}
+			text{
+			  width: 221rpx;
+			  font-size: 32rpx;
+			  font-weight: 500;
+			  color: #17181A;
+			}
 		}
 	}
 	.top_box{
@@ -203,9 +251,23 @@ page{
 	    				}
 	    				font-size: 24rpx;
 	    				font-weight: 400;
-	    				color: #95989D;
+	    				color: #3EACF0;
 	    				line-height: 24rpx;
 	    			}
+					.zan_box_no{
+						display: flex;
+						align-items: center;
+						margin-right: 20rpx;
+						image{
+							width: 32rpx;
+							height: 32rpx;
+							margin-right:11rpx;
+						}
+						font-size: 24rpx;
+						font-weight: 400;
+						color: #95989D;
+						line-height: 24rpx;
+					}
 	    			.dianping{
 	    				display: flex;
 	    				align-items: center;
@@ -309,8 +371,8 @@ page{
 					font-weight: 500;
 					color: #646466;
 					text{
-						padding-left: 16rpx;
-						padding-right: 16rpx;
+						padding-left: 13rpx;
+						padding-right: 13rpx;
 					}
 				}
 				.tese{
@@ -359,7 +421,6 @@ page{
 					font-weight: 400;
 					color: #121212;
 					text{
-						width: 100rpx;
 						height: 28rpx;
 						background: #FF7519;
 						border-radius: 4rpx;
@@ -369,6 +430,8 @@ page{
 						display: inline-block;
 						text-align: center;
 						margin-left: 7rpx;
+						padding-left: 10rpx;
+						padding-right: 10rpx;
 					}
 				}
 				.bottom{

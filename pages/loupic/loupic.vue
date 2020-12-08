@@ -1,57 +1,59 @@
 <template>
 	<view class="loupic">
 		<view class="toptitle">
-			<image src="../../static/all-back.png" mode=""></image>
-			<text>楼盘相册</text>
+			<navigator :url="`../piclist/piclist?id=${project_id}`" class="nav_top" open-type="navigate">
+			   <image src="../../static/all-back.png" mode=""></image>
+			   <text>楼盘相册</text>
+			</navigator>
 		</view>
 		
 		<view class="effect">
 			<view class="tit">
-				效果图(4）
+				效果图({{effect_leng }}）
 			</view>
 			 <view class="pic_list"> 
-			   <image :src="item" v-for="(item,index) in img" :key="index"></image>
+			   <image :src="item.big" v-for="(item,index) in effect" :key="index"></image>
 			</view>
 		</view>
 		<view class="real">
 			<view class="tit">
-				实景图(4）
+				实景图({{ real_leng }}）
 			</view>
 			<view class="pic_list">
-			   <image :src="item" v-for="(item,index) in img" :key="index"></image>
+			   <image :src="item.big" v-for="(item,index) in real" :key="index"></image>
 			</view>
 		</view>
 		<view class="template">
 			<view class="tit">
-				样板房(4）
+				样板房({{example_leng}}）
 			</view>
 			<view class="pic_list">
-			   <image :src="item" v-for="(item,index) in img" :key="index"></image>
+			   <image :src="item.big" v-for="(item,index) in example" :key="index"></image>
 			</view>
 		</view>
 		<view class="peitao">
 			<view class="tit">
-				配套(4）
+				配套({{matching_leng}}）
 			</view>
 			<view class="pic_list">
-			   <image :src="item" v-for="(item,index) in img" :key="index"></image>
+			   <image :src="item.big" v-for="(item,index) in matching" :key="index"></image>
 			</view>
 		</view>
 		<view class="traffic">
 			<view class="tit">
-				交通图(4）
+				交通图({{traffic_leng}}）
 			</view>
 			<view class="pic_list">
-			   <image :src="item" v-for="(item,index) in img" :key="index"></image>
+			   <image :src="item.big" v-for="(item,index) in traffic" :key="index"></image>
 			</view>
 		</view>
 		<view class="huxing">
 			<view class="tit">
-				户型图(4）
+				户型图({{departments_leng}}）
 			</view>
 			<view class="pic_list">
-				<view class="img_box" v-for="(item,index) in img" :key="index">
-					<image :src="item" ></image>
+				<view class="img_box" v-for="(item,index) in departments" :key="index">
+					<image :src="item.big" ></image>
 				</view>
 			</view>
 		</view>
@@ -70,17 +72,68 @@
 	export default {
 		data() {
 			return {
-				img:[
-					'http://api.jy1980.com/uploads/20190621/thumb_800_34a454a1d2fe3e47dc7dda83e766421a.jpg',
-					'http://api.jy1980.com/spider_hangzhou/full/b19590e79110d72fda7be497f8f89a3b4a17025b.jpg',
-					'http://api.jy1980.com/uploads/20190621/thumb_800_55df6f22c3a0e4aff7f9a0969f8faad9.jpg',
-					'http://api.jy1980.com/spider_hangzhou/full/414ee968798e43b088b776b8c6d0548d3a8f4b73.jpg'
-				]
+				traffic:[],
+				effect:[],
+				real:[],
+				example:[],
+				matching:[],
+				departments:[],
+				project_id:'',
+				
+				effect_leng:'',
+				real_leng:'',
+				example_leng:'',
+				matching_leng:'',
+				traffic_leng:'',
+				departments_leng:''
+				
+				
+				
 			};
 		},
 		components:{
 			bottom
+		},
+		onLoad(option){
+			this.getdata(option.id);
+			this.project_id = option.id;
+		},
+		methods:{
+			getdata(id){
+				uni.request({
+					url:this.apiserve+"/applets/img/list",
+					data:{
+						id:id,
+						other:'',
+						token:''
+					},
+					method:"GET",
+					success: (res) => {
+						if(res.data.code==200){
+							 console.log(res);
+							 let img = res.data.imgs;
+							 this.traffic= res.data.imgs.traffic;
+							 this.effect= res.data.imgs.effect;
+							 this.real= res.data.imgs.real;
+							 this.example= res.data.imgs.example;
+							 this.matching= res.data.imgs.matching;
+							 this.departments= res.data.imgs.departments;
+							 
+							 this.effect_leng = img.effect.length;
+							 this.real_leng = img.real.length;
+							 this.example_leng = img.example.length;
+							 this.matching_leng = img.matching.length;
+							 this.traffic_leng = img.traffic.length;
+							 this.departments_leng = img.departments.length;
+						}
+					},
+					fail: (error) => {
+						console.log(error);
+					}
+				})
+			},
 		}
+		
 	}
 </script>
 
@@ -93,17 +146,19 @@
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
-		image{
-					 width: 31.87rpx;
-					 height: 31.87rpx;
-					 margin-right: 11.95rpx;
-					 margin-bottom: -3.98rpx;
-		}
-		text{
-					  width: 221rpx;
-					  font-size: 32rpx;
-					  font-weight: 500;
-					  color: #17181A;
+		.nav_top{
+			image{
+						 width: 31.87rpx;
+						 height: 31.87rpx;
+						 margin-right: 11.95rpx;
+						 margin-bottom: -3.98rpx;
+			}
+			text{
+						  width: 221rpx;
+						  font-size: 32rpx;
+						  font-weight: 500;
+						  color: #17181A;
+			}
 		}
 	}
 	.effect:after{
@@ -292,7 +347,7 @@
 			.img_box{
 				width: 216rpx;
 				height: 160rpx;
-				background: #d5fa5b;
+				background: #FAFAFA;
 				border-radius: 12rpx;
 				float: left;
 				margin-right: 20rpx;

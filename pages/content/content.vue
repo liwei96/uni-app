@@ -183,20 +183,21 @@
 			<scroll-view class="floor-list" scroll-x>
 				<view class="scoll-wrapper">
 					<view v-for="(item, index) in goodsList" :key="index" class="floor-item">
-						<view class="bg_image">
-							<image :src="item.big" mode="aspectFill"></image>
-						</view>
-						<view class="bottom">
-							<view class="title clamp">{{item.title}}
-								<text class="status">{{item.state}}</text>
+						<navigator :url="`../hudetail/hudetail?id=${item.id}`">
+							<view class="bg_image">
+								<image :src="item.big" mode="aspectFill"></image>
 							</view>
-							<view class="area">面积 {{item.area}}m²</view>
-							<view class="yue">约
-								<text class="num">{{item.price}}</text>
-								万/套
+							<view class="bottom">
+								<view class="title clamp">{{item.title}}
+									<text class="status">{{item.state}}</text>
+								</view>
+								<view class="area">面积 {{item.area}}m²</view>
+								<view class="yue">约
+									<text class="num">{{item.price}}</text>
+									万/套
+								</view>
 							</view>
-						</view>
-
+						</navigator>
 					</view>
 				</view>
 			</scroll-view>
@@ -384,29 +385,38 @@
 			</view>
 			<view class="bottom">
 				<view class="ping_one" v-for="item in comments" :key="item.id">
-					<view class="left">
-						<image src="../../static/content/ping_img.png" mode=""></image>
-					</view>
-					<view class="right">
-						<view class="top_tit">
-							<text class="tel">{{item.mobile}}</text>
-							<view class="no_zan" v-if="item.my_like==0">
-								<image src="../../static/content/no_zan.png" mode=""></image>
-								赞({{item.like_num}})
+					    <navigator :url="`../diandetail/diandetail?id=${item.id}`">
+							<view class="left">
+								<image src="../../static/content/ping_img.png" mode=""></image>
 							</view>
-							<view class="zan" v-if="item.my_like==1">
-								<image src="../../static/content/zan.png" mode=""></image>
-								赞({{item.like_num}})
+						</navigator>
+						<view class="right">
+							<view class="top_tit">
+								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
+								   <text class="tel">{{item.mobile}}</text>
+								</navigator>
+								<view class="no_zan" v-if="item.my_like==0">
+									<image src="../../static/content/no_zan.png" mode=""></image>
+									赞({{item.like_num}})
+								</view>
+								<view class="zan" v-if="item.my_like==1">
+									<image src="../../static/content/zan.png" mode=""></image>
+									赞({{item.like_num}})
+								</view>
+							</view>
+							<view class="content">
+								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
+							      {{item.content}}
+							   </navigator>
+							</view>
+							<view class="time_box">
+								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
+								  <text class="time">{{item.time}}</text>
+								</navigator>
+								<text class="delete" v-if="item.mine==true">删除</text>
 							</view>
 						</view>
-						<view class="content">
-						{{item.content}}
-						</view>
-						<view class="time_box">
-							<text class="time">{{item.time}}</text>
-							<text class="delete" v-if="item.mine==true">删除</text>
-						</view>
-					</view>
+					
 				</view>
 				
 				

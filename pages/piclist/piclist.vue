@@ -1,15 +1,24 @@
 <template>
 	<view  class="piclist">
 		<view class="toptitle">
-			<image src="../../static/all-back1.png" mode=""></image>
-			<text>楼盘相册</text>
+			<navigator :url="`../content/content?id=${project_id}`" class="nav_top" open-type="navigate">
+				<image src="../../static/all-back1.png" mode=""></image>
+				<text>楼盘相册</text>
+			</navigator>
 		</view>
 		
 		<view class="swiperMain">
-			<view class="swiperHead">
-				
-				<!--组件-->
-				<swiperNavBar
+			<view class="nav_nav">
+				<scroll-view class="nav_list" scroll-x="true" >
+					<view  :class="num==index ? 'active':'nav_one' " v-for="(item,index) in swiperTabList" :key="index" @tap="clickOne(index)">{{item }}</view>
+				</scroll-view>
+				<view class="caidan" @tap="goCaidan(project_id)">
+					<image src="../../static/other/caidan.png" mode=""></image>
+				</view>
+			</view>
+			 
+           <!-- <view class="swiperHead">
+				 <swiperNavBar
 					:scrollIntoView="scrollIntoView"
 					:swiperTabList='swiperTabList' 
 					:swiperTabIdx='swiperTabIdx' 
@@ -25,18 +34,14 @@
 					:currentSwiperLineAnimatie="currentSwiperLineAnimatie" 
 					v-if=" swiperTabList.length > 1 "
 					@change="CurrentTab">
-				</swiperNavBar>
-				<!--组件-->
-				<view class="caidan">
-					<image src="../../static/other/caidan.png" mode=""></image>
-				</view>
-			</view>
+				</swiperNavBar> 
+			</view> -->
 			
 			<!--内容-->
 			<view class="swiperCont" :style="{ paddingTop:currentSwiperHeight + 'rpx' }">
-				<swiper class="swiper" :style="{ height:mainHeight + 'px' }" :current="swiperTabIdx" @change="SwiperChange">
-					<swiper-item class="swiperItem" v-for="(item,index) in swiperTabList" :key='index'>
-						<image src="../../static/components/component-tel.png" mode=""></image>
+				<swiper class="swiper" :style="{ height:mainHeight + 'px' }" :current="swiperTabIdx"  autoplay="true">
+					<swiper-item class="swiperItem" v-for="(item,index) in common_data" :key='index'>
+						<image :src="item.big" mode=""></image>
 					</swiper-item>
 				</swiper>
 			</view>
@@ -58,12 +63,12 @@
 				//导航
 				scrollIntoView:0,//设置哪个方向可滚动，则在哪个方向滚动到该元素
 				swiperTabList:[
-				'效果图(3)',
-				'实景图(3)',
-				'样板图(3)',
-				'交通图(3)',
-				'户型图(3)',
-				'配套图(3)',
+					"效果图(3)",
+				    "实景图(3)",
+					"样板图(3)",
+					"交通图(3)",
+					"户型图(3)",
+					"配套图(3)",
 				],//导航列表
 				swiperTabIdx:0,
 				swiperCurrentSize:'24rpx',//导航的字体大小
@@ -84,7 +89,9 @@
 				example:[],
 				matching:[],
 				departments:[],
-				
+				num:0,
+				common_data:[],
+				project_id:''
 				//（全屏出现滚动条 去掉paddingTop 但导航栏会遮住部分内容 自行改.swiperCont .swiper里css）
 				//也可获取导航栏的高度  屏幕高度减去导航栏高度 = 你的内容全屏高度  不会出现滚动条
 				
@@ -93,6 +100,7 @@
 		onLoad(option){
 			console.log(option);
 			this.getdata(option.id);
+			this.project_id = option.id;
 		},
 		components:{
 			swiperNavBar,
@@ -111,12 +119,22 @@
 					success: (res) => {
 						if(res.data.code==200){
 							 console.log(res);
+							 let img = res.data.imgs;
 							 this.traffic= res.data.imgs.traffic;
 							 this.effect= res.data.imgs.effect;
 							 this.real= res.data.imgs.real;
 							 this.example= res.data.imgs.example;
 							 this.matching= res.data.imgs.matching;
 							 this.departments= res.data.imgs.departments;
+							 this.common_data = img.effect;
+							 
+						   this.swiperTabList[0] = `效果图(${img.effect.length})`;
+						   this.swiperTabList[1] = `实景图(${img.real.length})`;
+						   this.swiperTabList[2] = `样板图(${img.example.length})`;
+						   this.swiperTabList[3] = `交通图(${img.traffic.length})`;
+						   this.swiperTabList[4] = `户型图(${img.departments.length})`;
+						   this.swiperTabList[5] = `配套图(${img.matching.length})`;
+							
 						}
 					},
 					fail: (error) => {
@@ -124,15 +142,37 @@
 					}
 				})
 			},
+			clickOne(num){
+				this.num = num;
+			    if(num==0){
+					this.common_data = this.effect;
+				}else if(num==1){
+					this.common_data = this.real;
+				}else if(num==2){
+					this.common_data = this.example;
+				}else if(num==3){
+					 this.common_data = this.traffic;
+				}else if(num== 4){
+					 this.common_data = this.departments;
+				}else if(num== 5){
+					 this.common_data = this.matching;
+				}
+			},
+			goCaidan(id){
+				uni.navigateTo({
+					url:"../loupic/loupic?id="+id
+				})
+			},
 		   //tab点击事件 自行完善需要的代码
 		   CurrentTab:function(index,item){
 		   	this.swiperTabIdx = index;
 		   	this.scrollIntoView = Math.max(0, index - 1);
+			 console.log(index,item);
 		   	//console.log(index + '----' + item)
 		   },
 		   //滑动事件  自行完善需要的代码
 		   SwiperChange:function(e){
-		   	//console.log(e)
+		   	console.log(e)
 		   	//console.log(e.detail)
 		   	//console.log(e.detail.current);
 		   	this.swiperTabIdx = e.detail.current;
@@ -154,17 +194,19 @@
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color:#000000;
-		image{
-		 width: 31.87rpx;
-		 height: 31.87rpx;
-		 margin-right: 11.95rpx;
-		 margin-bottom: -3.98rpx;
-		}
-		text{
-		  width: 221rpx;
-		  font-size: 32rpx;
-		  font-weight: 500;
-		  color: #D4D7D9;
+		.nav_top{
+			image{
+			 width: 31.87rpx;
+			 height: 31.87rpx;
+			 margin-right: 11.95rpx;
+			 margin-bottom: -3.98rpx;
+			}
+			text{
+			  width: 221rpx;
+			  font-size: 32rpx;
+			  font-weight: 500;
+			  color: #D4D7D9;
+			}
 		}
 	}
 	//导航
@@ -173,31 +215,66 @@
 		width: 100%;
 		position: relative;
 		margin-top: 29rpx;
-         background:#000000;
-	 }
-	.swiperHead{
-		// position: fixed;
-		// top: 0;
-		// z-index: 10;																																																																																																																	
-		width: 660rpx;
-		
-		// background: #FFFFFF;
-	}
-	.caidan{
-		position: absolute;
-		right: 30rpx;
-		top: 15rpx;
-		image{
-			width: 36rpx;
-			height: 36rpx;
+        background:#000000;
+		.nav_nav{
+			width: 100%;
+			height: 81rpx;
+			.nav_list{
+				width: 655rpx;
+				height: 81rpx;
+				display: flex;
+				white-space: nowrap;
+				.nav_one{
+					width: 140rpx;
+					height: 52rpx;
+					border-radius: 26rpx;
+					font-size: 24rpx;
+					font-weight: 500;
+					color: #D4D7D9;
+					text-align: center;
+					display: inline-block;
+					margin-top: 28rpx;
+				}
+				.active{
+					width: 140rpx;
+					height: 52rpx;
+					background: #EDEDED;
+					border-radius: 26rpx;
+					font-size: 24rpx;
+					font-weight: 500;
+					line-height: 52rpx;
+					color: #323233;
+					text-align: center;
+					display: inline-block;
+				}
+			}
+			.caidan{
+				position: absolute;
+				right: 30rpx;
+				top: 25rpx;
+				image{
+					width: 36rpx;
+					height: 36rpx;
+				}
+			}
 		}
-	}
-	.swiperHead scroll-view{
-		// display: flex;
-		// flex-direction: row;
-		// flex-wrap: nowrap;
-		// white-space: nowrap;
-	}
+		 
+		 
+		 
+		 
+		 
+		 
+	 }
+	// .swiperHead{
+	// 	width: 660rpx;
+	// }
+
+	// .swiperHead scroll-view{
+	// 	// display: flex;
+	// 	// flex-direction: row;
+	// 	// flex-wrap: nowrap;
+	// 	// white-space: nowrap;
+	// }
 	.swiperTab{
 		background:#000000;
 		// width: 660rpx;
@@ -229,7 +306,6 @@
 		height: 500rpx;
 		line-height: 500rpx;
 		overflow: auto;
-		background: #00B26A;
 		text-align: center;
 		color: #FFFFFF;
 		font-size: 30upx;
