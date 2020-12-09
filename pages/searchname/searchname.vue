@@ -1,13 +1,13 @@
 <template>
 	<view class="searchname">
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>选择城市</text>
 		</view>
 		<view class="box">
 			<view class="top-input">
 				<image src="../../static/other/searchname-icon.png" mode=""></image>
-				<input type="text" value="" placeholder="请输入楼盘名称" placeholder-class="istxt" v-model="name"/>
+				<input type="text" value="" placeholder="请输入楼盘名称" placeholder-class="istxt" v-model="name" />
 			</view>
 			<view class="hots">
 				<view class="tit">
@@ -15,12 +15,10 @@
 					<text>大家都在搜</text>
 				</view>
 				<view class="content">
-					<text>新希望美的长粼府</text>
-					<text>融信远行厘望</text>
-					<text>长麓府</text>
+					<text v-for="item in hots" :key="item.id" @tap="go(item.id)">{{item.name}}</text>
 				</view>
 			</view>
-			<view class="hots">
+			<!-- <view class="hots">
 				<view class="tit">
 					<image src="../../static/other/searchname-eye.png" mode=""></image>
 					<text>大家都在看</text>
@@ -32,35 +30,17 @@
 					<text class="item">拱墅</text>
 					<text class="item">50-70m²</text>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<view class="upbox" v-if="name">
-			<view class="tit">为您找到如下“杭”相关搜索</view>
-			<view class="li">
+			<view class="tit">为您找到如下“{{name}}”相关搜索</view>
+			<view class="li" v-for="item in lists" :key="item.id" @tap="go(item.id)">
 				<view class="name">
-					<text class="left">融信杭州世纪</text>
-					<text class="right">46000元/m²</text>
+					<view class="left" v-html="item.name"></view>
+					<view class="right">{{item.price}}元/m²</view>
 				</view>
 				<view class="address">
-					余杭区 - 杭州市萧山区市心北路与建设一...
-				</view>
-			</view>
-			<view class="li">
-				<view class="name">
-					<text class="left">融信杭州世纪</text>
-					<text class="right">46000元/m²</text>
-				</view>
-				<view class="address">
-					余杭区 - 杭州市萧山区市心北路与建设一...
-				</view>
-			</view>
-			<view class="li">
-				<view class="name">
-					<text class="left">融信杭州世纪</text>
-					<text class="right">46000元/m²</text>
-				</view>
-				<view class="address">
-					余杭区 - 杭州市萧山区市心北路与建设一...
+					{{item.country}} - <view v-html="item.address"></view>
 				</view>
 			</view>
 		</view>
@@ -68,14 +48,68 @@
 </template>
 
 <script>
+	var that
 	export default {
+		onLoad() {
+			that = this
+			this.getinfo()
+		},
 		data() {
 			return {
-				name: ''
+				name: '',
+				hots: [],
+				lists:[]
 			}
 		},
 		methods: {
-			
+			back() {
+				uni.navigateBack({
+					data: 1
+				})
+			},
+			getinfo() {
+				let token = uni.getStorageSync('token')
+				let city = uni.getStorageSync('city')
+				uni.request({
+					url: that.apiserve + '/jy/us/search',
+					method: 'GET',
+					data: {
+						city: city,
+						token: token
+					},
+					success: (res) => {
+						console.log(res)
+						that.hots = res.data.hot_search
+					}
+				})
+			},
+			go(id) {
+				uni.navigateTo({
+					url: '/pages/content/content?id=' + id
+				})
+			},
+			sou() {
+				let city = uni.getStorageSync('cityname')
+				uni.request({
+					url: that.putserve + '/api/project/e_search',
+					method: "POST",
+					data: {
+						name: that.name,
+						page: 1,
+						limit: 10,
+						city: city
+					},
+					success: (res) => {
+						console.log(res)
+						that.lists = res.data.data
+					}
+				})
+			}
+		},
+		watch: {
+			name(val) {
+				this.sou()
+			}
 		}
 	}
 </script>
@@ -98,6 +132,7 @@
 
 	.box {
 		padding: 0 30rpx;
+
 		.top-input {
 			height: 64rpx;
 			border-radius: 32rpx;
@@ -105,36 +140,44 @@
 			display: flex;
 			align-items: center;
 			margin-bottom: 50rpx;
+
 			image {
 				width: 36rpx;
 				height: 36rpx;
 				margin-right: 10rpx;
 				margin-left: 16rpx;
 			}
+
 			.istxt {
 				color: #969799;
 				font-size: 28rpx;
 			}
+
 			input {
 				font-size: 28rpx;
 			}
 		}
+
 		.hots {
 			.tit {
 				margin-bottom: 42rpx;
+
 				image {
 					width: 36rpx;
 					height: 36rpx;
 					margin-right: 20rpx;
 					margin-bottom: -2rpx;
 				}
+
 				text {
 					color: #19191A;
 					font-size: 30rpx;
 				}
 			}
+
 			.content {
 				margin-bottom: 50rpx;
+
 				text {
 					color: #40A2F4;
 					font-size: 24rpx;
@@ -145,39 +188,49 @@
 					display: inline-block;
 					margin-bottom: 24rpx;
 				}
+
 				.item {
 					background-color: #F7F7F7;
 					color: #525255;
 				}
+
 				.item:nth-of-type(4n) {
 					margin-right: 0;
 				}
 			}
 		}
 	}
+
 	.upbox {
 		width: 96%;
 		padding-left: 4%;
 		position: fixed;
 		top: 220rpx;
-		min-height: 50vh;
+		min-height: 60vh;
+		max-height: 83vh;
 		background-color: #FFFFFF;
+		overflow: auto;
 		.tit {
 			color: #333436;
 			font-size: 28rpx;
 			margin-bottom: 58rpx;
 		}
+
 		.li {
 			border-bottom: 1rpx solid #F2F4F7;
 			margin-bottom: 32rpx;
+
 			.name {
 				margin-bottom: 24rpx;
 				overflow: hidden;
+
 				.left {
 					color: #303233;
 					font-size: 32rpx;
 					font-weight: bold;
+					float: left;
 				}
+
 				.right {
 					color: #FF6040;
 					font-size: 26rpx;
@@ -185,9 +238,14 @@
 					margin-right: 30rpx;
 				}
 			}
+
 			.address {
 				color: #7D7E80;
 				font-size: 24rpx;
+				display: flex;
+				view {
+					margin-left: 10rpx;
+				}
 			}
 		}
 	}

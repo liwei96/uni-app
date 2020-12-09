@@ -5,19 +5,19 @@
 		</view>
 		<view class="input">
 			<view class="left">
-				<text class="city">杭州</text>
-				<image src="../../static/search/search-down.png" mode="" class="down"></image>
+				<text class="city" @tap="gopath">杭州</text>
+				<image src="../../static/search/search-down.png" mode="" class="down" @tap="gopath"></image>
 				<view class="line">
 				</view>
-				<image src="../../static/search/search-search.png" mode="" class="search"></image>
-				<text class="txt">请输入楼盘名</text>
+				<image src="../../static/search/search-search.png" mode="" class="search" @tap="gosearch"></image>
+				<text class="txt" @tap="gosearch">请输入楼盘名</text>
 			</view>
-			<view class="right">
+			<view class="right" @tap="gomap">
 				<image src="../../static/search/search-path.png" mode=""></image>
 				<text>地图</text>
 			</view>
 		</view>
-		<view class="icons">
+		<view :class="isfixed ? 'icons iconsbox' : 'icons'" id="searchbox">
 			<view class="icons-box">
 				<view class="item" @tap="shownum = shownum ===0?10:0">
 					区域<image src="../../static/search/search-down1.png" mode=""></image>
@@ -95,19 +95,19 @@
 						</view>
 					</view>
 					<view class="right">
-						<view v-if="areanum == 0">
-							<view :class="search.country == 0 ? 'li active' : 'li'" @tap="search.country = 0">
+						<view v-show="areanum == 0">
+							<view :class="cityidslength == 0 ? 'li active' : 'li'" @tap="setcity">
 								不限
 							</view>
-							<view :class="search.country == item.id ? 'li active' : 'li'" v-for="item in citys" :key="item.id" @click="search.country = item.id">
+							<view :class="item.checked ? 'li active' : 'li'" v-for="(item,key) in citys" :key="item.id" @click="setsearch(key,0,item.id)">
 								{{item.name}}
 							</view>
 						</view>
-						<view v-if="areanum == 1">
-							<view :class="search.railway == 0 ? 'li active' : 'li'" @tap="search.railway = 0">
+						<view v-show="areanum == 1">
+							<view :class="railwayidslength == 0 ? 'li active' : 'li'" @tap="setrailway">
 								不限
 							</view>
-							<view :class="search.railway == item.id ? 'li active' : 'li'" v-for="item in railways" :key="item.id" @click="search.railway = item.id">
+							<view :class="item.checked ? 'li active' : 'li'" v-for="(item,key) in railways" :key="item.id" @click="setsearch(key,1,item.id)">
 								{{item.name}}
 							</view>
 						</view>
@@ -117,7 +117,7 @@
 					<view class="resert" @tap="clear(0)">
 						重置
 					</view>
-					<view class="button" @tap="shownum = 10">
+					<view class="button" @tap="makereal()">
 						确定
 					</view>
 				</view>
@@ -127,8 +127,8 @@
 					<view class="list" v-for="item in houses" :key="item.id">
 						<view class="txt">{{item.name}}</view>
 						<view class="checkbox">
-							<jiuaicheckbox @change='changeBox' borderStyle='1px solid #D4D7D9' color='#40A2F4' :checked='false' :borderRadius='6'
-							 :fontSize='20' :checkBoxSize='30' :value="item.id"></jiuaicheckbox>
+							<jiuaicheckbox borderStyle='1px solid #D4D7D9' color='#40A2F4' :checked='item.id == search.house_type' :borderRadius='6'
+							 :fontSize='20' :checkBoxSize='30' :value="item.id" functionType="page" @pageClick="changeBox"></jiuaicheckbox>
 						</view>
 					</view>
 				</view>
@@ -159,7 +159,7 @@
 						特色
 					</view>
 					<view class="more-icon">
-						<view :class="item.id == search.feature ? 'active' : ''" v-for="(item,key) in features" :key="key" @tap="search.feature = item.id">{{item.name}}</view>
+						<view :class="item.checked ? 'active' : ''" v-for="(item,key) in features" :key="key" @tap="setsearch(key,2,item.id)">{{item.name}}</view>
 					</view>
 					<!-- <view class="more-tit">
 						装修
@@ -175,7 +175,7 @@
 					<view class="resert" @tap="clear(2)">
 						重置
 					</view>
-					<view class="button" @tap="shownum = 10">
+					<view class="button" @tap="makereal">
 						确定
 					</view>
 				</view>
@@ -201,7 +201,7 @@
 			</view>
 			
 		</view>
-		<view class="types">
+		<view :class="isfixed ? 'types typesbox' : 'types'">
 			<view :class="search.type == '住宅' ? 'active':''" @tap="settype('住宅')">
 				住宅
 			</view>
@@ -376,7 +376,15 @@
 				isspecial: false,
 				isnormal: true,
 				isnull: false,
-				other: []
+				other: [],
+				cityids: [],
+				cityidslength: 0,
+				railwayids: [],
+				railwayidslength: 0,
+				featureids: [],
+				featureidslength: 0,
+				once: true,
+				isfixed: false
 			}
 		},
 		onReachBottom() {
@@ -390,11 +398,28 @@
 			})
 			this.animation = animation
 		},
+		onPageScroll(e) {
+			if(e.scrollTop >=44) {
+				this.isfixed = true
+			}else {
+				this.isfixed = false
+			}
+		},
 		components: {
 			"toast": toast,
 			"jiuaicheckbox": jiuaicheckbox
 		},
 		methods: {
+			gomap(){
+				uni.navigateTo({
+					url:"/pages/map/map"
+				})
+			},
+			gopath(){
+				uni.navigateTo({
+					url:"/pages/path/path"
+				})
+			},
 			go(id) {
 				uni.redirectTo({
 					url:"/pages/content/content?id="+id
@@ -422,14 +447,31 @@
 					case 0:
 						this.search.country = 0
 						this.search.railway = 0
+						for(let item of this.citys) {
+							item.checked = false
+						}
+						for(let item of this.railways) {
+							item.checked = false
+						}
+						this.cityidslength = 0
+						this.railwayidslength = 0
+						this.cityids = []
+						this.railwayids = []
 					break;
 					case 1:
 						this.search.house_type = 0
+						this.$forceUpdate()
+						this.getinfo()
 					break;
 					case 2:
 						this.search.area = 0
 						this.search.type = ''
 						this.search.feature = 0
+						for(let item of this.features) {
+							item.checked = false
+						}
+						this.featureidslength = 0
+						this.featureids = []
 					break;
 				}
 			},
@@ -472,17 +514,91 @@
 					url:"/pages/help/help"
 				})
 			},
+			setsearch(key,type,id) {
+				if(type == 0) {
+					// this.search.country = id
+					let arr = this.pu(this.cityids,id)
+					if(this.citys[key].checked) {
+						this.citys[key].checked = false
+					} else {
+						this.citys[key].checked = true
+					}
+					this.cityids = arr
+					this.cityidslength = arr.length
+				} else if(type == 1) {
+					let arr = this.pu(this.railwayids,id)
+					if(this.railways[key].checked) {
+						this.railways[key].checked = false
+					} else {
+						this.railways[key].checked = true
+					}
+					this.railwayids = arr
+					this.railwayidslength = arr.length
+				} else {
+					let arr = this.pu(this.featureids,id)
+					if(this.features[key].checked) {
+						this.features[key].checked = false
+					} else {
+						this.features[key].checked = true
+					}
+					this.featureids = arr
+					this.featureidslength = arr.length
+				}
+				console.log(this.featureids)
+			},
+			makereal() {
+				this.search.railway = this.railwayids.join(',')
+				this.search.feature = this.featureids.join(',')
+				this.search.country = this.cityids.join(',')
+				this.shownum = 10
+			},
+			pu(arr, id) {
+			      if (typeof id == 'string') {
+			        if (arr.indexOf(String(id)) == -1) {
+			          arr.push(id);
+			        } else {
+			          arr.splice(arr.indexOf(String(id)), 1);
+			        }
+			      } else {
+			        if (arr.indexOf(parseInt(id)) == -1) {
+			          arr.push(id);
+			        } else {
+			          arr.splice(arr.indexOf(parseInt(id)), 1);
+			        }
+			      }
+			      return arr;
+			    },
+			gosearch() {
+				uni.navigateTo({
+					url:"/pages/searchname/searchname"
+				})
+			},
+			setcity() {
+				this.cityidslength = 0
+				this.cityids = []
+				for(let val of this.citys) {
+					val.checked = false
+				}
+			},
+			setrailway() {
+				this.railwayidslength = 0
+				this.railwayids = []
+				for(let val of this.railways) {
+					val.checked = false
+				}
+			},
 			setpricenum(num) {
 				this.pricenum = num
 			},
 			setareanum(num) {
 				this.areanum = num
 			},
-			changeBox(e) { //选中切换事件(由组件发起)
-				console.log('点击了checkBox', e);
-				uni.showToast({
-					'title': "点击结果" + e.detail.checked
-				})
+			changeBox(e) {
+				console.log(e);
+				this.search.house_type = e.detail.value
+				this.$forceUpdate()
+				this.getinfo()
+				console.log(this.search)
 			},
 			// 定义动画内容
 			scaleAndScale() {
@@ -492,25 +608,38 @@
 			getinfo() {
 				let city = uni.getStorageSync('city')
 				let token = uni.getStorageSync('token')
-				uni.request({
-					url:that.apiserve+"/jy/phone/search/conditions",
-					method:"GET",
-					data:{
-						city: city,
-						token:token
-					},
-					success: (res) => {
-						that.citys = res.data.conditions.countries
-						that.railways = res.data.conditions.railways
-						that.singles = res.data.conditions.single_prices
-						that.totals = res.data.conditions.total_prices
-						that.houses = res.data.conditions.house_types
-						that.areas = res.data.conditions.areas
-						that.types1 = res.data.conditions.types
-						that.features = res.data.conditions.features
-						console.log(res)
-					}
-				})
+				if(this.once) {
+					this.once = false
+					uni.request({
+						url:that.apiserve+"/jy/phone/search/conditions",
+						method:"GET",
+						data:{
+							city: city,
+							token:token
+						},
+						success: (res) => {
+							that.citys = res.data.conditions.countries
+							for(let item of that.citys) {
+								that.$set(item,'checked',false)
+							}
+							that.railways = res.data.conditions.railways
+							for(let item of that.railways) {
+								that.$set(item,'checked',false)
+							}
+							that.singles = res.data.conditions.single_prices
+							that.totals = res.data.conditions.total_prices
+							that.houses = res.data.conditions.house_types
+							that.areas = res.data.conditions.areas
+							that.types1 = res.data.conditions.types
+							that.features = res.data.conditions.features
+							for(let item of that.features) {
+								that.$set(item,'checked',false)
+							}
+							console.log(res)
+						}
+					})
+				}
+				
 				let data = this.search
 				data.city = city
 				uni.request({
@@ -575,9 +704,13 @@
 		color: #17181A;
 		font-size: 32rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
+		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
-
+		width: 100%;
+		position: fixed;
+		background-color: #FFFFFF;
+		top: 0;
+		z-index: 10;
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -589,7 +722,7 @@
 	.input {
 		display: flex;
 		padding: 8rpx 0;
-
+		padding-top: 130rpx;
 		.left {
 			margin-left: 30rpx;
 			width: 570rpx;
@@ -651,7 +784,7 @@
 
 	.icons {
 		position: relative;
-
+		
 		.icons-box {
 			display: flex;
 			align-items: center;
@@ -974,6 +1107,14 @@
 		}
 	}
 
+	.iconsbox {
+		position: fixed;
+		width: 100%;
+		top: 126rpx;
+		background-color: #FFFFFF;
+		z-index: 10;
+	}
+
 	.types {
 		display: flex;
 		justify-content: space-around;
@@ -995,6 +1136,10 @@
 			color: #3EACF0;
 			background-color: #EDF7FF;
 		}
+	}
+
+	.typesbox {
+		margin-top: 88rpx;
 	}
 
 	.box {
