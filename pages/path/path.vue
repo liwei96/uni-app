@@ -1,31 +1,19 @@
 <template>
 	<view class="path">
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>选择城市</text>
 		</view>
 		<view class="nowcity">
 			<image src="../../static/other/path-name.png" mode=""></image>
-			<text class="now-name">杭州</text>
+			<text class="now-name">{{name}}</text>
 			<text class="msg">当前城市</text>
 		</view>
 		<view class="hots">
 			<text class="tit">热门城市</text>
 			<view class="hots-con">
-				<view class="item">
-					杭州
-				</view>
-				<view class="item">
-					杭州
-				</view>
-				<view class="item">
-					杭州
-				</view>
-				<view class="item">
-					杭州
-				</view>
-				<view class="item">
-					杭州
+				<view class="item" v-for="item in hots" :key="item.area_id" @tap="setcity(item.area_id,item.short)">
+					{{item.short}}
 				</view>
 			</view>
 			<view class="allmsg">
@@ -37,11 +25,8 @@
 					{{item}}
 				</view>
 				<view class="box">
-					<view class="cityitem">
-						杭州
-					</view>
-					<view class="cityitem">
-						杭州
+					<view class="cityitem" v-for="val in lists[item]" :key="val.area_id" @tap=gocity(val.area_id,val.short)>
+						{{val.short}}
 					</view>
 				</view>
 			</view>
@@ -54,16 +39,30 @@
 </template>
 
 <script>
+	var that
 	export default {
+		onLoad() {
+			that = this
+			this.getinfo()
+			this.name = uni.getStorageSync('cityname')
+		},
 		data() {
 			return {
 				list: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
 					'W', 'X', 'Y', 'Z'
 				],
-				toView: 'A'
+				toView: 'A',
+				hots: [],
+				lists: [],
+				name: ''
 			};
 		},
 		methods: {
+			back(){
+				uni.navigateBack({
+					data:1
+				})
+			},
 			to(id) {
 				uni.createSelectorQuery().select('#'+id).boundingClientRect(data => { //目标位置的节点：类或者id
 					uni.createSelectorQuery().select(".path").boundingClientRect(res => { //最外层盒子的节点：类或者id
@@ -73,6 +72,35 @@
 						})
 					}).exec()
 				}).exec();
+			},
+			getinfo(){
+				uni.showLoading({
+					title:"加载中"
+				})
+				uni.request({
+					url:that.putserve+"/api/first/city",
+					method:"POST",
+					success: (res) => {
+						console.log(res)
+						that.hots = res.data.data.hots
+						that.lists = res.data.data.city
+						uni.hideLoading()
+					}
+				})
+			},
+			setcity(id,name) {
+				uni.setStorageSync('city',id)
+				uni.setStorageSync('cityname',name)
+				uni.switchTab({
+					url:"/pages/index/index"
+				})
+			},
+			gocity(id,name) {
+				for(let item of this.hots) {
+					if(id == item.area_id) {
+						this.setcity(id,name)
+					}
+				}
 			}
 		}
 	}

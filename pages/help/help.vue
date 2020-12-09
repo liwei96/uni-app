@@ -30,20 +30,8 @@
 				您意向购买哪种户型？
 			</view>
 			<view class="hus">
-				<view class="hu">
-					一室
-				</view>
-				<view>
-					二室
-				</view>
-				<view>
-					三室
-				</view>
-				<view>
-					四室
-				</view>
-				<view>
-					五室及以上
+				<view class="hu" v-for="item in houses" :key="item.id">
+					{{item.name}}
 				</view>
 			</view>
 			<view class="tit">
@@ -57,24 +45,14 @@
 				您意向购买多大面积？
 			</view>
 			<view class="area">
-				<view>
-					50m²以下
-				</view>
-				<view>
-					50-70m²
-				</view>
-				<view>
-					70-100m²
-				</view>
-				<view>
-					100m²以上
+				<view v-for="item in areas" :key="item.id">
+					{{item.name}}
 				</view>
 			</view>
 			<view class="tit">
 				您还有其它要求吗？
 			</view>
 			<textarea value="" placeholder="说说您的想法，让我们更好的服务您" class="remark" :adjust-position="true" placeholder-class="istxt" />
-
 			</view>
 		<view class="bom">
 			<button type="primary" class="btn">提交</button>
@@ -111,14 +89,21 @@
 
 <script>
 	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	var that
 	export default {
 		components: {
 		        "popup":wybPopup
 		    },
 		data() {
 			return {
-				num: 100
+				num: 100,
+				houses: [],
+				areas: []
 			}
+		},
+		onLoad() {
+			that = this
+			this.getinfo()
 		},
 		methods: {
 			sliderChange(e) {
@@ -129,6 +114,28 @@
 			},
 			close() {
 				this.$refs.popup.hide()
+			},
+			getinfo() {
+				uni.showLoading({
+					title:"加载中"
+				})
+				let city = uni.getStorageSync('city')
+				let token = uni.getStorageSync('token')
+				uni.request({
+					url:that.apiserve+'/jy/help/condition',
+					method:'GET',
+					data:{
+						city: city,
+						token: token
+					},
+					success: (res) => {
+						console.log(res)
+						that.houses = res.data.house_types
+						that.areas = res.data.areas
+						console.log(that.houses)
+						uni.hideLoading()
+					}
+				})
 			}
 		},
 		mounted(){
@@ -221,7 +228,7 @@
 				background-color: #F2F2F2;
 				color: #4B4C4D;
 				font-size: 23.9rpx;
-				margin-right: 21.91rpx;
+				margin-right: 20rpx;
 				float: left;
 				margin-bottom: 23.9rpx;
 			}
@@ -283,7 +290,7 @@
 		}
 		.istxt {
 			color: #969899;
-			font-size: 27.88rpx;
+			font-size: 28rpx;
 		}
 	}
 	.bom {
