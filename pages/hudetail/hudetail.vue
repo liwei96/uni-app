@@ -466,11 +466,12 @@ import bottom from '../../components/mine/bottom.vue'
 					font-weight: bold;
 					color: #323233;
 					text{
-						width: 108rpx;
+						// width: 108rpx;
 						height: 30rpx;
 						background: #FA941B;
 						border-radius: 6rpx;
-						
+						padding-left: 10rpx;
+						padding-right: 10rpx;
 						font-size: 20rpx;
 						font-weight: 500;
 						color: #FFFFFF;

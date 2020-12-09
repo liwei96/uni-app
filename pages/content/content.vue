@@ -69,23 +69,23 @@
 				</view>
 				<view class="baoming_btn">
 					<view class="btn_box">
-						<view class="btn01">
+						<view class="btn01" @tap="baoMing(detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价')">
 							<image src="../../static/content/dijia.png"></image>查询最底价
 						</view>
-						<view>
+						<view @tap="baoMing(detail.id,'项目落地页+变价通知我',91,'变价通知我')">
 							<image src="../../static/content/bianjia.png"></image>变价通知我
 						</view>
 					</view>
 					<view class="tel_box">
 						<view class="left">
 							<view class="tel">
-								{{telphone.replace(',','转')}}
+								{{telphone}}
 							</view>
 							<view class="pp">
 								致电售楼处了解更多信息
 							</view>
 						</view>
-						<view class="right_btn">
+						<view class="right_btn" @tap="boTel(old_telphone)">
 							<image src="../../static/content/botel.png" mode=""></image>
 							<text>一键拨打</text>
 						</view>
@@ -109,7 +109,7 @@
 					</text>
 				</text>
 				<view class="right">
-					<view class="ling_btn">
+					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+领取优惠',94,'领取优惠')">
 						领取优惠
 					</view>
 					<text>67人已领取</text>
@@ -123,7 +123,7 @@
 					</text>
 				</text>
 				<view class="right">
-					<view class="ling_btn">
+					<view class="ling_btn"  @tap="baoMing(detail.id,'项目落地页+免费领取',95,'免费领取')">
 						免费领取
 					</view>
 					<text>39人已领取</text>
@@ -164,7 +164,7 @@
 				<uni-notice-bar  :text="specials.dynamic" scrollable showType="slider" background-color="#fff"
 				:showIcon="true" color="#646466" :speed="50" v-if="specials.dynamic" :single="true"></uni-notice-bar>
 			</view>
-			<view class="button">
+			<view class="button" @tap="baoMing(detail.id,'项目落地页+咨询特价房',93,'咨询特价房')">
 				咨询特价房
 			</view>
 		</view>
@@ -201,7 +201,7 @@
 					</view>
 				</view>
 			</scroll-view>
-			<view class="hu_zi">
+			<view class="hu_zi" @tap="baoMing(detail.id,'项目落地页+领取全部户型资料',1,'领取全部户型资料')">
 				领取全部户型资料
 			</view>
 		</view>
@@ -222,7 +222,7 @@
 					<view class="time">{{item.time}}</view>
 					<image :src="item.img" mode=""></image>
 				</view>
-				<view class="button">
+				<view class="button" @tap="baoMing(detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态')">
 					订阅最新动态
 				</view>
 			</view>
@@ -259,7 +259,7 @@
 				</view>
 			</view>
 
-			<view class="get_di_price">
+			<view class="get_di_price"  @tap="baoMing(detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价')">
 				获取最新成交价
 			</view>
 		</view>
@@ -281,7 +281,7 @@
 					2、{{fenxi_data[1].content}}
 				</view>
 			</view>
-			<view class="btn">
+			<view class="btn"  @tap="baoMing(detail.id,'项目落地页+领取分析资料',99,'领取分析资料')">
 				领取分析资料
 			</view>
 		</view>
@@ -318,8 +318,8 @@
 					</view>
 				</view>
 				<view class="bo_tel">
-					<image src="../../static/content/zixun.png" mode="" class="bo_zi"></image>
-					<image src="../../static/content/tel.png" mode=""></image>
+					<image src="../../static/content/zixun.png" mode="" class="bo_zi" @tap="baoMing(detail.id,'项目落地页+咨询服务',104,'咨询服务')" ></image>
+					<image src="../../static/content/tel.png" mode="" @tap="boTel(old_telphone)"></image>
 				</view>
 			</view>
 	
@@ -442,13 +442,15 @@
 
 			<view class="wen_list">
 				<view class="wen_one" v-for="item in questions" :key="item.id">
-					<view class="wen_top">
-						<text class="wen">问</text>
-						<text class="wen_t">{{item.question}}</text>
-					</view>
-					<view class="da">
-						共1个回答
-					</view>
+					<navigator :url="`../wendadetail/wendadetail/?id=${item.id}`">
+						<view class="wen_top">
+							<text class="wen">问</text>
+							<text class="wen_t">{{item.question}}</text>
+						</view>
+						<view class="da">
+							共1个回答
+						</view>
+					</navigator>
 				</view>
 				<view class="ti_btn">
 					我要提问
@@ -488,7 +490,7 @@
 					在线咨询
 				</view>
 			</view>
-			<view class="tel_box">
+			<view class="tel_box" @tap="boTel()">
 				<image src="../../static/content/tel_bot.png" mode=""></image>
 				电话咨询
 			</view>
@@ -497,7 +499,10 @@
 				预约看房
 			</view>
 		</view>
-
+		
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+		</wyb-popup>
 	</view>
 </template>
 
@@ -508,6 +513,8 @@
 	import tTd from '@/components/t-table/t-td.vue';
 	import uniNoticeBar from "@/components/uni-notice-bar/uni-notice-bar.vue";
 	import uCharts from '@/components/u-charts/u-charts/u-charts.min.js'
+	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	import sign from '@/components/sign.vue'
 	var _self;
 	var canvaColumn = null;
 	//let mapSearch = weex.requireModule('mapSearch')  
@@ -517,7 +524,9 @@
 			tTh,
 			tTr,
 			tTd,
-			uniNoticeBar
+			uniNoticeBar,
+			sign,
+			wybPopup
 		},
 		data() {
 			return {
@@ -577,12 +586,22 @@
 				recommends:[],
 				common:{},
 				telphone:'',
+				old_telphone:'',
 				specials:{},
 				deal_prices:[],
 				Column:[],
 				tejia:[],
 				echarts_year:"",
 				project_id:"",
+				
+				title_e:'',
+				type_e:'',
+				pid_d:'',
+				remark_k:'',
+				position_n:0,
+				codenum:1,
+				
+				
 
 
 			};
@@ -642,10 +661,19 @@
 						this.questions = data.questions;
 						this.recommends = data.recommends;
 						this.common = data.common;
-						this.telphone= data.common.phone;
+						let phone = data.common.phone;
+						this.telphone= phone.replace(',','转') ;
+						this.old_telphone = phone;
 						this.specials = data.specials;
-						this.tejia = data.specials.data;
+						let  tejia = data.specials.data;
+						if(tejia==null){
+							this.tejia =[];
+						}else{
+							this.tejia = data.specials.data;
+						}
+						
 						this.deal_prices = data.deal_prices;
+						console.log(this.telphone);
 						
 						let _self = this;
 						
@@ -740,6 +768,26 @@
 		
 		},
 		methods: {
+			setiscode(){
+				this.codenum = 0
+			},
+			boTel(tel){
+				uni.makePhoneCall({
+				    phoneNumber: tel,
+					success:function(){
+						console.log('拨打电话');
+					}//仅为示例
+				});
+			},
+			baoMing(pid,msg,point,title){
+				console.log(pid,msg,point);
+				this.pid_d = pid;
+				this.position_n = point,
+				this.title_e = title;
+				this.remark_k = msg;
+				console.log(this.pid_d);
+				this.$refs.popup.show();
+			},
 			showTable() {
 				this.num = this.tableList.length;
 				this.table_show = false;
