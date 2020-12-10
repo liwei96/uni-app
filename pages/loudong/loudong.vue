@@ -23,51 +23,49 @@
 	   <!-- 动态列表 -->
 	   <view class="dong_list" v-show='dong_show'>
 		   <view class="dong_list_one" v-for="item in data" :key="item.id">
-				<view class="time">{{item.time}}</view>
-					<view class="tit">
-						<text class="box">
-						</text>
-						{{item.title}}
-					</view>
-					
-					<view class="border_box">
-						<view class="con">
-							{{item.content}}
+			   <navigator :url="`../dynamicdetail/dynamicdetail?id=${item.id}`">
+				       <view class="time">{{item.time}}</view>
+						<view class="tit">
+							<text class="box">
+							</text>
+							{{item.title}}
 						</view>
-						<view class="img">
-							<image :src="item.img" mode=""></image>
+						
+						<view class="border_box">
+							<view class="con">
+								{{item.content}}
+							</view>
+							<view class="img">
+								<image :src="item.img" mode=""></image>
+							</view>
 						</view>
-					</view>
-		 </view>
+				</navigator>
+		    </view>
 		
 	   </view>
 	  <!-- 加推时间 -->
 	  <view class="push_time" v-show='push_time_show'>
 	  	  <view class="time_one">
 	  	  	  <text class="yuan"></text>
-			  加推时间：2020-06-18
+			  加推时间：{{pull_time}}
 	  	  </view>
 	  </view>
 	  <!-- 交房时间 -->
 	  <view class="jiao_time" v-show="jiao_time_show">
 	  	  <view class="time_one">
 	  	  	  <text class="yuan"></text>
-	  			  交房时间：2020-06-18
+	  			  交房时间：{{jiao_time}}
 	  	  </view>
 	  </view>
 	  <!-- 五证信息 -->
 	  <view class="wu_zheng" v-show="wu_zheng_show">
 	  	  <view class="time_one">
 	  	  	  <text class="yuan"></text>
-	  			  临售许（2020）第00957-00960号
+	  			  {{zheng}}
 	  	  </view>
 	  </view>
 	   
-	   
-	   
-		
-		
-		<bottom></bottom>
+		<bottom :remark="'项目楼盘动态页+预约看房'" :point="103" :title="'预约看房'" :pid="parseInt(project_id)" :telphone="telphone"></bottom>
 		
 		
 	</view>
@@ -83,7 +81,14 @@
 				jiao_time_show:false,
 				wu_zheng_show:false,
 				data:[],
-				total:''
+				total:'',
+				project_id:'',
+				
+				telphone:'4009669995',
+				
+				pull_time:'',
+				jiao_time:'',
+				zheng:''
 			};
 		},
 		components:{
@@ -92,6 +97,7 @@
 		onLoad(option){
 			console.log(option.id);
 			this.getdata(option.id);
+			this.project_id = option.id;
 		},
 		// onPullDownRefresh (){
 		// 	console.log("触发下拉刷新了");
@@ -106,6 +112,9 @@
 				})
 			},
 			getdata(id){
+				let token = uni.getStorageInfoSync("token");
+				let other = uni.getStorageInfoSync("other");
+				let city_id = uni.getStorageInfoSync("city");
 				uni.request({
 					url:this.apiserve+"/applets/dynamic/info",
 					data:{
@@ -114,7 +123,7 @@
 						// page 第几页
 						// limit 每页几条
 						id:id,
-						city:"1",
+						city:city_id,
 						page:1, 
 						limit:10, 
 					},
@@ -124,6 +133,28 @@
 							console.log(res);
 							this.data = res.data.data;
 							this.total = res.data.total;
+							//this.telphone = res.data.common;
+						}
+					}
+				})
+				uni.request({
+					url:this.apiserve+"/applets/building/base",
+					data:{
+						// id 项目id
+						// city 城市id
+						// page 第几页
+						// limit 每页几条
+						id:id,
+						other:other,
+						token:token,
+					},
+					method:'GET',
+					success: (res) => {
+						if(res.data.code==200){
+							console.log(res);
+							this.pull_time = res.data.building.push_time ;
+							this.jiao_time = res.data.building.give_time;
+						    this.zheng = res.data.building.license;
 						}
 					}
 				})

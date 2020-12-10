@@ -8,6 +8,7 @@
 		</view>
 		<view class="huxing_list">
 			<view class="huxing_one" v-for="item in other_rooms" :key="item.id">
+			  <navigator :url="`../hudetail/hudetail?id=${item.id}`">
 				<view class="left">
 					<image :src="item.small" mode=""></image>
 				</view>
@@ -33,13 +34,12 @@
 						<view class="p_rig">约<text class="strong">{{item.price}}</text>万/套</view>
 					</view>
 				</view>
+			  </navigator>
 			</view>
-
 		</view>
 		
-		<bottom></bottom>
 		
-		
+		<bottom :remark="'项目更多户型页+预约看房'" :point="103" :title="'预约看房'" :pid="parseInt(project_id)" :telphone="telphone"></bottom>
 	</view>
 </template>
 
@@ -47,12 +47,13 @@
 	import bottom from '../../components/mine/bottom.vue'
 	export default {
 		components:{
-			bottom
+			bottom,
 		},
 		data() {
 			return {
 				other_rooms:[],
-				project_id:''
+				project_id:'',
+				telphone:'',
 			};
 		},
 		onLoad(option){
@@ -60,19 +61,25 @@
 			this.getData(option.id);
 		},
 		methods:{
+			setiscode(){
+				this.codenum = 0
+			},
 			getData(id){
+				let other = uni.getStorageInfoSync('other')
+				let token = uni.getStorageInfoSync('token')
 				uni.request({
 					url:this.apiserve+"/applets/house/listing",
 				    data:{
 						id:id,
-						other:'',
-						token:''
+						other:other,
+						token:token
 					},
 					method:"GET",
 					success: (res) => {
 						if(res.data.code==200){
 							console.log(res);
 							this.other_rooms = res.data.other_rooms;
+							this.telphone = res.data.common.phone;
 						}
 					}
 				})

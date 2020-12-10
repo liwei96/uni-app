@@ -15,7 +15,7 @@
 						<view class="rate" >
 							<uni-rate v-model="comment.score" :margin="7"
 							color="#E8EBED" active-color="#FF7519" 
-							readonly="true" :size="16"></uni-rate>
+							:readonly="true" :size="16"></uni-rate>
 						</view>
 					</view>
 				</view>
@@ -78,7 +78,7 @@
 							为客户提供专业的购房建议
 						</view>
 					</view>
-					<view class="btn">
+					<view class="btn" @tap="baoMing(project_id,'项目点评详情页+免费咨询',104,'免费咨询')">
 						免费咨询
 					</view>
 				</view>
@@ -88,13 +88,19 @@
 		<view class="prolist">
 				<twosee :title="title" :project="recommends"></twosee>
 		</view>
-		<bottom></bottom>
+		<bottom :remark="'项目点评详情页+预约看房'" :point="103" :title="'预约看房'" :pid="parseInt(project_id)" :telphone="telphone"></bottom>
+		
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+		</wyb-popup>
 	</view>
 </template>
 <script>
 	import bottom from '../../components/mine/bottom.vue'
 	import twosee from '../../components/mine/twosee.vue'
 	import uniRate from '@/components/uni-rate/uni-rate.vue';
+	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	import sign from '@/components/sign.vue'
 	export default {
 		data() {
 			return {
@@ -106,13 +112,24 @@
 				recommends:[],
 				hui_num:0,
 				staff:{},
-				project_id:''
+				project_id:'',
+				telphone:'',
+				
+				codenum:1,
+				title_e:'',
+				pid_d:0,
+				remark_k:'',
+				position_n:0,
+				telphone:'',
+				
 			};
 		},
 		components:{
 			twosee,
 			bottom,
-			uniRate
+			uniRate,
+			wybPopup,
+			sign
 		},
 		onLoad(option) {
 			console.log(option.id);
@@ -120,13 +137,25 @@
 			this.project_id = option.id;
 		},
 		methods:{
+			baoMing(pid,remark,point,title){
+				this.$refs.popup.show();
+				this.title_e = title;
+				this.pid_d = pid;
+				this.remark_k = remark;
+				this.title_e  = title;
+			},
+			setiscode(){
+				this.codenum = 0
+			},
 			getdata(id){
+				let token = uni.getStorageInfoSync("token");
+				let other = uni.getStorageInfoSync("other");
 				uni.request({
 					url:this.apiserve+"/applets/comment/detail",
 				    data:{
 						id:id,
-						other:'',
-						token:''
+						other:other,
+						token:token
 					},
 					method:"GET",
 					success: (res) => {
@@ -139,6 +168,7 @@
 							console.log(res.data.comment.children,'hui');
 							this.hui_num =  res.data.comment.children.length;
 							this.staff = res.data.common.staff;
+							this.telphone = res.data.common.phone;
 						}
 					}
 				})

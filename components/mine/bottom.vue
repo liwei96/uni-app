@@ -6,23 +6,77 @@
 				在线咨询
 			</view>
 		</view>
-		<view class="tel_box">
+		<view class="tel_box"  @tap="boTel(telphone)">
 			<image src="../../static/content/tel_bot.png" mode=""></image>
 			电话咨询
 		</view>
-		<view class="yuyue_box">
+		<view class="yuyue_box" @tap="baoMing(remark,point,title,pid)">
 			<image src="../../static/content/yuyue.png" mode=""></image>
 			预约看房
 		</view>
+		
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+		</wyb-popup>
+		
 	</view>
 </template>
 
 <script>
+	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	import sign from '@/components/sign.vue'
 	export default {
+		props:{
+			remark:{
+				type:String
+			},
+			point:{
+				type:Number
+			},
+			title:{
+				type:String
+			},
+			pid:{
+				type:String
+			},
+			telphone:{
+				type:String
+			}
+		},
+		components:{
+			sign,
+			wybPopup
+		},
 		data() {
 			return {
-				
+				codenum:1,
+				title_e:'',
+				pid_d:0,
+				remark_k:'',
+				position_n:0,
 			};
+		},
+		methods:{
+			setiscode(){
+				this.codenum = 0
+			},
+			boTel(tel) {
+				uni.makePhoneCall({
+					phoneNumber: tel,
+					success: function() {
+						console.log('拨打电话',tel);
+					} //仅为示例
+				});
+			},
+			baoMing(remark,point,title,pid){
+				console.log(remark,point,title,pid);
+				this.$refs.popup.show();
+				this.pid_d = pid;
+				this.position_n = point ;
+				this.title_e = title;
+				this.remark_k = remark;
+			},
+			
 		}
 	}
 </script>

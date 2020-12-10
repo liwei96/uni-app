@@ -36,7 +36,7 @@
 					{{building.total_price}}
 					<text class="dan">万起</text>
 				</text>
-				<text class="cha">查底价</text>
+				<text class="cha" @tap="baoMing(building.id,'项目详情页+查低价',105,'查低价')">查底价</text>
 			</view>
 			<view class="type">
 				<text class="left">类       型：</text>
@@ -67,7 +67,7 @@
 				<text class="time">
 					{{building.open_time}}
 				</text>
-				<text class="kai_btn">开盘通知</text>
+				<text class="kai_btn" @tap="baoMing(building.id,'项目详情页+开盘通知',92,'开盘提醒我')">开盘通知</text>
 			</view>
 			<view class="push_time">
 				<text class="left">加推时间：</text>
@@ -179,11 +179,18 @@
 			</view>
 		</view>
 		<bottom></bottom>
+		
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+		</wyb-popup>
+		
 	</view>
 </template>
 
 <script>
 	import bottom from '../../components/mine/bottom.vue';
+	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	import sign from '@/components/sign.vue'
 	export default {
 		data() {
 			return {
@@ -191,10 +198,19 @@
 				building:{},
 				text_all:'',
 				zhan:true,
+				
+				codenum:1,
+				title_e:'',
+				pid_d:'',
+				remark_k:'',
+				position_n:0,
+				telphone:''
 			};
 		},
 		components:{
-			 bottom
+			 bottom,
+			 wybPopup,
+			 sign,
 		},
 		onLoad(option){
 			console.log(option);
@@ -202,6 +218,18 @@
 			// this.text=this.text.substring(0,82);
 		},
 		methods:{
+		
+			baoMing(pid,remark,point,title){
+				this.title_e = title;
+				this.pid_d = pid;
+				this.remark_k = remark;
+				this.position_n = point;
+				console.log(pid);
+				this.$refs.popup.show();
+			},
+			setiscode(){
+				this.codenum = 0
+			},
 			getData(id){
 				uni.request({
 					url:this.apiserve+"/applets/building/base",

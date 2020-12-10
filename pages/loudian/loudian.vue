@@ -8,19 +8,21 @@
 		</view>
 		<view class="dian_list">
 			<view class="dian_one" v-for="item in data" :key="item.id">
-				<view class="top">
-					<image src="../../static/content/ping_img.png" mode=""></image>
-					<view class="right_tel">
-						<text class="tel">{{item.name}}</text>
-						<view class="rate" >
-							<uni-rate v-model="item.score" :margin="7" 
-							color="#E8EBED" active-color="#FF7519" 
-							readonly="true" :size="18"></uni-rate>
+				<navigator :url="`../diandetail/diandetail/?id=${item.id}`">
+					<view class="top">
+						<image src="../../static/content/ping_img.png" mode=""></image>
+						<view class="right_tel">
+							<text class="tel">{{item.name}}</text>
+							<view class="rate" >
+								<uni-rate v-model="item.score" :margin="7" 
+								color="#E8EBED" active-color="#FF7519" 
+								:readonly="true" :size="18"></uni-rate>
+							</view>
+							
 						</view>
-						
 					</view>
-				</view>
-				<text class="con">{{item.content}}</text>
+					<text class="con">{{item.content}}</text>
+				</navigator>
 				<view class="gong">
 					<view class="left">
 						<text class="time">{{item.time}}</text>
@@ -48,7 +50,7 @@
 			<image src="../../static/other/white.png" mode=""></image>
 		</view>
 		
-		<bottom></bottom>
+		<bottom :remark="'项目楼盘点评页+预约看房'" :point="103" :title="'预约看房'" :pid="parseInt(project_id)" :telphone="telphone"></bottom>
 		
 	</view>
 </template>
@@ -62,7 +64,9 @@ import bottom from '../../components/mine/bottom.vue';
 				 ceshi1: 3,
 				 value:3,
 				 data:[],
-				 project_id:""
+				 project_id:"",
+				 telphone:'',
+				 page:1,
 			};
 		},
 		components:{
@@ -71,24 +75,59 @@ import bottom from '../../components/mine/bottom.vue';
 		},
 		onLoad(option){
 			this.project_id = option.id;
-			this.getdata(option.id);
+			let page = this.page;
+			this.getdata(option.id,page);
+		},
+		onReachBottom(){
+			console.log('滑倒低了');
+			let id = this.project_id;
+			this.getmore(id);
 		},
 		methods:{
-			getdata(id){
+			getdata(id,page){
+				 let token = uni.getStorageInfoSync('token');
+				 let other = uni.getStorageInfoSync('other');
 				uni.request({
 					url:this.apiserve+"/applets/comment/list",
 					data:{
 						id:id,   //项目id
-						page:1,  //第几页
+						page:page,  //第几页
 						limit:10, //每页几条
-						token:'',
-						other:'',
+						token:token,
+						other:other,
 					},
 					method:"GET",
 					success: (res) => {
 						if(res.data.code==200){
 							 console.log(res);
 							 this.data = res.data.data;
+							 this.telphone = res.data.common.phone;
+						}
+					},
+					fail: (error) => {
+						console.log(error);
+					}
+				})
+			},
+			getmore(id){
+				 let page = this.page + 1;
+				 let token = uni.getStorageInfoSync('token');
+				 let other = uni.getStorageInfoSync('other');
+				uni.request({
+					url:this.apiserve+"/applets/comment/list",
+					data:{
+						id:id,   //项目id
+						page:page,  //第几页
+						limit:10, //每页几条
+						token:token,
+						other:other,
+					},
+					method:"GET",
+					success: (res) => {
+						if(res.data.code==200){
+							 console.log(res);
+							 this.data = this.data.concat(res.data.data);
+							
 						}
 					},
 					fail: (error) => {
@@ -165,7 +204,11 @@ import bottom from '../../components/mine/bottom.vue';
 				font-weight: 500;
 				color: #333333;
 				line-height: 42rpx;
-				
+				line-height: 44rpx;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
 			}
 			.gong:after{
 				content: '';

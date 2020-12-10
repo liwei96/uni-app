@@ -1,5 +1,5 @@
 <template>
-	<view class="detail" >
+	<view class="detail">
 		<view class="toptitle">
 			<navigator url="../index/index" class="nav_top" open-type="switchTab">
 				<image src="../../static/all-back.png" mode=""></image>
@@ -10,8 +10,8 @@
 			<swiper class="swiper" :autoplay="true">
 				<swiper-item v-for="item in pro_img">
 					<view class="swiper-item uni-bg-red">
-						<navigator :url="`../piclist/piclist?id=${detail.id}`" >
-					    	<image :src="item.small" mode=""></image>
+						<navigator :url="`../piclist/piclist?id=${detail.id}`">
+							<image :src="item.small" mode=""></image>
 						</navigator>
 					</view>
 				</swiper-item>
@@ -29,9 +29,9 @@
 						<text class="one">{{detail.state}}</text>
 						<text class="other">{{detail.type}}</text>
 						<text class="other">{{detail.railway}}</text>
-						<text class="other" v-for="(item,index) in detail.features" :key="index" >{{item}}</text>
-					</text> 
-				</view>       
+						<text class="other" v-for="(item,index) in detail.features" :key="index">{{item}}</text>
+					</text>
+				</view>
 				<view class="right_gong">
 					<view class="duibi">
 						<image src="../../static/content/duibi.png"></image>
@@ -123,7 +123,7 @@
 					</text>
 				</text>
 				<view class="right">
-					<view class="ling_btn"  @tap="baoMing(detail.id,'项目落地页+免费领取',95,'免费领取')">
+					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+免费领取',95,'免费领取')">
 						免费领取
 					</view>
 					<text>39人已领取</text>
@@ -161,8 +161,8 @@
 				</view>
 			</view>
 			<view class="xiaoxi">
-				<uni-notice-bar  :text="specials.dynamic" scrollable showType="slider" background-color="#fff"
-				:showIcon="true" color="#646466" :speed="50" v-if="specials.dynamic" :single="true"></uni-notice-bar>
+				<uni-notice-bar :text="specials.dynamic" scrollable showType="slider" background-color="#fff" :showIcon="true"
+				 color="#646466" :speed="50" v-if="specials.dynamic" :single="true"></uni-notice-bar>
 			</view>
 			<view class="button" @tap="baoMing(detail.id,'项目落地页+咨询特价房',93,'咨询特价房')">
 				咨询特价房
@@ -218,9 +218,11 @@
 
 			<view class="dong_list">
 				<view class="dong_one" v-for="item in dongtai" :key="item.id">
-					<view class="dong">{{item.introduce}}</view>
-					<view class="time">{{item.time}}</view>
-					<image :src="item.img" mode=""></image>
+					<navigator :url="`../dynamicdetail/dynamicdetail?id=${item.id}`">
+						<view class="dong">{{item.introduce}}</view>
+						<view class="time">{{item.time}}</view>
+						<image :src="item.img" mode=""></image>
+					</navigator>
 				</view>
 				<view class="button" @tap="baoMing(detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态')">
 					订阅最新动态
@@ -259,7 +261,7 @@
 				</view>
 			</view>
 
-			<view class="get_di_price"  @tap="baoMing(detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价')">
+			<view class="get_di_price" @tap="baoMing(detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价')">
 				获取最新成交价
 			</view>
 		</view>
@@ -281,7 +283,7 @@
 					2、{{fenxi_data[1].content}}
 				</view>
 			</view>
-			<view class="btn"  @tap="baoMing(detail.id,'项目落地页+领取分析资料',99,'领取分析资料')">
+			<view class="btn" @tap="baoMing(detail.id,'项目落地页+领取分析资料',99,'领取分析资料')">
 				领取分析资料
 			</view>
 		</view>
@@ -318,11 +320,11 @@
 					</view>
 				</view>
 				<view class="bo_tel">
-					<image src="../../static/content/zixun.png" mode="" class="bo_zi" @tap="baoMing(detail.id,'项目落地页+咨询服务',104,'咨询服务')" ></image>
+					<image src="../../static/content/zixun.png" mode="" class="bo_zi" @tap="baoMing(detail.id,'项目落地页+咨询服务',104,'咨询服务')"></image>
 					<image src="../../static/content/tel.png" mode="" @tap="boTel(old_telphone)"></image>
 				</view>
 			</view>
-	
+
 
 		</view>
 		<view class="bg_hui"></view>
@@ -340,8 +342,8 @@
 			</view>
 			<!-- 周边配套地图 -->
 			<view class="address">
-				<scroll-view class="nav" scroll-x>
-					<view class="nav_list">
+				<scroll-view class="nav_nav" scroll-x="true">
+					<view class="nav_list active">
 						公交
 					</view>
 					<view class="nav_list">
@@ -359,15 +361,45 @@
 				</scroll-view>
 
 				<view class="map">
-					<map id="my_map" style="width: 100%; height: 320rpx;" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
+					<map id="my_map" style="width:750rpx; height:160px;" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
+				</view>
+				<view class="add_all">
+					<view class="add_one">
+						<view class="tit">武林广场</view>
+						<view class="bus">
+							<text class="left">414路、434路、675路</text>
+							<text class="rig">800m</text>
+						</view>
+					</view>
+					<view class="add_one">
+						<view class="tit">武林广场</view>
+						<view class="bus">
+							<text class="left">414路、434路、675路</text>
+							<text class="rig">800m</text>
+						</view>
+					</view>
+					<view class="add_one">
+						<view class="tit">武林广场</view>
+						<view class="bus">
+							<text class="left">414路、434路、675路</text>
+							<text class="rig">800m</text>
+						</view>
+					</view>
+					<view class="add_one">
+						<view class="tit">武林广场</view>
+						<view class="bus">
+							<text class="left">414路、434路、675路</text>
+							<text class="rig">800m</text>
+						</view>
+					</view>
 				</view>
 
 
-
 			</view>
+			
 
 
-			<view class="button">
+			<view class="button" @tap="baoMing(detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')">
 				获取周边5公里详细配套
 			</view>
 		</view>
@@ -384,8 +416,9 @@
 				</view>
 			</view>
 			<view class="bottom">
-				<view class="ping_one" v-for="item in comments" :key="item.id">
-					    <navigator :url="`../diandetail/diandetail?id=${item.id}`">
+				<template v-if="comments.length>0">
+					<view class="ping_one" v-for="item in comments" :key="item.id">
+						<navigator :url="`../diandetail/diandetail?id=${item.id}`">
 							<view class="left">
 								<image src="../../static/content/ping_img.png" mode=""></image>
 							</view>
@@ -393,7 +426,7 @@
 						<view class="right">
 							<view class="top_tit">
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
-								   <text class="tel">{{item.mobile}}</text>
+									<text class="tel">{{item.mobile}}</text>
 								</navigator>
 								<view class="no_zan" v-if="item.my_like==0">
 									<image src="../../static/content/no_zan.png" mode=""></image>
@@ -406,23 +439,27 @@
 							</view>
 							<view class="content">
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
-							      {{item.content}}
-							   </navigator>
+									{{item.content}}
+								</navigator>
 							</view>
 							<view class="time_box">
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
-								  <text class="time">{{item.time}}</text>
+									<text class="time">{{item.time}}</text>
 								</navigator>
 								<text class="delete" v-if="item.mine==true">删除</text>
 							</view>
 						</view>
-					
-				</view>
-				
-				
+
+					</view>
+
+				</template>
+				<template v-else>
+					<view class="zanwu">
+						暂无评论，快来评论吧
+					</view>
+				</template>
+
 			</view>
-
-
 			<view class="dian_btn">
 				我要点评
 			</view>
@@ -441,17 +478,25 @@
 			</view>
 
 			<view class="wen_list">
-				<view class="wen_one" v-for="item in questions" :key="item.id">
-					<navigator :url="`../wendadetail/wendadetail/?id=${item.id}`">
-						<view class="wen_top">
-							<text class="wen">问</text>
-							<text class="wen_t">{{item.question}}</text>
-						</view>
-						<view class="da">
-							共1个回答
-						</view>
-					</navigator>
-				</view>
+				<template v-if="questions.length>0">
+					<view class="wen_one" v-for="item in questions" :key="item.id">
+						<navigator :url="`../wendadetail/wendadetail/?id=${item.id}`">
+							<view class="wen_top">
+								<text class="wen">问</text>
+								<text class="wen_t">{{item.question}}</text>
+							</view>
+							<view class="da">
+								共1个回答
+							</view>
+						</navigator>
+					</view>
+				</template>
+				<template v-else>
+					<view class="zanwu">
+					暂无问答，快来提问吧
+					</view>
+				</template>
+				
 				<view class="ti_btn">
 					我要提问
 				</view>
@@ -471,15 +516,15 @@
 						<view class="price">{{item.single_price}}元/m²</view>
 						<view class="type">{{item.type}}<text>|</text>{{item.city}}-{{item.country}}<text>|</text>{{item.area}}m² </view>
 						<view class="tese">
-							<text class="zhuang"  v-if="item.decorate">{{item.decorate}}</text>
+							<text class="zhuang" v-if="item.decorate">{{item.decorate}}</text>
 							<text class="other" v-if="item.railway">{{item.railway}}</text>
 							<text class="other" v-for="(ite,index) in item.features" :key="index" v-if="index==0">{{ite}}</text>
 						</view>
 					</view>
 				</view>
-				
-				
-				
+
+
+
 			</view>
 		</view>
 
@@ -490,16 +535,16 @@
 					在线咨询
 				</view>
 			</view>
-			<view class="tel_box" @tap="boTel()">
+			<view class="tel_box" @tap="boTel(old_telphone)">
 				<image src="../../static/content/tel_bot.png" mode=""></image>
 				电话咨询
 			</view>
-			<view class="yuyue_box">
+			<view class="yuyue_box" @tap="baoMing(detail.id,'项目落地页+预约看房',103,'预约看房')">
 				<image src="../../static/content/yuyue.png" mode=""></image>
 				预约看房
 			</view>
 		</view>
-		
+
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
 		</wyb-popup>
@@ -532,16 +577,16 @@
 			return {
 				total: '',
 				pro_img: [],
-				detail:{},
+				detail: {},
 				tableList: [],
 				xiaoxi: '',
 				color: '#000',
 				goodsList: [],
 				dongtai: [],
 				num: 3,
-				num2:3,
+				num2: 3,
 				table_show: true,
-				table_show2:true,
+				table_show2: true,
 
 
 				cWidth: '',
@@ -558,7 +603,7 @@
 				//地图部分
 				latitude: 39.909,
 				longitude: 116.39742,
-				map:{},
+				map: {},
 				covers: [{
 					latitude: 39.909,
 					longitude: 116.39742,
@@ -568,40 +613,40 @@
 					longitude: 116.39,
 					iconPath: '../../../static/location.png'
 				}],
-				style_list:{
-					effect:false,
-					e_active:true,
-					huxing:true,
-					hu_active:false,
+				style_list: {
+					effect: false,
+					e_active: true,
+					huxing: true,
+					hu_active: false,
 				},
-				effects:[],
-				house_types:[],
-				
-				fenxi_data:[],
-				fenxi_tou:[],
-				fenxi_yiju:[],
-				staff:{},
-				comments:[],
-				questions:[],
-				recommends:[],
-				common:{},
-				telphone:'',
-				old_telphone:'',
-				specials:{},
-				deal_prices:[],
-				Column:[],
-				tejia:[],
-				echarts_year:"",
-				project_id:"",
-				
-				title_e:'',
-				type_e:'',
-				pid_d:'',
-				remark_k:'',
-				position_n:0,
-				codenum:1,
-				
-				
+				effects: [],
+				house_types: [],
+
+				fenxi_data: [],
+				fenxi_tou: [],
+				fenxi_yiju: [],
+				staff: {},
+				comments: [],
+				questions: [],
+				recommends: [],
+				common: {},
+				telphone: '',
+				old_telphone: '',
+				specials: {},
+				deal_prices: [],
+				Column: [],
+				tejia: [],
+				echarts_year: "",
+				project_id: "",
+
+				title_e: '',
+				type_e: '',
+				pid_d: '',
+				remark_k: '',
+				position_n: 0,
+				codenum: 1,
+
+
 
 
 			};
@@ -622,10 +667,10 @@
 			//#endif
 			this.cWidth = uni.upx2px(750);
 			this.cHeight = uni.upx2px(500);
-			
 
-			
-			
+
+
+
 			//百度地图
 			// uni.poiSearchNearBy({
 			// 	point: {
@@ -637,153 +682,156 @@
 			// 	   console.log(res,'中心点');
 			// 	}
 			// });
-			let  id = option.id;
+			let id = option.id;
+			let other = uni.getStorageInfoSync("other");
 			uni.request({
-				url:this.apiserve+'/applets/building/detail',
-				data:{
-					id:id,
-					other:'123',
-					ip:'255'
-				},success:(res)=>{
-					if(res.data.code==200){
-						console.log(res,"res");
+				url: this.apiserve + '/applets/building/detail',
+				data: {
+					id: id,
+					other: other,
+					ip: '255'
+				},
+				success: (res) => {
+					if (res.data.code == 200) {
+						console.log(res, "res");
 						let data = res.data.data;
-						this.pro_img =data.imgs.img.effects;
-						
-						this.effects= data.imgs.img.effects;						this.house_types= data.imgs.img.house_types;
-						
+						this.pro_img = data.imgs.img.effects;
+
+						this.effects = data.imgs.img.effects;
+						this.house_types = data.imgs.img.house_types;
+
 						this.total = data.imgs.num;
 						this.detail = data.abstract;
 						this.goodsList = data.house_types;
 						this.dongtai = data.dynamics;
 						this.staff = data.staff;
-						this.comments  = data.comments;
+						this.comments = data.comments;
 						this.questions = data.questions;
 						this.recommends = data.recommends;
 						this.common = data.common;
 						let phone = data.common.phone;
-						this.telphone= phone.replace(',','转') ;
+						this.telphone = phone.replace(',', '转');
 						this.old_telphone = phone;
 						this.specials = data.specials;
-						let  tejia = data.specials.data;
-						if(tejia==null){
-							this.tejia =[];
-						}else{
+						let tejia = data.specials.data;
+						if (tejia == null) {
+							this.tejia = [];
+						} else {
 							this.tejia = data.specials.data;
 						}
-						
+
 						this.deal_prices = data.deal_prices;
 						console.log(this.telphone);
-						
+
 						let _self = this;
-						
-						let  arr_data = data.deal_prices;
+
+						let arr_data = data.deal_prices;
 						let time = [];
-						let num =[];
-						arr_data.map(n=>{
+						let num = [];
+						arr_data.map(n => {
 							num.push(n.price);
-							let str = n.time.substring(n.time.length-5);
-							let strr = str.replace("-",'.');
+							let str = n.time.substring(n.time.length - 5);
+							let strr = str.replace("-", '.');
 							time.push(strr);
-							let year = n.time.substring(0,4);
+							let year = n.time.substring(0, 4);
 							this.echarts_year = year;
 						})
-						
-						
-						let Column ={
-							categories:[],
-							series:[]
+
+
+						let Column = {
+							categories: [],
+							series: []
 						};
 						Column.series = [{
-							"name": this.echarts_year+"年",
-							"textColor":"#fff",
+							"name": this.echarts_year + "年",
+							"textColor": "#fff",
 							"data": num,
 						}, ];
-						
+
 						Column.categories = time;
-						this.Column =Column;
+						this.Column = Column;
 						console.log(Column);
-					    _self.showColumn("canvasColumn", Column);
-						
-						
-						
+						_self.showColumn("canvasColumn", Column);
+
+
+
 						let arr = data.specials.data;
-						if(arr){
-							arr.map(p=>{
+						if (arr) {
+							arr.map(p => {
 								let str = p.diff.toString();
-								p.diff = str.substring(0,str.length-2)+'**'
+								p.diff = str.substring(0, str.length - 2) + '**'
 							})
 							this.tableList = arr;
 						}
-						
-						let  analysis = data.analysis;
-						let fenxi_tou =[];
-						let fenxi_yiju =[];
-						analysis.map(m=>{
-							if(m.type==1){//投资分析
+
+						let analysis = data.analysis;
+						let fenxi_tou = [];
+						let fenxi_yiju = [];
+						analysis.map(m => {
+							if (m.type == 1) { //投资分析
 								fenxi_tou.push(m);
-							}else if(m.type==2){//宜居分析
+							} else if (m.type == 2) { //宜居分析
 								fenxi_yiju.push(m)
 							}
 						})
-						
+
 						this.fenxi_data = fenxi_tou;
 						this.fenxi_tou = fenxi_tou;
 						this.fenxi_yiju = fenxi_yiju;
-						
+
 					}
 				}
 			})
 			//console.log(ip_arr["ip"]);
-			
-			
-			
-			
+
+
+
+
 		},
 		onReady() {
-			var nmap = uni.createMapContext('my_map',this);
-			this.map= nmap;
+			var nmap = uni.createMapContext('my_map', this);
+			this.map = nmap;
 			nmap.getCenterLocation({
 				success(res) {
-					console.log(res,'中心点');
+					console.log(res, '中心点');
 				}
 			})
-		 
-			
-			
-			 // var  bmap= new plus.maps.Map('my_app');
-			 // var searchObj = new plus.maps.Search(bmap);  
-			 // searchObj.poiSearchNearBy({
-			 // 	point: {
-			 // 		latitude: 39.909,
-			 // 		longitude: 116.39742,
-			 // 	},
-			 // 	key: "公交",
-			 //     success: res=>{
-			 // 	   console.log(res,'res');
-			 // 	}
-			 // });
-			 
-			 
-		
+
+
+
+			// var  bmap= new plus.maps.Map('my_app');
+			// var searchObj = new plus.maps.Search(bmap);  
+			// searchObj.poiSearchNearBy({
+			// 	point: {
+			// 		latitude: 39.909,
+			// 		longitude: 116.39742,
+			// 	},
+			// 	key: "公交",
+			//     success: res=>{
+			// 	   console.log(res,'res');
+			// 	}
+			// });
+
+
+
 		},
 		methods: {
-			setiscode(){
+			setiscode() {
 				this.codenum = 0
 			},
-			boTel(tel){
+			boTel(tel) {
 				uni.makePhoneCall({
-				    phoneNumber: tel,
-					success:function(){
+					phoneNumber: tel,
+					success: function() {
 						console.log('拨打电话');
-					}//仅为示例
+					} //仅为示例
 				});
 			},
-			baoMing(pid,msg,point,title){
-				console.log(pid,msg,point);
+			baoMing(pid, msg, point, title) {
+				console.log(pid, msg, point);
 				this.pid_d = pid;
 				this.position_n = point,
-				this.title_e = title;
+			    this.title_e = title;
 				this.remark_k = msg;
 				console.log(this.pid_d);
 				this.$refs.popup.show();
@@ -792,12 +840,12 @@
 				this.num = this.tableList.length;
 				this.table_show = false;
 			},
-			showPrice(){
+			showPrice() {
 				this.num2 = this.deal_prices.length;
 				this.table_show2 = false;
 			},
 			showColumn(canvasId, chartData) {
-				console.log(_self.cWidth * _self.pixelRatio,'111')
+				console.log(_self.cWidth * _self.pixelRatio, '111')
 				canvaColumn = new uCharts({
 					$this: _self,
 					canvasId: canvasId,
@@ -814,8 +862,10 @@
 						rotateLabel: true
 					},
 					yAxis: {
-						data:[{
-						  format:val=>{return val+" w"}
+						data: [{
+							format: val => {
+								return val + " w"
+							}
 						}]
 					},
 					dataLabel: true,
@@ -841,7 +891,7 @@
 
 					this.class_active.active2 = false;
 					this.class_active.yiju2 = true;
-					
+
 					this.fenxi_data = this.fenxi_tou;
 				} else if (num == 2) {
 					this.class_active.active2 = true;
@@ -849,49 +899,49 @@
 
 					this.class_active.active = false;
 					this.class_active.yiju = true;
-					
+
 					this.fenxi_data = this.fenxi_yiju;
 				}
 			},
-			showEffect(){
+			showEffect() {
 				this.style_list.effect = false;
 				this.style_list.e_active = true;
 				this.style_list.huxing = true;
 				this.style_list.hu_active = false;
 				this.pro_img = this.effects;
 			},
-			showHuxing(){
+			showHuxing() {
 				this.style_list.effect = true;
 				this.style_list.e_active = false;
-				
+
 				this.style_list.huxing = false;
 				this.style_list.hu_active = true;
 				this.pro_img = this.house_types;
 			},
-			goDetail(){
-				let  id = this.detail.id;
+			goDetail() {
+				let id = this.detail.id;
 				uni.navigateTo({
-					url:"../prodetail/prodetail?id="+id
+					url: "../prodetail/prodetail?id=" + id
 				})
 			},
-			moreHuxing(id){
+			moreHuxing(id) {
 				uni.navigateTo({
-					url:"../prohuxing/prohuxing?id="+id
+					url: "../prohuxing/prohuxing?id=" + id
 				})
 			},
-			allDong(id){
+			allDong(id) {
 				uni.navigateTo({
-					url:"../loudong/loudong?id="+id
+					url: "../loudong/loudong?id=" + id
 				})
 			},
-			allDian(id){
+			allDian(id) {
 				uni.navigateTo({
-					url:"../loudian/loudian?id="+id
+					url: "../loudian/loudian?id=" + id
 				})
 			},
-			louwen(id){
+			louwen(id) {
 				uni.navigateTo({
-					url:"../allwenda/allwenda?id="+id
+					url: "../allwenda/allwenda?id=" + id
 				})
 			},
 		},
@@ -908,8 +958,10 @@
 			padding-top: 39.84rpx;
 			line-height: 87.64rpx;
 			background-color: #fff;
-			.nav_top{
+
+			.nav_top {
 				display: inline-block;
+
 				image {
 					width: 31.87rpx;
 					height: 31.87rpx;
@@ -954,7 +1006,8 @@
 				line-height: 40rpx;
 				text-align: center;
 			}
-			.active{
+
+			.active {
 				width: 92rpx;
 				height: 40rpx;
 				border-radius: 20rpx;
@@ -981,7 +1034,8 @@
 				text-align: center;
 				line-height: 40rpx;
 			}
-			.hu_active{
+
+			.hu_active {
 				width: 92rpx;
 				height: 40rpx;
 				background: #3EACF0;
@@ -1166,6 +1220,7 @@
 							overflow: hidden;
 							text-overflow: ellipsis;
 							white-space: nowrap;
+
 							.left {
 								font-size: 28rpx;
 								font-weight: 500;
@@ -1460,9 +1515,10 @@
 		//  今日特价房 
 		.tejia {
 			width: 100%;
-			height:auto;
+			height: auto;
 			background: #fff;
 			padding-bottom: 40rpx;
+
 			.tit {
 				width: 100%;
 				padding-left: 30rpx;
@@ -1513,10 +1569,11 @@
 				.table {
 					width: 100%;
 					height: auto;
-					border:1rpx solid #E6E6E6;
+					border: 1rpx solid #E6E6E6;
 					border-radius: 12rpx 12rpx 0rpx 0rpx;
-					.te{
-						color:#FF6040 ;
+
+					.te {
+						color: #FF6040;
 					}
 				}
 
@@ -1545,6 +1602,7 @@
 				padding-left: 26rpx;
 				height: 36rpx;
 				margin-top: 37rpx;
+
 				.semp-notice-bar {
 					width: 100%;
 					padding-left: 26rpx;
@@ -1744,10 +1802,10 @@
 						font-weight: 500;
 						color: #646466;
 						line-height: 44rpx;
-						display: -webkit-box; 
-						 -webkit-box-orient: vertical;
-						 -webkit-line-clamp: 2;
-						  overflow: hidden;
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+						-webkit-line-clamp: 2;
+						overflow: hidden;
 					}
 
 					.time {
@@ -1909,7 +1967,8 @@
 					text-align: center;
 				}
 			}
-			.sel text:first-child{
+
+			.sel text:first-child {
 				margin-right: 30rpx;
 			}
 
@@ -1928,9 +1987,9 @@
 					line-height: 44rpx;
 					margin-bottom: 22rpx;
 					display: -webkit-box;
-					 -webkit-box-orient: vertical;
-					 -webkit-line-clamp: 2;
-					  overflow: hidden;
+					-webkit-box-orient: vertical;
+					-webkit-line-clamp: 2;
+					overflow: hidden;
 				}
 
 				.pp2 {
@@ -1939,9 +1998,9 @@
 					color: #4B4B4D;
 					line-height: 44rpx;
 					display: -webkit-box;
-					 -webkit-box-orient: vertical;
-					 -webkit-line-clamp: 2;
-					  overflow: hidden;
+					-webkit-box-orient: vertical;
+					-webkit-line-clamp: 2;
+					overflow: hidden;
 				}
 			}
 
@@ -2089,7 +2148,8 @@
 		// /周边配套/
 		.zhou_pei {
 			background-color: #fff;
-
+			height: auto;
+			padding-bottom: 40rpx;
 			.zhou {
 				font-size: 34rpx;
 				font-weight: 800;
@@ -2106,7 +2166,6 @@
 				box-sizing: border-box;
 				display: flex;
 				align-items: center;
-
 				text {
 					font-size: 30rpx;
 					font-weight: 500;
@@ -2117,7 +2176,8 @@
 				font-size: 30rpx;
 				font-weight: 500;
 				color: #323233;
-				line-height: 36rpx;
+				line-height: 30rpx;
+				margin-bottom: 32rpx;
 
 			}
 
@@ -2125,7 +2185,9 @@
 				padding-left: 30rpx;
 				padding-right: 30rpx;
 				box-sizing: border-box;
-
+				margin-bottom: 40rpx;
+				display:flex;
+				align-items: center;
 				text {
 					font-size: 30rpx;
 					font-weight: 500;
@@ -2147,19 +2209,28 @@
 			//周边配套地图
 			.address {
 				width: 100%;
-
-				.nav {
+				.nav_nav {
 					width: 100%;
 					height: 42rpx;
-
+				    white-space: nowrap;
+					display: flex;
+					margin-bottom: 30rpx;
 					.nav_list {
 						font-size: 30rpx;
 						font-weight: 500;
 						color: #323233;
 						width: 60rpx;
-						height: 42rpx;
+						// height: 42rpx;
 						line-height: 42rpx;
-						float: left;
+						margin-right: 108rpx;
+						display: inline-block;
+					}
+					.active{
+						border-bottom:4rpx solid #3EACF0;
+						color:#3EACF0;
+					}
+					.nav_list:first-child{
+						margin-left:40rpx ;
 					}
 				}
 
@@ -2167,7 +2238,35 @@
 					width: 100%;
 					height: 320rpx;
 				}
-
+				.add_all{
+					padding-left: 30rpx;
+					padding-right: 30rpx;
+					box-sizing: border-box;
+					.add_one{
+						margin-bottom: 30rpx;
+						.tit{
+							 font-size: 28rpx;
+							 font-weight: bold;
+							 color: #323233;
+						}
+						.bus{
+							   display: flex;
+							   margin-top: 15rpx;
+								.left{
+								font-size: 24rpx;
+								font-weight: 500;
+								color: #969799;
+								line-height: 24rpx;
+							}
+							.rig{
+								font-size: 24rpx;
+								font-weight: 500;
+								color: #969799;
+								line-height: 24rpx;
+							}
+						}
+					}
+				}
 
 
 			}
@@ -2269,18 +2368,21 @@
 								float: right;
 								display: flex;
 								align-items: center;
+
 								image {
 									width: 32rpx;
 									height: 32rpx;
 								}
 							}
-							.no_zan{
+
+							.no_zan {
 								font-size: 24rpx;
 								font-weight: 400;
 								color: #B2B2B6;
 								float: right;
 								display: flex;
 								align-items: center;
+
 								image {
 									width: 32rpx;
 									height: 32rpx;
@@ -2295,9 +2397,9 @@
 							color: #333333;
 							line-height: 44rpx;
 							display: -webkit-box;
-							 -webkit-box-orient: vertical;
-							 -webkit-line-clamp: 2;
-							  overflow: hidden;
+							-webkit-box-orient: vertical;
+							-webkit-line-clamp: 2;
+							overflow: hidden;
 						}
 
 						.time_box {
@@ -2319,6 +2421,14 @@
 						}
 
 					}
+				}
+				.zanwu{
+					font-size: 26rpx;
+					color: #000;
+					height: 100rpx;
+					line-height: 100rpx;
+				    text-align: center;
+					margin-bottom: 20rpx;
 				}
 			}
 
@@ -2406,6 +2516,14 @@
 						line-height: 44rpx;
 					}
 				}
+				.zanwu{
+					 font-size: 26rpx;
+					 color: #000;
+					 height: 100rpx;
+					 line-height: 100rpx;
+					 text-align: center;
+					 margin-bottom: 20rpx;
+				}
 
 				.ti_btn {
 					width: 100%;
@@ -2439,14 +2557,15 @@
 			}
 
 			.pro_list {
-				.peo_one:after{
-					content:'';
-					height:0;
-					clear:both;
-					overflow:hidden;
+				.peo_one:after {
+					content: '';
+					height: 0;
+					clear: both;
+					overflow: hidden;
 					visibility: hidden;
 					display: block;
 				}
+
 				.peo_one {
 					margin-bottom: 60rpx;
 
@@ -2461,10 +2580,12 @@
 					.right_pro {
 						width: 440rpx;
 						float: right;
+
 						.pro_name {
 							display: flex;
 							justify-content: space-between;
-							.name{
+
+							.name {
 								font-size: 32rpx;
 								font-weight: 800;
 								color: #303233;
@@ -2475,7 +2596,7 @@
 								text-overflow: ellipsis;
 								display: block;
 							}
-							
+
 
 							.status {
 								width: 68rpx;
@@ -2546,6 +2667,7 @@
 			background-color: #fff;
 			position: fixed;
 			bottom: 0rpx;
+
 			.zixun {
 				font-size: 24rpx;
 				font-weight: 500;

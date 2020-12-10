@@ -83,7 +83,7 @@
 				<image src="../../static/other/white.png" mode=""></image>
 			</view>
 			
-			<bottom></bottom>
+			<bottom :remark="remark" :point="103" :title="'预约看房'" :pid="parseInt(project_id)" :telphone="telphone"></bottom>
 		</view>
 	</view>
 </template>
@@ -95,32 +95,44 @@ export default {
 		return {
 			data:[],
 			project_id:'',
+			remark:'',
+			telphone:''
 		};
 	},
 	components:{
 		bottom
 	},
 	onLoad(option) {
+		if(option.id==0 ||option.id==undefined || option.id==null){
+			this.remark = "全部问答页+预约看房"
+		}else{
+			this.remark = "项目问答页+预约看房"
+		}
 	  this.getdata(option.id);
 	  this.project_id = option.id;
 	},
 	methods:{
 		getdata(id){
+			let city_id = uni.getStorageInfoSync('city');
+			let token = uni.getStorageInfoSync('token');
+			let other = uni.getStorageInfoSync('other');
+			
 			uni.request({
 				url:this.apiserve+"/applets/question/list",
 				data:{
-					city:'1',
+					city:city_id,
 					page:'1',
 					limit:"10",
 					project:id,  //如果是全部问答project 传0
-					other:'',
-					token:'',
+					other:other,
+					token:token,
 				},
 				method:"GET",
 				success: (res) => {
 					if(res.data.code==200){
 						 console.log(res);
 						 this.data = res.data.data;
+						 this.telphone = res.data.common.phone;
 					}
 				},
 				fail: (error) => {

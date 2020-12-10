@@ -681,6 +681,51 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _uChartsMin = _interopRequireDefault(__webpack_require__(/*! @/components/u-charts/u-charts/u-charts.min.js */ 265));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 438));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 445));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 452));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 459));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNoticeBar = function uniNoticeBar() {__webpack_require__.e(/*! require.ensure | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-notice-bar/uni-notice-bar.vue */ 424));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var wybPopup = function wybPopup() {__webpack_require__.e(/*! require.ensure | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then((function () {return resolve(__webpack_require__(/*! @/components/wyb-popup/wyb-popup.vue */ 410));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var sign = function sign() {__webpack_require__.e(/*! require.ensure | components/sign */ "components/sign").then((function () {return resolve(__webpack_require__(/*! @/components/sign.vue */ 417));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
@@ -807,12 +852,14 @@ var _default = {
     // 	}
     // });
     var id = option.id;
+    var other = uni.getStorageInfoSync("other");
     uni.request({
       url: this.apiserve + '/applets/building/detail',
       data: {
         id: id,
-        other: '123',
+        other: other,
         ip: '255' },
+
       success: function success(res) {
         if (res.data.code == 200) {
           console.log(res, "res");
@@ -985,7 +1032,9 @@ var _default = {
 
         yAxis: {
           data: [{
-            format: function format(val) {return val + " w";} }] },
+            format: function format(val) {
+              return val + " w";
+            } }] },
 
 
         dataLabel: true,

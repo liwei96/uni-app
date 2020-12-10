@@ -28,10 +28,10 @@
 				<image src="../../static/content/right.png" mode="" class="right"></image>
 			</view>
 			<view class="bot">
-				 <view class="zixun">
+				 <view class="zixun" @tap="baoMing(one.bid,'楼盘户型详情页+咨询详细户型',97,'咨询详细户型')">
 				 	咨询详细户型
 				 </view>
-				 <view class="dijia">
+				 <view class="dijia" @tap="baoMing(one.bid,'楼盘户型详情页+咨询楼盘底价',105,'咨询楼盘底价')">
 				 	咨询楼盘底价
 				 </view>
 			</view>
@@ -66,8 +66,10 @@
 					</view>
 				</view>
 				<view class="bo_tel">
-					<image src="../../static/content/zixun.png" mode="" class="bo_zi"></image>
-					<image src="../../static/content/tel.png" mode=""></image>
+					<image src="../../static/content/zixun.png" mode="" class="bo_zi"
+					@tap="baoMing(one.bid,'楼盘户型详情页+咨询服务',104,'咨询服务')"></image>
+					<image src="../../static/content/tel.png" mode=""
+					@tap="boTel(telphone)"></image>
 				</view>
 			</view>
 			
@@ -96,7 +98,7 @@
 					</text>
 				</text>
 				<view class="right">
-					<view class="ling_btn">
+					<view class="ling_btn" @tap="baoMing(one.bid,'楼盘户型详情页+领取优惠',94,'领取优惠')">
 						领取优惠
 					</view>
 					<text>{{num.receive_num}}人已领取</text>
@@ -110,7 +112,7 @@
 					</text>
 				</text>
 				<view class="right">
-					<view class="ling_btn">
+					<view class="ling_btn" @tap="baoMing(one.bid,'楼盘户型详情页+免费领取',95,'免费领取')">
 						免费领取
 					</view>
 					<text>{{num.remain_num}}人已领取</text>
@@ -124,28 +126,31 @@
 				本楼盘其它户型
 			</view>
 			<view class="hu_list">
+				
 				<view class="hu_one" v-for="item in other_rooms" :key="item.id">
-					<view class="left_pro">
-						<image :src="item.small" mode=""></image>
-					</view>
-					<view class="right_pro">
-						 <view class="name_box_box">
-						 	  <text class="name">{{item.title}}</text>
-							  <text class="status">{{item.state}}</text>
-						 </view>
-						 <view class="mian">
-						 	<text class="left">建面:</text>
-						 	<text class="right">{{item.area}}m²</text>
-						 </view>
-						 <view class="type">
-						 	<text class="left">类型：</text>
-						 	<text class="right">{{item.type}}</text>
-						 </view>
-						 <view class="price">
-						 	<text class="left">总价：</text>
-						 	<text class="right">约 <text class="em">{{item.price}}</text>万/套</text>
-						 </view>
-					</view>
+					<navigator :url="`../hudetail/hudetail?id=${item.id}`">
+						<view class="left_pro">
+							<image :src="item.small" mode=""></image>
+						</view>
+						<view class="right_pro">
+							 <view class="name_box_box">
+								  <text class="name">{{item.title}}</text>
+								  <text class="status">{{item.state}}</text>
+							 </view>
+							 <view class="mian">
+								<text class="left">建面:</text>
+								<text class="right">{{item.area}}m²</text>
+							 </view>
+							 <view class="type">
+								<text class="left">类型：</text>
+								<text class="right">{{item.type}}</text>
+							 </view>
+							 <view class="price">
+								<text class="left">总价：</text>
+								<text class="right">约 <text class="em">{{item.price}}</text>万/套</text>
+							 </view>
+						</view>
+					</navigator>
 				</view>
 				
 			</view>
@@ -155,18 +160,25 @@
 	     <view class="see_box">
 	     	<seebottom :title="title" :project="recommends"></seebottom>
 	     </view>
-		<bottom></bottom>
+		<bottom :remark="'项目户型详情页+预约看房'" :point="103" :title="'预约看房'" :pid="one.bid" :telphone="telphone"></bottom>
 		
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+		</wyb-popup>
 	</view>
 </template>
 
 <script>
 import seebottom from '../../components/mine/twosee.vue';
 import bottom from '../../components/mine/bottom.vue'
+import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+import sign from '@/components/sign.vue'
 	export default {
 		components:{
 			seebottom,
-			bottom
+			bottom,
+			wybPopup,
+			sign
 		},
 		data() {
 			return {
@@ -179,20 +191,48 @@ import bottom from '../../components/mine/bottom.vue'
 				num:{},
 				common:{},
 				staff:{},
+				
+				codenum:1,
+				title_e:'',
+				pid_d:0,
+				remark_k:'',
+				position_n:0,
+				telphone:'',
+				
 			};
 		},
 		onLoad(option){
-			console.log(option);
 			this.getdata(option.id);
 		},
 		methods:{
+			boTel(tel) {
+				uni.makePhoneCall({
+					phoneNumber: tel,
+					success: function() {
+						console.log('拨打电话');
+					} //仅为示例
+				});
+			},
+			baoMing(pid,remark,point,title){
+				this.title_e = title;
+				this.pid_d = pid;
+				this.remark_k = remark;
+				this.position_n = point;
+				console.log(pid);
+				this.$refs.popup.show();
+			},
+			setiscode(){
+				this.codenum = 0
+			},
 			getdata(id){
+				let other = uni.getStorageInfoSync('other')
+				let token = uni.getStorageInfoSync('token')
 				uni.request({
 					url:this.apiserve+"/applets/house/one",
 				    data:{
 						id:id,
-						other:'',
-						token:''
+						other:other,
+						token:token
 					},
 					method:"GET",
 					success: (res) => {
@@ -204,6 +244,7 @@ import bottom from '../../components/mine/bottom.vue'
 							this.recommends = res.data.recommends;
 							this.num = res.data.num;
 							this.staff = res.data.common.staff;
+					        this.telphone = res.data.common.phone;
 						}
 					}
 				})

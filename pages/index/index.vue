@@ -16,25 +16,35 @@
 		<image src="../../static/index/index-banner.png" mode="" class="banner"></image>
 		<view class="nav">
 			<view class="nav-li">
-				<image src="../../static/index/index-new.png" mode=""></image>
-				<text>新房</text>
+				<navigator url="../building/building" open-type="switchTab">
+					<image src="../../static/index/index-new.png" mode=""></image>
+					<text>新房</text>
+				</navigator>
 			</view>
 			<view class="nav-li">
-				<image src="../../static/index/index-luck.png" mode=""></image>
-				<text>特价房</text>
-				<text class="youhui">优惠</text>
+				<navigator url="../special/special" open-type="navigate">
+					<image src="../../static/index/index-luck.png" mode=""></image>
+					<text>特价房</text>
+					<text class="youhui">优惠</text>
+				</navigator>
 			</view>
 			<view class="nav-li">
-				<image src="../../static/index/index-weike.png" mode=""></image>
-				<text>百科</text>
+				<navigator url="../weike/weike" open-type="navigate">
+					<image src="../../static/index/index-weike.png" mode=""></image>
+					<text>百科</text>
+				</navigator>
 			</view>
 			<view class="nav-li">
-				<image src="../../static/index/index-info.png" mode=""></image>
-				<text>资讯</text>
+				<navigator url="../infos/infos" open-type="navigate">
+					<image src="../../static/index/index-info.png" mode=""></image>
+					<text>资讯</text>
+				</navigator>
 			</view>
 			<view class="nav-li">
-				<image src="../../static/index/index-map.png" mode=""></image>
-				<text>地图</text>
+				<navigator url="../map/map" open-type="navigate">
+					<image src="../../static/index/index-map.png" mode=""></image>
+					<text>地图</text>
+				</navigator>
 			</view>
 		</view>
 		<view class="topnew">
@@ -42,7 +52,9 @@
 				<image class="icon" src="../../static/index/index-topnew.png" mode=""></image>
 				<swiper class="swiper" :vertical="true" :circular="true" :autoplay="true" interval="2000">
 					<swiper-item class="swiper-item" v-for="item in tops" :key="item.id">
-						<view class="swiper-item uni-bg-red">{{item.title}}</view>
+						<navigator :url="`../article/article?id=${item.id}`">
+						   <view class="swiper-item uni-bg-red">{{item.title}}</view>
+						</navigator>
 					</swiper-item>
 				</swiper>
 			</view>
@@ -51,7 +63,7 @@
 			<image src="../../static/index/index-help.png" mode=""></image>
 			<text class="help-tit">私人定制 找房更轻松</text>
 			<text class="help-txt">快速响应/精准快捷/一次到位</text>
-			<text class="help-btn">帮我找房</text>
+			<text class="help-btn" @tap="bangZhao">帮我找房</text>
 		</view>
 		<view class="trend">
 			<view class="trend-box">
@@ -185,32 +197,38 @@
 				</view>
 				<view class="dynamic-con">
 					<view class="con1">
-						<view class="con1-top">
-							<image :src="dynamics[0].img" mode=""></image>
-							<text class="title">{{dynamics[0].name}}</text>
-						</view>
-						<view class="con1-bom">
-							<text class="txt">{{dynamics[0].introduce}}</text>
-						</view>
+						<navigator :url="`../dynamicdetail/dynamicdetail?/id=${dynamics[0].id}`">
+							<view class="con1-top">
+								<image :src="dynamics[0].img" mode=""></image>
+								<text class="title">{{dynamics[0].name}}</text>
+							</view>
+							<view class="con1-bom">
+								<text class="txt">{{dynamics[0].introduce}}</text>
+							</view>
+						</navigator>
 					</view>
 					<view class="right">
 						<view class="con2">
-							<view class="con2-left">
-								<text class="msg">{{dynamics[1].introduce}}</text>
-							</view>
-							<view class="con2-right">
-								<image :src="dynamics[1].img" mode=""></image>
-								<text>{{dynamics[1].name}}</text>
-							</view>
+							<navigator :url="`../dynamicdetail/dynamicdetail?id=${dynamics[1].id}`" class="nav_nav">
+								<view class="con2-left">
+									<text class="msg">{{dynamics[1].introduce}}</text>
+								</view>
+								<view class="con2-right">
+									<image :src="dynamics[1].img" mode=""></image>
+									<text>{{dynamics[1].name}}</text>
+								</view>
+							</navigator>
 						</view>
 						<view class="con2 con3">
-							<view class="con2-left">
-								<text class="msg">{{dynamics[2].introduce}}</text>
-							</view>
-							<view class="con2-right">
-								<image :src="dynamics[2].img" mode=""></image>
-								<text>{{dynamics[2].name}}</text>
-							</view>
+							<navigator :url="`../dynamicdetail/dynamicdetail?id=${dynamics[2].id}`" class="nav_nav">
+								<view class="con2-left">
+									<text class="msg">{{dynamics[2].introduce}}</text>
+								</view>
+								<view class="con2-right">
+									<image :src="dynamics[2].img" mode=""></image>
+									<text>{{dynamics[2].name}}</text>
+								</view>
+							</navigator>
 						</view>
 					</view>
 				</view>
@@ -328,6 +346,11 @@
 				this.style_list.hot =false;
 				this.style_list.people =false;
 				this.style_list.jiao =true;
+			},
+			bangZhao(){
+				uni.navigateTo({
+					url:"../help/help"
+				})
 			}
 		}
 	}
@@ -872,8 +895,14 @@
 						overflow: hidden;
 						display: flex;
 						margin-bottom: 19.92rpx;
-
-						.con2-left {
+						.nav_nav{
+							width: 100%;
+							height: 131.47rpx;
+							border-radius: 11.95rpx;
+							overflow: hidden;
+							display: flex;
+							margin-bottom: 19.92rpx;
+						  .con2-left {
 							width: 249rpx;
 							height: 131.47rpx;
 							display: flex;
@@ -895,31 +924,32 @@
 							}
 						}
 
-						.con2-right {
-							width: 139.44rpx;
-							height: 131.47rpx;
-							position: relative;
-
-							image {
+							.con2-right {
 								width: 139.44rpx;
 								height: 131.47rpx;
-							}
+								position: relative;
 
-							text {
-								display: block;
-								position: absolute;
-								text-align: center;
-								width: 103.58rpx;
-								color: #FFFFFF;
-								font-size: 25.89rpx;
-								top: 31.87rpx;
-								left: 11.95rpx;
-								display: -webkit-box;
-								-webkit-box-orient: vertical;
-								-webkit-line-clamp: 2;
-								overflow: hidden;
+								image {
+									width: 139.44rpx;
+									height: 131.47rpx;
+								}
+
+								text {
+									display: block;
+									position: absolute;
+									text-align: center;
+									width: 103.58rpx;
+									color: #FFFFFF;
+									font-size: 25.89rpx;
+									top: 31.87rpx;
+									left: 11.95rpx;
+									display: -webkit-box;
+									-webkit-box-orient: vertical;
+									-webkit-line-clamp: 2;
+									overflow: hidden;
+								}
 							}
-						}
+					  }
 					}
 
 					.con3 {

@@ -1,6 +1,7 @@
 <template>
 	<view class="dynamicdetail">
-		<view class="toptitle">
+		<view class="toptitle" @tap="goback">
+			<image src="../../static/all-back.png" mode=""></image>
 			<text>动态详情</text>
 		</view>
 		<view class="box">
@@ -17,7 +18,7 @@
 				<view class="right">
 					<view class="right-tit">
 						<text class="name">{{build.name}}</text>
-						<view class="status">{{build.status}}</view>
+						<view class="status">{{build.state}}</view>
 					</view>
 					<view>
 						<text class="big">{{build.price}}</text>
@@ -33,10 +34,10 @@
 				</view>
 			</view>
 			<view class="staff">
-				<image src="../../static/people.png" mode=""></image>
+				<image :src="staff.staff.head_img" mode=""></image>
 				<view class="staffmsg">
-					<text class="name">李聪然</text>
-					<text class="rate">满意度5分</text>
+					<text class="name">{{staff.staff.name}}</text>
+					<text class="rate">满意度{{staff.num}}分</text>
 					<view class="stafftxt">
 						为客户提供专业的购房建议
 					</view>
@@ -113,10 +114,16 @@
 				codenum: 1,
 				tel: '',
 				title: '',
-				position: 0
+				position: 0,
+				staff:{}
 			}
 		},
 		methods:{
+			goback(){
+				uni.navigateBack({
+				    delta: 1
+				});
+			},
 			getinfo() {
 				let other = uni.getStorageInfoSync('other')
 				let token = uni.getStorageInfoSync('token')
@@ -134,6 +141,7 @@
 						that.build = res.data.building
 						that.other = res.data.house_types
 						that.tel = res.data.common.phone
+						that.staff =res.data.common.staffs
 					}
 				})
 			},
@@ -176,6 +184,18 @@
 		padding: 0 29.88rpx;
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
+		image {
+			width: 31.87rpx;
+			height: 31.87rpx;
+			margin-right: 11.95rpx;
+			margin-bottom: -3.98rpx;
+		}
+		text {
+			width: 221rpx;
+			font-size: 32rpx;
+			font-weight: 500;
+			color: #17181A;
+		}
 	}
 	.box {
 		padding: 0 29.88rpx;
