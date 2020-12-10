@@ -43,5 +43,6 @@
 		margin-left: -180rpx;
 		top: 50%;
 		margin-top: -60rpx;
+		z-index: 99999;
 	}
 </style>

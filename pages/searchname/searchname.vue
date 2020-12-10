@@ -34,7 +34,7 @@
 		</view>
 		<view class="upbox" v-if="name">
 			<view class="tit">为您找到如下“{{name}}”相关搜索</view>
-			<view class="li" v-for="item in lists" :key="item.id" @tap="go(item.id)">
+			<view class="li" v-for="item in lists" :key="item.id" @tap="go(item.id,item.name)">
 				<view class="name">
 					<view class="left" v-html="item.name"></view>
 					<view class="right">{{item.price}}元/m²</view>
@@ -83,7 +83,17 @@
 					}
 				})
 			},
-			go(id) {
+			go(id,name) {
+				let sea = uni.getStorageSync('search')
+				if(sea) {
+					uni.removeStorageSync('search')
+					uni.setStorageSync('searchname',name)
+					uni.setStorageSync('searchid',id)
+					uni.navigateTo({
+						url:"/pages/forward/forward"
+					})
+					return
+				}
 				uni.navigateTo({
 					url: '/pages/content/content?id=' + id
 				})
