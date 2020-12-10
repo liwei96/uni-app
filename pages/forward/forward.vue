@@ -22,64 +22,68 @@
 			</view>
 		</view>
 		<view class="tit">
-			您的称呼:
+			预约看房时间:
 		</view>
 		<picker mode="date" :value="date" start="starttime" @change="bindDateChange">
 			<view class="box">
-				<view>{{time}}</view>
+				<view>{{date}}</view>
 				<image src="../../static/other/help-go.png" mode=""></image>
 			</view>
 		</picker>
 		<view class="tit">
 			想看的楼盘<text>（非必填）</text>
 		</view>
-		<view class="box">
-			<view>选择楼盘</view>
+		<view class="box" @tap="gosearch">
+			<view>{{name}}</view>
 			<image src="../../static/other/help-go.png" mode=""></image>
 		</view>
 		<view class="btn" @click="put">
 			确定
 		</view>
-		<popup ref="popup" type="center" height="438" width="578" radius="12" closeIconPos="top-right" showCloseIcon="true"
+		<popup ref="popup" type="center" height="438" width="578" radius="12" closeIconPos="top-right" :showCloseIcon="true"
 		 closeIconSize="32" @hide="setback">
 			<view class="popup-content">
 				<view class="tit">
-					预约看房
+					帮我找房
 				</view>
 				<view class="one" v-if="!iscode">
 					<view class="input-box">
-						<input type="text" value="" placeholder="请输入手机号" placeholder-class="txt" maxlength="11" />
+						<input type="text" value="" placeholder="请输入手机号" placeholder-class="txt" maxlength="11" v-model="tel"/>
 					</view>
 					<view class="msg">
-						<check></check>
-						<view class="kk">我已阅读并同意<text>《允家服务协议》</text></view>
+						<check :checkBoxSize='20' :fontSize='18' :checked="true" @change="change"></check>
+						<view class="kk">我已阅读并同意<text @tap="goserve">《允家服务协议》</text></view>
 					</view>
-					<view class="yes" @click="send">
+					<view class="yes" @tap="send">
 						确定
 					</view>
 				</view>
 				<view class="two" v-if="iscode">
 					<view class="codemsg">
-						验证码已发送到187****4376  请注意查看
+						验证码已发送到{{teltxt}}  请注意查看
 					</view>
 					<view class="input-box">
-						<input type="text" value="" placeholder="请输入手机号" placeholder-class="txt" maxlength="11" />
-						<text>57秒后重发</text>
+						<input type="text" value="" placeholder="请输入手机号" placeholder-class="txt" maxlength="11" v-model="code"/>
+						<text @tap="sendmsg">{{timetxt}}</text>
 					</view>
-					<view class="yes">
+					<view class="yes" @tap="sure">
 						确定
 					</view>
 				</view>
 			</view>
 		</popup>
+		<toast ref="toast" :txt="toasttxt"></toast>
 	</view>
 </template>
 
 <script>
 	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	import toast from '@/components/mytoast/mytoast.vue'
 	import wycheckbox from '@/components/jiuai-checkbox/jiuai-checkbox.vue'
+	var that
 	export default {
 		components: {
+			"toast": toast,
 			"popup": wybPopup,
 			"check": wycheckbox
 		},
@@ -90,13 +94,160 @@
 				sex: 0,
 				normal: '../../static/other/forward-normal.png',
 				active: '../../static/other/forwark-active.png',
-				iscode: false
+				iscode: false,
+				name: '选择楼盘',
+				checked: true,
+				toasttxt: '',
+				tel: '',
+				code: '',
+				teltxt: '',
+				timetxt: '',
+				time: 0,
+				date: ''
+			}
+		},
+		onLoad() {
+			that = this
+			let name = uni.getStorageSync('searchname')
+			if(name) {
+				this.name = name
 			}
 		},
 		methods: {
+			send() {
+				console.log(this.checked)
+				if(!this.checked) {
+					that.toasttxt = '请选择用户协议'
+					that.$refs.toast.show()
+					return
+				}
+				var phone = this.tel;
+				var pattern_phone = /^1[3-9][0-9]{9}$/;
+				if (phone == "") {
+					this.toasttxt = "请输入手机号";
+					this.$refs.toast.show()
+					return;
+				} else if (!pattern_phone.test(phone)) {
+					this.toasttxt = "手机号码不合法";
+					this.$refs.toast.show()
+					return;
+				}
+				let kid = uni.getStorageSync('kid') || null
+				let other = uni.getStorageSync('other') || null
+				let ip = ''
+				let city = uni.getStorageSync('city') || 1
+				let txt = `客户预约看房时间为${that.date}`;
+				let sex = ''
+				if(that.sex == 0) {
+					sex = '先生'
+				}else{
+					sex = '女士'
+				}
+				let id = uni.getStorageSync('searchid')
+				uni.request({
+					url: that.putserve+'/getIp.php',
+					method: 'GET',
+					success: (res) => {
+						ip = res.data
+						ip = ip.split('=')[1].split(':')[1]
+						ip = ip.substring(1)
+						ip = ip.slice(0, -3)
+						uni.request({
+							url: that.putserve + '/front/flow/sign',
+							data: {
+								city: city,
+								page: 11,
+								project: id,
+								remark: txt,
+								source: '线上推广2',
+								ip: ip,
+								position: 110,
+								tel: phone,
+								kid: kid,
+								other: other,
+								name: sex
+							},
+							method: "GET",
+							success: (res) => {
+								if(res.data.code == 500) {
+									that.toasttxt = '请不要重复报名';
+									that.$refs.toast.show()
+								} else {
+									that.teltxt = phone.substr(0, 3) + "****" + phone.substr(7, 11);
+									that.iscode = true
+									that.time = 60
+									var fn = function() {
+										that.time--;
+										if (that.time > 0) {
+											that.istime = true
+											that.timetxt = `重新发送${that.time}s`
+										} else {
+											that.istime = false
+											clearInterval(interval);
+											that.timetxt = `获取验证码`
+										}
+									};
+									fn();
+									var interval = setInterval(fn, 1000);
+									that.iscode = true
+								}
+								
+							}
+						})
+						uni.request({
+							url: that.apiserve + '/send',
+							method: "POST",
+							data: {
+								ip: ip,
+								phone: phone,
+								source: 3
+							},
+							success: (res) => {
+								console.log(res)
+							}
+						})
+					}
+				})
+			},
+			sure() {
+				if (!this.code) {
+					this.toasttxt = "请输入验证码";
+					this.$refs.toast.show()
+					return;
+				}
+				var phone = this.tel;
+				uni.request({
+					url: that.apiserve + '/sure',
+					method: "POST",
+					data: {
+						code: code,
+						phone: phone,
+						source: 3
+					},
+					success: (res) => {
+						console.log(res)
+						if(res.data.code === 500) {
+							that.toasttxt = res.data.msg;
+							that.$refs.toast.show()
+						} else {
+							that.toasttxt = "订阅成功";
+							that.$refs.toast.show()
+							that.iscode = false
+							this.$refs.popup1.hide()
+							if(!uni.getStorageInfoSync('token')) {
+								uni.setStorageSync('token',res.data.token)
+								uni.setStorageSync('usertel',that.tel)
+							}
+						}
+					}
+				})
+			},
+			change(e) {
+				this.checked = e.detail.checked
+			},
 			bindDateChange: function(e) {
 				this.date = e.target.value
-				this.time = e.target.value
+				// this.time = e.target.value
 				console.log(this.date)
 			},
 			put() {
@@ -105,8 +256,11 @@
 			setback(){
 				this.iscode = false
 			},
-			send(){
-				this.iscode = true
+			gosearch(){
+				uni.setStorageSync('search', 1)
+				uni.navigateTo({
+					url:'/pages/searchname/searchname'
+				})
 			}
 		},
 		mounted() {

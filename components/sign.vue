@@ -83,7 +83,6 @@
 				let checks = this.checked;
 				if (!checks) {
 					this.toasttxt = "请勾选用户协议";
-					console.log(this.toasttxt)
 					this.$refs.toast.show()
 					return;
 				}
@@ -98,10 +97,10 @@
 					this.$refs.toast.show()
 					return;
 				}
-				let kid = uni.getStorageInfoSync('kid') || null
-				let other = uni.getStorageInfoSync('other') || null
+				let kid = uni.getStorageSync('kid') || null
+				let other = uni.getStorageSync('other') || null
 				let ip = ''
-				let city = uni.getStorageInfoSync('city') || 1
+				let city = uni.getStorageSync('city') || 1
 				uni.request({
 					url: that.putserve+'/getIp.php',
 					method: 'GET',
@@ -196,7 +195,6 @@
 								uni.setStorageSync('usertel',that.tel)
 							}
 						}
-						
 					}
 				})
 			}
