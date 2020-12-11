@@ -6,28 +6,29 @@
 		<view class="top-nav">
 			<view class="login">
 				<image src="../../static/home/home-peo.png" mode=""></image>
-				<text>登录/注册</text>
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"><text>登录/注册</text>
+				</button>
 			</view>
 			<view class="navs">
-				<view class="nav">
+				<view class="nav" @tap="gofoot">
 					<text class="num">5</text>
 					<view>
 						<text class="msg">浏览足迹</text>
 					</view>
 				</view>
-				<view class="nav">
+				<view class="nav" @tap="gofork">
 					<text class="num">5</text>
 					<view>
 						<text class="msg">我的收藏</text>
 					</view>
 				</view>
-				<view class="nav">
+				<view class="nav" @tap="gocards">
 					<text class="num">5</text>
 					<view>
 						<text class="msg">我的卡券</text>
 					</view>
 				</view>
-				<view class="nav">
+				<view class="nav" @tap="gotalk">
 					<text class="num">5</text>
 					<text class="abo">1</text>
 					<view>
@@ -36,25 +37,25 @@
 				</view>
 			</view>
 			<view class="bom">
-				<view class="nav">
+				<view class="nav" @tap="gohelp">
 					<image src="../../static/home/home-help.png" mode=""></image>
 					<view>
 						<text>帮我找房</text>
 					</view>
 				</view>
-				<view class="nav">
+				<view class="nav" @tap="goyue">
 					<image src="../../static/home/home-yue.png" mode=""></image>
 					<view>
 						<text>预约看房</text>
 					</view>
 				</view>
-				<view class="nav">
+				<view class="nav" @tap="gomap">
 					<image src="../../static/home/home-map.png" mode=""></image>
 					<view>
 						<text>地图找房</text>
 					</view>
 				</view>
-				<view class="nav">
+				<view class="nav" @tap="gojia">
 					<image src="../../static/home/home-join.png" mode=""></image>
 					<view>
 						<text>城市加盟</text>
@@ -64,35 +65,35 @@
 		</view>
 		<view class="box">
 			<view class="connav">
-				<view class="nav">
+				<view class="nav" @tap="goabout">
 					<image src="../../static/home/home-about.png" mode=""></image>
 					<text>关于允家</text>
 					
 				</view>
-				<view class="nav" @click="show">
+				<view class="nav" @tap="show">
 					<image src="../../static/home/home-tel.png" mode=""></image>
 					<text>联系我们</text>
 					
 				</view>
-				<view class="nav">
+				<view class="nav" @tap="gocommit">
 					<image src="../../static/home/home-msg.png" mode=""></image>
 					<text>意见反馈</text>
 				</view>
 			</view>
 			<view class="bomnv">
-				<view class="nav">
+				<view class="nav" @tap="goban">
 					<image src="../../static/home/home-ban.png" mode=""></image>
 					<text>版权声明</text>
 				</view>
-				<view class="nav">
+				<view class="nav" @tap="gomian">
 					<image src="../../static/home/home-mian.png" mode=""></image>
 					<text>免责协议</text>
 				</view>
-				<view class="nav">
+				<view class="nav" @tap="goyin">
 					<image src="../../static/home/home-yin.png" mode=""></image>
 					<text>隐私政策</text>
 				</view>
-				<view class="nav">
+				<view class="nav" @tap="gofu">
 					<image src="../../static/home/home-xie.png" mode=""></image>
 					<text>服务协议</text>
 				</view>
@@ -121,6 +122,7 @@
 
 <script>
 	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	var that
 	export default {
 		components: {
 		        "popup":wybPopup
@@ -129,15 +131,92 @@
 			return {
 			}
 		},
+		onLoad() {
+			that = this
+		},
 		methods: {
 			show() {
 				this.$refs.popup.show()
 			},
 			hide() {
 				this.$refs.popup.hide()
+			},
+			gofoot() {
+				uni.navigateTo({
+					url:'/pages/footprint/footprint'
+				})
+			},
+			gofork() {
+				uni.navigateTo({
+					url:'/pages/collect/collect'
+				})
+			},
+			gocards() {
+				uni.navigateTo({
+					url:'/pages/cards/cards'
+				})
+			},
+			gotalk() {
+				uni.switchTab({
+					url:'/pages/message/message'
+				})
+			},
+			gohelp(){
+				uni.navigateTo({
+					url:'/pages/help/help'
+				})
+			},
+			goyue(){
+				uni.navigateTo({
+					url:'/pages/forward/forward'
+				})
+			},
+			gomap(){
+				uni.navigateTo({
+					url:'/pages/map/map'
+				})
+			},
+			gojia(){
+				uni.navigateTo({
+					url:'/pages/alliance/alliance'
+				})
+			},
+			goabout(){
+				uni.navigateTo({
+					url:'/pages/about/about'
+				})
+			},
+			gocommit(){
+				uni.navigateTo({
+					url:'/pages/feedback/feedback'
+				})
+			},
+			goban(){
+				uni.navigateTo({
+					url:'/pages/statement/statement'
+				})
+			},
+			gomian(){
+				uni.navigateTo({
+					url:'/pages/protocol/protocol'
+				})
+			},
+			goyin(){
+				uni.navigateTo({
+					url:'/pages/privacy/privacy'
+				})
+			},
+			gofu(){
+				uni.navigateTo({
+					url:'/pages/serve/serve'
+				})
+			},
+			getPhoneNumber(e){
+				console.log(e)
 			}
 		},
 		mounted(){
+			
 		}
 	}
 </script>
@@ -168,6 +247,14 @@
 				width: 99.6rpx;
 				height: 99.6rpx;
 				margin-right: 29.88rpx;
+			}
+			button {
+				margin-left: 0;
+				padding: 0;
+				background: rgba(0,0,0,0);
+			}
+			button:after {
+				border: 0;
 			}
 			text {
 				color: #0B4765;

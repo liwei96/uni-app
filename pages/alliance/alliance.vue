@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>城市加盟</text>
 		</view>
@@ -307,25 +307,25 @@
 				<swiper-item>
 					<view class="swiper-item">
 						<view class="swiper-tit">
-							人员管理
+							市场管理
 						</view>
 						<view class="bon">
 							<view class="bon-li">
 								<view class="bon-tit">
 									传统模式
 								</view>
-								<image src="../../static/other/jia-ren1.png" mode=""></image>
+								<image src="../../static/other/jia-si1.png" mode=""></image>
 							</view>
 							<image src="../../static/other/alliance-vs.png" mode="" class="vs"></image>
 							<view class="bon-li">
 								<view class="bon-tit">
 									家园模式
 								</view>
-								<image src="../../static/other/jia-ren2.png" mode=""></image>
+								<image src="../../static/other/jia-si2.png" mode=""></image>
 							</view>
 						</view>
 						<view class="txt">
-							大大减少人员成本，减少招人成本，减少公司办公成本，减少人员管理成本，提高人效，从而提高利润
+							提高市场知名度，提高抗风险能力，提高业绩和稳定性
 						</view>
 						<view class="btn" @tap="show">
 							加入我们
@@ -335,25 +335,25 @@
 				<swiper-item>
 					<view class="swiper-item">
 						<view class="swiper-tit">
-							人员管理
+							团队管理
 						</view>
 						<view class="bon">
 							<view class="bon-li">
 								<view class="bon-tit">
 									传统模式
 								</view>
-								<image src="../../static/other/jia-ren1.png" mode=""></image>
+								<image src="../../static/other/jia-li1.png" mode=""></image>
 							</view>
 							<image src="../../static/other/alliance-vs.png" mode="" class="vs"></image>
 							<view class="bon-li">
 								<view class="bon-tit">
 									家园模式
 								</view>
-								<image src="../../static/other/jia-ren2.png" mode=""></image>
+								<image src="../../static/other/jia-li2.png" mode=""></image>
 							</view>
 						</view>
 						<view class="txt">
-							大大减少人员成本，减少招人成本，减少公司办公成本，减少人员管理成本，提高人效，从而提高利润
+            促进扁平化管理发展，提高个岗位收益和利润，提高人效管理
 						</view>
 						<view class="btn" @tap="show">
 							加入我们
@@ -551,6 +551,11 @@
 			that = this
 		},
 		methods: {
+			back(){
+				uni.navigateBack({
+					data:1
+				})
+			},
 			show() {
 				this.$refs.popup.show()
 			},
@@ -917,6 +922,7 @@
 				margin-left: 40rpx;
 				margin-top: 40rpx;
 				margin-bottom: 36rpx;
+				height: 120rpx;
 			}
 
 			.btn {
