@@ -1,6 +1,6 @@
 <template>
 	<view class="dynamic">
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<text>楼盘动态</text>
 		</view>
 		<image src="../../static/dynamic/dynamic-top.png" mode="" class="topimg"></image>
@@ -70,6 +70,11 @@
 			this.getmore()
 		},
 		methods:{
+			back(){
+				uni.navigateBack({
+					data:1
+				})
+			},
 			getdata() {
 				uni.showLoading({
 					title:"加载中"

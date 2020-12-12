@@ -1,63 +1,42 @@
 <template>
 	<view>
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>我的足迹</text>
 		</view>
 		<view class="recommend">
 			<view class="recommend-box">
-				<view class="item">
+				<view class="item" v-for="item in list" :key="item.id" @tap="go(item.id)">
 					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
+						<image :src="item.img" mode=""></image>
 					</view>
 					<view class="right">
 						<view class="right-name">
-							<text class="name">武林ONE</text>
-							<text class="status">在售</text>
+							<text class="name">{{item.name}}</text>
+							<text class="status">{{item.state}}</text>
 						</view>
-						<text class="price">17000</text>
+						<text class="price">{{item.price}}</text>
 						<text class="psam">元/m²</text>
 						<view>
-							<text class="right-msg">住宅 | 杭州-江干 | 80-140m²</text>
+							<text class="right-msg">{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</text>
 						</view>
 						<view class="right-icons">
-							<text class="jing">精装</text>
+							<text class="jing">{{item.decorate}}</text>
 							<text>1号线</text>
-							<text>地铁楼盘</text>
-						</view>
-					</view>
-				</view>
-				<view class="item">
-					<view class="left">
-						<image src="../../static/img-2.png" mode=""></image>
-					</view>
-					<view class="right">
-						<view class="right-name">
-							<text class="name">武林ONE</text>
-							<text class="status">在售</text>
-						</view>
-						<text class="price">17000</text>
-						<text class="psam">元/m²</text>
-						<view>
-							<text class="right-msg">住宅 | 杭州-江干 | 80-140m²</text>
-						</view>
-						<view class="right-icons">
-							<text class="jing">精装</text>
-							<text>1号线</text>
-							<text>地铁楼盘</text>
+							<text v-for="(val,key) in item.features" :key="key">{{val}}</text>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="isnull">
+		<view class="isnull" v-if="list.length == 0">
 			<image src="../../static/other/footprint-con.png" mode=""></image>
 			<text>您还没有浏览记录，快去看看楼盘吧~</text>
-			<view class="btn">
+			<view class="btn" @tap="gosearch">
 				去看楼盘
 			</view>
 		</view>
-		<view class="guess">
+		<view class="guess" v-if="list.length == 0">
 			<view class="recommend">
 				<view class="tit">
 					猜你喜欢
@@ -112,14 +91,53 @@
 </template>
 
 <script>
+	var that
 	export default {
+		onLoad() {
+			that = this
+			this.getinfo()
+		},
 		data() {
 			return {
-				
+				list: []
 			}
 		},
 		methods: {
-			
+			back(){
+				uni.navigateBack({
+					data:1
+				})
+			},
+			gosearch(){
+				uni.navigateTo({
+					url:"/pages/building/building"
+				})
+			},
+			getinfo(){
+				uni.showLoading({
+					title:'加载中'
+				})
+				let token = uni.getStorageSync('token')
+				uni.request({
+					url:that.apiserve+'/jy/mine/foots',
+					method:"GET",
+					data:{
+						token: token,
+						page: 1,
+						limit: 10
+					},
+					success: (res) => {
+						console.log(res)
+						that.list = res.data.data
+						uni.hideLoading()
+					}
+				})
+			},
+			go(id) {
+				uni.navigateTo({
+					url:"/pages/content/content?id="+id
+				})
+			}
 		}
 	}
 </script>

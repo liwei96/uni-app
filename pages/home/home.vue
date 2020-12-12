@@ -11,25 +11,25 @@
 			</view>
 			<view class="navs">
 				<view class="nav" @tap="gofoot">
-					<text class="num">5</text>
+					<text class="num">{{footnum}}</text>
 					<view>
 						<text class="msg">浏览足迹</text>
 					</view>
 				</view>
 				<view class="nav" @tap="gofork">
-					<text class="num">5</text>
+					<text class="num">{{collectnum}}</text>
 					<view>
 						<text class="msg">我的收藏</text>
 					</view>
 				</view>
 				<view class="nav" @tap="gocards">
-					<text class="num">5</text>
+					<text class="num">{{cardnum}}</text>
 					<view>
 						<text class="msg">我的卡券</text>
 					</view>
 				</view>
 				<view class="nav" @tap="gotalk">
-					<text class="num">5</text>
+					<text class="num">{{talknum}}</text>
 					<text class="abo">1</text>
 					<view>
 						<text class="msg">我的联系</text>
@@ -129,12 +129,51 @@
 		    },
 		data() {
 			return {
+				footnum: 0,
+				collectnum: 0,
+				cardnum: 0,
+				talknum: 0
 			}
 		},
 		onLoad() {
 			that = this
+			this.getinfo()
 		},
 		methods: {
+			getinfo(){
+				let token = uni.getStorageSync('token')
+				if(token) {
+					uni.showLoading({
+						title:'加载中'
+					})
+					uni.request({
+						url:that.apiserve+'/jy/mine/foots',
+						method:"GET",
+						data:{
+							token: token,
+							page: 1,
+							limit: 10
+						},
+						success: (res) => {
+							that.footnum = res.data.data.length
+							uni.hideLoading()
+						}
+					})
+					uni.request({
+						url:that.apiserve+'/jy/mine/collect',
+						method:'GET',
+						data:{
+							token: token,
+							page: 1,
+							limit: 10
+						},
+						success: (res) => {
+							that.collectnum = res.data.data.length
+							uni.hideLoading()
+						}
+					})
+				}
+			},
 			show() {
 				this.$refs.popup.show()
 			},

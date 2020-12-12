@@ -1,6 +1,6 @@
 <template>
 	<view class="article">
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>本地楼市</text>
 		</view>
@@ -127,6 +127,11 @@
 		},
 		components: {sign,wybPopup},
 		methods: {
+			back(){
+				uni.navigateBack({
+					data:1
+				})
+			},
 			getinfo() {
 				let city = uni.getStorageInfoSync('city')
 				let other = uni.getStorageInfoSync('other')

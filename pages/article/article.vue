@@ -1,6 +1,6 @@
 <template>
 	<view class="article">
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>买房资格</text>
 		</view>
@@ -84,6 +84,11 @@
 			}
 		},
 		methods: {
+			back(){
+				uni.navigateBack({
+					data:1
+				})
+			},
 			getinfo() {
 				let city = uni.getStorageInfoSync('city')
 				let other = uni.getStorageInfoSync('other')

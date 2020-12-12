@@ -1,6 +1,6 @@
 <template>
 	<view class="weike">
-		<view class="toptitle">
+		<view class="toptitle" @tap=back>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>买房百科</text>
 		</view>
@@ -180,6 +180,11 @@
 			}
 		},
 		methods: {
+			back(){
+				uni.navigateBack({
+					data:1
+				})
+			},
 			setnum(num) {
 				// this.num = num
 				let position = 56

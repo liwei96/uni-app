@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>免责协议</text>
 		</view>
@@ -41,7 +41,11 @@
 			}
 		},
 		methods: {
-			
+			back(){
+				uni.navigateBack({
+					data:1
+				})
+			}
 		}
 	}
 </script>

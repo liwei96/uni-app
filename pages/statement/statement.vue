@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>预约看房</text>
 		</view>
@@ -26,6 +26,51 @@
 			<view class="txt">
 				6、凡本网注明“来源：XXX ”的文/图等资料，本网转载出于传递更多信息之目的，并不意味着赞同其观点或证实其内容的真实性。
 			</view>
+			<view class="txt">
+				7、转载或引用本网其他版权所有之内容须注明“转自（或引自）允家新房”字样，并标明本网网址www.jy8006 .com。转载或引用本网中的署名文章，请按规定向作者支付稿酬。
+			</view>
+			<view class="txt">
+				8、除注明“来源：允家新房”或“来源：允家新房××（频道）”的内容外，本网以下内容亦不可任意转载：
+			</view>
+			<view class="txt">
+				A、本网所指向的非本网内容的相关链接内容；
+			</view>
+			<view class="txt">
+				B、已作出不得转载或未经许可不得转载声明的内容；
+			</view>
+			<view class="txt">
+				C、未由本网署名或本网引用、转载的他人作品等非本网版权内容；
+			</view>
+			<view class="txt">
+				D、本网中特有的图形、标志、页面风格、编排方式、程序等；
+			</view>
+			<view class="txt">
+				E、本网中必须具有特别授权或具有注册用户资格方可知晓的内容；
+			</view>
+			<view class="txt">
+				F、其他法律不允许或本网认为不适合转载的内容。
+			</view>
+			<view class="txt">
+				9、转载或引用本网内容不得进行如下活动：
+			</view>
+			<view class="txt">
+				A、损害本网、他人或其他社会群体利益的行为；
+			</view>
+			<view class="txt">
+				B、任何违反法律法规的行为。
+			</view>
+			<view class="txt">
+				10、对于不当转载或引用本网内容而引起的纷争等或因纠纷等造成的任何损失，本网不承担相关法律责任。
+			</view>
+			<view class="txt">
+				11、对不遵守本声明的用户或其他违法、恶意使用本网内容者，本网保留追究其法律责任的权利。
+			</view>
+			<view class="txt">
+				12、本声明未涉及的问题请参见国允家关法律法规，当本声明与国允家关法律法规冲突时，以国家法律法规为准。
+			</view>
+			<view class="txt">
+				13、本网站相关声明版权及其修改权、更新权和解释权均属允家新房所有。
+			</view>
 		</view>
 	</view>
 </template>
@@ -38,7 +83,11 @@
 			}
 		},
 		methods: {
-			
+			back() {
+				uni.navigateBack({
+					data: 1
+				})
+			}
 		}
 	}
 </script>

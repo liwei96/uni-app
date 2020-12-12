@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>买房百科</text>
 		</view>
@@ -127,6 +127,11 @@
 			this.getmore()
 		},
 		methods: {
+			back(){
+				uni.navigateBack({
+					data: 1
+				})
+			},
 			setnum(e) {
 				this.currentnum = e.detail.current
 			},

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>预约看房</text>
 		</view>
@@ -114,6 +114,11 @@
 			}
 		},
 		methods: {
+			back() {
+				uni.navigateBack({
+					data:1
+				})
+			},
 			send() {
 				console.log(this.checked)
 				if(!this.checked) {
