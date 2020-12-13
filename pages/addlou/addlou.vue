@@ -1,49 +1,30 @@
 <template>
 	<view class="addlou">
 		<view class="toptitle">
-			<image src="../../static/all-back.png" mode=""></image>
-			<text>楼盘对比</text>
+			<navigator open-type="navigateBack" delta="1">
+				<image src="../../static/all-back.png" mode=""></image>
+				<text>楼盘对比</text>
+			</navigator>
 		</view>
 		<view class="pro_list">
-			<checkbox-group @change="getChecked">
-			<view class="sel_pro">
+			<checkbox-group @change="getChecked" >
+			<view class="sel_pro" v-for="item in data" :key="item.id">
 					<label class="left_checkbox">
-						<checkbox value="锦云澜天里" :checked="checked" />
+						<checkbox :value="item.id" :checked="checked" />
 					</label>
 				
 					<view class="pro_one">
-						<image src="http://api.jy1980.com/uploads/20200614/thumb_800_nwj7f7nr.jpg" mode=""></image>
+						<image :src="item.img" mode=""></image>
 						<view class="right_name">
-							<view class="name">锦云澜天里</view>
-							<view class="price">17000元/m²</view>
-							<view class="type">住宅<text class="ge">|</text>杭州-江干<text class="ge">|</text>80-140m²</view>
+							<view class="name">{{item.name}}</view>
+							<view class="price">{{item.price}}元/m²</view>
+							<view class="type">{{item.type}}<text class="ge">|</text>{{item.city}}-{{item.country}}<text class="ge">|</text>{{item.area}}m²</view>
 							<view class="tese">
-								<text class="zhuang">精装</text>
-								<text class="other">住宅</text>
-								<text class="other">地铁楼盘</text>
+								<text class="zhuang">{{item.decorate}}</text>
+								<text class="other" v-for="(ite,index) in item.features" :key="index">{{ite}}</text>
 							</view>
 						</view>
 					</view>
-			</view>
-			
-			<view class="sel_pro">
-					<label class="left_checkbox">
-						<checkbox value="cb" :checked="checked" />
-					</label>
-				
-				<view class="pro_one">
-					<image src="http://api.jy1980.com/uploads/20200614/thumb_800_nwj7f7nr.jpg" mode=""></image>
-					<view class="right_name">
-						<view class="name">锦云澜天里</view>
-						<view class="price">17000元/m²</view>
-						<view class="type">住宅<text class="ge">|</text>杭州-江干<text class="ge">|</text>80-140m²</view>
-						<view class="tese">
-							<text class="zhuang">精装</text>
-							<text class="other">住宅</text>
-							<text class="other">地铁楼盘</text>
-						</view>
-					</view>
-				</view>
 			</view>
 			</checkbox-group>
 		</view>
@@ -75,7 +56,7 @@
 		
 	    <!-- 添加楼盘按钮 -->
 	     <view class="add_btn_box">
-	     	<view :class="{active:active}">
+	     	<view :class="{active:active}"  @tap="addLou">
 	     		添加楼盘
 	     	</view>
 	     </view>
@@ -88,13 +69,58 @@
 			return {
 				checked:false,
 				active:false,
+				common:{},
+				data:[],
+				checkValue:[],
+				
+				project_id:[],
 			};
 		},
+		onLoad(option){
+			this.getSome();
+			console.log(option);
+			this.project_id = option.id;
+		},
 		methods:{
+			addLou(){
+				let ids = this.checkValue;
+				console.log(this.project_id);
+				if(this.project_id!==""  && this.project_id!=="cb"){
+					this.checkValue.push(this.project_id);
+				}else{
+					this.checkValue = this.checkValue;
+				}
+				
+				let newsel = ids.join(',');
+			    uni.navigateTo({
+			    	url:"../loupk/loupk?ids="+newsel
+			    })
+			},
 			getChecked(val){
+				this.checkValue = val.detail.value;
+				
 				if(val.detail.value.length!==0){
 					 this.active=true;
 				}
+			},
+			getSome(){
+				let city_id  = uni.getStorageInfoSync("city");
+				let token  = uni.getStorageInfoSync("token");
+				uni.request({
+					url:this.apiserve+'/jy/compare/some',
+					method:"GET",
+					data:{
+						city:city_id,
+						token:token,
+					},
+					success:(res)=> {
+					   if(res.data.code==200){
+						   console.log(res);
+						 //  this.common = res.data.common;
+						   this.data = res.data.data;
+					   }
+					}
+				})
 			}
 		}
 	}

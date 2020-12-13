@@ -9,18 +9,18 @@
 				<view class="tit_01">楼盘对比</view>
 				<view class="tit_02">楼盘信息</view>
 			</view>
-			<view class="pro_one">
+			<view class="pro_one" v-for="item in data" :key="item.id">
 				<view class="img_top">
-					<image src="http://api.jy1980.com/uploads/20200305/thumb_800_ykkq2zrh.jpg" mode=""></image>
+					<image :src="item.img" mode=""></image>
 				</view>
 				<view class="pro_bot">
-					<view class="name">锦云澜天里</view>
+					<view class="name">{{item.name}}</view>
 					<view class="tese">
-						<text class="status">在售</text>
-						<text class="type">住宅</text>
+						<text class="status">{{item.state}}</text>
+						<text class="type">{{item.type}}</text>
 					</view>
 					<view class="price">
-						约<text>17500</text>元/m²
+						约<text>{{item.price}}</text>元/m²
 					</view>
 					<view class="bo_tel_btn">
 						<image src="../../static/other/pk_tel.png" mode=""></image>
@@ -28,25 +28,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="pro_one">
-				<view class="img_top">
-					<image src="http://api.jy1980.com/uploads/20200305/thumb_800_ykkq2zrh.jpg" mode=""></image>
-				</view>
-				<view class="pro_bot">
-					<view class="name">锦云澜天里</view>
-					<view class="tese">
-						<text class="status">在售</text>
-						<text class="type">住宅</text>
-					</view>
-					<view class="price">
-						约<text>17500</text>元/m²
-					</view>
-					<view class="bo_tel_btn">
-						<image src="../../static/other/pk_tel.png" mode=""></image>
-						电话咨询
-					</view>
-				</view>
-			</view>
+			
 		</view>
 		<!-- 隐藏 -->
 		<view class="yin" v-show="hua_show_yin">
@@ -54,30 +36,19 @@
 				<view class="tit_01">楼盘对比</view>
 				<view class="tit_02">楼盘信息</view>
 			</view>
-			<view class="pro_one">
+			<view class="pro_one" v-for="item in data" :key="item.id">
 				<view class="img_top">
-					<image src="http://api.jy1980.com/uploads/20200305/thumb_800_ykkq2zrh.jpg" mode=""></image>
+					<image :src="item.img" mode=""></image>
 				</view>
 				<view class="pro_bot">
-					<view class="name">锦云澜天里</view>
+					<view class="name">{{item.name}}</view>
 					<view class="bo_tel_btn">
 						<image src="../../static/other/pk_tel.png" mode=""></image>
 						电话咨询
 					</view>
 				</view>
 			</view>
-			<view class="pro_one">
-				<view class="img_top">
-					<image src="http://api.jy1980.com/uploads/20200305/thumb_800_ykkq2zrh.jpg" mode=""></image>
-				</view>
-				<view class="pro_bot">
-					<view class="name">锦云澜天里</view>
-					<view class="bo_tel_btn">
-						<image src="../../static/other/pk_tel.png" mode=""></image>
-						电话咨询
-					</view>
-				</view>
-			</view>
+			
 		</view>
 
 
@@ -116,66 +87,36 @@
 					距地铁
 				</view>
 			</view>
-			<view class="pk_one_project">
+			<view class="pk_one_project" v-for="item in data" :key="item.id">
 				<view class="address">
-					睦州大道与清溪大道交叉口
+					{{item.address}}
 				</view>
-				<view class="tese">
-					<text>刚需楼盘</text>
-					<text>地铁楼盘</text>
+				<view class="tese" >
+					<text v-for="ite in item.features">{{ite}}</text>
 				</view>
 				<view class="state">
-					在售
+					{{item.state}}
 				</view>
 				<view class="type">
-					住宅
+					{{item.type}}
 				</view>
 				<view class="zheng">
-					临售许字（2020） 第00013号
+					{{item.license}}
 				</view>
 				<view class="zhuang">
-					精装
+					{{item.decorate}}
 				</view>
 				<view class="height">
-					3.5m
+					{{item.height}}m
 				</view>
 				<view class="year">
-					40年
+					{{item.year}}年
 				</view>
 				<view class="subway">
-					800m
+					<text v-for="ite in item.railways">{{ite.name}}</text>
 				</view>
 			</view>
-			<view class="pk_two_project">
-				<view class="address">
-					睦州大道与清溪大道交叉口
-				</view>
-				<view class="tese">
-					<text>刚需楼盘</text>
-					<text>地铁楼盘</text>
-				</view>
-				<view class="state">
-					在售
-				</view>
-				<view class="type">
-					住宅
-				</view>
-				<view class="zheng">
-					临售许字（2020） 第00013号
-				</view>
-				<view class="zhuang">
-					精装
-				</view>
-				<view class="height">
-					3.5m
-				</view>
-				<view class="year">
-					40年
-				</view>
-				<view class="subway">
-					800m
-				</view>
-			</view>
+
 		</view>
 
 
@@ -206,48 +147,28 @@
 					优惠信息
 				</view>
 			</view>
-			<view class="pro_sale">
+			<view class="pro_sale" v-for="item in data" :key="item.id">
 				<view class="danjia_box">
-					<view class="price">约15000元/m²</view>
+					<view class="price">约{{item.price}}元/m²</view>
 					<view class="btn">咨询底价</view>
 				</view>
 				<view class="zongjia">
 					160万起
 				</view>
 				<view class="kaipan">
-					2019-08
+					{{item.open_time}}
 				</view>
 				<view class="jiaotime">
-					2022-07
+					{{item.give_time}}
 				</view>
 				<view class="kaifa">
-					浙江富力房地产开发 有限公司
+					{{item.builder}}
 				</view>
 				<view class="youhui">
-					限时优惠
+					{{item.discount}}
 				</view>
 			</view>
-			<view class="pro_sale_two">
-				<view class="danjia_box">
-					<view class="price">约15000元/m²</view>
-					<view class="btn">咨询底价</view>
-				</view>
-				<view class="zongjia">
-					160万起
-				</view>
-				<view class="kaipan">
-					2019-08
-				</view>
-				<view class="jiaotime">
-					2022-07
-				</view>
-				<view class="kaifa">
-					浙江富力房地产开发 有限公司
-				</view>
-				<view class="youhui">
-					限时优惠
-				</view>
-			</view>
+			
 		</view>
 
 		<!-- 建筑信息 -->
@@ -282,9 +203,9 @@
 				</view>
 
 			</view>
-			<view class="jian_right">
+			<view class="jian_right" v-for="item in data" :key="item.id">
 				<view class="humian">
-					40-80m²
+					{{item.area}}m²
 				</view>
 				<view class="huxing">
 					<view class="shi">
@@ -296,150 +217,166 @@
 					</view>
 				</view>
 				<view class="jian_mian">
-					132384m²
+					{{item.built_area}}m²
 				</view>
 				<view class="wufei">
-					4.50元/m²月
+					{{item.property_fee}}元/m²月
 				</view>
 				<view class="rongji">
-					1.60
+					{{item.property_fee}}
 				</view>
 				<view class="wuye_gong">
-					富力物业
+					{{item.property_company}}
 				</view>
 				<view class="lvhua">
-					35.00%
+					{{item.green}}%
 				</view>
 				<view class="chewei">
-					1878个
+					{{item.parking}}个
 				</view>
 			</view>
-			<view class="jian_right_r">
-				<view class="humian">
-					40-80m²
-				</view>
-				<view class="huxing">
-					<view class="shi">
-						1室、2室
-					</view>
-					<view class="more">
-						更多户型
-						<image src="../../static/other/fan.png"></image>
-					</view>
-				</view>
-				<view class="jian_mian">
-					132384m²
-				</view>
-				<view class="wufei">
-					4.50元/m²月
-				</view>
-				<view class="rongji">
-					1.60
-				</view>
-				<view class="wuye_gong">
-					富力物业
-				</view>
-				<view class="lvhua">
-					35.00%
-				</view>
-				<view class="chewei">
-					1878个
-				</view>
-			</view>
+
 		</view>
 
 		<view class="button">
 			咨询详细楼盘信息
 		</view>
-		<twosee :title="title"></twosee>
-		<bottom></bottom>
-
+		<twosee :title="title" :project="recommends"></twosee>
+		<bottom :remark="'楼盘pk详情页+预约看房'" :point="103" :title="'预约看房'" :pid="pid" :telphone="telphone"></bottom>
+		
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+		</wyb-popup>
 	</view>
 </template>
 
 <script>
 	import twosee from '../../components/mine/twosee.vue';
 	import bottom from '../../components/mine/bottom.vue'
+	import wybPopup from "@/components/wyb-popup/wyb-popup.vue"
+	import sign from '@/components/sign.vue'
 	export default {
 		data() {
 			return {
 				title: '猜你喜欢',
 				hua_old_show: true,
 				hua_show_yin: false,
-				
+
 				flag: 0,
 				text: '',
 				lastX: 0,
-				lastY: 0
+				lastY: 0,
+				data:[],
+				recommends:[],
+				common:{},
+				
+				codenum:1,
+				title_e:'',
+				pid_d:0,
+				remark_k:'',
+				position_n:0,
+				telphone:'',
+				pid:0,
 			};
+		},
+		onLoad(option) {
+			console.log(option);
+			this.getdata(option.id);
 		},
 		components: {
 			twosee,
-			bottom
+			bottom,
+			wybPopup,
+			sign
 		},
 		methods: {
+			setiscode(){
+				this.codenum = 0
+			},
 			// onPageScroll(e){
 			// 	console.log('页面开始滑动');
 			// 	this.hua_old_show = false;
 			// 	this.hua_show_yin = true;
 			// }
-		    handletouchmove: function(event) {
-		    			// console.log(event)
-		    			if (this.flag !== 0) {
-		    				return;
-		    			}
-		    			let currentX = event.touches[0].pageX;
-		    			let currentY = event.touches[0].pageY;
-		    			let tx = currentX - this.lastX;
-		    			let ty = currentY - this.lastY;
-		    			let text = '';
-		    			this.mindex = -1;
-		    			//左右方向滑动
-		    			if (Math.abs(tx) > Math.abs(ty)) {
-		    				if (tx < 0) {
-		    					text = '向左滑动';
-		    					this.flag = 1;
-		    				//	this.getList();  //调用列表的方法
-		    				} else if (tx > 0) {
-		    					text = '向右滑动';
-		    					this.flag = 2;
-		    				}
-		    			}
-		    			//上下方向滑动
-		    			else {
-		    				if (ty < 0) {
-		    					text = '向上滑动';
-		    					this.flag = 3;
-								console.log('向上滑动')
-								this.hua_old_show = false;
-								this.hua_show_yin = true;
-		    				//	this.getList();  //调用列表的方法
-		    				} else if (ty > 0) {
-		    					text = '向下滑动';
-		    					this.flag = 4;
-								this.hua_old_show = true;
-								this.hua_show_yin = false;
-								console.log('向下滑动')
-		    				}
-		    			}
-		    
-		    			//将当前坐标进行保存以进行下一次计算
-		    			this.lastX = currentX;
-		    			this.lastY = currentY;
-		    			this.text = text;
-		    		},
-		    		handletouchstart: function(event) {
-		    			// console.log(event)
-		    			this.lastX = event.touches[0].pageX;
-		    			this.lastY = event.touches[0].pageY;
-		    		},
-		    		handletouchend: function(event) {
-		    			this.flag = 0;
-		    			this.text = '没有滑动';
-		    		},
+			getdata(id){
+				 let other = uni.getStorageInfoSync('other');
+				 let token = uni.getStorageInfoSync('token');
+				uni.request({
+					url:this.apiserve+'/jy/base/compare',
+					method:"GET",
+					data:{
+						ids:id,
+						other:other,
+						token:token,
+					},
+					success:(res)=>{
+						if(res.data.code==200){
+							console.log(res);
+							this.recommends = res.data.recommends;
+							this.common = res.data.common;
+							this.telphone = res.data.common.phone;
+							this.data = res.data.data;
+						}
+					}
+					
+				})
+			},
+			handletouchmove: function(event) {
+				// console.log(event)
+				if (this.flag !== 0) {
+					return;
+				}
+				let currentX = event.touches[0].pageX;
+				let currentY = event.touches[0].pageY;
+				let tx = currentX - this.lastX;
+				let ty = currentY - this.lastY;
+				let text = '';
+				this.mindex = -1;
+				//左右方向滑动
+				if (Math.abs(tx) > Math.abs(ty)) {
+					if (tx < 0) {
+						text = '向左滑动';
+						this.flag = 1;
+						//	this.getList();  //调用列表的方法
+					} else if (tx > 0) {
+						text = '向右滑动';
+						this.flag = 2;
+					}
+				}
+				//上下方向滑动
+				else {
+					if (ty < 0) {
+						text = '向上滑动';
+						this.flag = 3;
+						console.log('向上滑动')
+						this.hua_old_show = false;
+						this.hua_show_yin = true;
+						//	this.getList();  //调用列表的方法
+					} else if (ty > 0) {
+						text = '向下滑动';
+						this.flag = 4;
+						this.hua_old_show = true;
+						this.hua_show_yin = false;
+						console.log('向下滑动')
+					}
+				}
+
+				//将当前坐标进行保存以进行下一次计算
+				this.lastX = currentX;
+				this.lastY = currentY;
+				this.text = text;
+			},
+			handletouchstart: function(event) {
+				// console.log(event)
+				this.lastX = event.touches[0].pageX;
+				this.lastY = event.touches[0].pageY;
+			},
+			handletouchend: function(event) {
+				this.flag = 0;
+				this.text = '没有滑动';
+			},
 		}
 	}
-	
 </script>
 
 <style lang="less">
@@ -797,10 +734,10 @@
 					font-weight: 500;
 					color: #323233;
 					width: 252rpx;
-					height: 95rpx;
+					height: 119rpx;
 					border-bottom: 1rpx solid rgba(237, 237, 237, 1);
 					border-right: 1rpx solid rgba(237, 237, 237, 1);
-					margin-top: 24rpx;
+					//margin-top: 24rpx;
 					margin-left: 23rpx;
 				}
 

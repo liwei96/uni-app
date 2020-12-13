@@ -33,7 +33,7 @@
 					</text>
 				</view>
 				<view class="right_gong">
-					<view class="duibi">
+					<view class="duibi" @tap="goDuibi(detail.id)">
 						<image src="../../static/content/duibi.png"></image>
 						<text>对比</text>
 					</view>
@@ -816,6 +816,11 @@
 
 		},
 		methods: {
+			goDuibi(id){
+				uni.navigateTo({
+				     url:`../loupk/loupk?ids=${id}`
+				})
+			},
 			setiscode() {
 				this.codenum = 0
 			},
