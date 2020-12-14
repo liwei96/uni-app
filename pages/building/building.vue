@@ -391,13 +391,6 @@
 			this.getmore()
 			this.isloading = true
 		},
-		onShow() {
-			var animation = uni.createAnimation({
-				duration: 1000, //动画持续1秒
-				timingFunction: 'linear' //linear 全程匀速运动
-			})
-			this.animation = animation
-		},
 		onPageScroll(e) {
 			if(e.scrollTop >=44) {
 				this.isfixed = true

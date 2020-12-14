@@ -65,6 +65,36 @@
 </template>
 
 <script>
+	export default {
+		data() {
+			return {
+
+			}
+		},
+		onLoad() {
+			this.getlist()
+		},
+		methods: {
+			getlist() {
+				let pp = {
+					controller: "Talker",
+					action: "mine",
+					params: {
+						uuid: 2
+					},
+				};
+				 uni.sendSocketMessage({
+				      data: JSON.stringify(pp)
+				    });
+			}
+		},
+		mounted() {
+			uni.onSocketMessage(function (res) {
+			  console.log('收到服务器内容：' + res.data);
+			  
+			});
+		}
+	}
 </script>
 
 <style lang="less">
@@ -76,33 +106,41 @@
 		line-height: 87.64rpx;
 		border-bottom: 1rpx solid #F7F7F7;
 	}
+
 	.content {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+
 		image {
 			width: 346.61rpx;
 			height: 211.15rpx;
 			margin-top: 298.8rpx;
 		}
 	}
+
 	.text {
 		text-align: center;
 		color: #7D7E80;
 		font-size: 25.89rpx;
 		margin-top: 79.68rpx;
 	}
+
 	.list {
 		padding: 0 30rpx;
+
 		.li {
 			display: flex;
 			padding-top: 30rpx;
+
 			.left {
 				position: relative;
 				margin-right: 30rpx;
+
 				image {
 					width: 96rpx;
 				}
+
 				.num {
 					position: absolute;
 					width: 32rpx;
@@ -117,18 +155,22 @@
 					top: 0;
 				}
 			}
+
 			.right {
 				flex: 1;
 				padding-bottom: 36rpx;
 				border-bottom: 1rpx solid #F2F2F2;
+
 				.top {
 					display: flex;
 					margin-bottom: 18rpx;
-					.name{
+
+					.name {
 						color: #19191A;
 						font-size: 32rpx;
 						margin-right: 14rpx;
 					}
+
 					.build {
 						padding: 5rpx 10rpx;
 						color: #3EACF0;
@@ -137,20 +179,22 @@
 						border-radius: 3rpx;
 						max-width: 210rpx;
 						overflow: hidden;
-						text-overflow:ellipsis;
+						text-overflow: ellipsis;
 						white-space: nowrap;
 					}
+
 					.time {
 						color: #AFAFB3;
 						font-size: 24rpx;
 						margin-left: auto;
 					}
 				}
+
 				.bom {
 					color: #7D7D80;
 					font-size: 26rpx;
 					overflow: hidden;
-					text-overflow:ellipsis;
+					text-overflow: ellipsis;
 					white-space: nowrap;
 				}
 			}
