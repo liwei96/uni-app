@@ -110,14 +110,14 @@ import bottom from '../../components/mine/bottom.vue';
 				})
 			},
 			getmore(id){
-				 let page = this.page + 1;
+				 this.page = this.page + 1;
 				 let token = uni.getStorageInfoSync('token');
 				 let other = uni.getStorageInfoSync('other');
 				uni.request({
 					url:this.apiserve+"/applets/comment/list",
 					data:{
 						id:id,   //项目id
-						page:page,  //第几页
+						page:this.page,  //第几页
 						limit:10, //每页几条
 						token:token,
 						other:other,

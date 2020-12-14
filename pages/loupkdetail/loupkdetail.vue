@@ -1,8 +1,10 @@
 <template>
 	<view class="loupkdetail" @touchmove="handletouchmove" @touchstart="handletouchstart" @touchend="handletouchend">
 		<view class="toptitle">
-			<image src="../../static/all-back.png" mode=""></image>
-			<text>楼盘对比</text>
+			<navigator open-type="navigateBack">
+				<image src="../../static/all-back.png" mode=""></image>
+				<text>楼盘对比</text>
+			</navigator>
 		</view>
 		<view class="project_two" v-show="hua_old_show">
 			<view class="left_tit">
@@ -22,7 +24,7 @@
 					<view class="price">
 						约<text>{{item.price}}</text>元/m²
 					</view>
-					<view class="bo_tel_btn">
+					<view class="bo_tel_btn" @tap="boTel(tel)">
 						<image src="../../static/other/pk_tel.png" mode=""></image>
 						电话咨询
 					</view>
@@ -276,7 +278,9 @@
 				remark_k:'',
 				position_n:0,
 				telphone:'',
-				pid:0,
+				pid:"0",
+				
+				tel:'4009669995'
 			};
 		},
 		onLoad(option) {
@@ -292,6 +296,14 @@
 		methods: {
 			setiscode(){
 				this.codenum = 0
+			},
+			boTel(tel){
+				uni.makePhoneCall({
+					phoneNumber: tel,
+					success: function() {
+						console.log('拨打电话');
+					} //仅为示例
+				});
 			},
 			// onPageScroll(e){
 			// 	console.log('页面开始滑动');

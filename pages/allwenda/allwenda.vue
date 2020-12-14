@@ -90,38 +90,46 @@
 
 <script>
 import  bottom from '../../components/mine/bottom.vue'
+var that;
 export default {
 	data() {
 		return {
 			data:[],
 			project_id:'',
 			remark:'',
-			telphone:''
+			telphone:'',
+			page:1,
 		};
 	},
 	components:{
 		bottom
 	},
+	
 	onLoad(option) {
 		if(option.id==0 ||option.id==undefined || option.id==null){
 			this.remark = "全部问答页+预约看房"
 		}else{
 			this.remark = "项目问答页+预约看房"
 		}
+      that = this;
 	  this.getdata(option.id);
 	  this.project_id = option.id;
+	 
+	},
+	onReachBottom(){
+		this.getmore(this.project_id);
 	},
 	methods:{
 		getdata(id){
 			let city_id = uni.getStorageInfoSync('city');
 			let token = uni.getStorageInfoSync('token');
 			let other = uni.getStorageInfoSync('other');
-			
+		   	let page = that.page;
 			uni.request({
-				url:this.apiserve+"/applets/question/list",
+				url:that.apiserve+"/applets/question/list",
 				data:{
 					city:city_id,
-					page:'1',
+					page:page,
 					limit:"10",
 					project:id,  //如果是全部问答project 传0
 					other:other,
@@ -131,8 +139,8 @@ export default {
 				success: (res) => {
 					if(res.data.code==200){
 						 console.log(res);
-						 this.data = res.data.data;
-						 this.telphone = res.data.common.phone;
+						 that.data = res.data.data;
+						 that.telphone = res.data.common.phone;
 					}
 				},
 				fail: (error) => {
@@ -140,6 +148,34 @@ export default {
 				}
 			})
 		},
+		getmore(id){
+			let city_id = uni.getStorageInfoSync('city');
+			let token = uni.getStorageInfoSync('token');
+			let other = uni.getStorageInfoSync('other');
+			 that.page = that.page +1;
+			uni.request({
+				url:that.apiserve+"/applets/question/list",
+				data:{
+					city:city_id,
+					page: that.page,
+					limit:"10",
+					project:id,  //如果是全部问答project 传0
+					other:other,
+					token:token,
+				},
+				method:"GET",
+				success: (res) => {
+					if(res.data.code==200){
+						 console.log(res);
+						 that.data = that.data.concat(res.data.data);
+						
+					}
+				},
+				fail: (error) => {
+					console.log(error);
+				}
+			})
+		}
 		// showQuan(){
 		// 	this.old_flag = false;
 		// 	this.quan_false = true;

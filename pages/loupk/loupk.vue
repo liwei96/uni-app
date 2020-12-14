@@ -10,13 +10,16 @@
 			<view class="add_tan" @tap="goTianPro">
 				添加楼盘
 			</view>
-			<checkbox-group class="left_checkbox_box" @change="checkboxChange">
-				<movable-area v-show="true" v-for="item in data" :key="item.id">
+			<checkbox-group class="left_checkbox_box" @change="checkChange">
+				<movable-area v-show="true" v-for="(item,index) in data" :key="item.id">
 					<movable-view direction="horizontal">
 						<view class="sel_pro">
 
-							<label class="left_checkbox">
-								<checkbox :value="item.id"  :checked="item.checked" />
+							<label class="left_checkbox" v-if="(Obj.question.maxSelect > 0 &&Obj.question.maxSelect ==Object.keys(subtow).length)">
+								<checkbox :value="item.id" @click="checkboxhint()"  :disabled="item.id|selectD"/>
+							</label>
+							<label class="left_checkbox" v-else>
+								<checkbox :value="item.id" />
 							</label>
 
 							<view class="pro_one">
@@ -32,7 +35,7 @@
 									</view>
 								</view>
 							</view>
-							<view class="delete">
+							<view class="delete" @tap="deletePro(item.id,index)">
 								删除
 							</view>
 						</view>
@@ -57,7 +60,7 @@
 			</view>
 		</view>
 
-		<view class="bottom_btn" @tap="duibi">
+		<view :class="style_num==0?'bottom_btn':'active'" @tap="duibi">
 			开始对比
 		</view>
 
@@ -67,6 +70,7 @@
 </template>
 
 <script>
+	let thatOne;
 	export default {
 		data() {
 			return {
@@ -78,6 +82,28 @@
 				duibi_tootip: false,
 				count:0,
 				checkbox:[],
+				
+				maleLike: [],
+				currentArr: [], // 当前用户想要的选项，最大为5
+				oldArr: [], // 上一次的返回值
+				hasPass: false, // 用户之前是否选择过，是为true
+				
+				Obj: {
+						question: {
+							id: 999,
+							name: "下面哪个是唐朝诗人？",
+							maxSelect: 3,
+						},
+					},
+				subtow: {},
+				reminder: {
+					type: 'success',
+					message: '成功消息',
+					duration: 2000
+				},
+				style_num:0
+				
+				
 			};
 		},
 		onLoad(option) {
@@ -85,10 +111,100 @@
 			this.getcards(option.ids);
 			this.project_id = option.ids;
 		},
+		beforeCreate: function() {
+			thatOne = this;
+		
+		},
+		filters: {
+			//设置最大可选
+			selectD(idU) {
+				if (thatOne.Obj.question.maxSelect > 0 &&
+					thatOne.Obj.question.maxSelect ==Object.keys(thatOne.subtow).length ) {
+					for (var t in thatOne.subtow) {
+						if (t == idU) {
+							return false
+						}
+					}
+					console.log(thatOne.subtow);
+					return true
+				} else {
+					
+					thatOne.reminder = Object.assign({}, thatOne.reminder, {
+						type: 'error',
+						message: "最多可选" + thatOne.Obj.question.maxSelect + "项",
+						duration: 2000
+					})
+					console.log(thatOne.reminder);
+				//	thatOne.$refs.popup.open()
+				}
+				return false
+			},
+		},
+		watch:{
+			duibi_tootip(newval){
+				let _this = this;
+				if(newval==true){
+					setTimeout(function(){
+					  _this.duibi_tootip = false;
+					},2000)
+				}
+			}
+		},
 		methods: {
+			//多选提示
+			checkboxhint() {
+				if (
+					thatOne.Obj.question.maxSelect == Object.keys(thatOne.subtow).length ) {
+					thatOne.reminder = Object.assign({}, thatOne.reminder, {
+						type: 'error',
+						message: "最多可选" + thatOne.Obj.question.maxSelect + "项",
+						duration: 1000
+					})
+			
+				 //  	thatOne.$refs.popup.open()
+			
+				}
+			},
+			deletePro(id,ind){
+				this.data.splice(ind,1);
+			},
+			
+			checkChange(evt){
+				var that = this;
+				var a={}
+				for (let i = 0; i < that.data.length; i++) {
+					for (let j = 0; j < evt.target.value.length; j++) {
+						if (that.data[i].id === evt.target.value[j]) {
+							var b = that.data[i];
+							this.$set(a, evt.target.value[j], b)
+							break;
+						}
+					}
+				}
+					that.subtow = a;
+					let arr= [];
+					for(let i in a){
+						arr.push(a[i])
+					}
+					if(arr.length==2){
+						 this.selBox = arr;
+						 this.duibi_tootip = true;
+						 this.style_num = 1;
+					}
+					
+			},
+			
+			
+			
 			duibi(){
-				let checkbox = this.checkbox.join(',');
-				console.log(checkbox);
+				let  arr = this.selBox;
+				
+				let id_arr = [];
+				arr.map(p=>{
+					id_arr.push(p.id)
+				})
+				
+			    let checkbox = id_arr.join(',');
 				uni.navigateTo({
 					 url:'../loupkdetail/loupkdetail?id='+checkbox
 				})
@@ -104,13 +220,13 @@
 						const item = items[i];
 						if(values.includes(item.id)){
 							 console.log('123',item.id,values);
-					      	this.$set(item,'checked',true)
+					      	this.$set(item,'disabled',true)
 						    this.count++;
 							console.log(item);
 						}else{
-						   this.$set(item,'checked',false)
+						   this.$set(item,'disabled',false)
 						}
-					}
+				}
 			},
 			getcards(ids) {
 				let token = uni.getStorageInfoSync("token");
@@ -129,6 +245,7 @@
 							if(this.data.length==2){
 								this.data.map(n=>{
 									n.checked = true;
+								//	n.disabled = false;
 								})
 								this.checkbox = [this.data[0].id,this.data[1].id];
 							}else{
@@ -139,6 +256,7 @@
 										ind.checked = true;
 									}else {
 										ind.checked = false;
+									//	ind.disabled = true;
 									}
 								 })
 							}
@@ -192,7 +310,7 @@
 			padding-right: 30rpx;
 			box-sizing: border-box;
 			position: relative;
-
+			margin-bottom: 140rpx;
 			.add_tan {
 				width: 100%;
 				height: 94rpx;
@@ -370,8 +488,9 @@
 				line-height: 100rpx;
 				text-align: center;
 				position: absolute;
-				transform: translate(-50%, 0);
+				transform: translate(-50%, -50%);
 				left: 50%;
+				top:50%;
 			}
 
 
@@ -384,6 +503,20 @@
 			height: 80rpx;
 			margin-left: 30rpx;
 			background: #B2DCFF;
+			border-radius: 12rpx;
+			font-size: 30rpx;
+			font-weight: bold;
+			color: #FFFFFF;
+			text-align: center;
+			line-height: 80rpx;
+			position: fixed;
+			bottom: 30rpx;
+		}
+		.active{
+			width: 690rpx;
+			height: 80rpx;
+			margin-left: 30rpx;
+			background: #40A2F4;
 			border-radius: 12rpx;
 			font-size: 30rpx;
 			font-weight: bold;

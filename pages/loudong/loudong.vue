@@ -88,7 +88,8 @@
 				
 				pull_time:'',
 				jiao_time:'',
-				zheng:''
+				zheng:'',
+				page:1
 			};
 		},
 		components:{
@@ -104,11 +105,36 @@
 		// },
 		onReachBottom(){
 			console.log("触底了");
+			this.getmore(this.project_id);
 		},
 		methods:{
 			startPull(){
 				uni.startPullDownRefresh({
 					
+				})
+			},
+			getmore(id){
+				let city_id = uni.getStorageInfoSync("city");
+				this.page = this.page +1;
+				uni.request({
+					url:this.apiserve+"/applets/dynamic/info",
+					data:{
+						// id 项目id
+						// city 城市id
+						// page 第几页
+						// limit 每页几条
+						id:id,
+						city:city_id,
+						page:this.page, 
+						limit:10, 
+					},
+					method:'GET',
+					success: (res) => {
+						if(res.data.code==200){
+							console.log(res);
+							this.data = this.data.concat(res.data.data);
+						}
+					}
 				})
 			},
 			getdata(id){
@@ -124,7 +150,7 @@
 						// limit 每页几条
 						id:id,
 						city:city_id,
-						page:1, 
+						page:this.page, 
 						limit:10, 
 					},
 					method:'GET',

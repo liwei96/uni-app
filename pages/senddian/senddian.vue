@@ -6,15 +6,15 @@
 		 </view>
 		 <view class="pro">
 		 	<view class="pro_one">
-		 		<image src="http://api.jy1980.com/uploads/20191231/thumb_400_vgmq8pyf.png" mode=""></image>
+		 		<image :src="building.img" mode=""></image>
 		 		<view class="right_pro">
-		 			<view class="pro_name">武林ONE<text class="status">在售</text></view>
-		 			<view class="price">17000元/m²</view>
-		 			<view class="type">住宅<text>|</text>杭州-江干<text>|</text>80-140m² </view>
+		 			<view class="pro_name">{{building.name}}<text class="status">{{building.state}}</text></view>
+		 			<view class="price">{{building.price}}元/m²</view>
+		 			<view class="type">{{building.type}}<text>|</text>{{building.city}}-江干<text>|</text>{{building.area}}m² </view>
 		 			<view class="tese">
-		 				<text class="zhuang">精装</text> 
-		 				<text class="other">1号线</text>
-		 				<text class="other">地铁楼盘</text>
+		 				<text class="zhuang">{{building.decorate}}</text> 
+		 				<text class="other">{{building.railway}}</text>
+		 				<text class="other" v-if="">{{building.features[0]}}</text>
 		 			</view>
 		 		</view>
 		 	</view>
@@ -63,13 +63,42 @@
 		},
 		data() {
 			return {
-				text_value:''
+				text_value:'',
+				building:{}
 			};
+		},
+		onLoad(option){
+			console.log(option);
+			this.getData(option.id);
 		},
 		methods:{
 			rateValue(num){
 				console.log(num,'评分');
-			}
+			},
+			getData(id){
+				let  other = uni.getStorageInfoSync("other");
+				let  token =  uni.getStorageInfoSync("token");
+				uni.request({
+					url:this.apiserve+"/applets/building/base",
+					data:{
+						id:id,
+						other:other,
+						token: token
+					},
+					method:"GET",
+					success: (res) => {
+						if(res.data.code==200){
+							 console.log(res);
+						    this.building = res.data.building; 
+							// this.text_all = res.data.building.introduce;
+							// this.text = res.data.building.introduce.substring(0,82);
+						}
+					},
+					fail: (error) => {
+						console.log(error);
+					}
+				})
+			},
 		}
 	}
 </script>
@@ -221,7 +250,7 @@
 		}
 		.star{
 			height: 100rpx;
-			background: #4CD964;
+			// background: #4CD964;
 		}
 		.textarea_box{
 			width:100%;

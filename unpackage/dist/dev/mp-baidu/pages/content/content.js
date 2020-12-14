@@ -985,6 +985,18 @@ var _default = {
 
   },
   methods: {
+    quTiwen: function quTiwen(id) {
+      //先判断登陆了，再跳转
+      uni.navigateTo({
+        url: "../tiwen/tiwen?id=" + id });
+
+    },
+    goDianPing: function goDianPing(id) {
+      //先判断登陆了，再跳转
+      uni.navigateTo({
+        url: "../senddian/senddian?id=" + id });
+
+    },
     goDuibi: function goDuibi(id) {
       uni.navigateTo({
         url: "../loupk/loupk?ids=".concat(id) });

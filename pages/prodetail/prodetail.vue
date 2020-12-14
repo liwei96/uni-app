@@ -231,12 +231,14 @@
 				this.codenum = 0
 			},
 			getData(id){
+				let  other = uni.getStorageInfoSync("other");
+				let  token =  uni.getStorageInfoSync("token");
 				uni.request({
 					url:this.apiserve+"/applets/building/base",
 					data:{
 						id:id,
-						other:'',
-						token:''
+						other:other,
+						token:token
 					},
 					method:"GET",
 					success: (res) => {

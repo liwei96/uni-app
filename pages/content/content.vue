@@ -460,7 +460,7 @@
 				</template>
 
 			</view>
-			<view class="dian_btn">
+			<view class="dian_btn" @tap="goDianPing(detail.id)">
 				我要点评
 			</view>
 		</view>
@@ -497,7 +497,7 @@
 					</view>
 				</template>
 				
-				<view class="ti_btn">
+				<view class="ti_btn" @tap="quTiwen(detail.id)">
 					我要提问
 				</view>
 			</view>
@@ -816,6 +816,18 @@
 
 		},
 		methods: {
+			quTiwen(id){
+				//先判断登陆了，再跳转
+				uni.navigateTo({
+					url:"../tiwen/tiwen?id="+id
+				})
+			},
+			goDianPing(id){
+				//先判断登陆了，再跳转
+				uni.navigateTo({
+					url:"../senddian/senddian?id="+id
+				})
+			},
 			goDuibi(id){
 				uni.navigateTo({
 				     url:`../loupk/loupk?ids=${id}`
