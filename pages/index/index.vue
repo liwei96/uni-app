@@ -5,8 +5,8 @@
 		</view>
 		<view class="search">
 			<view class="searchbox">
-				<image src="../../static/index/index-path.png" mode="" class="search-path"></image>
-				<text class="cityname">杭州</text>
+				<image src="../../static/index/index-path.png" mode="" class="search-path" @tap="gopath"></image>
+				<text class="cityname" @tap="gopath">{{cityname}}</text>
 				<view class="search-right">
 					<image src="../../static/index/index-search.png" mode="" class="right-icon"></image>
 					<input type="text" value="" placeholder="请输入楼盘名" />
@@ -291,13 +291,12 @@
 					hot:true,
 					people:false,
 					jiao:false,
-				}
-				
-				
+				},
+				cityname: '杭州'
 			}
 		},
 		onLoad() {
-
+			
 		},
 		onReady(){  //监听页面初次渲染完成
 			uni.request({
@@ -327,7 +326,15 @@
 				
 			})
 		},
+		onShow() {
+			this.cityname = uni.getStorageSync('cityname') || '杭州'
+		},
 		methods: {
+			gopath() {
+				uni.navigateTo({
+					url:'/pages/path/path'
+				})
+			},
 			hotSearch(){
 				this.common = this.hot_searches;
 				this.style_list.hot =true;

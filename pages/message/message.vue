@@ -12,9 +12,11 @@
 			</view>
 		</view>
 		<view class="list">
-			<view class="li">
+			<view class="li" v-for="item in list" :key="item.id">
 				<view class="left">
-					<image src="../../static/content/ping_img.png" mode="widthFix"></image>
+					<view class="leftbox">
+						<image :src="item.img" mode="widthFix"></image>
+					</view>
 					<view class="num">
 						1
 					</view>
@@ -22,41 +24,17 @@
 				<view class="right">
 					<view class="top">
 						<view class="name">
-							李华
+							{{item.name}}
 						</view>
 						<view class="build">
-							越秀缦云府
+							{{item.project}}
 						</view>
 						<view class="time">
-							11:24
+							{{item.time}}
 						</view>
 					</view>
 					<view class="bom">
-						请问有什么可以帮到您
-					</view>
-				</view>
-			</view>
-			<view class="li">
-				<view class="left">
-					<image src="../../static/content/ping_img.png" mode="widthFix"></image>
-					<view class="num">
-						1
-					</view>
-				</view>
-				<view class="right">
-					<view class="top">
-						<view class="name">
-							李华
-						</view>
-						<view class="build">
-							越秀缦云府
-						</view>
-						<view class="time">
-							11:24
-						</view>
-					</view>
-					<view class="bom">
-						请问有什么可以帮到您
+						{{item.content}}
 					</view>
 				</view>
 			</view>
@@ -68,30 +46,71 @@
 	export default {
 		data() {
 			return {
-
+				list: []
 			}
 		},
-		onLoad() {
+		onShow(){
 			this.getlist()
+			console.log(55)
 		},
 		methods: {
 			getlist() {
 				let pp = {
-					controller: "Talker",
-					action: "mine",
+					controller: "Staff",
+					action: "lists",
 					params: {
-						uuid: 2
-					},
+						uuid: '5wYwESFesZdr1606269193000'
+					}
 				};
-				 uni.sendSocketMessage({
-				      data: JSON.stringify(pp)
-				    });
+				console.log(11)
+				// uni.onSocketOpen(function (res) {
+				// 	console.log(22)
+				  
+				// });
+				uni.sendSocketMessage({
+					data: JSON.stringify(pp)
+				});
 			}
 		},
 		mounted() {
-			uni.onSocketMessage(function (res) {
-			  console.log('收到服务器内容：' + res.data);
-			  
+			let that = this
+			uni.onSocketMessage(function(res) {
+				let data = JSON.parse(res.data)
+				console.log(data)
+				if (data.action == 105) {
+					let date = new Date();
+					for (let val of data.data) {
+						let dd = new Date(val.time.replace(/\-/g, "/"));
+						let time = date - dd;
+						if (time / 1000 < 3600 * 24) {
+							val.time =
+								(dd.getHours() >= 10 ? dd.getHours() : "0" + dd.getHours()) +
+								":" +
+								(dd.getMinutes() >= 10 ? dd.getMinutes() : "0" + dd.getMinutes());
+						} else {
+							val.time =
+								dd.getFullYear() +
+								"-" +
+								(dd.getMonth() + 1 >= 10 ?
+									dd.getMonth() + 1 :
+									"0" + (dd.getMonth() + 1)) +
+								"-" +
+								(dd.getDate() >= 10 ? dd.getDate() : "0" + dd.getDate());
+						}
+						if (val.content.indexOf("%get your phone%") !== -1) {
+							val.content = "请您报备电话";
+						} else if (val.content.indexOf("%put my card%") !== -1) {
+							val.content = "这是我的名片";
+						} else if (val.content.indexOf("project_card") !== -1) {
+							let msg = JSON.parse(val.content);
+							val.content = "我浏览了" + msg.name;
+						} else if (val.content.length > 300) {
+							val.content = "我发送了一张图片";
+						}
+					}
+					that.list = data.data;
+					console.log(that.list)
+				}
 			});
 		}
 	}
@@ -136,7 +155,14 @@
 			.left {
 				position: relative;
 				margin-right: 30rpx;
-
+				height: 96rpx;
+				overflow: hidden;
+				.leftbox {
+					width: 96rpx;
+					height: 96rpx;
+					overflow: hidden;
+					border-radius: 50%;
+				}
 				image {
 					width: 96rpx;
 				}

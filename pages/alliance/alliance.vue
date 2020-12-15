@@ -471,10 +471,10 @@
 			</view>
 		</view>
 		<view class="bomnav">
-			<view class="phone">
+			<view class="phone" @tap="call">
 				电话咨询
 			</view>
-			<view class="join">
+			<view class="join" @tap="show">
 				申请加盟
 			</view>
 		</view>
@@ -516,7 +516,7 @@
 							<input type="text" placeholder="输入意向合作城市" placeholder-class="txt" v-model="add.city">
 						</view>
 					</view>
-					<view class="btn">
+					<view class="btn" @tap="push">
 						立即申请
 					</view>
 				</view>
@@ -551,6 +551,11 @@
 			that = this
 		},
 		methods: {
+			call() {
+				uni.makePhoneCall({
+				    phoneNumber: '400-718-6686' //仅为示例
+				})
+			},
 			back(){
 				uni.navigateBack({
 					data:1

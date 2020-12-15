@@ -1,9 +1,6 @@
 <script>
 	export default {
 		onLaunch: function() {
-			
-		},
-		onShow: function() {
 			let uuid = uni.getStorageSync('uuid')
 			if (!uuid) {
 				let timestamp = Date.parse(new Date());
@@ -21,9 +18,10 @@
 			uni.connectSocket({
 			  url: 'ws://39.98.227.114:9509?uuid='+uuid
 			});
-			uni.onSocketOpen(function (res) {
-			  console.log('WebSocket连接已打开！');
-			});
+		},
+		onShow: function() {
+			
+			
 			console.log('App Show')
 		},
 		onHide: function() {

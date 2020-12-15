@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>我的卡券</text>
 		</view>
@@ -23,8 +23,12 @@
 				
 			}
 		},
-		methods: {
-			
+		methods: { 
+			back() {
+				uni.navigateBack({
+					data: 1
+				})
+			}
 		}
 	}
 </script>

@@ -4,7 +4,7 @@
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>我的收藏</text>
 		</view>
-		<view class="recommend">
+		<view class="recommend" v-if="!isnull">
 			<view class="recommend-box">
 				<view class="item" v-for="item in list" :key="item.id" @tap="go(item.id)">
 					<view class="left">
@@ -29,58 +29,37 @@
 				</view>
 			</view>
 		</view>
-		<view class="isnull" v-if="list.length == 0">
+		<view class="isnull" v-if="isnull">
 			<image src="../../static/other/collect-con.png" mode=""></image>
 			<text>您暂无收藏记录，快去逛逛吧</text>
-			<view class="btn">
+			<view class="btn" @tap="gosearch">
 				去收藏
 			</view>
 		</view>
-		<view class="guess" v-if="list.length == 0">
+		<view class="guess" v-if="isnull">
 			<view class="recommend">
 				<view class="tit">
 					猜你喜欢
 				</view>
 				<view class="recommend-box">
-					<view class="item">
+					<view class="item" v-for="item in list" :key="item.id" @tap="go(item.id)">
 						<view class="left">
-							<image src="../../static/img-2.png" mode=""></image>
+							<image :src="item.img" mode=""></image>
 						</view>
 						<view class="right">
 							<view class="right-name">
-								<text class="name">武林ONE</text>
-								<text class="status">在售</text>
+								<text class="name">{{item.name}}</text>
+								<text class="status">{{item.state}}</text>
 							</view>
-							<text class="price">17000</text>
+							<text class="price">{{item.price}}</text>
 							<text class="psam">元/m²</text>
 							<view>
-								<text class="right-msg">住宅 | 杭州-江干 | 80-140m²</text>
+								<text class="right-msg">{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</text>
 							</view>
 							<view class="right-icons">
-								<text class="jing">精装</text>
+								<text class="jing">{{item.decorate}}</text>
 								<text>1号线</text>
-								<text>地铁楼盘</text>
-							</view>
-						</view>
-					</view>
-					<view class="item">
-						<view class="left">
-							<image src="../../static/img-2.png" mode=""></image>
-						</view>
-						<view class="right">
-							<view class="right-name">
-								<text class="name">武林ONE</text>
-								<text class="status">在售</text>
-							</view>
-							<text class="price">17000</text>
-							<text class="psam">元/m²</text>
-							<view>
-								<text class="right-msg">住宅 | 杭州-江干 | 80-140m²</text>
-							</view>
-							<view class="right-icons">
-								<text class="jing">精装</text>
-								<text>1号线</text>
-								<text>地铁楼盘</text>
+								<text v-for="(val,key) in item.features" :key="key">{{val}}</text>
 							</view>
 						</view>
 					</view>
@@ -95,7 +74,8 @@
 	export default {
 		data() {
 			return {
-				list: []
+				list: [],
+				isnull: false
 			}
 		},
 		onLoad() {
@@ -129,8 +109,16 @@
 					success: (res) => {
 						console.log(res)
 						that.list = res.data.data
+						if(res.data.total == 0) {
+							that.isnull = true
+						}
 						uni.hideLoading()
 					}
+				})
+			},
+			gosearch(){
+				uni.switchTab({
+					url:"/pages/building/building"
 				})
 			}
 		}
