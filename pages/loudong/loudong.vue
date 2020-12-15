@@ -89,7 +89,8 @@
 				pull_time:'',
 				jiao_time:'',
 				zheng:'',
-				page:1
+				page:1,
+				hua:true,
 			};
 		},
 		components:{
@@ -105,7 +106,10 @@
 		// },
 		onReachBottom(){
 			console.log("触底了");
-			this.getmore(this.project_id);
+			if(this.hua== true){
+				this.getmore(this.project_id);
+			}
+			
 		},
 		methods:{
 			startPull(){
@@ -133,6 +137,9 @@
 						if(res.data.code==200){
 							console.log(res);
 							this.data = this.data.concat(res.data.data);
+							if(res.data.data.length==0){
+								 this.hua = false;
+							}
 						}
 					}
 				})

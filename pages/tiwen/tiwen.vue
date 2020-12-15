@@ -1,8 +1,10 @@
 <template>
 	<view  class="wenhui">
 		<view class="toptitle">
-			<image src="../../static/all-back.png" mode=""></image>
-			<text>我要提问</text>
+			<navigator open-type="navigateBack" delta="1" class="nav_top">
+				<image src="../../static/all-back.png" mode=""></image>
+				<text>我要提问</text>
+			</navigator>
 		</view>
 		<view class="tit">
 			 允家在线咨询师帮您解答
@@ -17,7 +19,7 @@
 				{{text.length}}/50
 			</view>
 		</view>
-		<view class="tijiao_btn">
+		<view class="tijiao_btn" @tap="SendTiwen">
 			发布提问
 		</view>
 		
@@ -28,8 +30,35 @@
 	export default {
 		data() {
 			return {
-				text:''
+				text:'',
+				project_id:""
 			};
+		},
+		onLoad(option) {
+			this.project_id = option.id;
+		},
+		methods:{
+			SendTiwen(){
+				let token = uni.getStorageInfoSync('token');
+				let city_id = uni.getStorageInfoSync("city");
+				
+					uni.request({
+						url:this.apiserve+"/jy/ask",
+						data:{
+							 token:token,
+							 project:this.project_id,
+							 city:city_id,
+							 question:this.text,
+						},
+						method:"POST",
+						success:(res)=>{
+							if(res.data.code == 200){
+								console.log(res);
+							}
+						}
+					})
+			
+			}
 		}
 	}
 </script>
@@ -50,17 +79,19 @@
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #FFF;
-		image{
-		 width: 31.87rpx;
-		 height: 31.87rpx;
-		 margin-right: 11.95rpx;
-		 margin-bottom: -3.98rpx;
-		}
-		text{
-		  width: 221rpx;
-		  font-size: 32rpx;
-		  font-weight: 500;
-		  color: #17181A;
+		.nav_top{
+			image{
+			 width: 31.87rpx;
+			 height: 31.87rpx;
+			 margin-right: 11.95rpx;
+			 margin-bottom: -3.98rpx;
+			}
+			text{
+			  width: 221rpx;
+			  font-size: 32rpx;
+			  font-weight: 500;
+			  color: #17181A;
+			}
 		}
 	}
 	.tit{

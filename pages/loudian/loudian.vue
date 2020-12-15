@@ -67,6 +67,7 @@ import bottom from '../../components/mine/bottom.vue';
 				 project_id:"",
 				 telphone:'',
 				 page:1,
+				 hua:true,
 			};
 		},
 		components:{
@@ -81,7 +82,9 @@ import bottom from '../../components/mine/bottom.vue';
 		onReachBottom(){
 			console.log('滑倒低了');
 			let id = this.project_id;
-			this.getmore(id);
+			if(this.hua == true){
+				this.getmore(id);
+			}
 		},
 		methods:{
 			getdata(id,page){
@@ -127,7 +130,9 @@ import bottom from '../../components/mine/bottom.vue';
 						if(res.data.code==200){
 							 console.log(res);
 							 this.data = this.data.concat(res.data.data);
-							
+							 if(res.data.data.length==0){
+								  this.hua = false;
+							 }
 						}
 					},
 					fail: (error) => {

@@ -37,7 +37,7 @@
 						<image src="../../static/content/duibi.png"></image>
 						<text>对比</text>
 					</view>
-					<view class="shou">
+					<view class="shou" @tap="goShou(detail.id)">
 						<image src="../../static/content/shou.png"></image>
 						<text>收藏</text>
 					</view>
@@ -428,11 +428,11 @@
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
 									<text class="tel">{{item.mobile}}</text>
 								</navigator>
-								<view class="no_zan" v-if="item.my_like==0">
+								<view class="no_zan" v-if="item.my_like==0" @tap="getLike(item.id)">
 									<image src="../../static/content/no_zan.png" mode=""></image>
 									赞({{item.like_num}})
 								</view>
-								<view class="zan" v-if="item.my_like==1">
+								<view class="zan" v-if="item.my_like==1" @tap="getLike(item.id)">
 									<image src="../../static/content/zan.png" mode=""></image>
 									赞({{item.like_num}})
 								</view>
@@ -446,7 +446,7 @@
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
 									<text class="time">{{item.time}}</text>
 								</navigator>
-								<text class="delete" v-if="item.mine==true">删除</text>
+								<text class="delete" v-if="item.mine==true" @tap="deletePing(item.id)">删除</text>
 							</view>
 						</view>
 
@@ -667,6 +667,24 @@
 			//#endif
 			this.cWidth = uni.upx2px(750);
 			this.cHeight = uni.upx2px(500);
+			
+			// let _this =this;
+			// uni.getSystemInfo({
+			//     success: function (res) {
+			//         // console.log(res.model);
+			//         // console.log(res.pixelRatio);
+			//         console.log(res.windowWidth);
+			//         console.log(res.windowHeight);
+			//         // console.log(res.language);
+			//         // console.log(res.version);
+			//         // console.log(res.platform);
+			// 		_this.cWidth = res.windowWidth;
+			// 		_this.cHeight = res.windowHeight;
+			//     }
+			// });
+			
+			// this.cWidth = 100%;
+			// this.cHeight = 100%;
 
 
 
@@ -683,105 +701,117 @@
 			// 	}
 			// });
 			let id = option.id;
+			let ip= '';
 			let other = uni.getStorageInfoSync("other");
 			uni.request({
-				url: this.apiserve + '/applets/building/detail',
-				data: {
-					id: id,
-					other: other,
-					ip: '255'
-				},
-				success: (res) => {
-					if (res.data.code == 200) {
-						console.log(res, "res");
-						let data = res.data.data;
-						this.pro_img = data.imgs.img.effects;
-
-						this.effects = data.imgs.img.effects;
-						this.house_types = data.imgs.img.house_types;
-
-						this.total = data.imgs.num;
-						this.detail = data.abstract;
-						this.goodsList = data.house_types;
-						this.dongtai = data.dynamics;
-						this.staff = data.staff;
-						this.comments = data.comments;
-						this.questions = data.questions;
-						this.recommends = data.recommends;
-						this.common = data.common;
-						let phone = data.common.phone;
-						this.telphone = phone.replace(',', '转');
-						this.old_telphone = phone;
-						this.specials = data.specials;
-						let tejia = data.specials.data;
-						if (tejia == null) {
-							this.tejia = [];
-						} else {
-							this.tejia = data.specials.data;
-						}
-
-						this.deal_prices = data.deal_prices;
-						console.log(this.telphone);
-
-						let _self = this;
-
-						let arr_data = data.deal_prices;
-						let time = [];
-						let num = [];
-						arr_data.map(n => {
-							num.push(n.price);
-							let str = n.time.substring(n.time.length - 5);
-							let strr = str.replace("-", '.');
-							time.push(strr);
-							let year = n.time.substring(0, 4);
-							this.echarts_year = year;
-						})
-
-
-						let Column = {
-							categories: [],
-							series: []
-						};
-						Column.series = [{
-							"name": this.echarts_year + "年",
-							"textColor": "#fff",
-							"data": num,
-						}, ];
-
-						Column.categories = time;
-						this.Column = Column;
-						console.log(Column);
-						_self.showColumn("canvasColumn", Column);
-
-
-
-						let arr = data.specials.data;
-						if (arr) {
-							arr.map(p => {
-								let str = p.diff.toString();
-								p.diff = str.substring(0, str.length - 2) + '**'
-							})
-							this.tableList = arr;
-						}
-
-						let analysis = data.analysis;
-						let fenxi_tou = [];
-						let fenxi_yiju = [];
-						analysis.map(m => {
-							if (m.type == 1) { //投资分析
-								fenxi_tou.push(m);
-							} else if (m.type == 2) { //宜居分析
-								fenxi_yiju.push(m)
+				url:this.putserve+"/getIp.php",
+				method:"GET",
+				success:(res)=>{
+					ip = res.data
+					ip = ip.split('=')[1].split(':')[1]
+					ip = ip.substring(1)
+					ip = ip.slice(0, -3)
+					uni.request({
+						url: this.apiserve + '/applets/building/detail',
+						data: {
+							id: id,
+							other: other,
+							ip: ip
+						},
+						success: (res) => {
+							if (res.data.code == 200) {
+								console.log(res, "res");
+								let data = res.data.data;
+								this.pro_img = data.imgs.img.effects;
+					
+								this.effects = data.imgs.img.effects;
+								this.house_types = data.imgs.img.house_types;
+					
+								this.total = data.imgs.num;
+								this.detail = data.abstract;
+								this.goodsList = data.house_types;
+								this.dongtai = data.dynamics;
+								this.staff = data.staff;
+								this.comments = data.comments;
+								this.questions = data.questions;
+								this.recommends = data.recommends;
+								this.common = data.common;
+								let phone = data.common.phone;
+								this.telphone = phone.replace(',', '转');
+								this.old_telphone = phone;
+								this.specials = data.specials;
+								let tejia = data.specials.data;
+								if (tejia == null) {
+									this.tejia = [];
+								} else {
+									this.tejia = data.specials.data;
+								}
+					
+								this.deal_prices = data.deal_prices;
+								console.log(this.telphone);
+					
+								let _self = this;
+					
+								let arr_data = data.deal_prices;
+								let time = [];
+								let num = [];
+								arr_data.map(n => {
+									num.push(n.price);
+									let str = n.time.substring(n.time.length - 5);
+									let strr = str.replace("-", '.');
+									time.push(strr);
+									let year = n.time.substring(0, 4);
+									this.echarts_year = year;
+								})
+					
+					
+								let Column = {
+									categories: [],
+									series: []
+								};
+								Column.series = [{
+									"name": this.echarts_year + "年",
+									"textColor": "#fff",
+									"data": num,
+								}, ];
+					
+								Column.categories = time;
+								this.Column = Column;
+								console.log(Column);
+								_self.showColumn("canvasColumn", Column);
+					
+					
+					
+								let arr = data.specials.data;
+								if (arr) {
+									arr.map(p => {
+										let str = p.diff.toString();
+										p.diff = str.substring(0, str.length - 2) + '**'
+									})
+									this.tableList = arr;
+								}
+					
+								let analysis = data.analysis;
+								let fenxi_tou = [];
+								let fenxi_yiju = [];
+								analysis.map(m => {
+									if (m.type == 1) { //投资分析
+										fenxi_tou.push(m);
+									} else if (m.type == 2) { //宜居分析
+										fenxi_yiju.push(m)
+									}
+								})
+					
+								this.fenxi_data = fenxi_tou;
+								this.fenxi_tou = fenxi_tou;
+								this.fenxi_yiju = fenxi_yiju;
+					
 							}
-						})
-
-						this.fenxi_data = fenxi_tou;
-						this.fenxi_tou = fenxi_tou;
-						this.fenxi_yiju = fenxi_yiju;
-
-					}
+						}
+					})
 				}
 			})
+	
 			//console.log(ip_arr["ip"]);
 
 
@@ -816,11 +846,63 @@
 
 		},
 		methods: {
+			getLike(id){
+				
+			},
+			deletePing(id){
+				
+			},
+			goShou(){
+				//登录
+				// uni.getProvider({
+				// 	service:"oauth",
+				// 	success: (res) => {
+				// 		console.log(res);
+				//         let pingtai = res.provider[0];
+				// 		uni.login({
+				// 			provider:pingtai,
+				// 			scopes:"auth_base",
+				// 			success(res) {
+				// 				console.log(res.code);
+				// 			}
+				// 		})
+						
+				// 	}
+				// })
+				let token= uni.getStorageInfoSync('token');
+				if(token){
+					uni.request({
+						url:this.apiserve+"/jy/collect",
+						method:"POST",
+						data:{
+							token:token,
+							id:this.detail.id,
+							type:1
+						},
+						success: (res) => {
+							if(res.data.code == 200){
+								console.log(res);
+							}
+						}
+						
+					})
+				}else{
+					
+				}
+				
+				
+			},
 			quTiwen(id){
 				//先判断登陆了，再跳转
-				uni.navigateTo({
-					url:"../tiwen/tiwen?id="+id
-				})
+				let token = uni.getStorageInfoSync('token');
+				if(token){
+					uni.navigateTo({
+						url:"../tiwen/tiwen?id="+id
+					})
+				}else{
+					
+				}
+				
 			},
 			goDianPing(id){
 				//先判断登陆了，再跳转
@@ -888,6 +970,7 @@
 					dataLabel: true,
 					width: _self.cWidth * _self.pixelRatio,
 					height: _self.cHeight * _self.pixelRatio,
+					padding:[0,30,0,0],
 					extra: {
 						column: {
 							width: _self.cWidth * _self.pixelRatio * 0.45 / chartData.categories.length
@@ -1889,8 +1972,8 @@
 
 			.zhu_box {
 				.charts {
-					width: 100%;
-					height: 500rpx;
+					width: 750upx;
+					height: 500upx;
 					background-color: #FFFFFF;
 					margin-top: 40rpx;
 				}

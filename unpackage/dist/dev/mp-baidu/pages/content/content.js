@@ -94,13 +94,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   tTable: function() {
-    return __webpack_require__.e(/*! import() | components/t-table/t-table */ "components/t-table/t-table").then(__webpack_require__.bind(null, /*! @/components/t-table/t-table.vue */ 438))
+    return __webpack_require__.e(/*! import() | components/t-table/t-table */ "components/t-table/t-table").then(__webpack_require__.bind(null, /*! @/components/t-table/t-table.vue */ 460))
   },
   uniNoticeBar: function() {
-    return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! @/components/uni-notice-bar/uni-notice-bar.vue */ 424))
+    return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! @/components/uni-notice-bar/uni-notice-bar.vue */ 446))
   },
   wybPopup: function() {
-    return __webpack_require__.e(/*! import() | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then(__webpack_require__.bind(null, /*! @/components/wyb-popup/wyb-popup.vue */ 410))
+    return __webpack_require__.e(/*! import() | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then(__webpack_require__.bind(null, /*! @/components/wyb-popup/wyb-popup.vue */ 432))
   }
 }
 var render = function() {
@@ -726,7 +726,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _uChartsMin = _interopRequireDefault(__webpack_require__(/*! @/components/u-charts/u-charts/u-charts.min.js */ 265));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 438));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 445));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 452));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 459));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNoticeBar = function uniNoticeBar() {__webpack_require__.e(/*! require.ensure | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-notice-bar/uni-notice-bar.vue */ 424));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var wybPopup = function wybPopup() {__webpack_require__.e(/*! require.ensure | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then((function () {return resolve(__webpack_require__(/*! @/components/wyb-popup/wyb-popup.vue */ 410));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var sign = function sign() {__webpack_require__.e(/*! require.ensure | components/sign */ "components/sign").then((function () {return resolve(__webpack_require__(/*! @/components/sign.vue */ 417));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _uChartsMin = _interopRequireDefault(__webpack_require__(/*! @/components/u-charts/u-charts/u-charts.min.js */ 265));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 460));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 467));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 474));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 481));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNoticeBar = function uniNoticeBar() {__webpack_require__.e(/*! require.ensure | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-notice-bar/uni-notice-bar.vue */ 446));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var wybPopup = function wybPopup() {__webpack_require__.e(/*! require.ensure | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then((function () {return resolve(__webpack_require__(/*! @/components/wyb-popup/wyb-popup.vue */ 432));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var sign = function sign() {__webpack_require__.e(/*! require.ensure | components/sign */ "components/sign").then((function () {return resolve(__webpack_require__(/*! @/components/sign.vue */ 439));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 var _self;
@@ -837,6 +837,24 @@ var _default = {
     this.cWidth = uni.upx2px(750);
     this.cHeight = uni.upx2px(500);
 
+    // let _this =this;
+    // uni.getSystemInfo({
+    //     success: function (res) {
+    //         // console.log(res.model);
+    //         // console.log(res.pixelRatio);
+    //         console.log(res.windowWidth);
+    //         console.log(res.windowHeight);
+    //         // console.log(res.language);
+    //         // console.log(res.version);
+    //         // console.log(res.platform);
+    // 		_this.cWidth = res.windowWidth;
+    // 		_this.cHeight = res.windowHeight;
+    //     }
+    // });
+
+    // this.cWidth = 100%;
+    // this.cHeight = 100%;
+
 
 
 
@@ -852,104 +870,116 @@ var _default = {
     // 	}
     // });
     var id = option.id;
+    var ip = '';
     var other = uni.getStorageInfoSync("other");
     uni.request({
-      url: this.apiserve + '/applets/building/detail',
-      data: {
-        id: id,
-        other: other,
-        ip: '255' },
-
+      url: this.putserve + "/getIp.php",
+      method: "GET",
       success: function success(res) {
-        if (res.data.code == 200) {
-          console.log(res, "res");
-          var data = res.data.data;
-          _this.pro_img = data.imgs.img.effects;
+        ip = res.data;
+        ip = ip.split('=')[1].split(':')[1];
+        ip = ip.substring(1);
+        ip = ip.slice(0, -3);
+        uni.request({
+          url: _this.apiserve + '/applets/building/detail',
+          data: {
+            id: id,
+            other: other,
+            ip: ip },
 
-          _this.effects = data.imgs.img.effects;
-          _this.house_types = data.imgs.img.house_types;
+          success: function success(res) {
+            if (res.data.code == 200) {
+              console.log(res, "res");
+              var data = res.data.data;
+              _this.pro_img = data.imgs.img.effects;
 
-          _this.total = data.imgs.num;
-          _this.detail = data.abstract;
-          _this.goodsList = data.house_types;
-          _this.dongtai = data.dynamics;
-          _this.staff = data.staff;
-          _this.comments = data.comments;
-          _this.questions = data.questions;
-          _this.recommends = data.recommends;
-          _this.common = data.common;
-          var phone = data.common.phone;
-          _this.telphone = phone.replace(',', '转');
-          _this.old_telphone = phone;
-          _this.specials = data.specials;
-          var tejia = data.specials.data;
-          if (tejia == null) {
-            _this.tejia = [];
-          } else {
-            _this.tejia = data.specials.data;
-          }
+              _this.effects = data.imgs.img.effects;
+              _this.house_types = data.imgs.img.house_types;
 
-          _this.deal_prices = data.deal_prices;
-          console.log(_this.telphone);
+              _this.total = data.imgs.num;
+              _this.detail = data.abstract;
+              _this.goodsList = data.house_types;
+              _this.dongtai = data.dynamics;
+              _this.staff = data.staff;
+              _this.comments = data.comments;
+              _this.questions = data.questions;
+              _this.recommends = data.recommends;
+              _this.common = data.common;
+              var phone = data.common.phone;
+              _this.telphone = phone.replace(',', '转');
+              _this.old_telphone = phone;
+              _this.specials = data.specials;
+              var tejia = data.specials.data;
+              if (tejia == null) {
+                _this.tejia = [];
+              } else {
+                _this.tejia = data.specials.data;
+              }
 
-          var _self2 = _this;
+              _this.deal_prices = data.deal_prices;
+              console.log(_this.telphone);
 
-          var arr_data = data.deal_prices;
-          var time = [];
-          var num = [];
-          arr_data.map(function (n) {
-            num.push(n.price);
-            var str = n.time.substring(n.time.length - 5);
-            var strr = str.replace("-", '.');
-            time.push(strr);
-            var year = n.time.substring(0, 4);
-            _this.echarts_year = year;
-          });
+              var _self2 = _this;
 
-
-          var Column = {
-            categories: [],
-            series: [] };
-
-          Column.series = [{
-            "name": _this.echarts_year + "年",
-            "textColor": "#fff",
-            "data": num }];
-
-
-          Column.categories = time;
-          _this.Column = Column;
-          console.log(Column);
-          _self2.showColumn("canvasColumn", Column);
+              var arr_data = data.deal_prices;
+              var time = [];
+              var num = [];
+              arr_data.map(function (n) {
+                num.push(n.price);
+                var str = n.time.substring(n.time.length - 5);
+                var strr = str.replace("-", '.');
+                time.push(strr);
+                var year = n.time.substring(0, 4);
+                _this.echarts_year = year;
+              });
 
 
+              var Column = {
+                categories: [],
+                series: [] };
 
-          var arr = data.specials.data;
-          if (arr) {
-            arr.map(function (p) {
-              var str = p.diff.toString();
-              p.diff = str.substring(0, str.length - 2) + '**';
-            });
-            _this.tableList = arr;
-          }
+              Column.series = [{
+                "name": _this.echarts_year + "年",
+                "textColor": "#fff",
+                "data": num }];
 
-          var analysis = data.analysis;
-          var fenxi_tou = [];
-          var fenxi_yiju = [];
-          analysis.map(function (m) {
-            if (m.type == 1) {//投资分析
-              fenxi_tou.push(m);
-            } else if (m.type == 2) {//宜居分析
-              fenxi_yiju.push(m);
+
+              Column.categories = time;
+              _this.Column = Column;
+              console.log(Column);
+              _self2.showColumn("canvasColumn", Column);
+
+
+
+              var arr = data.specials.data;
+              if (arr) {
+                arr.map(function (p) {
+                  var str = p.diff.toString();
+                  p.diff = str.substring(0, str.length - 2) + '**';
+                });
+                _this.tableList = arr;
+              }
+
+              var analysis = data.analysis;
+              var fenxi_tou = [];
+              var fenxi_yiju = [];
+              analysis.map(function (m) {
+                if (m.type == 1) {//投资分析
+                  fenxi_tou.push(m);
+                } else if (m.type == 2) {//宜居分析
+                  fenxi_yiju.push(m);
+                }
+              });
+
+              _this.fenxi_data = fenxi_tou;
+              _this.fenxi_tou = fenxi_tou;
+              _this.fenxi_yiju = fenxi_yiju;
+
             }
-          });
+          } });
 
-          _this.fenxi_data = fenxi_tou;
-          _this.fenxi_tou = fenxi_tou;
-          _this.fenxi_yiju = fenxi_yiju;
-
-        }
       } });
+
 
     //console.log(ip_arr["ip"]);
 
@@ -985,10 +1015,62 @@ var _default = {
 
   },
   methods: {
+    getLike: function getLike(id) {
+
+    },
+    deletePing: function deletePing(id) {
+
+    },
+    goShou: function goShou() {
+      //登录
+      // uni.getProvider({
+      // 	service:"oauth",
+      // 	success: (res) => {
+      // 		console.log(res);
+      //         let pingtai = res.provider[0];
+      // 		uni.login({
+      // 			provider:pingtai,
+      // 			scopes:"auth_base",
+      // 			success(res) {
+      // 				console.log(res.code);
+      // 			}
+      // 		})
+
+      // 	}
+      // })
+      var token = uni.getStorageInfoSync('token');
+      if (token) {
+        uni.request({
+          url: this.apiserve + "/jy/collect",
+          method: "POST",
+          data: {
+            token: token,
+            id: this.detail.id,
+            type: 1 },
+
+          success: function success(res) {
+            if (res.data.code == 200) {
+              console.log(res);
+            }
+          } });
+
+
+      } else {
+
+      }
+
+
+    },
     quTiwen: function quTiwen(id) {
       //先判断登陆了，再跳转
-      uni.navigateTo({
-        url: "../tiwen/tiwen?id=" + id });
+      var token = uni.getStorageInfoSync('token');
+      if (token) {
+        uni.navigateTo({
+          url: "../tiwen/tiwen?id=" + id });
+
+      } else {
+
+      }
 
     },
     goDianPing: function goDianPing(id) {
@@ -1057,6 +1139,7 @@ var _default = {
         dataLabel: true,
         width: _self.cWidth * _self.pixelRatio,
         height: _self.cHeight * _self.pixelRatio,
+        padding: [0, 30, 0, 0],
         extra: {
           column: {
             width: _self.cWidth * _self.pixelRatio * 0.45 / chartData.categories.length } } });

@@ -1,7 +1,7 @@
 <template>
-	<view class="loupkdetail" @touchmove="handletouchmove" @touchstart="handletouchstart" @touchend="handletouchend">
+	<view class="loupkdetail" >
 		<view class="toptitle">
-			<navigator open-type="navigateBack">
+			<navigator open-type="navigateBack" class="nav_top">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>楼盘对比</text>
 			</navigator>
@@ -44,7 +44,7 @@
 				</view>
 				<view class="pro_bot">
 					<view class="name">{{item.name}}</view>
-					<view class="bo_tel_btn">
+					<view class="bo_tel_btn" @tap="boTel(tel)">
 						<image src="../../static/other/pk_tel.png" mode=""></image>
 						电话咨询
 					</view>
@@ -152,10 +152,10 @@
 			<view class="pro_sale" v-for="item in data" :key="item.id">
 				<view class="danjia_box">
 					<view class="price">约{{item.price}}元/m²</view>
-					<view class="btn">咨询底价</view>
+					<view class="btn" @tap="baoMing(item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价')">咨询底价</view>
 				</view>
 				<view class="zongjia">
-					160万起
+					{{item.total_price}}
 				</view>
 				<view class="kaipan">
 					{{item.open_time}}
@@ -211,11 +211,13 @@
 				</view>
 				<view class="huxing">
 					<view class="shi">
-						1室、2室
+						{{item.departments}}
 					</view>
 					<view class="more">
-						更多户型
-						<image src="../../static/other/fan.png"></image>
+						<navigator :url="`../prohuxing/prohuxing?id=${item.id}`">
+							更多户型
+							<image src="../../static/other/fan.png"></image>
+						</navigator>
 					</view>
 				</view>
 				<view class="jian_mian">
@@ -240,7 +242,7 @@
 
 		</view>
 
-		<view class="button">
+		<view class="button" @tap="baoMing(0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息')">
 			咨询详细楼盘信息
 		</view>
 		<twosee :title="title" :project="recommends"></twosee>
@@ -287,6 +289,16 @@
 			console.log(option);
 			this.getdata(option.id);
 		},
+		onPageScroll(e){
+			if(e.scrollTop>=50){
+				this.hua_old_show = false;
+				this.hua_show_yin = true;
+			}else{
+				this.hua_old_show = true;
+				this.hua_show_yin = false;
+			}
+			
+		},
 		components: {
 			twosee,
 			bottom,
@@ -294,6 +306,14 @@
 			sign
 		},
 		methods: {
+			baoMing(pid,msg,point,title){
+				this.pid_d = pid;
+				this.position_n = point,
+				this.title_e = title;
+				this.remark_k = msg;
+				console.log(this.pid_d);
+				this.$refs.popup.show();
+			},
 			setiscode(){
 				this.codenum = 0
 			},
@@ -305,11 +325,7 @@
 					} //仅为示例
 				});
 			},
-			// onPageScroll(e){
-			// 	console.log('页面开始滑动');
-			// 	this.hua_old_show = false;
-			// 	this.hua_show_yin = true;
-			// }
+			
 			getdata(id){
 				 let other = uni.getStorageInfoSync('other');
 				 let token = uni.getStorageInfoSync('token');
@@ -324,10 +340,35 @@
 					success:(res)=>{
 						if(res.data.code==200){
 							console.log(res);
-							this.recommends = res.data.recommends;
+						//	this.recommends = res.data.recommends;
 							this.common = res.data.common;
 							this.telphone = res.data.common.phone;
 							this.data = res.data.data;
+							let  arr = res.data.recommends;
+							let  my_arr =[];
+							arr.map(p=>{
+								let  number = p.railways;
+								let item = "";
+								number.map(m=>{
+									 item = m.name
+								})
+								my_arr.push({
+									id:p.id,
+									img:p.img,
+									name:p.name,
+									status:p.state,
+									single_price:p.price,
+									type:p.type,
+									city:p.city,
+									country:p.country,
+									area:p.area,
+									decorate:p.decorate,
+									railway:p.railway,
+									features:p.feature,
+									railway:item
+								})
+							})
+							this.recommends = my_arr;
 						}
 					}
 					
@@ -406,19 +447,20 @@
 			background-color: #fff;
 			position: fixed;
 			top: 0;
+			.nav_top{
+				image {
+					width: 31.87rpx;
+					height: 31.87rpx;
+					margin-right: 11.95rpx;
+					margin-bottom: -3.98rpx;
+				}
 
-			image {
-				width: 31.87rpx;
-				height: 31.87rpx;
-				margin-right: 11.95rpx;
-				margin-bottom: -3.98rpx;
-			}
-
-			text {
-				width: 221rpx;
-				font-size: 32rpx;
-				font-weight: 500;
-				color: #17191A;
+				text {
+					width: 221rpx;
+					font-size: 32rpx;
+					font-weight: 500;
+					color: #17191A;
+				}
 			}
 		}
 

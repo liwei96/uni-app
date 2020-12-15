@@ -79,8 +79,8 @@
 					</view> -->
 <!-- 			</view> -->
 			<!-- 写问答 -->
-			<view class="white_wen">
-				<image src="../../static/other/white.png" mode=""></image>
+			<view class="white_wen" @tap="goTiwen(project_id)">
+				<image src="../../static/other/loudian.png" mode=""></image>
 			</view>
 			
 			<bottom :remark="remark" :point="103" :title="'预约看房'" :pid="parseInt(project_id)" :telphone="telphone"></bottom>
@@ -99,6 +99,7 @@ export default {
 			remark:'',
 			telphone:'',
 			page:1,
+			hua:true,
 		};
 	},
 	components:{
@@ -117,9 +118,16 @@ export default {
 	 
 	},
 	onReachBottom(){
-		this.getmore(this.project_id);
+		if(this.hua == true){
+			this.getmore(this.project_id);
+		}
 	},
 	methods:{
+		goTiwen(id){
+			uni.navigateTo({
+				url:`../tiwen/tiwen?id=id`
+			})
+		},
 		getdata(id){
 			let city_id = uni.getStorageInfoSync('city');
 			let token = uni.getStorageInfoSync('token');
@@ -168,7 +176,9 @@ export default {
 					if(res.data.code==200){
 						 console.log(res);
 						 that.data = that.data.concat(res.data.data);
-						
+						 if(res.data.data.length==0){
+							  that.hua = false;
+						 }
 					}
 				},
 				fail: (error) => {

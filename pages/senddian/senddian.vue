@@ -1,8 +1,10 @@
 <template>
 	<view class="senddian">
 		 <view class="toptitle">
-		 	<image src="../../static/all-back.png" mode=""></image>
-		 	<text>楼盘点评</text>
+			 <navigator open-type="navigateBack" delta="1">
+				<image src="../../static/all-back.png" mode=""></image>
+				<text>楼盘点评</text>
+			</navigator>
 		 </view>
 		 <view class="pro">
 		 	<view class="pro_one">
@@ -14,7 +16,7 @@
 		 			<view class="tese">
 		 				<text class="zhuang">{{building.decorate}}</text> 
 		 				<text class="other">{{building.railway}}</text>
-		 				<text class="other" v-if="">{{building.features[0]}}</text>
+		 				<text class="other" v-if="building.features">{{building.features[0]}}</text>
 		 			</view>
 		 		</view>
 		 	</view>
@@ -24,14 +26,16 @@
 		 <view class="see">
 		 	 <text class="tit">您看过该楼盘吗？</text>
 			 <view class="wen">
-			 	  <text class="active">未看房</text>
-				  <text>已看房</text>
+			 	  <text :class="select==4?'active':''" @tap="selTiao(4)">未看房</text>
+				  <text :class="select==5?'active':''" @tap="selTiao(5)">已看房</text>
 			 </view>
 			 <view class="tit mine">楼盘评价</text>
 			 <view class="star">
 			 	<uni-rate v-model="value" :margin="7"
 			 	color="#E8EBED" active-color="#FF7519" 
-			 	 :size="24" @change="rateValue"></uni-rate>
+			 	 :size="24" @change="rateValue" class="xing">
+				 </uni-rate>
+				 <text class="text">{{text[index]}}</text>
 			 </view>
 			 <view class="textarea_box">
 			 	<textarea
@@ -45,26 +49,35 @@
 					{{text_value.length}}/50
 				</view>
 			 </view>
-			 <view class="fabu">
+			 <view class="fabu"  @tap="submitDian(building.id)">
 			 	发布点评
 			 </view>
 			 
 		 </view>
-		 
+		 <mytoast :txt="msg" ref="msg"></mytoast>
 	</view>
 </view>	
 </template>
 
 <script>
 	import uniRate from '@/components/uni-rate/uni-rate.vue';
+	import mytoast from "@/components/mytoast/mytoast.vue"
 	export default {
 		components:{
-			uniRate
+			uniRate,
+			mytoast
 		},
 		data() {
 			return {
 				text_value:'',
-				building:{}
+				building:{},
+				select:4,
+				text:["极差","差",'一般',"好","非常好"],
+				index:0,
+				has_xing:false,
+				has_sel:false,
+				msg:''
+				//极差，差，一般，好，非常好
 			};
 		},
 		onLoad(option){
@@ -72,8 +85,14 @@
 			this.getData(option.id);
 		},
 		methods:{
+			selTiao(num){
+				this.select = num;
+				this.has_sel = true;
+			},
 			rateValue(num){
-				console.log(num,'评分');
+				//console.log(num,'评分');
+				this.index = num.value-1;
+				this.has_xing = true;
 			},
 			getData(id){
 				let  other = uni.getStorageInfoSync("other");
@@ -98,6 +117,45 @@
 						console.log(error);
 					}
 				})
+			},
+			submitDian(id){
+				let token = uni.getStorageInfoSync("token");
+				//判空
+				if(this.has_sel ==true){
+					 if(this.has_xing ==true){
+						  if(this.text_value.length!==0){
+							   uni.request({
+							   	url:this.dianserve+"/comment/save",
+							   	method:"POST",
+							   	data:{
+							   		token:token,
+							   		pid:"", //被评论id
+							   		bid:id, //项目id
+							   		content:this.text_value, // 评论内容
+							   		consider_buy: this.index,  //是否考虑买  1 有兴趣 2 待对比 3 不考虑 4未看房 5 已看房 
+							   		score:this.value
+							   	},
+							   	success:(res)=>{
+							   		if(res.data.code== 200){
+							   			console.log(res)
+							   		}
+							   	}
+							   	
+							   })
+						  }else{
+							   this.msg ="评价内容不能为空";
+							   this.$refs.msg.show();
+							   
+						  }
+					 }else{
+						this.msg ="请选择楼盘评价";
+						this.$refs.msg.show() ;
+					 }
+				}else{
+					this.msg ="请选择是否看过该楼盘";
+					this.$refs.msg.show() ;
+				}
+		
 			},
 		}
 	}
@@ -172,7 +230,7 @@
 				}
 				.price{
 					font-size: 32rpx;
-					font-weight: 800;
+					font-weight: normal;
 					color: #FF6040;
 					line-height: 56rpx;
 				}
@@ -250,6 +308,19 @@
 		}
 		.star{
 			height: 100rpx;
+			.xing{
+			  float:left
+			}
+			.text{
+				float: left;
+				line-height: 36rpx;
+				margin-top: 5rpx;
+				margin-left: 10rpx;
+				font-size: 28rpx;
+				font-weight: 400;
+				color: #969799;
+
+			}
 			// background: #4CD964;
 		}
 		.textarea_box{
