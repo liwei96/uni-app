@@ -69,13 +69,13 @@
 				</view>
 				<view class="bom">
 					<view class="numbox">
-						<input type="text" value="" placeholder="最低总价" placeholder-class="numtxt" />
+						<input type="text" value="" placeholder="最低总价" placeholder-class="numtxt" v-model="search.min_total_price"/>
 					</view>
 					<view class="line">
 
 					</view>
 					<view class="numbox">
-						<input type="text" value="" placeholder="最高总价" placeholder-class="numtxt" />
+						<input type="text" value="" placeholder="最高总价" placeholder-class="numtxt"  v-model="search.max_total_price"/>
 					</view>
 					<view class="btn" @tap="shownum = 10">
 						确定
@@ -199,7 +199,6 @@
 					</view>
 				</view>
 			</view>
-			
 		</view>
 		<view :class="isfixed ? 'types typesbox' : 'types'">
 			<view :class="search.type == '住宅' ? 'active':''" @tap="settype('住宅')">
@@ -371,7 +370,9 @@
 					limit: 10,
 					page: 1,
 					near_railway: 0,
-					special_discount: 0
+					special_discount: 0,
+					max_total_price: '',
+					min_total_price: ''
 				},
 				isspecial: false,
 				isnormal: true,
@@ -486,12 +487,15 @@
 					break;
 					case '特价房':
 						if(this.search.special_discount == 1) {
+							this.isspecial = false
+							this.isnormal = true
 							this.search.special_discount = 0
 						}else {
+							this.isspecial = true
+							this.isnormal = false
 							this.search.special_discount = 1
 						}
-						this.isspecial = true
-						this.isnormal = false
+						
 					break;
 					case '近地铁':
 						if(this.search.near_railway == 1) {
@@ -683,6 +687,9 @@
 			search:{
 				handler(val) {
 					console.log(val)
+					if(val.min_total_price || val.max_total_price) {
+						val.total_price = 0
+					}
 					this.getinfo()
 				},
 				deep:true

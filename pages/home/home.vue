@@ -108,10 +108,10 @@
 					400-718-6686
 				</view>
 				<view class="btnbox">
-					<view class="left" @click="hide">
+					<view class="left" @tap="hide">
 						取消
 					</view>
-					<view class="right">
+					<view class="right" @tap="call">
 						确定
 					</view>
 				</view>
@@ -140,6 +140,11 @@
 			this.getinfo()
 		},
 		methods: {
+			call() {
+				uni.makePhoneCall({
+				    phoneNumber: '400-718-6686' //仅为示例
+				})
+			},
 			getinfo(){
 				let token = uni.getStorageSync('token')
 				if(token) {
@@ -155,7 +160,7 @@
 							limit: 10
 						},
 						success: (res) => {
-							that.footnum = res.data.data.length
+							that.footnum = res.data.total
 							uni.hideLoading()
 						}
 					})
@@ -168,7 +173,7 @@
 							limit: 10
 						},
 						success: (res) => {
-							that.collectnum = res.data.data.length
+							that.collectnum = res.data.total
 							uni.hideLoading()
 						}
 					})
