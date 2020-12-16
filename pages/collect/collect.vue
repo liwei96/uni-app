@@ -22,7 +22,7 @@
 						</view>
 						<view class="right-icons">
 							<text class="jing">{{item.decorate}}</text>
-							<text>1号线</text>
+							<text v-for="(val1,key1) in item.railways" :key="key1">{{val1.name}}</text>
 							<text v-for="(val,key) in item.features" :key="key">{{val}}</text>
 						</view>
 					</view>
@@ -58,7 +58,7 @@
 							</view>
 							<view class="right-icons">
 								<text class="jing">{{item.decorate}}</text>
-								<text>1号线</text>
+								<text v-for="(val1,key1) in item.railways" :key="key1">{{val1.name}}</text>
 								<text v-for="(val,key) in item.features" :key="key">{{val}}</text>
 							</view>
 						</view>
