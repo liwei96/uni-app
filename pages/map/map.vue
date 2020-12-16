@@ -28,14 +28,15 @@
 			 @regionchange="edit" @updated="kk">
 			</map>
 		</view>
+		<web-view :src="url" v-if="url.length"></web-view>
 		<!-- <view style="background: linear-gradient(-45deg, #6ACCFF, #6ACCFF);text-align: center;width: 140rpx;height: 140rpx;display: flex;flex-direction: column;align-items: center;justify-content: center;">
 			<view style="font-size: 32rpx;margin-bottom: 20rpx;">余杭</view>
 			<view style="font-size: 24rpx;">56个</view>
 		</view> -->
 		<!-- <button type="default" @click="show">55</button> -->
-		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+		<!-- <wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="1" @closethis="setpop"></sign>
-		</wyb-popup>
+		</wyb-popup> -->
 	</view>
 </template>
 
@@ -49,6 +50,7 @@
 		},
 		data() {
 			return {
+				url: 'http://m.jy1980.com/hangzhou/map?uuid=NdcEzy4bYtCH1604912679000',
 				id: 0, // 使用 marker点击事件 需要填写id
 				title: 'map',
 				latitude: 39.909,

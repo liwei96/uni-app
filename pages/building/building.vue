@@ -298,15 +298,15 @@
 					<view class="tit">
 						{{item.name}}
 						<view class="status">
-							立省5万
+							立省{{(item.discount.diff/10000).toFixed(0)}}万
 						</view>
 					</view>
 					<view class="price">
 						<view class="old">
-							原价<text>230</text>万
+							原价<text>{{(item.discount.original_total/10000).toFixed(0)}}</text>万
 						</view>
 						<view class="new">
-							特价<text>217</text>万
+							特价<text>{{(item.discount.total/10000).toFixed(0)}}</text>万
 						</view>
 					</view>
 					<view class="msg">
