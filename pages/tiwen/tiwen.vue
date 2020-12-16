@@ -22,17 +22,22 @@
 		<view class="tijiao_btn" @tap="SendTiwen">
 			发布提问
 		</view>
-		
+		 <mytoast :txt="msg" ref="msg"></mytoast>
 	</view>
 </template>
 
 <script>
+	import mytoast from "@/components/mytoast/mytoast.vue"
 	export default {
 		data() {
 			return {
 				text:'',
-				project_id:""
+				project_id:"",
+				msg:""
 			};
+		},
+		components:{
+			mytoast
 		},
 		onLoad(option) {
 			this.project_id = option.id;
@@ -41,7 +46,7 @@
 			SendTiwen(){
 				let token = uni.getStorageInfoSync('token');
 				let city_id = uni.getStorageInfoSync("city");
-				
+					if(this.text.length>0){
 					uni.request({
 						url:this.apiserve+"/jy/ask",
 						data:{
@@ -50,13 +55,18 @@
 							 city:city_id,
 							 question:this.text,
 						},
-						method:"POST",
+						method:"GET",
 						success:(res)=>{
 							if(res.data.code == 200){
-								console.log(res);
+								this.msg = res.data.message;
+								this.$refs.msg.show();
 							}
 						}
 					})
+					}else{
+						 this.msg = "提问内容不能为空";
+						 this.$refs.msg.show();
+					}
 			
 			}
 		}

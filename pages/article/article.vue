@@ -18,7 +18,7 @@
 				</text>
 				{{info.description}}
 			</view>
-			<view class="" v-html="info.content">
+			<view class="" v-html="content">
 			</view>
 			<view class="label">
 				<text class="label-tit">标签：</text>
@@ -80,7 +80,8 @@
 				jkl: '<p>5555555</p>',
 				id: 0,
 				info: {},
-				others: []
+				others: [],
+				content:""
 			}
 		},
 		methods: {
@@ -105,7 +106,8 @@
 					success: (res) => {
 						that.info = res.data.article
 						that.others = res.data.others
-						console.log(res)
+						let data = res.data.article.content
+						that.content = data.replace(/\<img/gi, '<img style="max-width:100%;height:auto" ');
 					}
 				})
 			},

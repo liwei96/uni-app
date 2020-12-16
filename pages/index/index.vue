@@ -7,9 +7,11 @@
 			<view class="searchbox">
 				<image src="../../static/index/index-path.png" mode="" class="search-path" @tap="gopath"></image>
 				<text class="cityname" @tap="gopath">{{cityname}}</text>
-				<view class="search-right">
+				<view class="search-right"  @tap="goSearch">
 					<image src="../../static/index/index-search.png" mode="" class="right-icon"></image>
-					<input type="text" value="" placeholder="请输入楼盘名" />
+					<view  class="text">
+						请输入楼盘名
+					</view>
 				</view>
 			</view>
 		</view>
@@ -102,7 +104,7 @@
 			<text class="feature-tit">特色好房</text>
 			<scroll-view class="scroll-view" scroll-x="true">
 				<view class="scroll-item">
-					<text class="feature-txt">刚需楼盘</text>
+					<view class="feature-txt">刚需楼盘</view>
 					<view class="feature-imgbox">
 						<navigator :url="`../content/content?id=${rigid_demand[0].id}`" class="nav_to">
 							<image :src="rigid_demand[0].img" mode=""></image>
@@ -159,8 +161,10 @@
 					</text>
 				</view>
 				<view class="more">
-					<text>更多楼盘</text>
-					<image src="../../static/content/right.png" mode=""></image>
+					<navigator url="/pages/building/building" open-type="switchTab" class="my_nav">
+						<text>更多楼盘</text>
+						<image src="../../static/content/right.png" mode=""></image>
+					</navigator>
 				</view>
 			</view>
 		</view>
@@ -330,6 +334,11 @@
 			this.cityname = uni.getStorageSync('cityname') || '杭州'
 		},
 		methods: {
+			goSearch(){
+				uni.navigateTo({
+					url:"/pages/searchname/searchname"
+				})
+			},
 			gopath() {
 				uni.navigateTo({
 					url:'/pages/path/path'
@@ -395,20 +404,28 @@
 			.cityname {
 				color: #303233;
 				font-size: 27.88rpx;
-				margin-right: 31.87rpx;
+				padding-right: 31.87rpx;
+				border-right: 1rpx solid #D4D4D9;
 			}
 
 			.search-right {
 				display: flex;
-				border-left: 0.99rpx solid #D4D4D9;
+				//border-left: 0.99rpx solid #D4D4D9;
 				padding-left: 35.85rpx;
-
+				height: 72rpx;
+				width: 500rpx;
 				.right-icon {
 					width: 31.87rpx;
 					height: 31.87rpx;
 					position: relative;
-					bottom: -7.98rpx;
+					top: 20rpx;
 					margin-right: 11.95rpx;
+				}
+				.text{
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #646566;
+					line-height: 72rpx;
 				}
 			}
 		}
@@ -616,9 +633,10 @@
 				position: relative;
 				margin-right: 19.92rpx;
 				display: inline-block;
-				width: 278.88rpx;
+				width: 280rpx;
 				height: 298.8rpx;
-
+				overflow-wrap:break-word;
+				white-space: normal;
 				.feature-imgbox {
 					margin-top: 11.95rpx;
 					display: flex;
@@ -640,7 +658,8 @@
 
 				.feature-txt {
 					color: #303233;
-					font-size: 27.88rpx;
+					font-size: 28rpx;
+					line-height: 28rpx;
 				}
 
 				.feature-msg {
@@ -704,14 +723,18 @@
 			.more {
 				display: flex;
 				align-items: center;
-				text{
-					color: #969799;
-					margin-left: auto;
-					font-size: 25.89rpx;
-				}
-				image{
-					width: 24rpx;
-					height: 24rpx;
+				.my_nav{
+					display: flex;
+					align-items: center;
+					text{
+						color: #969799;
+						margin-left: auto;
+						font-size: 25.89rpx;
+					}
+					image{
+						width: 24rpx;
+						height: 24rpx;
+					}
 				}
 			}
 		}

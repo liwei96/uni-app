@@ -47,7 +47,7 @@
 		<view class="discount">
 			<view class="discount-tit">
 				<text class="name">优惠好盘</text>
-				<image src="../../static/special/special-msg.png" mode="" class="img"></image>
+				<image src="../../static/special/special-msg.png" mode="" class="img" @tap="showRules"></image>
 				<view class="right" @tap="gosearch">
 					更多楼盘
 					<image src="../../static/special/special-back.png" mode=""></image>
@@ -117,6 +117,38 @@
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="'领取优惠'" :pid="pid" :remark="remark" :position="position"></sign>
 		</wyb-popup>
+		<wyb-popup ref="rules" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<view class="rules">
+						<view class="title">
+							活动规则
+						</view>
+						<scroll-view class="text_box" scroll-y="true" :scroll-top="scrollTop">
+							<view class="">
+								1、本次团购活动以分档累计补发的方案执行，通过允家网站成交该项目具体团购费用如下所示：
+							</view>
+							<view class="">0-5套---------每套1000元</view>
+							<view class="">6-10套--------每套2000元</view>
+							<view class="">11-15套-------每套3000元</view>
+							<view class="">16-20套-------每套4000元</view>
+							<view class="">21套以上------每套5000元</view>
+							<view class="">
+								2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放
+							</view>
+							<view class="">
+							 3、核算方式：由开发商或代理公司判定为允家平台客户即可享受这个优惠
+							</view>
+							<view class="">
+							 4、结算方式：提供已实名的支付宝账户给与您对接的允家咨询师，规定时间内会将优惠费用打至该账户
+							</view>
+							<view class="">
+							详细活动方案请致电允家客服电话：
+							</view>
+							<view class="">
+							注：活动最终解释权归允家所有
+							</view>
+						</scroll-view>
+				</view>
+		</wyb-popup>
 	</view>
 </template>
 
@@ -150,6 +182,9 @@
 		},
 		components: {uniNoticeBar,sign,wybPopup},
 		methods:{
+			showRules(){
+				this.$refs.rules.show();
+			},
 			getdata(){
 				uni.showLoading({
 				    title: '加载中',
@@ -704,4 +739,35 @@
 			}
 		}
 	}
+	
+	.rules{
+					   width: 650rpx;
+					   height: 750rpx;
+					   background: #FFFFFF;
+					   border-radius: 24rpx;
+					   position: absolute;
+					   top: 50%;
+					   left: 50%;
+					   transform: translate(-50%,-50%);
+					   padding-left: 30rpx;
+					   padding-right: 30rpx;
+					   box-sizing: border-box;
+					   .title{
+							font-size: 34rpx;
+							font-weight: 800;
+							color: #19191A;
+							line-height: 114rpx;
+					   }
+					   .text_box{
+						  width: 100%;
+						  height: 580rpx;
+						  view{
+							  font-size: 26rpx;
+							  font-weight: 500;
+							  color: #999999;
+							  line-height: 44rpx;
+						  } 
+					   }
+	}
+	
 </style>

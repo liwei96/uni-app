@@ -64,7 +64,7 @@
 		methods: {
 			back() {
 				uni.navigateBack({
-					data: 1
+					delta: 1
 				})
 			},
 			getinfo() {

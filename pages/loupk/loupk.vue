@@ -353,7 +353,7 @@
 						.left_checkbox {
 							float: left;
 							margin-top: 40rpx;
-							margin-right: 25rpx;
+							margin-right: 30rpx;
 						}
 
 						.pro_one {

@@ -99,7 +99,7 @@
 		<view class="hui">
 			<view class="tit">
 				<text>优惠信息</text>
-				<image src="../../static/content/wen.png" mode=""></image>
+				<image src="../../static/content/wen.png" mode="" @tap="showRules"></image>
 			</view>
 			<view class="youhui_01">
 				<text class="text">
@@ -291,7 +291,7 @@
 		<!-- 家园咨询师 -->
 		<view class="ye_people">
 			<view class="tit">
-				家园咨询师
+				允家咨询师
 			</view>
 			<view class="tese">
 				<view class="te_01">
@@ -332,8 +332,8 @@
 		<view class="zhou_pei">
 			<view class="zhou">周边配套</view>
 			<view class="wei">
-				<text>位置:</text>
-				浙江省杭州市临安区青山湖街道
+				<text class="left">位置:</text>
+				<text class="rig">{{detail.address}}</text>
 			</view>
 			<view class="pei">
 				<text>配套:</text>
@@ -544,9 +544,42 @@
 				预约看房
 			</view>
 		</view>
-
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+		</wyb-popup>
+		<mytoast :txt="msg" ref="msg"></mytoast>
+		
+		<wyb-popup ref="rules" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
+			<view class="rules">
+						<view class="title">
+							活动规则
+						</view>
+						<scroll-view class="text_box" scroll-y="true" :scroll-top="scrollTop">
+							<view class="">
+								1、本次团购活动以分档累计补发的方案执行，通过允家网站成交该项目具体团购费用如下所示：
+							</view>
+							<view class="">0-5套---------每套1000元</view>
+							<view class="">6-10套--------每套2000元</view>
+							<view class="">11-15套-------每套3000元</view>
+							<view class="">16-20套-------每套4000元</view>
+							<view class="">21套以上------每套5000元</view>
+							<view class="">
+								2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放
+							</view>
+							<view class="">
+							 3、核算方式：由开发商或代理公司判定为允家平台客户即可享受这个优惠
+							</view>
+							<view class="">
+							 4、结算方式：提供已实名的支付宝账户给与您对接的允家咨询师，规定时间内会将优惠费用打至该账户
+							</view>
+							<view class="">
+							详细活动方案请致电允家客服电话：
+							</view>
+							<view class="">
+							注：活动最终解释权归允家所有
+							</view>
+						</scroll-view>
+				</view>
 		</wyb-popup>
 	</view>
 </template>
@@ -560,6 +593,7 @@
 	import uCharts from '@/components/u-charts/u-charts/u-charts.min.js'
 	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
 	import sign from '@/components/sign.vue'
+	import mytoast from "@/components/mytoast/mytoast.vue"
 	var _self;
 	var canvaColumn = null;
 	//let mapSearch = weex.requireModule('mapSearch')  
@@ -571,7 +605,8 @@
 			tTd,
 			uniNoticeBar,
 			sign,
-			wybPopup
+			wybPopup,
+			mytoast
 		},
 		data() {
 			return {
@@ -601,16 +636,12 @@
 					active2: false,
 				},
 				//地图部分
-				latitude: 39.909,
-				longitude: 116.39742,
+				// latitude: 39.909,
+				// longitude: 116.39742,
 				map: {},
 				covers: [{
-					latitude: 39.909,
-					longitude: 116.39742,
-					iconPath: '../../../static/location.png'
-				}, {
-					latitude: 39.90,
-					longitude: 116.39,
+					latitude: "",
+					longitude: "",
 					iconPath: '../../../static/location.png'
 				}],
 				style_list: {
@@ -645,6 +676,11 @@
 				remark_k: '',
 				position_n: 0,
 				codenum: 1,
+				msg:"",
+				
+				latitude:"",
+				longitude:"",
+				scrollTop:0,
 
 
 
@@ -667,6 +703,8 @@
 			//#endif
 			this.cWidth = uni.upx2px(750);
 			this.cHeight = uni.upx2px(500);
+			let id = option.id;
+			this.getdata(id);
 			
 			// let _this =this;
 			// uni.getSystemInfo({
@@ -700,118 +738,7 @@
 			// 	   console.log(res,'中心点');
 			// 	}
 			// });
-			let id = option.id;
-			let ip= '';
-			let other = uni.getStorageInfoSync("other");
-			uni.request({
-				url:this.putserve+"/getIp.php",
-				method:"GET",
-				success:(res)=>{
-					ip = res.data
-					ip = ip.split('=')[1].split(':')[1]
-					ip = ip.substring(1)
-					ip = ip.slice(0, -3)
-					uni.request({
-						url: this.apiserve + '/applets/building/detail',
-						data: {
-							id: id,
-							other: other,
-							ip: ip
-						},
-						success: (res) => {
-							if (res.data.code == 200) {
-								console.log(res, "res");
-								let data = res.data.data;
-								this.pro_img = data.imgs.img.effects;
-					
-								this.effects = data.imgs.img.effects;
-								this.house_types = data.imgs.img.house_types;
-					
-								this.total = data.imgs.num;
-								this.detail = data.abstract;
-								this.goodsList = data.house_types;
-								this.dongtai = data.dynamics;
-								this.staff = data.staff;
-								this.comments = data.comments;
-								this.questions = data.questions;
-								this.recommends = data.recommends;
-								this.common = data.common;
-								let phone = data.common.phone;
-								this.telphone = phone.replace(',', '转');
-								this.old_telphone = phone;
-								this.specials = data.specials;
-								let tejia = data.specials.data;
-								if (tejia == null) {
-									this.tejia = [];
-								} else {
-									this.tejia = data.specials.data;
-								}
-					
-								this.deal_prices = data.deal_prices;
-								console.log(this.telphone);
-					
-								let _self = this;
-					
-								let arr_data = data.deal_prices;
-								let time = [];
-								let num = [];
-								arr_data.map(n => {
-									num.push(n.price);
-									let str = n.time.substring(n.time.length - 5);
-									let strr = str.replace("-", '.');
-									time.push(strr);
-									let year = n.time.substring(0, 4);
-									this.echarts_year = year;
-								})
-					
-					
-								let Column = {
-									categories: [],
-									series: []
-								};
-								Column.series = [{
-									"name": this.echarts_year + "年",
-									"textColor": "#fff",
-									"data": num,
-								}, ];
-					
-								Column.categories = time;
-								this.Column = Column;
-								console.log(Column);
-								_self.showColumn("canvasColumn", Column);
-					
-					
-					
-								let arr = data.specials.data;
-								if (arr) {
-									arr.map(p => {
-										let str = p.diff.toString();
-										p.diff = str.substring(0, str.length - 2) + '**'
-									})
-									this.tableList = arr;
-								}
-					
-								let analysis = data.analysis;
-								let fenxi_tou = [];
-								let fenxi_yiju = [];
-								analysis.map(m => {
-									if (m.type == 1) { //投资分析
-										fenxi_tou.push(m);
-									} else if (m.type == 2) { //宜居分析
-										fenxi_yiju.push(m)
-									}
-								})
-					
-								this.fenxi_data = fenxi_tou;
-								this.fenxi_tou = fenxi_tou;
-								this.fenxi_yiju = fenxi_yiju;
-					
-							}
-						}
-					})
-				}
-			})
-	
+			
 			//console.log(ip_arr["ip"]);
 
 
@@ -820,14 +747,39 @@
 		},
 		onReady() {
 			var nmap = uni.createMapContext('my_map', this);
+			nmap.moveToLocation({
+				longitude:this.longitude,
+				latitude:this.latitude,
+				success:(res)=>{
+					console.log(res,'转移');
+				}
+			})
+			// mapSearch.poiSearchNearBy({
+			// 	point:{
+			// 		latitude:this.latitude,
+			// 		longitude:this.longitude
+			// 	},
+			// 	key:"学校",
+			// 	radius:3000,
+			// 	index:1,
+			// 	success:(res)=>{
+			// 		console.log(res);
+			// 	}
+				
+			// })
+			
+			
+			
+			
+			console.log(nmap);
 			this.map = nmap;
 			nmap.getCenterLocation({
 				success(res) {
 					console.log(res, '中心点');
 				}
 			})
-
-
+			
+			
 
 			// var  bmap= new plus.maps.Map('my_app');
 			// var searchObj = new plus.maps.Search(bmap);  
@@ -846,11 +798,172 @@
 
 		},
 		methods: {
+			showRules(){
+				this.$refs.rules.show();
+			},
 			getLike(id){
-				
+				let token = uni.getStorageInfoSync("token");
+				if(token){
+					uni.request({
+						url:this.apiserve+"/comment/like",
+						data:{
+							token:token,
+							id:id,
+						},
+						method:"POST",
+						success:(res)=>{
+							if(res.data.code ==200){
+								console.log(res);
+							}
+						}
+						
+					})
+				}else{
+					this.$refs.msg.show();
+					this.msg ="请先登录"
+				}
 			},
 			deletePing(id){
-				
+				let token = uni.getStorageInfoSync("token");
+				if(token){
+					uni.request({
+						url:this.apiserve+"comment/delete",
+						method:"POST",
+						data:{
+							token:token,
+							id:id,
+						},
+						success:(res) =>{
+							if(res.data.code == 200){
+								console.log(res);
+							}
+						}
+						
+					})
+				}else{
+					 this.$refs.msg.show();
+					 this.msg="请先登录"
+				}
+			},
+			getdata(id){
+				let ip= '';
+				let other = uni.getStorageInfoSync("other");
+				uni.request({
+					url:this.putserve+"/getIp.php",
+					method:"GET",
+					success:(res)=>{
+						ip = res.data
+						ip = ip.split('=')[1].split(':')[1]
+						ip = ip.substring(1)
+						ip = ip.slice(0, -3)
+						uni.request({
+							url: this.apiserve + '/applets/building/detail',
+							data: {
+								id: id,
+								other: other,
+								ip: ip
+							},
+							success: (res) => {
+								if (res.data.code == 200) {
+									console.log(res, "res");
+									let data = res.data.data;
+									this.pro_img = data.imgs.img.effects;
+						
+									this.effects = data.imgs.img.effects;
+									this.house_types = data.imgs.img.house_types;
+						
+									this.total = data.imgs.num;
+									this.detail = data.abstract;
+									this.goodsList = data.house_types;
+									this.dongtai = data.dynamics;
+									this.staff = data.staff;
+									this.comments = data.comments;
+									this.questions = data.questions;
+									this.recommends = data.recommends;
+									this.common = data.common;
+									
+									this.latitude = data.abstract.latitude;
+									this.longitude = data.abstract.longitude;
+									this.covers[0].latitude = data.abstract.latitude;
+									this.covers[0].longitude = data.abstract.longitude;
+									
+									
+									let phone = data.common.phone;
+									this.telphone = phone.replace(',', '转');
+									this.old_telphone = phone;
+									this.specials = data.specials;
+									let tejia = data.specials.data;
+									if (tejia == null) {
+										this.tejia = [];
+									} else {
+										this.tejia = data.specials.data;
+									}
+						
+									this.deal_prices = data.deal_prices;
+									console.log(this.telphone);
+						
+									let _self = this;
+						
+									let arr_data = data.deal_prices;
+									let time = [];
+									let num = [];
+									arr_data.map(n => {
+										num.push(n.price);
+										let str = n.time.substring(n.time.length - 5);
+										let strr = str.replace("-", '.');
+										time.push(strr);
+										let year = n.time.substring(0, 4);
+										this.echarts_year = year;
+									})
+						
+						
+									let Column = {
+										categories: [],
+										series: []
+									};
+									Column.series = [{
+										"name": this.echarts_year + "年",
+										"textColor": "#fff",
+										"data": num,
+									}, ];
+						
+									Column.categories = time;
+									this.Column = Column;
+									console.log(Column,'Column');
+									_self.showColumn("canvasColumn", Column);
+						
+						
+						
+									let arr = data.specials.data;
+									if (arr) {
+										arr.map(p => {
+											let str = p.diff.toString();
+											p.diff = str.substring(0, str.length - 2) + '**'
+										})
+										this.tableList = arr;
+									}
+						
+									let analysis = data.analysis;
+									let fenxi_tou = [];
+									let fenxi_yiju = [];
+									analysis.map(m => {
+										if (m.type == 1) { //投资分析
+											fenxi_tou.push(m);
+										} else if (m.type == 2) { //宜居分析
+											fenxi_yiju.push(m)
+										}
+									})
+						
+									this.fenxi_data = fenxi_tou;
+									this.fenxi_tou = fenxi_tou;
+									this.fenxi_yiju = fenxi_yiju;
+						
+								}
+							}
+						})
+					}
+				})
+					
 			},
 			goShou(){
 				//登录
@@ -887,7 +1000,8 @@
 						
 					})
 				}else{
-					
+					this.$refs.msg.show();
+					this.msg ="请先登录"
 				}
 				
 				
@@ -900,15 +1014,23 @@
 						url:"../tiwen/tiwen?id="+id
 					})
 				}else{
-					
+					this.msg = "请先登录";
+					this.$refs.msg.show() ;
 				}
 				
 			},
 			goDianPing(id){
 				//先判断登陆了，再跳转
-				uni.navigateTo({
-					url:"../senddian/senddian?id="+id
-				})
+				let token = uni.getStorageInfoSync("token");
+				if(token){
+					uni.navigateTo({
+						url:"../senddian/senddian?id="+id
+					})
+				}else {
+					this.msg = "请先登录";
+					this.$refs.msg.show() ;
+				}
+				
 			},
 			goDuibi(id){
 				uni.navigateTo({
@@ -944,7 +1066,7 @@
 				this.table_show2 = false;
 			},
 			showColumn(canvasId, chartData) {
-				console.log(_self.cWidth * _self.pixelRatio, '111')
+				console.log("111",chartData.categories,chartData.series)
 				canvaColumn = new uCharts({
 					$this: _self,
 					canvasId: canvasId,
@@ -2258,6 +2380,7 @@
 				padding-right: 30rpx;
 				box-sizing: border-box;
 				line-height: 114rpx;
+				
 			}
 
 			.wei {
@@ -2265,19 +2388,29 @@
 				padding-right: 30rpx;
 				box-sizing: border-box;
 				display: flex;
-				align-items: center;
-				text {
+				margin-bottom: 25rpx;
+				// align-items: center;
+				.left {
 					font-size: 30rpx;
 					font-weight: 500;
 					color: #969699;
 					margin-right: 17rpx;
+					margin-bottom: 8rpx;
+					line-height: 32rpx;
+				}
+				.rig{
+					width: 550rpx;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					font-size: 30rpx;
+					font-weight: 500;
+					color: #323233;
+					line-height: 32rpx;
+					//margin-bottom: 32rpx;
 				}
 
-				font-size: 30rpx;
-				font-weight: 500;
-				color: #323233;
-				line-height: 30rpx;
-				margin-bottom: 32rpx;
+				
 
 			}
 
@@ -2826,7 +2959,37 @@
 				justify-content: center;
 			}
 		}
-
-
+       //优惠券规则弹框
+	
+			   .rules{
+				   width: 650rpx;
+				   height: 750rpx;
+				   background: #FFFFFF;
+				   border-radius: 24rpx;
+				   position: absolute;
+				   top: 50%;
+				   left: 50%;
+				   transform: translate(-50%,-50%);
+				   padding-left: 30rpx;
+				   padding-right: 30rpx;
+				   box-sizing: border-box;
+				   .title{
+						font-size: 34rpx;
+						font-weight: 800;
+						color: #19191A;
+						line-height: 114rpx;
+				   }
+				   .text_box{
+					  width: 100%;
+					  height: 580rpx;
+					  view{
+						  font-size: 26rpx;
+						  font-weight: 500;
+						  color: #999999;
+						  line-height: 44rpx;
+					  } 
+				   }
+			   }
+		
 	}
 </style>

@@ -269,7 +269,7 @@
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false,
 				"backgroundTextStyle":"dark",
-				"onReachBottomDistance":"50px"
+				"onReachBottomDistance":"50"
             }
             
         }
@@ -382,6 +382,7 @@
             }
             
         }
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

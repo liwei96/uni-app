@@ -71,7 +71,7 @@
 			return {
 				text_value:'',
 				building:{},
-				select:4,
+				select:0,
 				text:["极差","差",'一般',"好","非常好"],
 				index:0,
 				has_xing:false,
@@ -111,6 +111,9 @@
 						    this.building = res.data.building; 
 							// this.text_all = res.data.building.introduce;
 							// this.text = res.data.building.introduce.substring(0,82);
+						}else {
+							console.log(res);
+							
 						}
 					},
 					fail: (error) => {
@@ -137,9 +140,17 @@
 							   	},
 							   	success:(res)=>{
 							   		if(res.data.code== 200){
-							   			console.log(res)
-							   		}
-							   	}
+							   			console.log(res);
+										this.msg = res.data.msg;
+										this.$refs.msg.show() ;
+							   		}else{
+										 this.msg = res.data.msg;
+										 this.$refs.msg.show() ;
+									}
+							   	},
+								fail : (error) =>{
+									 console.log(error)
+								}
 							   	
 							   })
 						  }else{
