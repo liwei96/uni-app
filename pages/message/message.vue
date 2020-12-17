@@ -12,13 +12,13 @@
 			</view>
 		</view>
 		<view class="list">
-			<view class="li" v-for="item in list" :key="item.id">
+			<view class="li" v-for="item in list" :key="item.id" @tap="gotalk(item.id)">
 				<view class="left">
 					<view class="leftbox">
 						<image :src="item.img" mode="widthFix"></image>
 					</view>
-					<view class="num">
-						1
+					<view class="num" v-if="item.num">
+						{{item.num}}
 					</view>
 				</view>
 				<view class="right">
@@ -49,11 +49,16 @@
 				list: []
 			}
 		},
-		onShow(){
+		onShow() {
 			this.getlist()
 			console.log(55)
 		},
 		methods: {
+			gotalk(id) {
+				uni.navigateTo({
+					url: '/pages/talk/talk?id=' + id
+				})
+			},
 			getlist() {
 				let pp = {
 					controller: "Staff",
@@ -65,7 +70,7 @@
 				console.log(11)
 				// uni.onSocketOpen(function (res) {
 				// 	console.log(22)
-				  
+
 				// });
 				uni.sendSocketMessage({
 					data: JSON.stringify(pp)
@@ -97,6 +102,9 @@
 								"-" +
 								(dd.getDate() >= 10 ? dd.getDate() : "0" + dd.getDate());
 						}
+						if(uni.getStorageSync(String(val.id))) {
+							val.num = uni.getStorageSync(String(val.id))
+						}
 						if (val.content.indexOf("%get your phone%") !== -1) {
 							val.content = "请您报备电话";
 						} else if (val.content.indexOf("%put my card%") !== -1) {
@@ -110,6 +118,21 @@
 					}
 					that.list = data.data;
 					console.log(that.list)
+				} else if (data.action == 301) {
+					if (String(data.fromUserName).length < 10) {
+						if(uni.setStorageSync(String(data.fromUserName))) {
+							uni.setStorageSync(String(data.fromUserName),parseInt(sessionStorage.getItem(String(data.fromUserName))) + 1)
+						}else {
+							uni.setStorageSync(String(data.fromUserName),1)
+						}
+						if(uni.getStorageSync('total') && uni.getStorageSync('total') != 'NaN') {
+							uni.setStorageSync('total',parseInt(uni.getStorageSync('total')))
+							that.totalnum = that.totalnum + 1;
+						} else {
+							uni.setStorageSync('total', 1)
+							that.totalnum = 1;
+						}
+					}
 				}
 			});
 		}
@@ -157,12 +180,14 @@
 				margin-right: 30rpx;
 				height: 96rpx;
 				overflow: hidden;
+
 				.leftbox {
 					width: 96rpx;
 					height: 96rpx;
 					overflow: hidden;
 					border-radius: 50%;
 				}
+
 				image {
 					width: 96rpx;
 				}

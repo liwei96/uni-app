@@ -235,7 +235,7 @@
 					</view>
 					<view class="type">
 						<text class="zhuang">{{item.decorate}}</text>
-						<text>1号线</text>
+						<text v-if="item.railways.length">{{item.railways[0]}}</text>
 						<text v-for="(val,key) in item.features" :key="key">{{val}}</text>
 					</view>
 				</view>
@@ -279,7 +279,7 @@
 						</view>
 						<view class="type">
 							<text class="zhuang">{{item.decorate}}</text>
-							<text>1号线</text>
+							<text v-if="item.railways.length">{{item.railways[0].name}}</text>
 							<text v-for="(val,key) in item.features" :key="key">{{val}}</text>
 						</view>
 					</view>
@@ -314,7 +314,7 @@
 					</view>
 					<view class="type">
 						<text class="zhuang">{{item.decorate}}</text>
-						<text>1号线</text>
+						<text v-if="item.railways.length">{{item.railways[0]}}</text>
 						<text v-for="(val,key) in item.features" :key="key">{{val}}</text>
 					</view>
 				</view>
@@ -368,12 +368,12 @@
 					type: '',
 					feature: 0,
 					limit: 10,
-					page: 1,
 					near_railway: 0,
 					special_discount: 0,
 					max_total_price: '',
 					min_total_price: ''
 				},
+				page: 1,
 				isspecial: false,
 				isnormal: true,
 				isnull: false,
@@ -385,7 +385,8 @@
 				featureids: [],
 				featureidslength: 0,
 				once: true,
-				isfixed: false
+				isfixed: false,
+				total: 0
 			}
 		},
 		onReachBottom() {
@@ -661,7 +662,9 @@
 								}
 							})
 						}else {
+							that.isnull = false
 							that.toasttxt = `为您找到${res.data.total}个楼盘`
+							that.total = res.data.total
 							that.$refs.toast.show()
 						}
 					}
@@ -671,12 +674,19 @@
 				let city = uni.getStorageSync('city')
 				let data = this.search
 				data.city = city
+				// let num = this.total
+				let num = Math.ceil((this.total/10))
+				if(this.page > num) {
+					return
+				}
+				data.page = that.page
 				uni.request({
 					url:that.apiserve+"/applets/search/info",
 					method:"GET",
 					data:data,
 					success: (res) => {
 						console.log(res)
+						that.page = that.page+1
 						that.builds = that.builds.concat(res.data.info)
 						that.isloading = false
 					}

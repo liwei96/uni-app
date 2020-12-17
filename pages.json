@@ -383,6 +383,15 @@
             
         }
         
+        ,{
+            "path" : "pages/talk/talk",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

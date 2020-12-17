@@ -341,7 +341,7 @@
 				<image src="../../static/content/biao.png" mode=""></image>
 			</view>
 			<!-- 周边配套地图 -->
-			<view class="address">
+			<view class="address" @tap="goweb">
 				<scroll-view class="nav_nav" scroll-x="true">
 					<view class="nav_list active">
 						公交
@@ -1166,6 +1166,12 @@
 					url: "../allwenda/allwenda?id=" + id
 				})
 			},
+			goweb() {
+				let id = this.detail.id;
+				uni.navigateTo({
+					url: "/pages/test/test?id=" + id
+				})
+			}
 		},
 
 	}
