@@ -384,18 +384,20 @@
         }
         
         ,{
-<<<<<<< HEAD
             "path" : "pages/aroundweb/aroundweb",
-=======
-            "path" : "pages/talk/talk",
->>>>>>> main
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
             
-        }
+        },{
+			  "path" : "pages/talk/talk",
+			  "style" :{
+				  "navigationBarTitleText": "",
+				  "enablePullDownRefresh": false
+			  }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
