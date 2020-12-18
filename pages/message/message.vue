@@ -51,7 +51,6 @@
 		},
 		onShow() {
 			this.getlist()
-			console.log(55)
 		},
 		methods: {
 			gotalk(id) {
@@ -60,14 +59,14 @@
 				})
 			},
 			getlist() {
+				let uuid = uni.getStorageSync('uuid')
 				let pp = {
 					controller: "Staff",
 					action: "lists",
 					params: {
-						uuid: '5wYwESFesZdr1606269193000'
+						uuid: uuid
 					}
 				};
-				console.log(11)
 				// uni.onSocketOpen(function (res) {
 				// 	console.log(22)
 
