@@ -13,10 +13,13 @@
 			<image src="../static/components/component-tel.png" mode=""></image>
 			<text>电话咨询</text>
 		</view>
-		<view class="btn btn2" @tap="sign">
-			<image src="../static/components/component-yue.png" mode=""></image>
-			<text>预约看房</text>
-		</view>
+		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+			<view class="btn btn2">
+				<image src="../static/components/component-yue.png" mode=""></image>
+				<text>预约看房</text>
+			</view>
+		</button>
+		
 	</view>
 </template>
 
@@ -39,11 +42,18 @@
 					phoneNumber: that.tel
 				});
 			},
-			sign() {
-				this.$emit('show', {
-					position: 103,
-					title: '预约看房'
-				})
+			getPhoneNumber(e) {
+				if(e.erroemsg = '') {
+					this.$emit('show', {
+						position: 103,
+						title: '预约看房'
+					})
+				}else{
+					this.$emit('show', {
+						position: 103,
+						title: '预约看房'
+					})
+				}
 			}
 		},
 		

@@ -92,10 +92,55 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var render = function () {}
+var components = {
+  tTable: function() {
+    return __webpack_require__.e(/*! import() | components/t-table/t-table */ "components/t-table/t-table").then(__webpack_require__.bind(null, /*! @/components/t-table/t-table.vue */ 450))
+  },
+  uniNoticeBar: function() {
+    return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! @/components/uni-notice-bar/uni-notice-bar.vue */ 436))
+  },
+  wybPopup: function() {
+    return __webpack_require__.e(/*! import() | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then(__webpack_require__.bind(null, /*! @/components/wyb-popup/wyb-popup.vue */ 422))
+  },
+  mytoast: function() {
+    return __webpack_require__.e(/*! import() | components/mytoast/mytoast */ "components/mytoast/mytoast").then(__webpack_require__.bind(null, /*! @/components/mytoast/mytoast.vue */ 408))
+  }
+}
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  var l0 =
+    _vm.tejia.length > 0
+      ? _vm.__map(_vm.tableList, function(item, index) {
+          var $orig = _vm.__get_orig(item)
+
+          var g0 = index <= _vm.num ? item.number.slice(2) : null
+          var m0 = index <= _vm.num ? parseInt(item.area) : null
+          var g1 =
+            index <= _vm.num ? (item.original_total / 10000).toFixed(1) : null
+          var g2 = index <= _vm.num ? (item.total / 10000).toFixed(1) : null
+          return {
+            $orig: $orig,
+            g0: g0,
+            m0: m0,
+            g1: g1,
+            g2: g2
+          }
+        })
+      : null
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
+}
+var recyclableRender = false
 var staticRenderFns = []
-var recyclableRender
-var components
+render._withStripped = true
 
 
 
@@ -126,28 +171,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

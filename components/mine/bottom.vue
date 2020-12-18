@@ -10,13 +10,14 @@
 			<image src="../../static/content/tel_bot.png" mode=""></image>
 			电话咨询
 		</view>
-		<view class="yuyue_box" @tap="baoMing(remark,point,title,pid)">
+		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+		<view class="yuyue_box">
 			<image src="../../static/content/yuyue.png" mode=""></image>
 			预约看房
 		</view>
-		
+		</button>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
 		</wyb-popup>
 		
 	</view>
@@ -54,6 +55,7 @@
 				pid_d:0,
 				remark_k:'',
 				position_n:0,
+				isok: 0
 			};
 		},
 		methods:{
@@ -76,7 +78,99 @@
 				this.title_e = title;
 				this.remark_k = remark;
 			},
-			
+			async getPhoneNumber(e) {
+				console.log(e)
+				let that = this
+				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+					that.baoMing(that.remark,that.point,that.title,that.pid)
+				} else {
+					let session = uni.getStorageSync('session')
+					if(session){
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method:'get',
+							data:{
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res)
+								let tel = res.data.mobile
+								uni.setStorageSync('phone',tel)
+								let openid = uni.getStorageSync('openid')
+								that.tel = tel
+								if(!uni.getStorageSync('token')) {
+									uni.request({
+										url:"https://api.edefang.net/applets/login",
+										method:'GET',
+										data:{
+											phone: tel,
+											openid: openid
+										},
+										success: (res) => {
+											console.log(res)
+											uni.setStorageSync('token',res.data.token)
+											that.baoMing(that.remark,that.point,that.title,that.pid)
+										}
+									})
+								}
+							}
+						})
+					}else {
+						uni.login({
+						  provider: 'baidu',
+						  success: function (res) {
+						    console.log(res.code);
+							uni.request({
+								url: 'https://api.edefang.net/applets/baidu/get_session_key',
+								method:'get',
+								data:{
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid',res.data.openid)
+									uni.setStorageSync('session',res.data.session_key)
+									uni.request({
+										url:"https://api.edefang.net/applets/baidu/decrypt",
+										data:{
+											data: e.detail.encryptedData,
+											iv:e.detail.iv,
+											session_key:res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone',tel)
+											let openid = uni.getStorageSync('openid')
+											that.tel = tel
+											uni.request({
+												url:"https://api.edefang.net/applets/login",
+												method:'GET',
+												data:{
+													phone: tel,
+													openid: openid
+												},
+												success: (res) => {
+													console.log(res)
+													uni.setStorageSync('token',res.data.token)
+													that.baoMing(that.remark,that.point,that.title,that.pid)
+												}
+											})
+										}
+									})
+									
+								}
+							})
+						  }
+						});
+						}
+					this.isok = 1
+				}
+				
+			}
 		}
 	}
 </script>

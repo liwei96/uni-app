@@ -3,7 +3,7 @@
 		<view class="toptitle">
 			<text>我的消息</text>
 		</view>
-		<view v-if="false">
+		<view v-if="list.length == 0">
 			<view class="content">
 				<image src="../../static/message/message-null.png" mode=""></image>
 			</view>
@@ -11,7 +11,7 @@
 				您还没有联系人
 			</view>
 		</view>
-		<view class="list">
+		<view class="list" v-if="list.length>0">
 			<view class="li" v-for="item in list" :key="item.id" @tap="gotalk(item.id)">
 				<view class="left">
 					<view class="leftbox">
@@ -85,6 +85,7 @@
 					let date = new Date();
 					for (let val of data.data) {
 						let dd = new Date(val.time.replace(/\-/g, "/"));
+						
 						let time = date - dd;
 						if (time / 1000 < 3600 * 24) {
 							val.time =
