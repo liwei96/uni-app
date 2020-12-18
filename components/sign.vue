@@ -54,6 +54,9 @@
 			},
 			position: {
 				type: Number
+			},
+			isok: {
+				type: Number
 			}
 		},
 		data() {
@@ -200,6 +203,12 @@
 			}
 		},
 		mounted() {
+			console.log(this.isok)
+			if(this.isok == 1) {
+				this.tel = uni.getStorageSync('phone')
+			}else {
+				this.tel = ''
+			}
 			let type = this.title
 			if (type == "变价通知我") {
 				this.text =

@@ -382,14 +382,9 @@
             }
             
         }
-        
         ,{
-<<<<<<< HEAD
-            "path" : "pages/aroundweb/aroundweb",
-=======
             "path" : "pages/talk/talk",
->>>>>>> main
-            "style" :                                                                                    
+            "style" :               
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false

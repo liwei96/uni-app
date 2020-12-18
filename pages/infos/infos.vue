@@ -71,18 +71,7 @@
 			return {
 				isok: true,
 				currentnum: 0,
-				tops: [{
-						img: '../../static/img-2.png',
-						txt: '房地产行业集中度进一步提高百强房企市场份额升...'
-					},
-					{
-						img: '../../static/img-2.png',
-						txt: '房地产行业集中度进一步提高百强房企市场份额升...'
-					},
-					{
-						img: '../../static/img-2.png',
-						txt: '房地产行业集中度进一步提高百强房企市场份额升...'
-					}
+				tops: [
 				],
 				navs: [{
 						id: "46",

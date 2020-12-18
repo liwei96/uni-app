@@ -349,29 +349,7 @@
 				<image src="../../static/content/biao.png" mode=""></image>
 			</view>
 			<!-- 周边配套地图 -->
-<<<<<<< HEAD
-			<view class="address">
-=======
 			<view class="address" @tap="goweb">
-				<scroll-view class="nav_nav" scroll-x="true">
-					<view class="nav_list active">
-						公交
-					</view>
-					<view class="nav_list">
-						地铁
-					</view>
-					<view class="nav_list">
-						教育
-					</view>
-					<view class="nav_list">
-						医院
-					</view>
-					<view class="nav_list">
-						购物
-					</view>
-				</scroll-view>
-
->>>>>>> main
 				<view class="map">
 					<view class="nav_nav" >
 						<view class="nav_list active">
