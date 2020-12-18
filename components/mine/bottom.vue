@@ -186,6 +186,8 @@
 	position: fixed;
 	bottom: 0rpx;
 	left: 0rpx;
+	border-top: none;
+	border-top:1rpx solid #fff;
 	.zixun{
 		font-size: 24rpx;
 		font-weight: 500;
@@ -218,6 +220,7 @@
 		justify-content: center;
 		margin-right: 20rpx;
 	}
+	button::after{ border: none;}
 	.yuyue_box{
 		width: 256rpx;
 		height: 88rpx;

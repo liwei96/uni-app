@@ -259,12 +259,12 @@
 				this.zhan = false;
 			},
 			goHuxing(id){
-				uni.navigateBack({
-					delta:1
-				})
-				// uni.navigateTo({
-				// 	url:"../prohuxing/prohuxing?id="+id
+				// uni.navigateBack({
+				// 	delta:1
 				// })
+				uni.navigateTo({
+					url:"../prohuxing/prohuxing?id="+id
+				})
 			}
 		}
 	}

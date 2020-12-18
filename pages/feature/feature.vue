@@ -95,8 +95,9 @@
 			sign,
 			wybPopup
 		},
-		onLoad() {
+		onLoad(option) {
 			that = this
+			this.setnum(option.num,option.txt);
 			this.getdata()
 		},
 		data(){

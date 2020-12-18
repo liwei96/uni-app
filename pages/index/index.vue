@@ -104,7 +104,7 @@
 			<text class="feature-tit">特色好房</text>
 			<scroll-view class="scroll-view" scroll-x="true">
 				<view class="scroll-item">
-					<view class="feature-txt">刚需楼盘</view>
+					<view class="feature-txt" @tap="ganglou(3,'刚需')">刚需楼盘</view>
 					<view class="feature-imgbox">
 						<navigator :url="`../content/content?id=${rigid_demand[0].id}`" class="nav_to">
 							<image :src="rigid_demand[0].img" mode=""></image>
@@ -118,7 +118,7 @@
 					</view>
 				</view>
 				<view class="scroll-item">
-					<text class="feature-txt">投资地产</text>
+					<text class="feature-txt" @tap="ganglou(5,'投资')">投资地产</text>
 					<view class="feature-imgbox">
 						<navigator :url="`../content/content?id=${investment[0].id}`" class="nav_to">
 						  <image :src="investment[0].img" mode=""></image>
@@ -132,7 +132,7 @@
 					</view>
 				</view>
 				<view class="scroll-item">
-					<text class="feature-txt">改善住宅</text>
+					<text class="feature-txt" @tap="ganglou(2,'改善')">改善住宅</text>
 					<view class="feature-imgbox">
 						<navigator :url="`../content/content?id=${improvement[0].id}`" class="nav_to">
 						   <image :src="improvement[0].img" mode=""></image>
@@ -336,6 +336,11 @@
 			this.cityname = uni.getStorageSync('cityname') || '杭州'
 		},
 		methods: {
+			ganglou(num,txt){
+				uni.navigateTo({
+					url:`/pages/feature/feature?num=${num}&txt=${txt}`
+				})
+			},
 			goSearch(){
 				uni.navigateTo({
 					url:"/pages/searchname/searchname"

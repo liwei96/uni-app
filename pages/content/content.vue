@@ -837,7 +837,7 @@
 						uni.setStorageSync("ling_bot"+this.detail.id,ling_bot)
 						this.goufang_date = time;
 						this.goufang_ling= ling_top;
-						this.seefang_sheng = num;
+						this.seefang_sheng = parseInt(num);
 						this.seefang_ling = ling_bot;
 					}
 				}else{
@@ -861,7 +861,7 @@
 					 uni.setStorageSync("ling_bot"+this.detail.id,ling_bot)
 					 this.goufang_date = time;
 					 this.goufang_ling= ling_top;
-					 this.seefang_sheng = num;
+					 this.seefang_sheng = parseInt(num);
 					 this.seefang_ling = ling_bot;
 				}
 				
