@@ -84,13 +84,12 @@ Vue.prototype.login = function(e,that){
 							})
 						}
 					})
-					
 				}
 			})
 		  }
 		});
-		
 	}
+	
 }
 // Vue.prototype.ip = ip_arr['ip'];
 const app = new Vue({
