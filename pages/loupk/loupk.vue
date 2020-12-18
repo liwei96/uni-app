@@ -229,8 +229,8 @@
 				}
 			},
 			getcards(ids) {
-				let token = uni.getStorageInfoSync("token");
-				let city_id = uni.getStorageInfoSync("city");
+				let token = uni.getStorageSync("token");
+				let city_id = uni.getStorageSync("city");
 				uni.request({
 					url: this.apiserve + "/jy/compare/cards",
 					method: "GET",

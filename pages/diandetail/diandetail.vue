@@ -1,7 +1,7 @@
 <template>
 	<view class="diandetail">
 		<view class="toptitle">
-			<navigator :url="`../content/content?id=${project_id}`" class="nav_top" open-type="navigate">
+			<navigator  class="nav_top" open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>点评详情</text>
 			</navigator>

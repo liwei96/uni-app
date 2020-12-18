@@ -104,8 +104,8 @@
 				}
 			},
 			getSome(){
-				let city_id  = uni.getStorageInfoSync("city");
-				let token  = uni.getStorageInfoSync("token");
+				let city_id  = uni.getStorageSync("city");
+				let token  = uni.getStorageSync("token");
 				uni.request({
 					url:this.apiserve+'/jy/compare/some',
 					method:"GET",

@@ -129,9 +129,9 @@ export default {
 			})
 		},
 		getdata(id){
-			let city_id = uni.getStorageInfoSync('city');
-			let token = uni.getStorageInfoSync('token');
-			let other = uni.getStorageInfoSync('other');
+			let city_id = uni.getStorageSync('city');
+			let token = uni.getStorageSync('token');
+			let other = uni.getStorageSync('other');
 		   	let page = that.page;
 			uni.request({
 				url:that.apiserve+"/applets/question/list",
@@ -157,9 +157,9 @@ export default {
 			})
 		},
 		getmore(id){
-			let city_id = uni.getStorageInfoSync('city');
-			let token = uni.getStorageInfoSync('token');
-			let other = uni.getStorageInfoSync('other');
+			let city_id = uni.getStorageSync('city');
+			let token = uni.getStorageSync('token');
+			let other = uni.getStorageSync('other');
 			 that.page = that.page +1;
 			uni.request({
 				url:that.apiserve+"/applets/question/list",

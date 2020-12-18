@@ -6,6 +6,13 @@
 				<text>{{detail.name}}</text>
 			</navigator>
 		</view>
+		<!-- 顶部悬浮 -->
+		<view class="fixed_top" v-if="fixed_show">
+			<view :class="{active:class_fixed.huxing}" @tap="to('huxing_tit',1)">户型</view>
+		    <view :class="{active:class_fixed.dongtai}" @tap="to('dongtai',2)">动态</view>
+		    <view :class="{active:class_fixed.fenxi}" @tap="to('fenxi',3)">分析</view>
+			<view :class="{active:class_fixed.zhou_pei}" @tap="to('zhou_pei',4)">配套</view>
+		</view>
 		<view class="lunbo">
 			<swiper class="swiper" :autoplay="true">
 				<swiper-item v-for="item in pro_img">
@@ -41,6 +48,7 @@
 						<image src="../../static/content/shou.png"></image>
 						<text>收藏</text>
 					</view>
+					<!-- <button type="primary" open-type="getUserInfo"  @getUserInfo="goLogin" >登录</button> -->
 				</view>
 			</view>
 			<view class="detail_list">
@@ -171,7 +179,7 @@
 		<view class="bg_hui"></view>
 		<!-- 主力户型 -->
 		<view class="huxing">
-			<view class="tit">
+			<view class="tit huxing_tit">
 				<view class="left">
 					主力户型
 				</view>
@@ -331,74 +339,43 @@
 		<!-- 周边配套 -->
 		<view class="zhou_pei">
 			<view class="zhou">周边配套</view>
-			<view class="wei">
+			<view class="wei" @tap="goZhou(detail.id)">
 				<text class="left">位置:</text>
 				<text class="rig">{{detail.address}}</text>
 			</view>
-			<view class="pei">
+			<view class="pei" @tap="baoMing(detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')">
 				<text>配套:</text>
 				咨询具体位置和周边设施情况
 				<image src="../../static/content/biao.png" mode=""></image>
 			</view>
 			<!-- 周边配套地图 -->
 			<view class="address">
-				<scroll-view class="nav_nav" scroll-x="true">
-					<view class="nav_list active">
-						公交
-					</view>
-					<view class="nav_list">
-						地铁
-					</view>
-					<view class="nav_list">
-						教育
-					</view>
-					<view class="nav_list">
-						医院
-					</view>
-					<view class="nav_list">
-						购物
-					</view>
-				</scroll-view>
-
 				<view class="map">
-					<map id="my_map" style="width:750rpx; height:160px;" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
+					<view class="nav_nav" >
+						<view class="nav_list active">
+							<image src="../../static/content/near_bus.png"></image>
+							公交
+						</view>
+						<view class="nav_list">
+							<image src="../../static/content/near_edu.png"></image>
+							教育
+						</view>
+						<view class="nav_list">
+							<image src="../../static/content/near_yi.png"></image>
+							医院
+						</view>
+						<view class="nav_list">
+							<image src="../../static/content/near_gou.png"></image>
+							购物
+						</view>
+						<view class="nav_list">
+							<image src="../../static/content/near_shi.png"></image>
+							美食
+						</view>
+					</view>
+					<map id="my_map" style="width:690rpx; height:120px;" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
 				</view>
-				<view class="add_all">
-					<view class="add_one">
-						<view class="tit">武林广场</view>
-						<view class="bus">
-							<text class="left">414路、434路、675路</text>
-							<text class="rig">800m</text>
-						</view>
-					</view>
-					<view class="add_one">
-						<view class="tit">武林广场</view>
-						<view class="bus">
-							<text class="left">414路、434路、675路</text>
-							<text class="rig">800m</text>
-						</view>
-					</view>
-					<view class="add_one">
-						<view class="tit">武林广场</view>
-						<view class="bus">
-							<text class="left">414路、434路、675路</text>
-							<text class="rig">800m</text>
-						</view>
-					</view>
-					<view class="add_one">
-						<view class="tit">武林广场</view>
-						<view class="bus">
-							<text class="left">414路、434路、675路</text>
-							<text class="rig">800m</text>
-						</view>
-					</view>
-				</view>
-
-
 			</view>
-			
-
-
 			<view class="button" @tap="baoMing(detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')">
 				获取周边5公里详细配套
 			</view>
@@ -640,9 +617,24 @@
 				// longitude: 116.39742,
 				map: {},
 				covers: [{
+					id:1,
 					latitude: "",
 					longitude: "",
-					iconPath: '../../../static/location.png'
+					iconPath: '',
+					width:"",
+					height:"",
+					title:"项目名称",
+					label:{
+							content:'文本',
+							color:'#121212',
+							bgColor:'#fff',
+							fontSize:24,
+							padding:40,
+							borderWidth:2,
+							borderColor:"rgba(6,0,1,0.1)",
+							borderRadius:5,
+							textAlign:"center"
+					      },
 				}],
 				style_list: {
 					effect: false,
@@ -681,8 +673,15 @@
 				latitude:"",
 				longitude:"",
 				scrollTop:0,
-
-
+				
+				fixed_show:false,
+				
+				class_fixed:{
+					huxing:true,
+					dongtai:false,
+					fenxi:false,
+					zhou_pei:false
+				}
 
 
 			};
@@ -706,23 +705,10 @@
 			let id = option.id;
 			this.getdata(id);
 			
-			// let _this =this;
-			// uni.getSystemInfo({
-			//     success: function (res) {
-			//         // console.log(res.model);
-			//         // console.log(res.pixelRatio);
-			//         console.log(res.windowWidth);
-			//         console.log(res.windowHeight);
-			//         // console.log(res.language);
-			//         // console.log(res.version);
-			//         // console.log(res.platform);
-			// 		_this.cWidth = res.windowWidth;
-			// 		_this.cHeight = res.windowHeight;
-			//     }
-			// });
+		 
 			
-			// this.cWidth = 100%;
-			// this.cHeight = 100%;
+			
+		
 
 
 
@@ -738,12 +724,18 @@
 			// 	   console.log(res,'中心点');
 			// 	}
 			// });
-			
-			//console.log(ip_arr["ip"]);
+		
 
 
 
 
+		},
+		onPageScroll(e){
+		   if(e.scrollTop>=200){
+			   this.fixed_show = true;
+		   }else{
+			   this.fixed_show = false;
+		   }
 		},
 		onReady() {
 			var nmap = uni.createMapContext('my_map', this);
@@ -798,6 +790,76 @@
 
 		},
 		methods: {
+			to(item,num){
+				uni.createSelectorQuery().select(".detail").boundingClientRect(data=>{//目标节点
+				　　uni.createSelectorQuery().select("."+item).boundingClientRect((res)=>{//最外层盒子节点
+				　　　　uni.pageScrollTo({
+				　　　　　　duration:0,//过渡时间必须为0，uniapp bug，否则运行到手机会报错
+				　　　　　　scrollTop:res.top - data.top-60,//滚动到实际距离是元素距离顶部的距离减去最外层盒子的滚动距离
+				　　　　})
+				　　}).exec()
+				}).exec();
+				if(num==1){
+					this.class_fixed.huxing = true;
+					this.class_fixed.dongtai = false;
+					this.class_fixed.fenxi = false;
+					this.class_fixed.zhou_pei = false;
+				}else if(num == 2){
+					this.class_fixed.huxing = false;
+					this.class_fixed.dongtai = true;
+					this.class_fixed.fenxi = false;
+					this.class_fixed.zhou_pei = false;
+				}else  if(num ==3 ){
+					this.class_fixed.huxing = false;
+					this.class_fixed.dongtai = false;
+					this.class_fixed.fenxi = true;
+					this.class_fixed.zhou_pei = false;
+				}else if(num ==4){
+					this.class_fixed.huxing = false;
+					this.class_fixed.dongtai = false;
+					this.class_fixed.fenxi = false;
+					this.class_fixed.zhou_pei = true;
+				}
+			},
+			goLogin(result){
+				console.log(result);
+				//登录
+				uni.getProvider({
+					service:"oauth",
+					success: (res) => {
+						console.log(res);
+				        let pingtai = res.provider[0];
+						uni.login({
+							provider:pingtai,
+							scopes:"auth_base",
+							success(res) {
+								console.log(res.code,'code');
+							}
+						})
+						uni.getUserInfo({
+							provider:pingtai,
+							lang:"zh_CN",
+							success:(res)=>{
+								console.log(res,"用户信息")
+							},
+							complete:(res)=>{
+								console.log(res,"用户信息完成")
+							}
+						})
+						
+					}
+				})
+				uni.checkSession({
+					success:(res)=>{
+						 console.log(res,'是否过期');
+					}
+				})
+			},
+			goZhou(id){
+				uni.navigateTo({
+					url:"/pages/aroundweb/aroundweb?id="+id
+				})
+			},
 			showRules(){
 				this.$refs.rules.show();
 			},
@@ -847,7 +909,7 @@
 			},
 			getdata(id){
 				let ip= '';
-				let other = uni.getStorageInfoSync("other");
+				let other = uni.getStorageSync("other");
 				uni.request({
 					url:this.putserve+"/getIp.php",
 					method:"GET",
@@ -886,7 +948,14 @@
 									this.longitude = data.abstract.longitude;
 									this.covers[0].latitude = data.abstract.latitude;
 									this.covers[0].longitude = data.abstract.longitude;
+									// this.covers[0].width = 280;
+									// this.covers[0].height = 72;
+									this.covers[0].title = data.abstract.name;
+									this.covers[0].label.content = data.abstract.name;
 									
+									
+									
+									console.log(this.covers,'covers');
 									
 									let phone = data.common.phone;
 									this.telphone = phone.replace(',', '转');
@@ -966,22 +1035,6 @@
 					
 			},
 			goShou(){
-				//登录
-				// uni.getProvider({
-				// 	service:"oauth",
-				// 	success: (res) => {
-				// 		console.log(res);
-				//         let pingtai = res.provider[0];
-				// 		uni.login({
-				// 			provider:pingtai,
-				// 			scopes:"auth_base",
-				// 			success(res) {
-				// 				console.log(res.code);
-				// 			}
-				// 		})
-						
-				// 	}
-				// })
 				let token= uni.getStorageInfoSync('token');
 				if(token){
 					uni.request({
@@ -1172,6 +1225,38 @@
 </script>
 
 <style lang="less">
+	/deep/ .marker-route {
+  position: relative;
+  width: 150px;
+  height: 34px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 3px;
+  font-size: 16px;
+  font-family: "Microsoft YaHei";
+  font-weight: bold;
+  color: rgba(51, 51, 51, 1);
+  line-height: 34px;
+  text-align: center;
+  .box_b {
+    position: absolute;
+    width: 29px;
+    height: 15px;
+    background: rgba(42, 198, 110, 0.2);
+    border-radius: 50%;
+    left: 50%;
+    margin-left: -15px;
+    .box_c {
+      position: absolute;
+      width: 16px;
+      height: 7px;
+      background: #2ac66e;
+      border-radius: 50%;
+      top: 4px;
+      left: 6px;
+      z-index: 100;
+    }
+  }
+}
 	.detail {
 		.toptitle {
 			color: #17181A;
@@ -1180,7 +1265,10 @@
 			padding-top: 39.84rpx;
 			line-height: 87.64rpx;
 			background-color: #fff;
-
+			position: fixed;
+			top: 0rpx;
+			z-index: 3000;
+			width: 100%;
 			.nav_top {
 				display: inline-block;
 
@@ -1199,16 +1287,35 @@
 				}
 			}
 		}
+		.fixed_top{
+			width: 100%;
+			height: 88rpx;
+			background: #FFFFFF;
+			display: flex;
+			justify-content: space-around;
+			position:fixed ;
+			top: 110rpx;
+			z-index: 2000;
+			view{
+				font-size: 30rpx;
+				font-weight: 500;
+				color: #323233;
+				line-height: 88rpx;
+			}
+			.active{
+				 padding-bottom:16rpx;
+				 border-bottom: 4rpx solid #3EACF0;
+			}
+		}
 
 		.lunbo {
 			width: 100%;
 			height: 420rpx;
 			position: relative;
-
+			margin-top: 120rpx;
 			.swiper {
 				width: 100%;
 				height: 420rpx;
-
 				image {
 					width: 100%;
 					height: 420rpx;
@@ -2442,34 +2549,40 @@
 			//周边配套地图
 			.address {
 				width: 100%;
-				.nav_nav {
-					width: 100%;
-					height: 42rpx;
-				    white-space: nowrap;
-					display: flex;
-					margin-bottom: 30rpx;
-					.nav_list {
-						font-size: 30rpx;
-						font-weight: 500;
-						color: #323233;
-						width: 60rpx;
-						// height: 42rpx;
-						line-height: 42rpx;
-						margin-right: 108rpx;
-						display: inline-block;
-					}
-					.active{
-						border-bottom:4rpx solid #3EACF0;
-						color:#3EACF0;
-					}
-					.nav_list:first-child{
-						margin-left:40rpx ;
-					}
-				}
+	
 
 				.map {
 					width: 100%;
-					height: 320rpx;
+					height: 520rpx;
+					padding-left:30rpx ;
+					padding-right:30rpx;
+					box-sizing: border-box;
+					position: relative;
+					.nav_nav {
+						width: 596rpx;
+						height:90rpx;
+						background:#fff;
+						position: absolute;
+					     bottom:-20rpx;
+						z-index: 4000;
+						display: flex;
+						justify-content: space-between;
+						padding-left:27rpx;
+						padding-right: 27rpx;
+						margin-left: 20rpx;
+						.nav_list {
+							display: flex;
+							align-items: center;
+							image{
+								width: 32rpx;
+								height: 32rpx;
+							}
+							font-size: 26rpx;
+							font-weight: 400;
+							color: #3D3D3D;
+						}
+						
+					}
 				}
 				.add_all{
 					padding-left: 30rpx;

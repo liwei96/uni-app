@@ -303,11 +303,13 @@
 			
 		},
 		onReady(){  //监听页面初次渲染完成
+		   let city = uni.getStorageSync('city');
+		   let token = uni.getStorageSync("token");
 			uni.request({
 				url:this.apiserve+'/applets/first',
 				data:{
-					token:'111',
-					city:'1'
+					token:token,
+					city:city
 				},
 				success:(res)=>{
 					console.log(res);

@@ -118,7 +118,7 @@
 				})
 			},
 			getmore(id){
-				let city_id = uni.getStorageInfoSync("city");
+				let city_id = uni.getStorageSync("city");
 				this.page = this.page +1;
 				uni.request({
 					url:this.apiserve+"/applets/dynamic/info",
@@ -145,9 +145,9 @@
 				})
 			},
 			getdata(id){
-				let token = uni.getStorageInfoSync("token");
-				let other = uni.getStorageInfoSync("other");
-				let city_id = uni.getStorageInfoSync("city");
+				let token = uni.getStorageSync("token");
+				let other = uni.getStorageSync("other");
+				let city_id = uni.getStorageSync("city");
 				uni.request({
 					url:this.apiserve+"/applets/dynamic/info",
 					data:{

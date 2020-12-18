@@ -88,8 +88,10 @@
 			相关楼盘问答
 		</view>
 		<view class="wen_tit" v-for="item in relevant" :key="item.id">
-			<text class="wen">问</text>
-			{{item.question}}
+			<navigator :url="`../wendadetail/wendadetail?id=${item.id}`">
+				<text class="wen">问</text>
+				{{item.question}}
+			</navigator>
 		</view>
 		<view class="btn" @tap="showAllwen">
 			查看杭州全部楼盘问答

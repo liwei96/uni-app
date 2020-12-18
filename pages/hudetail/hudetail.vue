@@ -1,7 +1,7 @@
 <template>
 	<view class="hu_detail">
 		<view class="toptitle">
-			<navigator :url="`../content/content?id=${one.bid}`" class="nav_top" open-type="navigate">
+			<navigator  class="nav_top" open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>户型详情</text>
 			</navigator>
@@ -14,7 +14,7 @@
 			<view class="price">约 <text>{{one.price}}</text>万/套</view>
 			<view class="jian_box">
 				<view class="line"> <text>建面：</text>{{one.area}}m²</view>
-				<view class="line"> <text>朝向：</text>南</view>
+				<view class="line"> <text>总价：</text>约{{one.price}}万元/套</view>
 				<view class="line"> <text>类型：</text>{{one.type}}</view>
 				<view class="line"> <text>层高：</text>{{one.height}}</view>
 			</view>
@@ -28,7 +28,7 @@
 				<image src="../../static/content/right.png" mode="" class="right"></image>
 			</view>
 			<view class="bot">
-				 <view class="zixun" @tap="baoMing(one.bid,'楼盘户型详情页+咨询详细户型',97,'咨询详细户型')">
+				 <view class="zixun" @tap="baoMing(one.bid,'楼盘户型详情页+咨询详细户型',97,'咨询户型底价')">
 				 	咨询详细户型
 				 </view>
 				 <view class="dijia" @tap="baoMing(one.bid,'楼盘户型详情页+咨询楼盘底价',105,'咨询楼盘底价')">
@@ -125,33 +125,41 @@
 			<view class="tit">
 				本楼盘其它户型
 			</view>
+			
 			<view class="hu_list">
+				<template v-if="other_rooms.length>0">
+					<view class="hu_one" v-for="item in other_rooms" :key="item.id">
+						<navigator :url="`../hudetail/hudetail?id=${item.id}`">
+							<view class="left_pro">
+								<image :src="item.small" mode=""></image>
+							</view>
+							<view class="right_pro">
+								 <view class="name_box_box">
+									  <text class="name">{{item.title}}</text>
+									  <text class="status">{{item.state}}</text>
+								 </view>
+								 <view class="mian">
+									<text class="left">建面:</text>
+									<text class="right">{{item.area}}m²</text>
+								 </view>
+								 <view class="type">
+									<text class="left">类型：</text>
+									<text class="right">{{item.type}}</text>
+								 </view>
+								 <view class="price">
+									<text class="left">总价：</text>
+									<text class="right">约 <text class="em">{{item.price}}</text>万/套</text>
+								 </view>
+							</view>
+						</navigator>
+					</view>
+				</template>
 				
-				<view class="hu_one" v-for="item in other_rooms" :key="item.id">
-					<navigator :url="`../hudetail/hudetail?id=${item.id}`">
-						<view class="left_pro">
-							<image :src="item.small" mode=""></image>
-						</view>
-						<view class="right_pro">
-							 <view class="name_box_box">
-								  <text class="name">{{item.title}}</text>
-								  <text class="status">{{item.state}}</text>
-							 </view>
-							 <view class="mian">
-								<text class="left">建面:</text>
-								<text class="right">{{item.area}}m²</text>
-							 </view>
-							 <view class="type">
-								<text class="left">类型：</text>
-								<text class="right">{{item.type}}</text>
-							 </view>
-							 <view class="price">
-								<text class="left">总价：</text>
-								<text class="right">约 <text class="em">{{item.price}}</text>万/套</text>
-							 </view>
-						</view>
-					</navigator>
-				</view>
+				<tempalte v-else>
+					 <view class="zanwu">
+					 	 暂无其他户型楼盘
+					 </view>
+				</tempalte>
 				
 			</view>
 		</view>
@@ -693,6 +701,7 @@ import sign from '@/components/sign.vue'
 	line-height: 114rpx;
   }
   .hu_list{
+	  padding-bottom: 30rpx;
 	   .hu_one{
 		   padding-bottom: 28rpx;
 		   border-bottom: 1rpx solid #F2F2F2;
@@ -788,7 +797,14 @@ import sign from '@/components/sign.vue'
 			   
 		   }
 	   }
-	   
+	   .zanwu{
+		   font-size: 24rpx;
+		   font-weight: 500;
+		   color: #7D7E80;
+		   line-height: 42rpx;
+		   text-align: center;
+		  // margin-bottom: 30rpx;
+	   }
   }
 }
 .see_box{

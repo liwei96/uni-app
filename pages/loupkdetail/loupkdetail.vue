@@ -447,6 +447,8 @@
 			background-color: #fff;
 			position: fixed;
 			top: 0;
+			background: #fff;
+			width: 100%;
 			.nav_top{
 				image {
 					width: 31.87rpx;
