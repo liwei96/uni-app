@@ -349,35 +349,9 @@
 				<image src="../../static/content/biao.png" mode=""></image>
 			</view>
 			<!-- 周边配套地图 -->
-<<<<<<< HEAD
+
 			<view class="address" @tap="goweb">
 				<view class="map">
-=======
-<!-- <<<<<<< HEAD -->
-			<view class="address">
-<!-- 
-			<view class="address" @tap="goweb"> -->
-		<!-- 		<scroll-view class="nav_nav" scroll-x="true">
-					<view class="nav_list active">
-						公交
-					</view>
-					<view class="nav_list">
-						地铁
-					</view>
-					<view class="nav_list">
-						教育
-					</view>
-					<view class="nav_list">
-						医院
-					</view>
-					<view class="nav_list">
-						购物
-					</view>
-				</scroll-view> -->
-<!-- 
->>>>>>> main -->
-				<view class="map" @tap="goweb">
->>>>>>> eee4ffb177ae428d8b6d5fcd8da44cf428f1447b
 					<view class="nav_nav" >
 						<view class="nav_list active">
 							<image src="../../static/content/near_bus.png"></image>

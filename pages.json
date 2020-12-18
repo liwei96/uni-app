@@ -19,390 +19,308 @@
 			"path": "pages/top/top"
 		},
 		{
-			"path":"pages/special/special"
+			"path": "pages/special/special"
 		},
 		{
-			"path":"pages/dynamic/dynamic"
+			"path": "pages/dynamic/dynamic"
 		},
 		{
-			"path":"pages/dynamicdetail/dynamicdetail"
+			"path": "pages/dynamicdetail/dynamicdetail"
 		},
 		{
-			"path":"pages/help/help"
+			"path": "pages/help/help"
+		}, {
+			"path": "pages/path/path",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/searchname/searchname",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/article/article",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/info/info",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/weike/weike",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/searcharticle/searcharticle",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/infos/infos",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/searchinfo/searchinfo",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/footprint/footprint",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/collect/collect",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/forward/forward",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/alliance/alliance",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/about/about",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/statement/statement",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/protocol/protocol",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/privacy/privacy",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/serve/serve",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/cards/cards",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/feedback/feedback",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/map/map",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/around/around",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/content/content",
+			"style": {
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/prodetail/prodetail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/loupic/loupic",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/piclist/piclist",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/hudetail/hudetail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/loudong/loudong",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle": "dark",
+				"onReachBottomDistance": "50"
+			}
+
+		}, {
+			"path": "pages/loudian/loudian",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/senddian/senddian",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/diandetail/diandetail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/allwenda/allwenda",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/wendadetail/wendadetail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/wenhui/wenhui",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/tiwen/tiwen",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/loupk/loupk",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/addlou/addlou",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/loupkdetail/loupkdetail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+
+		}, {
+			"path": "pages/prohuxing/prohuxing",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/test/test",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/talk/talk"
+		}, {
+			"path": "pages/aroundweb/aroundweb",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/talk/talk",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}
-	    ,{
-            "path" : "pages/path/path",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/searchname/searchname",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/article/article",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/info/info",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/weike/weike",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/searcharticle/searcharticle",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/infos/infos",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/searchinfo/searchinfo",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-		,{
-		    "path" : "pages/footprint/footprint",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": false
-		    }
-		    
-		}
-        ,{
-            "path" : "pages/collect/collect",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/forward/forward",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/alliance/alliance",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/about/about",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/statement/statement",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/protocol/protocol",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/privacy/privacy",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/serve/serve",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/cards/cards",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/feedback/feedback",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/map/map",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/around/around",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        },{
-            "path" : "pages/content/content",
-            "style" :                                                                                    
-            {
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/prodetail/prodetail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/loupic/loupic",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/piclist/piclist",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/hudetail/hudetail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/loudong/loudong",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false,
-				"backgroundTextStyle":"dark",
-				"onReachBottomDistance":"50"
-            }
-            
-        }
-        ,{
-            "path" : "pages/loudian/loudian",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/senddian/senddian",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/diandetail/diandetail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/allwenda/allwenda",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/wendadetail/wendadetail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/wenhui/wenhui",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/tiwen/tiwen",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/loupk/loupk",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/addlou/addlou",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/loupkdetail/loupkdetail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":"#FFFFFF"
-            }
-            
-        }
-        ,{
-            "path" : "pages/prohuxing/prohuxing",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/test/test",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-<<<<<<< HEAD
-            "path" : "pages/talk/talk",
-            "style" :               
-=======
-            "path" : "pages/aroundweb/aroundweb",
-            "style" :                                                                                    
->>>>>>> eee4ffb177ae428d8b6d5fcd8da44cf428f1447b
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        },{
-			  "path" : "pages/talk/talk",
-			  "style" :{
-				  "navigationBarTitleText": "",
-				  "enablePullDownRefresh": false
-			  }
-		}
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -456,134 +374,134 @@
 				"query": "interval=4000&autoplay=false"
 			},
 			{
-				"name":"特价房源",
-				"path":"pages/special/special",
-				"query":"id=15"
+				"name": "特价房源",
+				"path": "pages/special/special",
+				"query": "id=15"
 			},
 			{
-				"name":"实时动态",
-				"path":"pages/dynamic/dynamic",
-				"query":"id=15"
+				"name": "实时动态",
+				"path": "pages/dynamic/dynamic",
+				"query": "id=15"
 			},
 			{
-				"name":"动态详情",
-				"path":"pages/dynamicdetail/dynamicdetail",
-				"query":"id=15"
+				"name": "动态详情",
+				"path": "pages/dynamicdetail/dynamicdetail",
+				"query": "id=15"
 			},
 			{
-				"name":"帮我找房",
-				"path":"pages/help/help",
-				"query":"id=15"
+				"name": "帮我找房",
+				"path": "pages/help/help",
+				"query": "id=15"
 			},
 			{
-				"name":"城市选择",
-				"path":"pages/path/path",
-				"query":"id=15"
+				"name": "城市选择",
+				"path": "pages/path/path",
+				"query": "id=15"
 			},
 			{
-				"name":"城市名搜索",
-				"path":"pages/searchname/searchname",
-				"query":"id=15"
+				"name": "城市名搜索",
+				"path": "pages/searchname/searchname",
+				"query": "id=15"
 			},
 			{
-				"name":"百科详情",
-				"path":"pages/article/article",
-				"query":"id=15"
+				"name": "百科详情",
+				"path": "pages/article/article",
+				"query": "id=15"
 			},
 			{
-				"name":"资讯详情",
-				"path":"pages/info/info",
-				"query":"id=15"
+				"name": "资讯详情",
+				"path": "pages/info/info",
+				"query": "id=15"
 			},
 			{
-				"name":"百科",
-				"path":"pages/weike/weike",
-				"query":"id=15"
+				"name": "百科",
+				"path": "pages/weike/weike",
+				"query": "id=15"
 			},
 			{
-				"name":"搜索百科",
-				"path":"pages/searcharticle/searcharticle",
-				"query":"id=15"
+				"name": "搜索百科",
+				"path": "pages/searcharticle/searcharticle",
+				"query": "id=15"
 			},
 			{
-				"name":"房产资讯",
-				"path":"pages/infos/infos",
-				"query":"id=15"
+				"name": "房产资讯",
+				"path": "pages/infos/infos",
+				"query": "id=15"
 			},
 			{
-				"name":"资讯搜索",
-				"path":"pages/searchinfo/searchinfo",
-				"query":"id=15"
+				"name": "资讯搜索",
+				"path": "pages/searchinfo/searchinfo",
+				"query": "id=15"
 			},
 			{
-				"name":"浏览足迹",
-				"path":"pages/footprint/footprint",
-				"query":"id=15"
+				"name": "浏览足迹",
+				"path": "pages/footprint/footprint",
+				"query": "id=15"
 			},
 			{
-				"name":"我的收藏",
-				"path":"pages/collect/collect",
-				"query":"id=15"
+				"name": "我的收藏",
+				"path": "pages/collect/collect",
+				"query": "id=15"
 			},
 			{
-				"name":"预约看房",
-				"path":"pages/forward/forward",
-				"query":"id=15"
+				"name": "预约看房",
+				"path": "pages/forward/forward",
+				"query": "id=15"
 			},
 			{
-				"name":"城市加盟",
-				"path":"pages/alliance/alliance",
-				"query":"id=15"
+				"name": "城市加盟",
+				"path": "pages/alliance/alliance",
+				"query": "id=15"
 			},
 			{
-				"name":"关于我们",
-				"path":"pages/about/about",
-				"query":"id=15"
+				"name": "关于我们",
+				"path": "pages/about/about",
+				"query": "id=15"
 			},
 			{
-				"name":"版权申明",
-				"path":"pages/statement/statement",
-				"query":"id=15"
+				"name": "版权申明",
+				"path": "pages/statement/statement",
+				"query": "id=15"
 			},
 			{
-				"name":"免责协议",
-				"path":"pages/protocol/protocol",
-				"query":"id=15"
+				"name": "免责协议",
+				"path": "pages/protocol/protocol",
+				"query": "id=15"
 			},
 			{
-				"name":"隐私保护",
-				"path":"pages/privacy/privacy",
-				"query":"id=15"
+				"name": "隐私保护",
+				"path": "pages/privacy/privacy",
+				"query": "id=15"
 			},
 			{
-				"name":"服务协议",
-				"path":"pages/serve/serve",
-				"query":"id=15"
+				"name": "服务协议",
+				"path": "pages/serve/serve",
+				"query": "id=15"
 			},
 			{
-				"name":"我的卡券",
-				"path":"pages/cards/cards",
-				"query":"id=15"
+				"name": "我的卡券",
+				"path": "pages/cards/cards",
+				"query": "id=15"
 			},
 			{
-				"name":"意见反馈",
-				"path":"pages/feedback/feedback",
-				"query":"id=15"
+				"name": "意见反馈",
+				"path": "pages/feedback/feedback",
+				"query": "id=15"
 			},
 			{
-				"name":"地图找房",
-				"path":"pages/map/map",
-				"query":"id=15"
+				"name": "地图找房",
+				"path": "pages/map/map",
+				"query": "id=15"
 			},
 			{
-				"name":"地图找房",
-				"path":"pages/around/around",
-				"query":"id=15"
+				"name": "地图找房",
+				"path": "pages/around/around",
+				"query": "id=15"
 			},
 			{
-				"name":"项目详情页",
-				"path":"pages/content/content",
-				"query":"id=997"
+				"name": "项目详情页",
+				"path": "pages/content/content",
+				"query": "id=997"
 			}
 		]
 	}
