@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view>
 		<web-view :src="url" v-if="url.length"></web-view>
 	</view>
 </template>
@@ -9,8 +9,10 @@
 		onLoad(options) {
 			let name = uni.getStorageSync('cityname')
 			let id = options.id
-			let url = `http://localhost:3000/hangzhou/rim/${id}/1?uuid=kWNznYTEzB3s1608096182000&isbaidu=1`
-			// url = url+'&cityname='+name
+			let uuid = uni.getStorageSync('uuid')
+			let staffid = options.id
+			let city = uni.getStorageSync('city')
+			let url = `http://localhost:3000/chengdu/cxtalk/${uuid}/${staffid}/814,${city}?uuid=${uuid}`
 			this.url = url
 			console.log(url)
 		},
@@ -26,5 +28,5 @@
 </script>
 
 <style>
-	
+
 </style>

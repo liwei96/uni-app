@@ -384,7 +384,11 @@
         }
         
         ,{
+<<<<<<< HEAD
             "path" : "pages/aroundweb/aroundweb",
+=======
+            "path" : "pages/talk/talk",
+>>>>>>> main
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
