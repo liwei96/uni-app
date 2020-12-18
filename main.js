@@ -7,6 +7,7 @@ App.mpType = 'app'
 Vue.prototype.apiserve = 'http://39.98.227.114:9560'
 Vue.prototype.putserve = 'http://ll.edefang.net'
 Vue.prototype.dianserve = 'http://39.98.227.114:9550/'
+<<<<<<< HEAD
 Vue.prototype.login = function(e,that){
 	
 	let session = uni.getStorageSync('session')
@@ -91,6 +92,9 @@ Vue.prototype.login = function(e,that){
 	}
 	
 }
+=======
+Vue.prototype.httpsapi = 'https://api.edefang.net'
+>>>>>>> eee4ffb177ae428d8b6d5fcd8da44cf428f1447b
 // Vue.prototype.ip = ip_arr['ip'];
 const app = new Vue({
     ...App

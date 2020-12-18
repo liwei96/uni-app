@@ -92,55 +92,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components = {
-  tTable: function() {
-    return __webpack_require__.e(/*! import() | components/t-table/t-table */ "components/t-table/t-table").then(__webpack_require__.bind(null, /*! @/components/t-table/t-table.vue */ 450))
-  },
-  uniNoticeBar: function() {
-    return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! @/components/uni-notice-bar/uni-notice-bar.vue */ 436))
-  },
-  wybPopup: function() {
-    return __webpack_require__.e(/*! import() | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then(__webpack_require__.bind(null, /*! @/components/wyb-popup/wyb-popup.vue */ 422))
-  },
-  mytoast: function() {
-    return __webpack_require__.e(/*! import() | components/mytoast/mytoast */ "components/mytoast/mytoast").then(__webpack_require__.bind(null, /*! @/components/mytoast/mytoast.vue */ 408))
-  }
-}
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  var l0 =
-    _vm.tejia.length > 0
-      ? _vm.__map(_vm.tableList, function(item, index) {
-          var $orig = _vm.__get_orig(item)
-
-          var g0 = index <= _vm.num ? item.number.slice(2) : null
-          var m0 = index <= _vm.num ? parseInt(item.area) : null
-          var g1 =
-            index <= _vm.num ? (item.original_total / 10000).toFixed(1) : null
-          var g2 = index <= _vm.num ? (item.total / 10000).toFixed(1) : null
-          return {
-            $orig: $orig,
-            g0: g0,
-            m0: m0,
-            g1: g1,
-            g2: g2
-          }
-        })
-      : null
-  _vm.$mp.data = Object.assign(
-    {},
-    {
-      $root: {
-        l0: l0
-      }
-    }
-  )
-}
-var recyclableRender = false
+var render = function () {}
 var staticRenderFns = []
-render._withStripped = true
+var recyclableRender
+var components
 
 
 
@@ -171,6 +126,34 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -792,9 +775,9 @@ var _default = {
         id: 1,
         latitude: "",
         longitude: "",
-        iconPath: '',
-        width: "",
-        height: "",
+        iconPath: "/static/content/map_icon.png",
+        width: "30",
+        height: "42",
         title: "项目名称",
         label: {
           content: '文本',
@@ -803,7 +786,7 @@ var _default = {
           fontSize: 24,
           padding: 40,
           borderWidth: 2,
-          borderColor: "rgba(6,0,1,0.1)",
+          borderColor: "#3EACF0",
           borderRadius: 5,
           textAlign: "center" } }],
 
@@ -852,14 +835,20 @@ var _default = {
         huxing: true,
         dongtai: false,
         fenxi: false,
-        zhou_pei: false } };
+        zhou_pei: false },
+
+
+      //优惠信息
+      goufang_date: "",
+      goufang_ling: "",
+      seefang_sheng: "",
+      seefang_ling: "" };
 
 
 
 
   },
   onLoad: function onLoad(option) {
-    console.log(option);
     _self = this;
 
 
@@ -885,6 +874,7 @@ var _default = {
 
 
 
+
     //百度地图
     // uni.poiSearchNearBy({
     // 	point: {
@@ -896,6 +886,9 @@ var _default = {
     // 	   console.log(res,'中心点');
     // 	}
     // });
+
+
+    //授权
 
 
 
@@ -962,6 +955,92 @@ var _default = {
 
   },
   methods: {
+    suijiData: function suijiData() {
+      var my_date = "";
+      var date1 = new Date();
+      var date_add_1 = uni.getStorageSync("date_add_1" + this.detail.id);
+      if (date_add_1) {
+        if (parseInt(date_add_1) - new Date().getTime(new Date()) > 0) {
+          var day = uni.getStorageSync("day" + this.detail.id);
+          var sheng_num = uni.getStorageSync("sheng_num" + this.detail.id);
+          var ling_top = uni.getStorageSync("ling_top" + this.detail.id);
+          var ling_bot = uni.getStorageSync("ling_bot" + this.detail.id);
+          this.goufang_date = day;
+          this.goufang_ling = ling_top;
+          this.seefang_sheng = sheng_num;
+          this.seefang_ling = ling_bot;
+        } else {
+          cosnole.log('小于');
+          my_date = date1.setDate(date1.getDate() + 1);
+          my_date = new Date(my_date);
+          uni.setStorageSync("date_add_1" + this.detail.id, my_date.getTime(my_date));
+
+          var date2 = new Date();
+          date2.setDate(date2.getDate() + 7);
+          var time = date2.getMonth() + 1 + "月" + date2.getDate() + "日";
+          uni.setStorageSync("day" + this.detail.id, time);
+          //50-100 剩余
+          var num = Math.random().toFixed(2) * 50 + 50;
+          uni.setStorageSync("sheng_num" + this.detail.id, parseInt(num));
+          //100-300 已领
+          var _ling_top = Math.random().toFixed(2) * 200 + 100;
+          uni.setStorageSync("ling_top" + this.detail.id, _ling_top);
+
+          var _ling_bot = Math.random().toFixed(2) * 200 + 100;
+          uni.setStorageSync("ling_bot" + this.detail.id, _ling_bot);
+          this.goufang_date = time;
+          this.goufang_ling = _ling_top;
+          this.seefang_sheng = num;
+          this.seefang_ling = _ling_bot;
+        }
+      } else {
+        //加一天
+        my_date = date1.setDate(date1.getDate() + 1);
+        my_date = new Date(my_date);
+        uni.setStorageSync("date_add_1" + this.detail.id, my_date.getTime(my_date));
+
+        var _date = new Date();
+        _date.setDate(_date.getDate() + 7);
+        var _time = _date.getMonth() + 1 + "月" + _date.getDate() + "日";
+        uni.setStorageSync("day" + this.detail.id, _time);
+        //50-100 剩余
+        var _num = Math.random().toFixed(2) * 50 + 50;
+        uni.setStorageSync("sheng_num" + this.detail.id, parseInt(_num));
+        //100-300 已领
+        var _ling_top2 = Math.random().toFixed(2) * 200 + 100;
+        uni.setStorageSync("ling_top" + this.detail.id, _ling_top2);
+
+        var _ling_bot2 = Math.random().toFixed(2) * 200 + 100;
+        uni.setStorageSync("ling_bot" + this.detail.id, _ling_bot2);
+        this.goufang_date = _time;
+        this.goufang_ling = _ling_top2;
+        this.seefang_sheng = _num;
+        this.seefang_ling = _ling_bot2;
+      }
+
+      //加一天 
+      // my_date = date1.setDate(date1.getDate()+1);
+      // my_date = new Date(my_date);
+      // uni.setStorageSync("date_add_1",my_date.getTime(my_date));
+      //console.log(new Date().getTime(new Date()),my_date.getTime(my_date),'my_date');
+
+      // let date2 = new Date();                     
+      //    date2.setDate(date2.getDate() + 7);
+      // let time = date2.getMonth()+1+"月"+date2.getDate()+"日";
+      // // console.log(date2,'date2',time);
+      // //50-100 剩余
+      // let  num = Math.random().toFixed(2)*50 + 50;
+      // //100-300 已领
+      // let   ling_top= Math.random().toFixed(2)*200 + 100;
+
+      // let   ling_bot= Math.random().toFixed(2)*200 + 100;
+
+
+
+    },
+    getPhoneNumber: function getPhoneNumber(e) {
+      console.log(e);
+    },
     to: function to(item, num) {
       uni.createSelectorQuery().select(".detail").boundingClientRect(function (data) {//目标节点
         uni.createSelectorQuery().select("." + item).boundingClientRect(function (res) {//最外层盒子节点
@@ -996,6 +1075,7 @@ var _default = {
     goLogin: function goLogin(result) {
       console.log(result);
       //登录
+      var _this = this;
       uni.getProvider({
         service: "oauth",
         success: function success(res) {
@@ -1006,18 +1086,35 @@ var _default = {
             scopes: "auth_base",
             success: function success(res) {
               console.log(res.code, 'code');
+              uni.request({
+                url: _this.httpsapi + "/applets/baidu/get_session_key",
+                data: {
+                  code: res.code },
+
+                method: "GET",
+                success: function success(res) {
+                  var openid = res.data.openid;
+                  var session_key = res.data.session_key;
+                  uni.setStorageSync("openid", openid);
+                  uni.setStorageSync("session_key", session_key);
+                  // uni.request({
+                  // 	url:"/applets/baidu/decrypt"
+                  // })
+                  console.log(res, "res");
+                } });
+
             } });
 
-          uni.getUserInfo({
-            provider: pingtai,
-            lang: "zh_CN",
-            success: function success(res) {
-              console.log(res, "用户信息");
-            },
-            complete: function complete(res) {
-              console.log(res, "用户信息完成");
-            } });
-
+          // uni.getUserInfo({
+          // 	provider:pingtai,
+          // 	lang:"zh_CN",
+          // 	success:(res)=>{
+          // 		console.log(res,"用户信息")
+          // 	},
+          // 	complete:(res)=>{
+          // 		console.log(res,"用户信息完成")
+          // 	}
+          // })
 
         } });
 
@@ -1079,7 +1176,7 @@ var _default = {
         this.msg = "请先登录";
       }
     },
-    getdata: function getdata(id) {var _this = this;
+    getdata: function getdata(id) {var _this2 = this;
       var ip = '';
       var other = uni.getStorageSync("other");
       uni.request({
@@ -1091,7 +1188,7 @@ var _default = {
           ip = ip.substring(1);
           ip = ip.slice(0, -3);
           uni.request({
-            url: _this.apiserve + '/applets/building/detail',
+            url: _this2.apiserve + '/applets/building/detail',
             data: {
               id: id,
               other: other,
@@ -1101,49 +1198,49 @@ var _default = {
               if (res.data.code == 200) {
                 console.log(res, "res");
                 var data = res.data.data;
-                _this.pro_img = data.imgs.img.effects;
+                _this2.pro_img = data.imgs.img.effects;
 
-                _this.effects = data.imgs.img.effects;
-                _this.house_types = data.imgs.img.house_types;
+                _this2.effects = data.imgs.img.effects;
+                _this2.house_types = data.imgs.img.house_types;
 
-                _this.total = data.imgs.num;
-                _this.detail = data.abstract;
-                _this.goodsList = data.house_types;
-                _this.dongtai = data.dynamics;
-                _this.staff = data.staff;
-                _this.comments = data.comments;
-                _this.questions = data.questions;
-                _this.recommends = data.recommends;
-                _this.common = data.common;
+                _this2.total = data.imgs.num;
+                _this2.detail = data.abstract;
+                _this2.goodsList = data.house_types;
+                _this2.dongtai = data.dynamics;
+                _this2.staff = data.staff;
+                _this2.comments = data.comments;
+                _this2.questions = data.questions;
+                _this2.recommends = data.recommends;
+                _this2.common = data.common;
 
-                _this.latitude = data.abstract.latitude;
-                _this.longitude = data.abstract.longitude;
-                _this.covers[0].latitude = data.abstract.latitude;
-                _this.covers[0].longitude = data.abstract.longitude;
+                _this2.latitude = data.abstract.latitude;
+                _this2.longitude = data.abstract.longitude;
+                _this2.covers[0].latitude = data.abstract.latitude;
+                _this2.covers[0].longitude = data.abstract.longitude;
                 // this.covers[0].width = 280;
                 // this.covers[0].height = 72;
-                _this.covers[0].title = data.abstract.name;
-                _this.covers[0].label.content = data.abstract.name;
+                _this2.covers[0].title = data.abstract.name;
+                _this2.covers[0].label.content = data.abstract.name;
+                _this2.suijiData();
 
 
-
-                console.log(_this.covers, 'covers');
+                console.log(_this2.covers, 'covers');
 
                 var phone = data.common.phone;
-                _this.telphone = phone.replace(',', '转');
-                _this.old_telphone = phone;
-                _this.specials = data.specials;
+                _this2.telphone = phone.replace(',', '转');
+                _this2.old_telphone = phone;
+                _this2.specials = data.specials;
                 var tejia = data.specials.data;
                 if (tejia == null) {
-                  _this.tejia = [];
+                  _this2.tejia = [];
                 } else {
-                  _this.tejia = data.specials.data;
+                  _this2.tejia = data.specials.data;
                 }
 
-                _this.deal_prices = data.deal_prices;
-                console.log(_this.telphone);
+                _this2.deal_prices = data.deal_prices;
+                console.log(_this2.telphone);
 
-                var _self2 = _this;
+                var _self2 = _this2;
 
                 var arr_data = data.deal_prices;
                 var time = [];
@@ -1154,7 +1251,7 @@ var _default = {
                   var strr = str.replace("-", '.');
                   time.push(strr);
                   var year = n.time.substring(0, 4);
-                  _this.echarts_year = year;
+                  _this2.echarts_year = year;
                 });
 
 
@@ -1163,13 +1260,13 @@ var _default = {
                   series: [] };
 
                 Column.series = [{
-                  "name": _this.echarts_year + "年",
+                  "name": _this2.echarts_year + "年",
                   "textColor": "#fff",
                   "data": num }];
 
 
                 Column.categories = time;
-                _this.Column = Column;
+                _this2.Column = Column;
                 console.log(Column, 'Column');
                 _self2.showColumn("canvasColumn", Column);
 
@@ -1181,7 +1278,7 @@ var _default = {
                     var str = p.diff.toString();
                     p.diff = str.substring(0, str.length - 2) + '**';
                   });
-                  _this.tableList = arr;
+                  _this2.tableList = arr;
                 }
 
                 var analysis = data.analysis;
@@ -1195,9 +1292,9 @@ var _default = {
                   }
                 });
 
-                _this.fenxi_data = fenxi_tou;
-                _this.fenxi_tou = fenxi_tou;
-                _this.fenxi_yiju = fenxi_yiju;
+                _this2.fenxi_data = fenxi_tou;
+                _this2.fenxi_tou = fenxi_tou;
+                _this2.fenxi_yiju = fenxi_yiju;
 
               }
             } });

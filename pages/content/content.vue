@@ -48,7 +48,7 @@
 						<image src="../../static/content/shou.png"></image>
 						<text>收藏</text>
 					</view>
-					<!-- <button type="primary" open-type="getUserInfo"  @getUserInfo="goLogin" >登录</button> -->
+				<!-- 	<button type="primary" open-type="getPhoneNumber"  @tap="goLogin" >登录</button> -->
 				</view>
 			</view>
 			<view class="detail_list">
@@ -113,28 +113,28 @@
 				<text class="text">
 					售楼处专供允家平台客户
 					<text class="jie">
-						（8月15日截止）
+						（{{goufang_date}}截止）
 					</text>
 				</text>
 				<view class="right">
 					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+领取优惠',94,'领取优惠')">
 						领取优惠
 					</view>
-					<text>67人已领取</text>
+					<text>{{goufang_ling}}人已领取</text>
 				</view>
 			</view>
 			<view class="youhui_02">
 				<text class="text">
 					免费专车1对1服务限时券
 					<text class="jie">
-						（剩余124张）
+						（剩余{{seefang_sheng}}张）
 					</text>
 				</text>
 				<view class="right">
 					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+免费领取',95,'免费领取')">
 						免费领取
 					</view>
-					<text>39人已领取</text>
+					<text>{{seefang_ling}}人已领取</text>
 				</view>
 			</view>
 		</view>
@@ -349,8 +349,35 @@
 				<image src="../../static/content/biao.png" mode=""></image>
 			</view>
 			<!-- 周边配套地图 -->
+<<<<<<< HEAD
 			<view class="address" @tap="goweb">
 				<view class="map">
+=======
+<!-- <<<<<<< HEAD -->
+			<view class="address">
+<!-- 
+			<view class="address" @tap="goweb"> -->
+		<!-- 		<scroll-view class="nav_nav" scroll-x="true">
+					<view class="nav_list active">
+						公交
+					</view>
+					<view class="nav_list">
+						地铁
+					</view>
+					<view class="nav_list">
+						教育
+					</view>
+					<view class="nav_list">
+						医院
+					</view>
+					<view class="nav_list">
+						购物
+					</view>
+				</scroll-view> -->
+<!-- 
+>>>>>>> main -->
+				<view class="map" @tap="goweb">
+>>>>>>> eee4ffb177ae428d8b6d5fcd8da44cf428f1447b
 					<view class="nav_nav" >
 						<view class="nav_list active">
 							<image src="../../static/content/near_bus.png"></image>
@@ -559,6 +586,7 @@
 				</view>
 		</wyb-popup>
 	</view>
+</view>	
 </template>
 
 <script>
@@ -620,9 +648,9 @@
 					id:1,
 					latitude: "",
 					longitude: "",
-					iconPath: '',
-					width:"",
-					height:"",
+					iconPath: "/static/content/map_icon.png",
+					width:"30",
+					height:"42",
 					title:"项目名称",
 					label:{
 							content:'文本',
@@ -631,7 +659,7 @@
 							fontSize:24,
 							padding:40,
 							borderWidth:2,
-							borderColor:"rgba(6,0,1,0.1)",
+							borderColor:"#3EACF0",
 							borderRadius:5,
 							textAlign:"center"
 					      },
@@ -681,13 +709,19 @@
 					dongtai:false,
 					fenxi:false,
 					zhou_pei:false
-				}
+				},
+				
+				//优惠信息
+				goufang_date:"",
+				goufang_ling:"",
+				seefang_sheng:"",
+				seefang_ling:""
+				
 
 
 			};
 		},
 		onLoad(option) {
-			console.log(option);
 			_self = this;
 			//#ifdef MP-ALIPAY
 			uni.getSystemInfo({
@@ -704,6 +738,7 @@
 			this.cHeight = uni.upx2px(500);
 			let id = option.id;
 			this.getdata(id);
+			
 			
 		 
 			
@@ -725,6 +760,9 @@
 			// 	}
 			// });
 		
+		
+		   //授权
+	
 
 
 
@@ -790,6 +828,92 @@
 
 		},
 		methods: {
+			suijiData(){
+				let  my_date ="";
+				let date1 = new Date();
+				let  date_add_1 = uni.getStorageSync("date_add_1"+this.detail.id);
+				if(date_add_1){
+				    if((parseInt(date_add_1))- (new Date().getTime(new Date()))> 0 ){
+						 let day  = uni.getStorageSync("day"+this.detail.id);
+						 let sheng_num  = uni.getStorageSync("sheng_num"+this.detail.id);
+						 let ling_top  = uni.getStorageSync("ling_top"+this.detail.id);
+						 let ling_bot  = uni.getStorageSync("ling_bot"+this.detail.id);
+						 this.goufang_date = day;
+						 this.goufang_ling= ling_top;
+						 this.seefang_sheng = sheng_num;
+						 this.seefang_ling = ling_bot;
+					}else{
+						cosnole.log('小于')
+						my_date = date1.setDate(date1.getDate()+1);
+						my_date = new Date(my_date);
+						uni.setStorageSync("date_add_1"+this.detail.id,my_date.getTime(my_date));
+						
+						let date2 = new Date();
+						date2.setDate(date2.getDate() + 7);
+						let time = date2.getMonth()+1+"月"+date2.getDate()+"日";
+						uni.setStorageSync("day"+this.detail.id,time)
+						//50-100 剩余
+						let  num = Math.random().toFixed(2)*50 + 50;
+						uni.setStorageSync("sheng_num"+this.detail.id,parseInt(num))
+						//100-300 已领
+						let   ling_top= Math.random().toFixed(2)*200 + 100;
+						uni.setStorageSync("ling_top"+this.detail.id,ling_top)
+						
+						let   ling_bot= Math.random().toFixed(2)*200 + 100;
+						uni.setStorageSync("ling_bot"+this.detail.id,ling_bot)
+						this.goufang_date = time;
+						this.goufang_ling= ling_top;
+						this.seefang_sheng = num;
+						this.seefang_ling = ling_bot;
+					}
+				}else{
+					 //加一天
+					 my_date = date1.setDate(date1.getDate()+1);
+					 my_date = new Date(my_date);
+					 uni.setStorageSync("date_add_1"+this.detail.id,my_date.getTime(my_date));
+					 
+					 let date2 = new Date();
+					 date2.setDate(date2.getDate() + 7);
+					 let time = date2.getMonth()+1+"月"+date2.getDate()+"日";
+					 uni.setStorageSync("day"+this.detail.id,time)
+					 //50-100 剩余
+					 let  num = Math.random().toFixed(2)*50 + 50;
+					 uni.setStorageSync("sheng_num"+this.detail.id,parseInt(num))
+					 //100-300 已领
+					 let   ling_top= Math.random().toFixed(2)*200 + 100;
+					 uni.setStorageSync("ling_top"+this.detail.id,ling_top)
+					 
+					 let   ling_bot= Math.random().toFixed(2)*200 + 100;
+					 uni.setStorageSync("ling_bot"+this.detail.id,ling_bot)
+					 this.goufang_date = time;
+					 this.goufang_ling= ling_top;
+					 this.seefang_sheng = num;
+					 this.seefang_ling = ling_bot;
+				}
+				
+				//加一天 
+				// my_date = date1.setDate(date1.getDate()+1);
+				// my_date = new Date(my_date);
+				// uni.setStorageSync("date_add_1",my_date.getTime(my_date));
+				//console.log(new Date().getTime(new Date()),my_date.getTime(my_date),'my_date');
+				
+				// let date2 = new Date();                     
+			 //    date2.setDate(date2.getDate() + 7);
+				// let time = date2.getMonth()+1+"月"+date2.getDate()+"日";
+				// // console.log(date2,'date2',time);
+				// //50-100 剩余
+				// let  num = Math.random().toFixed(2)*50 + 50;
+				// //100-300 已领
+				// let   ling_top= Math.random().toFixed(2)*200 + 100;
+				
+				// let   ling_bot= Math.random().toFixed(2)*200 + 100;
+				
+				
+			  
+			},
+			getPhoneNumber(e){
+				console.log(e);
+			},
 			to(item,num){
 				uni.createSelectorQuery().select(".detail").boundingClientRect(data=>{//目标节点
 				　　uni.createSelectorQuery().select("."+item).boundingClientRect((res)=>{//最外层盒子节点
@@ -824,6 +948,7 @@
 			goLogin(result){
 				console.log(result);
 				//登录
+				let _this = this;
 				uni.getProvider({
 					service:"oauth",
 					success: (res) => {
@@ -834,18 +959,35 @@
 							scopes:"auth_base",
 							success(res) {
 								console.log(res.code,'code');
+								uni.request({
+									url:_this.httpsapi+"/applets/baidu/get_session_key",
+									data:{
+										code:res.code
+									},
+									method:"GET",
+									success:(res)=> {
+										let  openid = res.data.openid;
+										let  session_key  = res.data.session_key;
+									     uni.setStorageSync("openid",openid);
+										 uni.setStorageSync("session_key",session_key);
+										// uni.request({
+										// 	url:"/applets/baidu/decrypt"
+										// })
+										console.log(res,"res");
+									}
+								})
 							}
 						})
-						uni.getUserInfo({
-							provider:pingtai,
-							lang:"zh_CN",
-							success:(res)=>{
-								console.log(res,"用户信息")
-							},
-							complete:(res)=>{
-								console.log(res,"用户信息完成")
-							}
-						})
+						// uni.getUserInfo({
+						// 	provider:pingtai,
+						// 	lang:"zh_CN",
+						// 	success:(res)=>{
+						// 		console.log(res,"用户信息")
+						// 	},
+						// 	complete:(res)=>{
+						// 		console.log(res,"用户信息完成")
+						// 	}
+						// })
 						
 					}
 				})
@@ -952,7 +1094,7 @@
 									// this.covers[0].height = 72;
 									this.covers[0].title = data.abstract.name;
 									this.covers[0].label.content = data.abstract.name;
-									
+									this.suijiData();
 									
 									
 									console.log(this.covers,'covers');

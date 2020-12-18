@@ -383,14 +383,25 @@
             
         }
         ,{
+<<<<<<< HEAD
             "path" : "pages/talk/talk",
             "style" :               
+=======
+            "path" : "pages/aroundweb/aroundweb",
+            "style" :                                                                                    
+>>>>>>> eee4ffb177ae428d8b6d5fcd8da44cf428f1447b
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
             
-        }
+        },{
+			  "path" : "pages/talk/talk",
+			  "style" :{
+				  "navigationBarTitleText": "",
+				  "enablePullDownRefresh": false
+			  }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
