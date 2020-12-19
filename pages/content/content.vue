@@ -9,8 +9,8 @@
 		<!-- 顶部悬浮 -->
 		<view class="fixed_top" v-if="fixed_show">
 			<view :class="{active:class_fixed.huxing}" @tap="to('huxing_tit',1)">户型</view>
-		    <view :class="{active:class_fixed.dongtai}" @tap="to('dongtai',2)">动态</view>
-		    <view :class="{active:class_fixed.fenxi}" @tap="to('fenxi',3)">分析</view>
+			<view :class="{active:class_fixed.dongtai}" @tap="to('dongtai',2)">动态</view>
+			<view :class="{active:class_fixed.fenxi}" @tap="to('fenxi',3)">分析</view>
 			<view :class="{active:class_fixed.zhou_pei}" @tap="to('zhou_pei',4)">配套</view>
 		</view>
 		<view class="lunbo">
@@ -48,7 +48,7 @@
 						<image src="../../static/content/shou.png"></image>
 						<text>收藏</text>
 					</view>
-				<!-- 	<button type="primary" open-type="getPhoneNumber"  @tap="goLogin" >登录</button> -->
+					<!-- 	<button type="primary" open-type="getPhoneNumber"  @tap="goLogin" >登录</button> -->
 				</view>
 			</view>
 			<view class="detail_list">
@@ -471,10 +471,10 @@
 				</template>
 				<template v-else>
 					<view class="zanwu">
-					暂无问答，快来提问吧
+						暂无问答，快来提问吧
 					</view>
 				</template>
-				
+
 				<view class="ti_btn" @tap="quTiwen(detail.id)">
 					我要提问
 				</view>
@@ -526,41 +526,41 @@
 			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
 		</wyb-popup>
 		<mytoast :txt="msg" ref="msg"></mytoast>
-		
+
 		<wyb-popup ref="rules" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<view class="rules">
-						<view class="title">
-							活动规则
-						</view>
-						<scroll-view class="text_box" scroll-y="true" :scroll-top="scrollTop">
-							<view class="">
-								1、本次团购活动以分档累计补发的方案执行，通过允家网站成交该项目具体团购费用如下所示：
-							</view>
-							<view class="">0-5套---------每套1000元</view>
-							<view class="">6-10套--------每套2000元</view>
-							<view class="">11-15套-------每套3000元</view>
-							<view class="">16-20套-------每套4000元</view>
-							<view class="">21套以上------每套5000元</view>
-							<view class="">
-								2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放
-							</view>
-							<view class="">
-							 3、核算方式：由开发商或代理公司判定为允家平台客户即可享受这个优惠
-							</view>
-							<view class="">
-							 4、结算方式：提供已实名的支付宝账户给与您对接的允家咨询师，规定时间内会将优惠费用打至该账户
-							</view>
-							<view class="">
-							详细活动方案请致电允家客服电话：
-							</view>
-							<view class="">
-							注：活动最终解释权归允家所有
-							</view>
-						</scroll-view>
+				<view class="title">
+					活动规则
 				</view>
+				<scroll-view class="text_box" scroll-y="true" :scroll-top="scrollTop">
+					<view class="">
+						1、本次团购活动以分档累计补发的方案执行，通过允家网站成交该项目具体团购费用如下所示：
+					</view>
+					<view class="">0-5套---------每套1000元</view>
+					<view class="">6-10套--------每套2000元</view>
+					<view class="">11-15套-------每套3000元</view>
+					<view class="">16-20套-------每套4000元</view>
+					<view class="">21套以上------每套5000元</view>
+					<view class="">
+						2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放
+					</view>
+					<view class="">
+						3、核算方式：由开发商或代理公司判定为允家平台客户即可享受这个优惠
+					</view>
+					<view class="">
+						4、结算方式：提供已实名的支付宝账户给与您对接的允家咨询师，规定时间内会将优惠费用打至该账户
+					</view>
+					<view class="">
+						详细活动方案请致电允家客服电话：
+					</view>
+					<view class="">
+						注：活动最终解释权归允家所有
+					</view>
+				</scroll-view>
+			</view>
 		</wyb-popup>
 	</view>
-</view>	
+	</view>
 </template>
 
 <script>
@@ -619,24 +619,24 @@
 				// longitude: 116.39742,
 				map: {},
 				covers: [{
-					id:1,
+					id: 1,
 					latitude: "",
 					longitude: "",
 					iconPath: "/static/content/map_icon.png",
-					width:"30",
-					height:"42",
-					title:"项目名称",
-					label:{
-							content:'文本',
-							color:'#121212',
-							bgColor:'#fff',
-							fontSize:24,
-							padding:40,
-							borderWidth:2,
-							borderColor:"#3EACF0",
-							borderRadius:5,
-							textAlign:"center"
-					      },
+					width: "30",
+					height: "42",
+					title: "项目名称",
+					label: {
+						content: '文本',
+						color: '#121212',
+						bgColor: '#fff',
+						fontSize: 24,
+						padding: 40,
+						borderWidth: 2,
+						borderColor: "#3EACF0",
+						borderRadius: 5,
+						textAlign: "center"
+					},
 				}],
 				style_list: {
 					effect: false,
@@ -670,27 +670,27 @@
 				remark_k: '',
 				position_n: 0,
 				codenum: 1,
-				msg:"",
-				
-				latitude:"",
-				longitude:"",
-				scrollTop:0,
-				
-				fixed_show:false,
-				
-				class_fixed:{
-					huxing:true,
-					dongtai:false,
-					fenxi:false,
-					zhou_pei:false
+				msg: "",
+
+				latitude: "",
+				longitude: "",
+				scrollTop: 0,
+
+				fixed_show: false,
+
+				class_fixed: {
+					huxing: true,
+					dongtai: false,
+					fenxi: false,
+					zhou_pei: false
 				},
-				
+
 				//优惠信息
-				goufang_date:"",
-				goufang_ling:"",
-				seefang_sheng:"",
-				seefang_ling:""
-				
+				goufang_date: "",
+				goufang_ling: "",
+				seefang_sheng: "",
+				seefang_ling: ""
+
 
 
 			};
@@ -712,12 +712,12 @@
 			this.cHeight = uni.upx2px(500);
 			let id = option.id;
 			this.getdata(id);
-			
-			
-		 
-			
-			
-		
+
+
+
+
+
+
 
 
 
@@ -733,29 +733,29 @@
 			// 	   console.log(res,'中心点');
 			// 	}
 			// });
-		
-		
-		   //授权
-	
+
+
+			//授权
+
 
 
 
 
 		},
-		onPageScroll(e){
-		   if(e.scrollTop>=200){
-			   this.fixed_show = true;
-		   }else{
-			   this.fixed_show = false;
-		   }
+		onPageScroll(e) {
+			if (e.scrollTop >= 200) {
+				this.fixed_show = true;
+			} else {
+				this.fixed_show = false;
+			}
 		},
 		onReady() {
 			var nmap = uni.createMapContext('my_map', this);
 			nmap.moveToLocation({
-				longitude:this.longitude,
-				latitude:this.latitude,
-				success:(res)=>{
-					console.log(res,'转移');
+				longitude: this.longitude,
+				latitude: this.latitude,
+				success: (res) => {
+					console.log(res, '转移');
 				}
 			})
 			// mapSearch.poiSearchNearBy({
@@ -769,12 +769,12 @@
 			// 	success:(res)=>{
 			// 		console.log(res);
 			// 	}
-				
+
 			// })
-			
-			
-			
-			
+
+
+
+
 			console.log(nmap);
 			this.map = nmap;
 			nmap.getCenterLocation({
@@ -782,8 +782,8 @@
 					console.log(res, '中心点');
 				}
 			})
-			
-			
+
+
 
 			// var  bmap= new plus.maps.Map('my_app');
 			// var searchObj = new plus.maps.Search(bmap);  
@@ -802,152 +802,152 @@
 
 		},
 		methods: {
-			suijiData(){
-				let  my_date ="";
+			suijiData() {
+				let my_date = "";
 				let date1 = new Date();
-				let  date_add_1 = uni.getStorageSync("date_add_1"+this.detail.id);
-				if(date_add_1){
-				    if((parseInt(date_add_1))- (new Date().getTime(new Date()))> 0 ){
-						 let day  = uni.getStorageSync("day"+this.detail.id);
-						 let sheng_num  = uni.getStorageSync("sheng_num"+this.detail.id);
-						 let ling_top  = uni.getStorageSync("ling_top"+this.detail.id);
-						 let ling_bot  = uni.getStorageSync("ling_bot"+this.detail.id);
-						 this.goufang_date = day;
-						 this.goufang_ling= ling_top;
-						 this.seefang_sheng = sheng_num;
-						 this.seefang_ling = ling_bot;
-					}else{
+				let date_add_1 = uni.getStorageSync("date_add_1" + this.detail.id);
+				if (date_add_1) {
+					if ((parseInt(date_add_1)) - (new Date().getTime(new Date())) > 0) {
+						let day = uni.getStorageSync("day" + this.detail.id);
+						let sheng_num = uni.getStorageSync("sheng_num" + this.detail.id);
+						let ling_top = uni.getStorageSync("ling_top" + this.detail.id);
+						let ling_bot = uni.getStorageSync("ling_bot" + this.detail.id);
+						this.goufang_date = day;
+						this.goufang_ling = ling_top;
+						this.seefang_sheng = sheng_num;
+						this.seefang_ling = ling_bot;
+					} else {
 						cosnole.log('小于')
-						my_date = date1.setDate(date1.getDate()+1);
+						my_date = date1.setDate(date1.getDate() + 1);
 						my_date = new Date(my_date);
-						uni.setStorageSync("date_add_1"+this.detail.id,my_date.getTime(my_date));
-						
+						uni.setStorageSync("date_add_1" + this.detail.id, my_date.getTime(my_date));
+
 						let date2 = new Date();
-						date2.setDate(date2.getDate() + 7);
-						let time = date2.getMonth()+1+"月"+date2.getDate()+"日";
-						uni.setStorageSync("day"+this.detail.id,time)
+						date2.setDate(date2.getDate() + 7);
+						let time = date2.getMonth() + 1 + "月" + date2.getDate() + "日";
+						uni.setStorageSync("day" + this.detail.id, time)
 						//50-100 剩余
-						let  num = Math.random().toFixed(2)*50 + 50;
-						uni.setStorageSync("sheng_num"+this.detail.id,parseInt(num))
+						let num = Math.random().toFixed(2) * 50 + 50;
+						uni.setStorageSync("sheng_num" + this.detail.id, parseInt(num))
 						//100-300 已领
-						let   ling_top= Math.random().toFixed(2)*200 + 100;
-						uni.setStorageSync("ling_top"+this.detail.id,ling_top)
-						
-						let   ling_bot= Math.random().toFixed(2)*200 + 100;
-						uni.setStorageSync("ling_bot"+this.detail.id,ling_bot)
+						let ling_top = Math.random().toFixed(2) * 200 + 100;
+						uni.setStorageSync("ling_top" + this.detail.id, ling_top)
+
+						let ling_bot = Math.random().toFixed(2) * 200 + 100;
+						uni.setStorageSync("ling_bot" + this.detail.id, ling_bot)
 						this.goufang_date = time;
-						this.goufang_ling= ling_top;
-						this.seefang_sheng = parseInt(num);
+						this.goufang_ling = ling_top;
+						this.seefang_sheng = num;
 						this.seefang_ling = ling_bot;
 					}
-				}else{
-					 //加一天
-					 my_date = date1.setDate(date1.getDate()+1);
-					 my_date = new Date(my_date);
-					 uni.setStorageSync("date_add_1"+this.detail.id,my_date.getTime(my_date));
-					 
-					 let date2 = new Date();
-					 date2.setDate(date2.getDate() + 7);
-					 let time = date2.getMonth()+1+"月"+date2.getDate()+"日";
-					 uni.setStorageSync("day"+this.detail.id,time)
-					 //50-100 剩余
-					 let  num = Math.random().toFixed(2)*50 + 50;
-					 uni.setStorageSync("sheng_num"+this.detail.id,parseInt(num))
-					 //100-300 已领
-					 let   ling_top= Math.random().toFixed(2)*200 + 100;
-					 uni.setStorageSync("ling_top"+this.detail.id,ling_top)
-					 
-					 let   ling_bot= Math.random().toFixed(2)*200 + 100;
-					 uni.setStorageSync("ling_bot"+this.detail.id,ling_bot)
-					 this.goufang_date = time;
-					 this.goufang_ling= ling_top;
-					 this.seefang_sheng = parseInt(num);
-					 this.seefang_ling = ling_bot;
+				} else {
+					//加一天
+					my_date = date1.setDate(date1.getDate() + 1);
+					my_date = new Date(my_date);
+					uni.setStorageSync("date_add_1" + this.detail.id, my_date.getTime(my_date));
+
+					let date2 = new Date();
+					date2.setDate(date2.getDate() + 7);
+					let time = date2.getMonth() + 1 + "月" + date2.getDate() + "日";
+					uni.setStorageSync("day" + this.detail.id, time)
+					//50-100 剩余
+					let num = Math.random().toFixed(2) * 50 + 50;
+					uni.setStorageSync("sheng_num" + this.detail.id, parseInt(num))
+					//100-300 已领
+					let ling_top = Math.random().toFixed(2) * 200 + 100;
+					uni.setStorageSync("ling_top" + this.detail.id, ling_top)
+
+					let ling_bot = Math.random().toFixed(2) * 200 + 100;
+					uni.setStorageSync("ling_bot" + this.detail.id, ling_bot)
+					this.goufang_date = time;
+					this.goufang_ling = ling_top;
+					this.seefang_sheng = num;
+					this.seefang_ling = ling_bot;
 				}
-				
+
 				//加一天 
 				// my_date = date1.setDate(date1.getDate()+1);
 				// my_date = new Date(my_date);
 				// uni.setStorageSync("date_add_1",my_date.getTime(my_date));
 				//console.log(new Date().getTime(new Date()),my_date.getTime(my_date),'my_date');
-				
+
 				// let date2 = new Date();                     
-			 //    date2.setDate(date2.getDate() + 7);
+				//    date2.setDate(date2.getDate() + 7);
 				// let time = date2.getMonth()+1+"月"+date2.getDate()+"日";
 				// // console.log(date2,'date2',time);
 				// //50-100 剩余
 				// let  num = Math.random().toFixed(2)*50 + 50;
 				// //100-300 已领
 				// let   ling_top= Math.random().toFixed(2)*200 + 100;
-				
+
 				// let   ling_bot= Math.random().toFixed(2)*200 + 100;
-				
-				
-			  
+
+
+
 			},
-			getPhoneNumber(e){
+			getPhoneNumber(e) {
 				console.log(e);
 			},
-			to(item,num){
-				uni.createSelectorQuery().select(".detail").boundingClientRect(data=>{//目标节点
-				　　uni.createSelectorQuery().select("."+item).boundingClientRect((res)=>{//最外层盒子节点
-				　　　　uni.pageScrollTo({
-				　　　　　　duration:0,//过渡时间必须为0，uniapp bug，否则运行到手机会报错
-				　　　　　　scrollTop:res.top - data.top-60,//滚动到实际距离是元素距离顶部的距离减去最外层盒子的滚动距离
-				　　　　})
-				　　}).exec()
+			to(item, num) {
+				uni.createSelectorQuery().select(".detail").boundingClientRect(data => { //目标节点
+					uni.createSelectorQuery().select("." + item).boundingClientRect((res) => { //最外层盒子节点
+						uni.pageScrollTo({
+							duration: 0, //过渡时间必须为0，uniapp bug，否则运行到手机会报错
+							scrollTop: res.top - data.top - 60, //滚动到实际距离是元素距离顶部的距离减去最外层盒子的滚动距离
+						})
+					}).exec()
 				}).exec();
-				if(num==1){
+				if (num == 1) {
 					this.class_fixed.huxing = true;
 					this.class_fixed.dongtai = false;
 					this.class_fixed.fenxi = false;
 					this.class_fixed.zhou_pei = false;
-				}else if(num == 2){
+				} else if (num == 2) {
 					this.class_fixed.huxing = false;
 					this.class_fixed.dongtai = true;
 					this.class_fixed.fenxi = false;
 					this.class_fixed.zhou_pei = false;
-				}else  if(num ==3 ){
+				} else if (num == 3) {
 					this.class_fixed.huxing = false;
 					this.class_fixed.dongtai = false;
 					this.class_fixed.fenxi = true;
 					this.class_fixed.zhou_pei = false;
-				}else if(num ==4){
+				} else if (num == 4) {
 					this.class_fixed.huxing = false;
 					this.class_fixed.dongtai = false;
 					this.class_fixed.fenxi = false;
 					this.class_fixed.zhou_pei = true;
 				}
 			},
-			goLogin(result){
+			goLogin(result) {
 				console.log(result);
 				//登录
 				let _this = this;
 				uni.getProvider({
-					service:"oauth",
+					service: "oauth",
 					success: (res) => {
 						console.log(res);
-				        let pingtai = res.provider[0];
+						let pingtai = res.provider[0];
 						uni.login({
-							provider:pingtai,
-							scopes:"auth_base",
+							provider: pingtai,
+							scopes: "auth_base",
 							success(res) {
-								console.log(res.code,'code');
+								console.log(res.code, 'code');
 								uni.request({
-									url:_this.httpsapi+"/applets/baidu/get_session_key",
-									data:{
-										code:res.code
+									url: _this.httpsapi + "/applets/baidu/get_session_key",
+									data: {
+										code: res.code
 									},
-									method:"GET",
-									success:(res)=> {
-										let  openid = res.data.openid;
-										let  session_key  = res.data.session_key;
-									     uni.setStorageSync("openid",openid);
-										 uni.setStorageSync("session_key",session_key);
+									method: "GET",
+									success: (res) => {
+										let openid = res.data.openid;
+										let session_key = res.data.session_key;
+										uni.setStorageSync("openid", openid);
+										uni.setStorageSync("session_key", session_key);
 										// uni.request({
 										// 	url:"/applets/baidu/decrypt"
 										// })
-										console.log(res,"res");
+										console.log(res, "res");
 									}
 								})
 							}
@@ -962,74 +962,74 @@
 						// 		console.log(res,"用户信息完成")
 						// 	}
 						// })
-						
+
 					}
 				})
 				uni.checkSession({
-					success:(res)=>{
-						 console.log(res,'是否过期');
+					success: (res) => {
+						console.log(res, '是否过期');
 					}
 				})
 			},
-			goZhou(id){
+			goZhou(id) {
 				uni.navigateTo({
-					url:"/pages/aroundweb/aroundweb?id="+id
+					url: "/pages/aroundweb/aroundweb?id=" + id
 				})
 			},
-			showRules(){
+			showRules() {
 				this.$refs.rules.show();
 			},
-			getLike(id){
+			getLike(id) {
 				let token = uni.getStorageInfoSync("token");
-				if(token){
+				if (token) {
 					uni.request({
-						url:this.apiserve+"/comment/like",
-						data:{
-							token:token,
-							id:id,
+						url: this.apiserve + "/comment/like",
+						data: {
+							token: token,
+							id: id,
 						},
-						method:"POST",
-						success:(res)=>{
-							if(res.data.code ==200){
+						method: "POST",
+						success: (res) => {
+							if (res.data.code == 200) {
 								console.log(res);
 							}
 						}
-						
+
 					})
-				}else{
+				} else {
 					this.$refs.msg.show();
-					this.msg ="请先登录"
+					this.msg = "请先登录"
 				}
 			},
-			deletePing(id){
+			deletePing(id) {
 				let token = uni.getStorageInfoSync("token");
-				if(token){
+				if (token) {
 					uni.request({
-						url:this.apiserve+"comment/delete",
-						method:"POST",
-						data:{
-							token:token,
-							id:id,
+						url: this.apiserve + "comment/delete",
+						method: "POST",
+						data: {
+							token: token,
+							id: id,
 						},
-						success:(res) =>{
-							if(res.data.code == 200){
+						success: (res) => {
+							if (res.data.code == 200) {
 								console.log(res);
 							}
 						}
-						
+
 					})
-				}else{
-					 this.$refs.msg.show();
-					 this.msg="请先登录"
+				} else {
+					this.$refs.msg.show();
+					this.msg = "请先登录"
 				}
 			},
-			getdata(id){
-				let ip= '';
+			getdata(id) {
+				let ip = '';
 				let other = uni.getStorageSync("other");
 				uni.request({
-					url:this.putserve+"/getIp.php",
-					method:"GET",
-					success:(res)=>{
+					url: this.putserve + "/getIp.php",
+					method: "GET",
+					success: (res) => {
 						ip = res.data
 						ip = ip.split('=')[1].split(':')[1]
 						ip = ip.substring(1)
@@ -1046,10 +1046,10 @@
 									console.log(res, "res");
 									let data = res.data.data;
 									this.pro_img = data.imgs.img.effects;
-						
+
 									this.effects = data.imgs.img.effects;
 									this.house_types = data.imgs.img.house_types;
-						
+
 									this.total = data.imgs.num;
 									this.detail = data.abstract;
 									this.goodsList = data.house_types;
@@ -1059,7 +1059,7 @@
 									this.questions = data.questions;
 									this.recommends = data.recommends;
 									this.common = data.common;
-									
+
 									this.latitude = data.abstract.latitude;
 									this.longitude = data.abstract.longitude;
 									this.covers[0].latitude = data.abstract.latitude;
@@ -1069,10 +1069,10 @@
 									this.covers[0].title = data.abstract.name;
 									this.covers[0].label.content = data.abstract.name;
 									this.suijiData();
-									
-									
-									console.log(this.covers,'covers');
-									
+
+
+									console.log(this.covers, 'covers');
+
 									let phone = data.common.phone;
 									this.telphone = phone.replace(',', '转');
 									this.old_telphone = phone;
@@ -1083,12 +1083,12 @@
 									} else {
 										this.tejia = data.specials.data;
 									}
-						
+
 									this.deal_prices = data.deal_prices;
 									console.log(this.telphone);
-						
+
 									let _self = this;
-						
+
 									let arr_data = data.deal_prices;
 									let time = [];
 									let num = [];
@@ -1100,8 +1100,8 @@
 										let year = n.time.substring(0, 4);
 										this.echarts_year = year;
 									})
-						
-						
+
+
 									let Column = {
 										categories: [],
 										series: []
@@ -1111,14 +1111,14 @@
 										"textColor": "#fff",
 										"data": num,
 									}, ];
-						
+
 									Column.categories = time;
 									this.Column = Column;
-									console.log(Column,'Column');
+									console.log(Column, 'Column');
 									_self.showColumn("canvasColumn", Column);
-						
-						
-						
+
+
+
 									let arr = data.specials.data;
 									if (arr) {
 										arr.map(p => {
@@ -1127,7 +1127,7 @@
 										})
 										this.tableList = arr;
 									}
-						
+
 									let analysis = data.analysis;
 									let fenxi_tou = [];
 									let fenxi_yiju = [];
@@ -1138,72 +1138,72 @@
 											fenxi_yiju.push(m)
 										}
 									})
-						
+
 									this.fenxi_data = fenxi_tou;
 									this.fenxi_tou = fenxi_tou;
 									this.fenxi_yiju = fenxi_yiju;
-						
+
 								}
 							}
 						})
 					}
 				})
-					
+
 			},
-			goShou(){
-				let token= uni.getStorageInfoSync('token');
-				if(token){
+			goShou() {
+				let token = uni.getStorageInfoSync('token');
+				if (token) {
 					uni.request({
-						url:this.apiserve+"/jy/collect",
-						method:"POST",
-						data:{
-							token:token,
-							id:this.detail.id,
-							type:1
+						url: this.apiserve + "/jy/collect",
+						method: "POST",
+						data: {
+							token: token,
+							id: this.detail.id,
+							type: 1
 						},
 						success: (res) => {
-							if(res.data.code == 200){
+							if (res.data.code == 200) {
 								console.log(res);
 							}
 						}
-						
+
 					})
-				}else{
+				} else {
 					this.$refs.msg.show();
-					this.msg ="请先登录"
+					this.msg = "请先登录"
 				}
-				
-				
+
+
 			},
-			quTiwen(id){
+			quTiwen(id) {
 				//先判断登陆了，再跳转
 				let token = uni.getStorageInfoSync('token');
-				if(token){
+				if (token) {
 					uni.navigateTo({
-						url:"../tiwen/tiwen?id="+id
+						url: "../tiwen/tiwen?id=" + id
 					})
-				}else{
+				} else {
 					this.msg = "请先登录";
-					this.$refs.msg.show() ;
+					this.$refs.msg.show();
 				}
-				
+
 			},
-			goDianPing(id){
+			goDianPing(id) {
 				//先判断登陆了，再跳转
 				let token = uni.getStorageInfoSync("token");
-				if(token){
+				if (token) {
 					uni.navigateTo({
-						url:"../senddian/senddian?id="+id
+						url: "../senddian/senddian?id=" + id
 					})
-				}else {
+				} else {
 					this.msg = "请先登录";
-					this.$refs.msg.show() ;
+					this.$refs.msg.show();
 				}
-				
+
 			},
-			goDuibi(id){
+			goDuibi(id) {
 				uni.navigateTo({
-				     url:`../loupk/loupk?ids=${id}`
+					url: `../loupk/loupk?ids=${id}`
 				})
 			},
 			setiscode() {
@@ -1221,7 +1221,7 @@
 				console.log(pid, msg, point);
 				this.pid_d = pid;
 				this.position_n = point,
-			    this.title_e = title;
+					this.title_e = title;
 				this.remark_k = msg;
 				console.log(this.pid_d);
 				this.$refs.popup.show();
@@ -1235,7 +1235,7 @@
 				this.table_show2 = false;
 			},
 			showColumn(canvasId, chartData) {
-				console.log("111",chartData.categories,chartData.series)
+				console.log("111", chartData.categories, chartData.series)
 				canvaColumn = new uCharts({
 					$this: _self,
 					canvasId: canvasId,
@@ -1261,7 +1261,7 @@
 					dataLabel: true,
 					width: _self.cWidth * _self.pixelRatio,
 					height: _self.cHeight * _self.pixelRatio,
-					padding:[0,30,0,0],
+					padding: [0, 30, 0, 0],
 					extra: {
 						column: {
 							width: _self.cWidth * _self.pixelRatio * 0.45 / chartData.categories.length
@@ -1348,37 +1348,40 @@
 
 <style lang="less">
 	/deep/ .marker-route {
-  position: relative;
-  width: 150px;
-  height: 34px;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 3px;
-  font-size: 16px;
-  font-family: "Microsoft YaHei";
-  font-weight: bold;
-  color: rgba(51, 51, 51, 1);
-  line-height: 34px;
-  text-align: center;
-  .box_b {
-    position: absolute;
-    width: 29px;
-    height: 15px;
-    background: rgba(42, 198, 110, 0.2);
-    border-radius: 50%;
-    left: 50%;
-    margin-left: -15px;
-    .box_c {
-      position: absolute;
-      width: 16px;
-      height: 7px;
-      background: #2ac66e;
-      border-radius: 50%;
-      top: 4px;
-      left: 6px;
-      z-index: 100;
-    }
-  }
-}
+		position: relative;
+		width: 150px;
+		height: 34px;
+		background: rgba(255, 255, 255, 1);
+		border-radius: 3px;
+		font-size: 16px;
+		font-family: "Microsoft YaHei";
+		font-weight: bold;
+		color: rgba(51, 51, 51, 1);
+		line-height: 34px;
+		text-align: center;
+
+		.box_b {
+			position: absolute;
+			width: 29px;
+			height: 15px;
+			background: rgba(42, 198, 110, 0.2);
+			border-radius: 50%;
+			left: 50%;
+			margin-left: -15px;
+
+			.box_c {
+				position: absolute;
+				width: 16px;
+				height: 7px;
+				background: #2ac66e;
+				border-radius: 50%;
+				top: 4px;
+				left: 6px;
+				z-index: 100;
+			}
+		}
+	}
+
 	.detail {
 		.toptitle {
 			color: #17181A;
@@ -1391,6 +1394,7 @@
 			top: 0rpx;
 			z-index: 3000;
 			width: 100%;
+
 			.nav_top {
 				display: inline-block;
 
@@ -1409,24 +1413,27 @@
 				}
 			}
 		}
-		.fixed_top{
+
+		.fixed_top {
 			width: 100%;
 			height: 88rpx;
 			background: #FFFFFF;
 			display: flex;
 			justify-content: space-around;
-			position:fixed ;
+			position: fixed;
 			top: 110rpx;
 			z-index: 2000;
-			view{
+
+			view {
 				font-size: 30rpx;
 				font-weight: 500;
 				color: #323233;
 				line-height: 88rpx;
 			}
-			.active{
-				 padding-bottom:16rpx;
-				 border-bottom: 4rpx solid #3EACF0;
+
+			.active {
+				padding-bottom: 16rpx;
+				border-bottom: 4rpx solid #3EACF0;
 			}
 		}
 
@@ -1435,9 +1442,11 @@
 			height: 420rpx;
 			position: relative;
 			margin-top: 120rpx;
+
 			.swiper {
 				width: 100%;
 				height: 420rpx;
+
 				image {
 					width: 100%;
 					height: 420rpx;
@@ -2601,6 +2610,7 @@
 			background-color: #fff;
 			height: auto;
 			padding-bottom: 40rpx;
+
 			.zhou {
 				font-size: 34rpx;
 				font-weight: 800;
@@ -2609,7 +2619,7 @@
 				padding-right: 30rpx;
 				box-sizing: border-box;
 				line-height: 114rpx;
-				
+
 			}
 
 			.wei {
@@ -2618,6 +2628,7 @@
 				box-sizing: border-box;
 				display: flex;
 				margin-bottom: 25rpx;
+
 				// align-items: center;
 				.left {
 					font-size: 30rpx;
@@ -2627,7 +2638,8 @@
 					margin-bottom: 8rpx;
 					line-height: 32rpx;
 				}
-				.rig{
+
+				.rig {
 					width: 550rpx;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -2639,7 +2651,7 @@
 					//margin-bottom: 32rpx;
 				}
 
-				
+
 
 			}
 
@@ -2648,8 +2660,9 @@
 				padding-right: 30rpx;
 				box-sizing: border-box;
 				margin-bottom: 40rpx;
-				display:flex;
+				display: flex;
 				align-items: center;
+
 				text {
 					font-size: 30rpx;
 					font-weight: 500;
@@ -2671,62 +2684,72 @@
 			//周边配套地图
 			.address {
 				width: 100%;
-	
+
 
 				.map {
 					width: 100%;
 					height: 520rpx;
-					padding-left:30rpx ;
-					padding-right:30rpx;
+					padding-left: 30rpx;
+					padding-right: 30rpx;
 					box-sizing: border-box;
 					position: relative;
+
 					.nav_nav {
 						width: 596rpx;
-						height:90rpx;
-						background:#fff;
+						height: 90rpx;
+						background: #fff;
 						position: absolute;
-					     bottom:-20rpx;
+						bottom: -20rpx;
 						z-index: 4000;
 						display: flex;
 						justify-content: space-between;
-						padding-left:27rpx;
+						padding-left: 27rpx;
 						padding-right: 27rpx;
 						margin-left: 20rpx;
+
 						.nav_list {
 							display: flex;
 							align-items: center;
-							image{
+
+							image {
 								width: 32rpx;
 								height: 32rpx;
 							}
+
 							font-size: 26rpx;
 							font-weight: 400;
 							color: #3D3D3D;
 						}
-						
+
 					}
 				}
-				.add_all{
+
+				.add_all {
 					padding-left: 30rpx;
 					padding-right: 30rpx;
 					box-sizing: border-box;
-					.add_one{
+
+					.add_one {
 						margin-bottom: 30rpx;
-						.tit{
-							 font-size: 28rpx;
-							 font-weight: bold;
-							 color: #323233;
+
+						.tit {
+							font-size: 28rpx;
+							font-weight: bold;
+							color: #323233;
 						}
-						.bus{
-							   display: flex;
-							   margin-top: 15rpx;
-								.left{
+
+						.bus {
+							display: flex;
+							margin-top: 15rpx;
+
+							.left {
 								font-size: 24rpx;
 								font-weight: 500;
 								color: #969799;
 								line-height: 24rpx;
 							}
-							.rig{
+
+							.rig {
 								font-size: 24rpx;
 								font-weight: 500;
 								color: #969799;
@@ -2890,12 +2913,13 @@
 
 					}
 				}
-				.zanwu{
+
+				.zanwu {
 					font-size: 26rpx;
 					color: #000;
 					height: 100rpx;
 					line-height: 100rpx;
-				    text-align: center;
+					text-align: center;
 					margin-bottom: 20rpx;
 				}
 			}
@@ -2984,13 +3008,14 @@
 						line-height: 44rpx;
 					}
 				}
-				.zanwu{
-					 font-size: 26rpx;
-					 color: #000;
-					 height: 100rpx;
-					 line-height: 100rpx;
-					 text-align: center;
-					 margin-bottom: 20rpx;
+
+				.zanwu {
+					font-size: 26rpx;
+					color: #000;
+					height: 100rpx;
+					line-height: 100rpx;
+					text-align: center;
+					margin-bottom: 20rpx;
 				}
 
 				.ti_btn {
@@ -3194,37 +3219,41 @@
 				justify-content: center;
 			}
 		}
-       //优惠券规则弹框
-	
-			   .rules{
-				   width: 650rpx;
-				   height: 750rpx;
-				   background: #FFFFFF;
-				   border-radius: 24rpx;
-				   position: absolute;
-				   top: 50%;
-				   left: 50%;
-				   transform: translate(-50%,-50%);
-				   padding-left: 30rpx;
-				   padding-right: 30rpx;
-				   box-sizing: border-box;
-				   .title{
-						font-size: 34rpx;
-						font-weight: 800;
-						color: #19191A;
-						line-height: 114rpx;
-				   }
-				   .text_box{
-					  width: 100%;
-					  height: 580rpx;
-					  view{
-						  font-size: 26rpx;
-						  font-weight: 500;
-						  color: #999999;
-						  line-height: 44rpx;
-					  } 
-				   }
-			   }
-		
+
+		//优惠券规则弹框
+
+		.rules {
+			width: 650rpx;
+			height: 750rpx;
+			background: #FFFFFF;
+			border-radius: 24rpx;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			padding-left: 30rpx;
+			padding-right: 30rpx;
+			box-sizing: border-box;
+
+			.title {
+				font-size: 34rpx;
+				font-weight: 800;
+				color: #19191A;
+				line-height: 114rpx;
+			}
+
+			.text_box {
+				width: 100%;
+				height: 580rpx;
+
+				view {
+					font-size: 26rpx;
+					font-weight: 500;
+					color: #999999;
+					line-height: 44rpx;
+				}
+			}
+		}
+
 	}
 </style>

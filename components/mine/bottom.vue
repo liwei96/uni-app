@@ -101,6 +101,7 @@
 								uni.setStorageSync('phone',tel)
 								let openid = uni.getStorageSync('openid')
 								that.tel = tel
+								that.baoMing(that.remark,that.point,that.title,that.pid)
 								if(!uni.getStorageSync('token')) {
 									uni.request({
 										url:"https://api.edefang.net/applets/login",
@@ -112,7 +113,7 @@
 										success: (res) => {
 											console.log(res)
 											uni.setStorageSync('token',res.data.token)
-											that.baoMing(that.remark,that.point,that.title,that.pid)
+											
 										}
 									})
 								}
