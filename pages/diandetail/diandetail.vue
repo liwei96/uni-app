@@ -35,7 +35,7 @@
 							{{comment.like_num}}
 						</view>
 						
-						<view class="dianping">
+						<view class="dianping" @tap="goHuifu(comment.id)">
 							<image src="../../static/liu.png" mode=""></image>
 							{{hui_num}}
 						</view>
@@ -137,6 +137,11 @@
 			this.project_id = option.id;
 		},
 		methods:{
+			goHuifu(id){
+				uni.navigateTo({
+					url:"../huifu/huifu?id="+id+"&pid="+this.building.id
+				})
+			},
 			baoMing(pid,remark,point,title){
 				this.$refs.popup.show();
 				this.title_e = title;

@@ -130,7 +130,7 @@
 							method: "GET",
 							success: (res) => {
 								if(res.data.code == 500) {
-									that.toasttxt = res.data.msg;
+									that.toasttxt = res.data.message;
 									that.$refs.toast.show()
 								} else {
 									that.teltxt = phone.substr(0, 3) + "****" + phone.substr(7, 11);
@@ -210,7 +210,7 @@
 					success: (res) => {
 						console.log(res)
 						if(res.data.code === 500) {
-							that.toasttxt = res.data.msg;
+							that.toasttxt = res.data.message;
 							that.$refs.toast.show()
 						} else {
 							that.toasttxt = "订阅成功";

@@ -37,7 +37,7 @@
 							<image src="../../static/content/zan.png" mode=""></image>
 							{{item.like_num}}
 						</view>
-						<view class="dianping">
+						<view class="dianping" @tap="goHuifu(item.id)">
 							<image src="../../static/liu.png" mode=""></image>
 							{{item.children.length}}
 						</view>
@@ -87,6 +87,11 @@ import bottom from '../../components/mine/bottom.vue';
 			}
 		},
 		methods:{
+			goHuifu(id){
+				uni.navigateTo({
+					url:"../huifu/huifu?id="+id+"&pid="+this.project_id
+				})
+			},
 			getdata(id,page){
 				 let token = uni.getStorageInfoSync('token');
 				 let other = uni.getStorageInfoSync('other');

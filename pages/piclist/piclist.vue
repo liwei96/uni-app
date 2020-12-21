@@ -49,7 +49,10 @@
 			
 		</view>
 		
-		<bottom></bottom>
+		<bottom :remark="'楼盘相册页+预约看房'" 
+		:point="103" :title="'预约看房'"
+		:pid="parseInt(project_id)"
+		:telphone="telphone"></bottom>
 		
 	</view>
 </template>
@@ -91,7 +94,8 @@
 				departments:[],
 				num:0,
 				common_data:[],
-				project_id:''
+				project_id:'',
+				telphone:""
 				//（全屏出现滚动条 去掉paddingTop 但导航栏会遮住部分内容 自行改.swiperCont .swiper里css）
 				//也可获取导航栏的高度  屏幕高度减去导航栏高度 = 你的内容全屏高度  不会出现滚动条
 				
@@ -108,12 +112,14 @@
 		},
 		methods:{
 			getdata(id){
+				let other = uni.getStorageSync("other");
+				let token = uni.getStorageSync("token")
 				uni.request({
 					url:this.apiserve+"/applets/img/list",
 					data:{
 						id:id,
-						other:'',
-						token:''
+						other:other,
+						token:token
 					},
 					method:"GET",
 					success: (res) => {
@@ -127,6 +133,7 @@
 							 this.matching= res.data.imgs.matching;
 							 this.departments= res.data.imgs.departments;
 							 this.common_data = img.effect;
+							 this.telphone = res.data.common.phone;
 							 
 						   this.swiperTabList[0] = `效果图(${img.effect.length})`;
 						   this.swiperTabList[1] = `实景图(${img.real.length})`;
