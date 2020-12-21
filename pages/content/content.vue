@@ -15,7 +15,7 @@
 		</view>
 		<view class="lunbo">
 			<swiper class="swiper" :autoplay="true">
-				<swiper-item v-for="item in pro_img">
+				<swiper-item v-for="(item,key) in pro_img" :key="key">
 					<view class="swiper-item uni-bg-red">
 						<navigator :url="`../piclist/piclist?id=${detail.id}`">
 							<image :src="item.small" mode=""></image>
@@ -2122,7 +2122,9 @@
 
 			.floor-list {
 				white-space: nowrap;
-				padding-left: 30rpx;
+				.scoll-wrapper {
+					padding-left: 30rpx;
+				}
 
 				.scoll-wrapper {
 					display: flex;

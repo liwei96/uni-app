@@ -193,7 +193,7 @@
 			<view class="dynamic-box">
 				<view class="dynamic-tit">
 					<text class="title">楼盘动态</text>
-					<view class="right_t">
+					<view class="right_t" @tap="godynamic">
 						<text class="more">更多动态</text>
 						<image src="../../static/content/right.png" mode=""></image>
 					</view>
@@ -336,6 +336,11 @@
 			this.cityname = uni.getStorageSync('cityname') || '杭州'
 		},
 		methods: {
+			godynamic(){
+				uni.navigateTo({
+					url:'/pages/dynamic/dynamic'
+				})
+			},
 			ganglou(num,txt){
 				uni.navigateTo({
 					url:`/pages/feature/feature?num=${num}&txt=${txt}`

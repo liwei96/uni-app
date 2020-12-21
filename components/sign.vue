@@ -148,7 +148,30 @@
 									};
 									fn();
 									var interval = setInterval(fn, 1000);
-									that.iscode = true
+									if(that.isok == 1) {
+										if(!uni.getStorageSync('token')) {
+											let openid = uni.getStorageSync('openid')
+											uni.request({
+												url:"https://api.edefang.net/applets/login",
+												method:'GET',
+												data:{
+													phone: phone,
+													openid: openid
+												},
+												success: (res) => {
+													console.log(res)
+													uni.setStorageSync('token',res.data.token)
+													uni.setStorageSync('phone',phone)
+												}
+											})
+										}
+										that.toasttxt = "订阅成功";
+										that.$refs.toast.show()
+										that.$emit('closethis', true)
+									}else {
+										that.iscode = true
+									}
+									
 								}
 								
 							}
@@ -193,9 +216,9 @@
 							that.toasttxt = "订阅成功";
 							that.$refs.toast.show()
 							that.$emit('closethis', true)
-							if(!uni.getStorageInfoSync('token')) {
+							if(!uni.getStorageSync('token')) {
 								uni.setStorageSync('token',res.data.token)
-								uni.setStorageSync('usertel',that.tel)
+								uni.setStorageSync('phone',that.tel)
 							}
 						}
 					}

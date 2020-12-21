@@ -27,15 +27,17 @@
 					<view class="time">
 						{{item.time}}
 					</view>
-					<view class="btn" @tap="show(item.bid,'动态页+订阅楼盘动态')">
+					<button open-type="getPhoneNumber" @tap="bid = item.id" @getphonenumber="getPhoneNumber">
+					<view class="btn">
 						订阅此楼盘动态
 					</view>
+					</button>
 				</view>
 			</view>
 		</view>
 		<bom-nav :tel="'400-718-6686'" @show="nav"></bom-nav>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="title" :pid="pid" :remark="remark" :position="position"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="title" :pid="pid" :remark="remark" :position="position" :isok="isok"></sign>
 		</wyb-popup>
 	</view>
 </template>
@@ -63,7 +65,9 @@
 				remark: '',
 				codenum: 1,
 				title: '',
-				position: 0
+				position: 0,
+				isok: 0,
+				bid: 0
 			}
 		},
 		onReachBottom() {
@@ -79,7 +83,7 @@
 				uni.showLoading({
 					title:"加载中"
 				})
-				let city = uni.getStorageInfoSync('city')
+				let city = uni.getStorageSync('city')
 				uni.request({
 					url:that.apiserve+'/applets/dynamic/info',
 					method:'GET',
@@ -100,7 +104,7 @@
 					title:"加载中"
 				})
 				that.page = that.page+1
-				let city = uni.getStorageInfoSync('city')
+				let city = uni.getStorageSync('city')
 				uni.request({
 					url:that.apiserve+'/applets/dynamic/info',
 					method:'GET',
@@ -115,12 +119,13 @@
 					}
 				})
 			},
-			show(id,txt) {
+			show(id,txt, isok) {
 				this.pid = id
 				this.remark = txt
 				this.position = 98
 				this.title = '订阅实时动态'
 				console.log(this.pid)
+				this.isok = isok
 				this.$refs.popup.show()
 			},
 			setiscode() {
@@ -133,11 +138,80 @@
 			},
 			nav(e) {
 				console.log(e)
-				this.pid = this.build.id
+				this.pid = 0
 				this.position = 103
 				this.remark = '动态页+预约看房'
 				this.title = e.title
+				this.isok = e.isok
 				this.$refs.popup.show()
+			},
+			async getPhoneNumber(e) {
+				console.log(e)
+				let that = this
+				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+					that.show(that.bid,'动态页+订阅楼盘动态')
+					
+				} else {
+					let session = uni.getStorageSync('session')
+					if(session){
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method:'get',
+							data:{
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res)
+								let tel = res.data.mobile
+								uni.setStorageSync('phone',tel)
+								let openid = uni.getStorageSync('openid')
+								that.tel = tel
+								that.show(that.bid,'动态页+订阅楼盘动态')
+							}
+						})
+					}else {
+						uni.login({
+						  provider: 'baidu',
+						  success: function (res) {
+						    console.log(res.code);
+							uni.request({
+								url: 'https://api.edefang.net/applets/baidu/get_session_key',
+								method:'get',
+								data:{
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid',res.data.openid)
+									uni.setStorageSync('session',res.data.session_key)
+									uni.request({
+										url:"https://api.edefang.net/applets/baidu/decrypt",
+										data:{
+											data: e.detail.encryptedData,
+											iv:e.detail.iv,
+											session_key:res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone',tel)
+											let openid = uni.getStorageSync('openid')
+											that.tel = tel
+											that.show(that.bid,'动态页+订阅楼盘动态')
+										}
+									})
+									
+								}
+							})
+						  }
+						});
+						}
+					this.isok = 1
+				}
+				
 			}
 		}
 	}
@@ -217,6 +291,10 @@
 			}
 			.bom {
 				padding: 0 29.88rpx;
+				button {
+					padding: 0;
+				}
+				button::after{ border: none;}
 				.name {
 					color: #17181A;
 					font-size: 31.87rpx;
@@ -246,6 +324,7 @@
 					border: 0.99rpx solid #40A2F4;
 					left: 50%;
 					margin-left: -249rpx;
+					background-color: #F0F6FA;
 				}
 			}
 		}

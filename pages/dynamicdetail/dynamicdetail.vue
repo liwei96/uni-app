@@ -8,9 +8,11 @@
 			<view class="dynamic-tit">{{info.title}}</view>
 			<text class="txt">{{info.content}}</text>
 			<view class="time">{{info.time}}</view>
-			<view class="btn" @tap="show(build.id,'订阅实时动态','动态详情页+订阅楼盘动态')">
+			<button open-type="getPhoneNumber" @tap="type = 0" @getphonenumber="getPhoneNumber">
+			<view class="btn">
 				订阅最新动态
 			</view>
+			</button>
 			<view class="build" @tap="gobuild(build.id)">
 				<view class="left">
 					<image :src="build.img" mode=""></image>
@@ -34,7 +36,9 @@
 				</view>
 			</view>
 			<view class="staff">
-				<image :src="staff.staff.head_img" mode=""></image>
+				<view class="left">
+					<image :src="staff.staff.head_img" mode="widthFix"></image>
+				</view>
 				<view class="staffmsg">
 					<text class="name">{{staff.staff.name}}</text>
 					<text class="rate">满意度{{staff.num}}分</text>
@@ -42,9 +46,11 @@
 						为客户提供专业的购房建议
 					</view>
 				</view>
-				<view class="staffbtn" @tap="show(build.id,'免费咨询','动态详情页+免费咨询')">
-					免费咨询
-				</view>
+				<button open-type="getPhoneNumber" @tap="type = 1" @getphonenumber="getPhoneNumber">
+					<view class="staffbtn">
+						免费咨询
+					</view>
+				</button>
 			</view>
 		</view>
 		<view class="line"></view>
@@ -82,7 +88,7 @@
 		</view>
 		<bom-nav :tel="tel" @show="nav"></bom-nav>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="title" :pid="pid" :remark="remark" :position="position"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="title" :pid="pid" :remark="remark" :position="position" :isok="isok"></sign>
 		</wyb-popup>
 	</view>
 </template>
@@ -98,8 +104,8 @@
 			that = this
 			this.getinfo()
 		},
-		components:{
-			"bom-nav":bomnav,
+		components: {
+			"bom-nav": bomnav,
 			sign,
 			wybPopup
 		},
@@ -115,22 +121,24 @@
 				tel: '',
 				title: '',
 				position: 0,
-				staff:{}
+				staff: {},
+				isok: 0,
+				type: 0
 			}
 		},
-		methods:{
-			goback(){
+		methods: {
+			goback() {
 				uni.navigateBack({
-				    delta: 1
+					delta: 1
 				});
 			},
 			getinfo() {
 				let other = uni.getStorageInfoSync('other')
 				let token = uni.getStorageInfoSync('token')
 				uni.request({
-					url:that.apiserve+"/applets/dynamic/detail",
-					method:"GET",
-					data:{
+					url: that.apiserve + "/applets/dynamic/detail",
+					method: "GET",
+					data: {
 						id: that.id,
 						other: other,
 						token: token
@@ -141,20 +149,98 @@
 						that.build = res.data.building
 						that.other = res.data.house_types
 						that.tel = res.data.common.phone
-						that.staff =res.data.common.staffs
+						that.staff = res.data.common.staffs
 					}
 				})
 			},
 			gobuild(id) {
 				uni.redirectTo({
-					url:"/pages/content/content?id="+id
+					url: "/pages/content/content?id=" + id
 				})
 			},
-			show(id,title,txt) {
+			async getPhoneNumber(e) {
+				console.log(e,this.isok)
+				let title = ''
+				let message = ''
+				console.log(this.type)
+				if(this.type == 1) {
+					title = '免费咨询'
+					message = '动态详情页+免费咨询'
+				}else {
+					title = '订阅实时动态'
+					message = '动态详情页+订阅楼盘动态'
+				}
+				let that = this
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+					that.show(that.build.id, title, message, 0)
+				} else {
+					let session = uni.getStorageSync('session')
+					if (session) {
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method: 'get',
+							data: {
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res)
+								let tel = res.data.mobile
+								uni.setStorageSync('phone', tel)
+								let openid = uni.getStorageSync('openid')
+								that.tel = tel
+								that.show(that.build.id, title, message, 1)
+							}
+						})
+					} else {
+						uni.login({
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.tel = tel
+												that.show(that.build.id, title, message, 1)
+
+											}
+										})
+
+									}
+								})
+							}
+						});
+					}
+				}
+
+			},
+			show(id, title, txt, isok) {
 				this.pid = id
 				this.remark = txt
 				this.position = 98
 				this.title = title
+				this.isok = isok
 				this.$refs.popup.show()
 			},
 			setiscode() {
@@ -166,11 +252,12 @@
 				this.position = 103
 				this.remark = '动态详情页+预约看房'
 				this.title = e.title
+				this.isok = e.isok
 				this.$refs.popup.show()
 			},
 			gohu(id) {
 				uni.redirectTo({
-					url: "/pages/hudetail/hudetail?id="+id
+					url: "/pages/hudetail/hudetail?id=" + id
 				})
 			}
 		}
@@ -184,12 +271,14 @@
 		padding: 0 29.88rpx;
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
+
 		image {
 			width: 31.87rpx;
 			height: 31.87rpx;
 			margin-right: 11.95rpx;
 			margin-bottom: -3.98rpx;
 		}
+
 		text {
 			width: 221rpx;
 			font-size: 32rpx;
@@ -197,8 +286,10 @@
 			color: #17181A;
 		}
 	}
+
 	.box {
 		padding: 0 29.88rpx;
+
 		.dynamic-tit {
 			color: #17181A;
 			font-size: 31.87rpx;
@@ -206,17 +297,27 @@
 			margin-bottom: 31.87rpx;
 			margin-top: 27.88rpx
 		}
+		button {
+			padding: 0;
+			margin-left: 0;
+			border: 0;
+		}
+		button:after {
+			border: 0;
+		}
 		.txt {
 			color: #4B4C4D;
 			font-size: 27.88rpx;
 			line-height: 41.83rpx;
 		}
+
 		.time {
 			margin-top: 23.9rpx;
 			color: #969799;
 			font-size: 23.9rpx;
 			margin-bottom: 39.84rpx;
 		}
+
 		.btn {
 			width: 100%;
 			height: 79.68rpx;
@@ -228,6 +329,7 @@
 			font-size: 29.88rpx;
 			font-weight: bold;
 		}
+
 		.build {
 			padding: 23.9rpx 29.88rpx;
 			margin-top: 49.8rpx;
@@ -236,25 +338,31 @@
 			box-shadow: 0px 0px 18.92rpx 0.99rpx rgba(0, 0, 0, 0.03);
 			border-radius: 23.9rpx;
 			margin-bottom: 35.85rpx;
+
 			.left {
 				margin-right: 27.88rpx;
+
 				image {
 					width: 219.12rpx;
 					height: 159.36rpx;
 					border-radius: 11.95rpx;
 				}
 			}
+
 			.right {
 				flex: 1;
 				position: relative;
 				top: -3.98rpx;
+
 				.right-tit {
 					margin-bottom: 3.98rpx;
+
 					.name {
 						color: #303233;
 						font-size: 29.88rpx;
 						font-weight: 800;
 					}
+
 					.status {
 						width: 67.72rpx;
 						height: 35.85rpx;
@@ -267,20 +375,24 @@
 						float: right;
 					}
 				}
+
 				.big {
 					color: #FF6040;
 					font-size: 31.87rpx;
 					font-weight: bold;
 				}
+
 				.small {
 					color: #FF6040;
 					font-size: 25.89rpx;
 				}
+
 				.build-msg {
 					color: #7D7E80;
 					font-size: 25.89rpx;
 					margin: 3.98rpx 0;
 				}
+
 				.icons {
 					text {
 						padding: 5.97rpx 11.95rpx;
@@ -290,6 +402,7 @@
 						border-radius: 3.98rpx;
 						margin-right: 11.95rpx;
 					}
+
 					.zhuang {
 						color: #49ABF1;
 						background-color: #F0F5F9;
@@ -297,22 +410,34 @@
 				}
 			}
 		}
+
 		.staff {
 			display: flex;
 			align-items: center;
 			margin-bottom: 39.84rpx;
+
 			image {
 				width: 63.74rpx;
 				height: 63.74rpx;
 				border-radius: 50%;
 				margin-right: 15.93rpx;
 			}
+			button {
+						padding: 0;
+						margin-left: auto;
+						margin-right: 0;
+						border: 0;
+					}
+					button:after {
+						border: 0;
+					}
 			.staffmsg {
 				.name {
 					color: #303233;
 					font-size: 31.87rpx;
 					font-weight: bold;
 				}
+
 				.rate {
 					color: #FFFFFF;
 					font-size: 19.92rpx;
@@ -321,12 +446,14 @@
 					border-radius: 5.97rpx;
 					margin-left: 4.98rpx;
 				}
+
 				.stafftxt {
 					color: #969799;
 					font-size: 23.9rpx;
 					margin-top: 7.96rpx;
 				}
 			}
+
 			.staffbtn {
 				background: linear-gradient(-45deg, #38A7EA, #63D5FF);
 				border-radius: 27.88rpx;
@@ -339,8 +466,10 @@
 				font-size: 23.9rpx;
 			}
 		}
+
 		.other {
 			padding-bottom: 99.6rpx;
+
 			.tit {
 				color: #17181A;
 				font-size: 33.86rpx;
@@ -348,12 +477,14 @@
 				margin-top: 35.85rpx;
 				margin-bottom: 43.82rpx;
 			}
+
 			.other-item {
 				display: flex;
 				height: 159.36rpx;
 				padding-bottom: 27.88rpx;
 				border-bottom: 0.99rpx solid #F2F2F2;
 				margin-bottom: 29.88rpx;
+
 				.left {
 					width: 219.12rpx;
 					height: 159.36rpx;
@@ -361,22 +492,27 @@
 					text-align: center;
 					border-radius: 11.95rpx;
 					margin-right: 25.89rpx;
+
 					image {
 						height: 159.36rpx;
 						width: 119.52rpx;
 					}
 				}
+
 				.right {
 					flex: 1;
 					position: relative;
 					top: -7.96rpx;
+
 					.right-tit {
 						margin-bottom: 7.96rpx;
+
 						.name {
 							color: #323233;
 							font-size: 31.87rpx;
 							font-weight: bold;
 						}
+
 						.status {
 							width: 67.72rpx;
 							height: 35.85rpx;
@@ -389,21 +525,25 @@
 							float: right;
 						}
 					}
+
 					.list {
 						.type {
 							color: #7D7E80;
 							font-size: 23.9rpx;
 						}
+
 						.key {
 							color: #323233;
 							font-size: 25.89rpx;
 						}
 					}
-					.list:nth-of-type(4){
+
+					.list:nth-of-type(4) {
 						.key {
 							color: #FF6040;
 							font-size: 19.92rpx;
 						}
+
 						.big {
 							color: #FF6040;
 							font-size: 31.87rpx;
@@ -414,6 +554,7 @@
 			}
 		}
 	}
+	
 	.line {
 		width: 100%;
 		height: 19.92rpx;

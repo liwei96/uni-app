@@ -1,6 +1,6 @@
 <template>
 	<view class="bomnav">
-		<view class="talk">
+		<view class="talk" @tap="gotalk">
 			<image src="../static/components/component-talk.png" mode=""></image>
 			<view class="talkmsg">
 				在线咨询
@@ -9,7 +9,7 @@
 				1
 			</view>
 		</view>
-		<view class="btn" @tap="call">
+		<view class="btn btn1" @tap="call">
 			<image src="../static/components/component-tel.png" mode=""></image>
 			<text>电话咨询</text>
 		</view>
@@ -36,6 +36,11 @@
 			}
 		},
 		methods: {
+			gotalk() {
+				uni.switchTab({
+					url:'/pages/message/message'
+				})
+			},
 			call() {
 				let that = this
 				uni.makePhoneCall({
@@ -43,15 +48,18 @@
 				});
 			},
 			getPhoneNumber(e) {
-				if(e.erroemsg = '') {
+				console.log(e)
+				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.$emit('show', {
 						position: 103,
-						title: '预约看房'
+						title: '预约看房',
+						isok: 0
 					})
 				}else{
 					this.$emit('show', {
 						position: 103,
-						title: '预约看房'
+						title: '预约看房',
+						isok: 1
 					})
 				}
 			}
@@ -119,10 +127,19 @@
 				height: 35.85rpx;
 			}
 		}
-
+		.btn1 {
+			margin-right: 22rpx;
+		}
 		.btn2 {
 			background: linear-gradient(-45deg, #348AFF, #6ACCFF);
-			margin-left: 19.92rpx;
+		}
+		button {
+			padding: 0;
+			margin-left: 0;
+			border: 0;
+		}
+		button:after {
+			border: 0;
 		}
 	}
 </style>

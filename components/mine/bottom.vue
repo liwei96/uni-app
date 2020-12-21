@@ -1,6 +1,6 @@
 <template>
 	<view class="bottom_fixed">
-		<view class="zixun">
+		<view class="zixun" @tap="gotalk">
 			<image src="../../static/content/bottom.png" mode=""></image>
 			<view class="text">
 				在线咨询
@@ -59,6 +59,11 @@
 			};
 		},
 		methods:{
+			gotalk(){
+				uni.navigateTo({
+					url:'/pages/message/message'
+				})
+			},
 			setiscode(){
 				this.codenum = 0
 			},
@@ -102,21 +107,6 @@
 								let openid = uni.getStorageSync('openid')
 								that.tel = tel
 								that.baoMing(that.remark,that.point,that.title,that.pid)
-								if(!uni.getStorageSync('token')) {
-									uni.request({
-										url:"https://api.edefang.net/applets/login",
-										method:'GET',
-										data:{
-											phone: tel,
-											openid: openid
-										},
-										success: (res) => {
-											console.log(res)
-											uni.setStorageSync('token',res.data.token)
-											
-										}
-									})
-								}
 							}
 						})
 					}else {
@@ -147,19 +137,7 @@
 											uni.setStorageSync('phone',tel)
 											let openid = uni.getStorageSync('openid')
 											that.tel = tel
-											uni.request({
-												url:"https://api.edefang.net/applets/login",
-												method:'GET',
-												data:{
-													phone: tel,
-													openid: openid
-												},
-												success: (res) => {
-													console.log(res)
-													uni.setStorageSync('token',res.data.token)
-													that.baoMing(that.remark,that.point,that.title,that.pid)
-												}
-											})
+											that.baoMing(that.remark,that.point,that.title,that.pid)
 										}
 									})
 									
@@ -221,6 +199,7 @@
 		justify-content: center;
 		margin-right: 20rpx;
 	}
+	
 	button::after{ border: none;}
 	.yuyue_box{
 		width: 256rpx;
