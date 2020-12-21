@@ -58,7 +58,10 @@
 			</view>
 		</view>
 		
-		<bottom></bottom>
+		<bottom :remark="'楼盘相册页+预约看房'"
+		:point="103" :title="'预约看房'"
+		:pid="parseInt(project_id)"
+		:telphone="telphone"></bottom>
 		
 		
 		
@@ -85,7 +88,8 @@
 				example_leng:'',
 				matching_leng:'',
 				traffic_leng:'',
-				departments_leng:''
+				departments_leng:'',
+				telphone:""
 				
 				
 				
@@ -100,12 +104,14 @@
 		},
 		methods:{
 			getdata(id){
+				let other = uni.getStorageSync("other");
+				let token = uni.getStorageSync("token")
 				uni.request({
 					url:this.apiserve+"/applets/img/list",
 					data:{
 						id:id,
-						other:'',
-						token:''
+						other:other,
+						token:token
 					},
 					method:"GET",
 					success: (res) => {
@@ -125,6 +131,7 @@
 							 this.matching_leng = img.matching.length;
 							 this.traffic_leng = img.traffic.length;
 							 this.departments_leng = img.departments.length;
+							 this.telphone = res.data.common.phone;
 						}
 					},
 					fail: (error) => {

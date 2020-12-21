@@ -36,7 +36,7 @@
 							<image src="../../static/content/zan.png" mode=""></image>
 							{{item.like_num}}
 						</view> -->
-						<view class="dianping">
+						<view class="dianping" @tap="goHuifu(item.id)">
 							<image src="../../static/liu.png" mode=""></image>
 							{{item.children.length}}
 						</view>

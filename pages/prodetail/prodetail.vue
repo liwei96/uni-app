@@ -178,7 +178,9 @@
 				<text class="zhan" v-show="zhan" v-if="building.introduce.length>=82" @click="showHide">[展开]</text>
 			</view>
 		</view>
-		<bottom></bottom>
+		<bottom :remark="'楼盘详情页+预约看房'"
+		:point="103" :title="'预约看房'"
+		:pid="building.id" :telphone="telphone"></bottom>
 		
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
@@ -247,6 +249,7 @@
 						    this.building = res.data.building; 
 							this.text_all = res.data.building.introduce;
 							this.text = res.data.building.introduce.substring(0,82);
+							this.telphone = res.data.common.phone;
 						}
 					},
 					fail: (error) => {

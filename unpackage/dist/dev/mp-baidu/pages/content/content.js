@@ -94,16 +94,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   tTable: function() {
-    return __webpack_require__.e(/*! import() | components/t-table/t-table */ "components/t-table/t-table").then(__webpack_require__.bind(null, /*! @/components/t-table/t-table.vue */ 459))
+    return __webpack_require__.e(/*! import() | components/t-table/t-table */ "components/t-table/t-table").then(__webpack_require__.bind(null, /*! @/components/t-table/t-table.vue */ 475))
   },
   uniNoticeBar: function() {
-    return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! @/components/uni-notice-bar/uni-notice-bar.vue */ 445))
+    return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! @/components/uni-notice-bar/uni-notice-bar.vue */ 461))
   },
   wybPopup: function() {
-    return __webpack_require__.e(/*! import() | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then(__webpack_require__.bind(null, /*! @/components/wyb-popup/wyb-popup.vue */ 431))
+    return __webpack_require__.e(/*! import() | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then(__webpack_require__.bind(null, /*! @/components/wyb-popup/wyb-popup.vue */ 447))
   },
   mytoast: function() {
-    return __webpack_require__.e(/*! import() | components/mytoast/mytoast */ "components/mytoast/mytoast").then(__webpack_require__.bind(null, /*! @/components/mytoast/mytoast.vue */ 417))
+    return __webpack_require__.e(/*! import() | components/mytoast/mytoast */ "components/mytoast/mytoast").then(__webpack_require__.bind(null, /*! @/components/mytoast/mytoast.vue */ 433))
   }
 }
 var render = function() {
@@ -183,7 +183,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 73));
 
 
 
@@ -756,14 +756,33 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _uChartsMin = _interopRequireDefault(__webpack_require__(/*! @/components/u-charts/u-charts/u-charts.min.js */ 268));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 459));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 466));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 473));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 480));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNoticeBar = function uniNoticeBar() {__webpack_require__.e(/*! require.ensure | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-notice-bar/uni-notice-bar.vue */ 445));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var wybPopup = function wybPopup() {__webpack_require__.e(/*! require.ensure | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then((function () {return resolve(__webpack_require__(/*! @/components/wyb-popup/wyb-popup.vue */ 431));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var sign = function sign() {__webpack_require__.e(/*! require.ensure | components/sign */ "components/sign").then((function () {return resolve(__webpack_require__(/*! @/components/sign.vue */ 438));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var mytoast = function mytoast() {__webpack_require__.e(/*! require.ensure | components/mytoast/mytoast */ "components/mytoast/mytoast").then((function () {return resolve(__webpack_require__(/*! @/components/mytoast/mytoast.vue */ 417));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _uChartsMin = _interopRequireDefault(__webpack_require__(/*! @/components/u-charts/u-charts/u-charts.min.js */ 268));var _methods;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 475));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 482));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 489));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 496));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNoticeBar = function uniNoticeBar() {__webpack_require__.e(/*! require.ensure | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-notice-bar/uni-notice-bar.vue */ 461));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var wybPopup = function wybPopup() {__webpack_require__.e(/*! require.ensure | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then((function () {return resolve(__webpack_require__(/*! @/components/wyb-popup/wyb-popup.vue */ 447));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var sign = function sign() {__webpack_require__.e(/*! require.ensure | components/sign */ "components/sign").then((function () {return resolve(__webpack_require__(/*! @/components/sign.vue */ 454));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var mytoast = function mytoast() {__webpack_require__.e(/*! require.ensure | components/mytoast/mytoast */ "components/mytoast/mytoast").then((function () {return resolve(__webpack_require__(/*! @/components/mytoast/mytoast.vue */ 433));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var bottom = function bottom() {Promise.all(/*! require.ensure | components/mine/bottom */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/mine/bottom")]).then((function () {return resolve(__webpack_require__(/*! @/components/mine/bottom.vue */ 503));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+
 
 
 
 var _self;
-var canvaColumn = null;
-//let mapSearch = weex.requireModule('mapSearch')  
-var _default = {
+var canvaColumn = null;var _default =
+{
   components: {
     tTable: tTable,
     tTh: tTh,
@@ -772,7 +791,8 @@ var _default = {
     uniNoticeBar: uniNoticeBar,
     sign: sign,
     wybPopup: wybPopup,
-    mytoast: mytoast },
+    mytoast: mytoast,
+    bottom: bottom },
 
   data: function data() {
     return {
@@ -878,7 +898,9 @@ var _default = {
       goufang_ling: "",
       seefang_sheng: "",
       seefang_ling: "",
-      pid: 0 };
+      pid: 0,
+      isok: 0 };
+
 
 
 
@@ -961,7 +983,7 @@ var _default = {
 
 
   },
-  methods: {
+  methods: (_methods = {
     suijiData: function suijiData() {
       var my_date = "";
       var date1 = new Date();
@@ -977,7 +999,7 @@ var _default = {
           this.seefang_sheng = sheng_num;
           this.seefang_ling = ling_bot;
         } else {
-          cosnole.log('小于');
+          console.log('小于');
           my_date = date1.setDate(date1.getDate() + 1);
           my_date = new Date(my_date);
           uni.setStorageSync("date_add_1" + this.detail.id, my_date.getTime(my_date));
@@ -1025,25 +1047,72 @@ var _default = {
         this.seefang_ling = _ling_bot2;
       }
 
-      //加一天 
-      // my_date = date1.setDate(date1.getDate()+1);
-      // my_date = new Date(my_date);
-      // uni.setStorageSync("date_add_1",my_date.getTime(my_date));
-      //console.log(new Date().getTime(new Date()),my_date.getTime(my_date),'my_date');
+    },
+    getPhoneNumber: function getPhoneNumber(e, pid, remark, point, title) {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var that, session;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                that = _this2;
+                if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+                  _this2.isok = 0;
+                  that.baoMing(pid, remark, point, title);
+                } else {
+                  session = uni.getStorageSync('session');
+                  if (session) {
+                    uni.request({
+                      url: 'https://api.edefang.net/applets/baidu/decrypt',
+                      method: 'get',
+                      data: {
+                        iv: e.detail.iv,
+                        data: e.detail.encryptedData,
+                        session_key: session },
 
-      // let date2 = new Date();                     
-      //    date2.setDate(date2.getDate() + 7);
-      // let time = date2.getMonth()+1+"月"+date2.getDate()+"日";
-      // // console.log(date2,'date2',time);
-      // //50-100 剩余
-      // let  num = Math.random().toFixed(2)*50 + 50;
-      // //100-300 已领
-      // let   ling_top= Math.random().toFixed(2)*200 + 100;
+                      success: function success(res) {
+                        console.log(res, 'session');
+                        var tel = res.data.mobile;
+                        uni.setStorageSync('phone', tel);
+                        var openid = uni.getStorageSync('openid');
+                        that.tel = tel;
+                        that.baoMing(pid, remark, point, title);
+                      } });
 
-      // let   ling_bot= Math.random().toFixed(2)*200 + 100;
+                  } else {
+                    console.log(session, "没保存session");
+                    uni.login({
+                      provider: 'baidu',
+                      success: function success(res) {
+                        console.log(res.code);
+                        uni.request({
+                          url: 'https://api.edefang.net/applets/baidu/get_session_key',
+                          method: 'get',
+                          data: {
+                            code: res.code },
+
+                          success: function success(res) {
+                            console.log(res);
+                            uni.setStorageSync('openid', res.data.openid);
+                            uni.setStorageSync('session', res.data.session_key);
+                            uni.request({
+                              url: "https://api.edefang.net/applets/baidu/decrypt",
+                              data: {
+                                data: e.detail.encryptedData,
+                                iv: e.detail.iv,
+                                session_key: res.data.session_key },
+
+                              success: function success(res) {
+                                console.log(res);
+                                var tel = res.data.mobile;
+                                uni.setStorageSync('phone', tel);
+                                var openid = uni.getStorageSync('openid');
+                                that.$refs.sign.tel = tel;
+                                that.baoMing(pid, remark, point, title);
+                              } });
 
 
+                          } });
 
+                      } });
+
+                  }
+                  _this2.isok = 1;
+                }case 2:case "end":return _context.stop();}}}, _callee);}))();
     },
     to: function to(item, num) {
       uni.createSelectorQuery().select(".detail").boundingClientRect(function (data) {//目标节点
@@ -1135,432 +1204,432 @@ var _default = {
     },
     showRules: function showRules() {
       this.$refs.rules.show();
-    },
-    getPhoneNumber: function getPhoneNumber(e) {
-      var that = this;
-      if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-        this.isok = 0;
-        var url = '/pages/content/content?id=' + this.pid;
-        uni.setStorageSync('backurl', url);
-        console.log(url);
+    } }, _defineProperty(_methods, "getPhoneNumber", function getPhoneNumber(
+  e) {
+    var that = this;
+    if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+      this.isok = 0;
+      var url = '/pages/content/content?id=' + this.pid;
+      uni.setStorageSync('backurl', url);
+      console.log(url);
+    } else {
+      var session = uni.getStorageSync('token');
+      if (session) {
+        that.getLike(that.did);
       } else {
-        var session = uni.getStorageSync('token');
-        if (session) {
-          that.getLike(that.did);
-        } else {
-          uni.login({
-            provider: 'baidu',
-            success: function success(res) {
-              console.log(res.code);
-              uni.request({
-                url: 'https://api.edefang.net/applets/baidu/get_session_key',
-                method: 'get',
-                data: {
-                  code: res.code },
-
-                success: function success(res) {
-                  console.log(res);
-                  uni.setStorageSync('openid', res.data.openid);
-                  uni.setStorageSync('session', res.data.session_key);
-                  uni.request({
-                    url: "https://api.edefang.net/applets/baidu/decrypt",
-                    data: {
-                      data: e.detail.encryptedData,
-                      iv: e.detail.iv,
-                      session_key: res.data.session_key },
-
-                    success: function success(res) {
-                      console.log(res);
-                      var tel = res.data.mobile;
-                      uni.setStorageSync('phone', tel);
-                      var openid = uni.getStorageSync('openid');
-                      that.tel = tel;
-                      uni.request({
-                        url: "https://api.edefang.net/applets/login",
-                        method: 'GET',
-                        data: {
-                          phone: tel,
-                          openid: openid },
-
-                        success: function success(res) {
-                          uni.setStorageSync('token', res.data.token);
-                          that.getLike(that.did);
-                        } });
-
-
-                    } });
-
-
-                } });
-
-            } });
-
-        }
-        this.isok = 1;
-      }
-    },
-    getLike: function getLike(id) {
-      var token = uni.getStorageSync("token");
-      if (token) {
-        uni.request({
-          url: this.apiserve + "/comment/like",
-          data: {
-            token: token,
-            id: id },
-
-          method: "POST",
+        uni.login({
+          provider: 'baidu',
           success: function success(res) {
-            if (res.data.code == 200) {
-              console.log(res);
-            }
+            console.log(res.code);
+            uni.request({
+              url: 'https://api.edefang.net/applets/baidu/get_session_key',
+              method: 'get',
+              data: {
+                code: res.code },
+
+              success: function success(res) {
+                console.log(res);
+                uni.setStorageSync('openid', res.data.openid);
+                uni.setStorageSync('session', res.data.session_key);
+                uni.request({
+                  url: "https://api.edefang.net/applets/baidu/decrypt",
+                  data: {
+                    data: e.detail.encryptedData,
+                    iv: e.detail.iv,
+                    session_key: res.data.session_key },
+
+                  success: function success(res) {
+                    console.log(res);
+                    var tel = res.data.mobile;
+                    uni.setStorageSync('phone', tel);
+                    var openid = uni.getStorageSync('openid');
+                    that.tel = tel;
+                    uni.request({
+                      url: "https://api.edefang.net/applets/login",
+                      method: 'GET',
+                      data: {
+                        phone: tel,
+                        openid: openid },
+
+                      success: function success(res) {
+                        uni.setStorageSync('token', res.data.token);
+                        that.getLike(that.did);
+                      } });
+
+
+                  } });
+
+
+              } });
+
           } });
 
-
-      } else {
-        this.$refs.msg.show();
-        this.msg = "请先登录";
       }
-    },
-    deletePing: function deletePing(id) {
-      var token = uni.getStorageInfoSync("token");
-      if (token) {
-        uni.request({
-          url: this.apiserve + "comment/delete",
-          method: "POST",
-          data: {
-            token: token,
-            id: id },
-
-          success: function success(res) {
-            if (res.data.code == 200) {
-              console.log(res);
-            }
-          } });
-
-
-      } else {
-        this.$refs.msg.show();
-        this.msg = "请先登录";
-      }
-    },
-    getdata: function getdata(id) {var _this2 = this;
-      var ip = '';
-      var other = uni.getStorageSync("other");
+      this.isok = 1;
+    }
+  }), _defineProperty(_methods, "getLike", function getLike(
+  id) {
+    var token = uni.getStorageSync("token");
+    if (token) {
       uni.request({
-        url: this.putserve + "/getIp.php",
-        method: "GET",
+        url: this.apiserve + "/comment/like",
+        data: {
+          token: token,
+          id: id },
+
+        method: "POST",
         success: function success(res) {
-          ip = res.data;
-          ip = ip.split('=')[1].split(':')[1];
-          ip = ip.substring(1);
-          ip = ip.slice(0, -3);
-          uni.request({
-            url: _this2.apiserve + '/applets/building/detail',
-            data: {
-              id: id,
-              other: other,
-              ip: ip },
-
-            success: function success(res) {
-              if (res.data.code == 200) {
-                console.log(res, "res");
-                var data = res.data.data;
-                _this2.pro_img = data.imgs.img.effects;
-
-                _this2.effects = data.imgs.img.effects;
-                _this2.house_types = data.imgs.img.house_types;
-
-                _this2.total = data.imgs.num;
-                _this2.detail = data.abstract;
-                _this2.goodsList = data.house_types;
-                _this2.dongtai = data.dynamics;
-                _this2.staff = data.staff;
-                _this2.comments = data.comments;
-                _this2.questions = data.questions;
-                _this2.recommends = data.recommends;
-                _this2.common = data.common;
-
-                _this2.latitude = data.abstract.latitude;
-                _this2.longitude = data.abstract.longitude;
-                _this2.covers[0].latitude = data.abstract.latitude;
-                _this2.covers[0].longitude = data.abstract.longitude;
-                // this.covers[0].width = 280;
-                // this.covers[0].height = 72;
-                _this2.covers[0].title = data.abstract.name;
-                _this2.covers[0].label.content = data.abstract.name;
-                _this2.suijiData();
-
-
-                console.log(_this2.covers, 'covers');
-
-                var phone = data.common.phone;
-                _this2.telphone = phone.replace(',', '转');
-                _this2.old_telphone = phone;
-                _this2.specials = data.specials;
-                var tejia = data.specials.data;
-                if (tejia == null) {
-                  _this2.tejia = [];
-                } else {
-                  _this2.tejia = data.specials.data;
-                }
-
-                _this2.deal_prices = data.deal_prices;
-                console.log(_this2.telphone);
-
-                var _self2 = _this2;
-
-                var arr_data = data.deal_prices;
-                var time = [];
-                var num = [];
-                arr_data.map(function (n) {
-                  num.push(n.price);
-                  var str = n.time.substring(n.time.length - 5);
-                  var strr = str.replace("-", '.');
-                  time.push(strr);
-                  var year = n.time.substring(0, 4);
-                  _this2.echarts_year = year;
-                });
-
-
-                var Column = {
-                  categories: [],
-                  series: [] };
-
-                Column.series = [{
-                  "name": _this2.echarts_year + "年",
-                  "textColor": "#fff",
-                  "data": num }];
-
-
-                Column.categories = time;
-                _this2.Column = Column;
-                console.log(Column, 'Column');
-                _self2.showColumn("canvasColumn", Column);
-
-
-
-                var arr = data.specials.data;
-                if (arr) {
-                  arr.map(function (p) {
-                    var str = p.diff.toString();
-                    p.diff = str.substring(0, str.length - 2) + '**';
-                  });
-                  _this2.tableList = arr;
-                }
-
-                var analysis = data.analysis;
-                var fenxi_tou = [];
-                var fenxi_yiju = [];
-                analysis.map(function (m) {
-                  if (m.type == 1) {//投资分析
-                    fenxi_tou.push(m);
-                  } else if (m.type == 2) {//宜居分析
-                    fenxi_yiju.push(m);
-                  }
-                });
-
-                _this2.fenxi_data = fenxi_tou;
-                _this2.fenxi_tou = fenxi_tou;
-                _this2.fenxi_yiju = fenxi_yiju;
-
-              }
-            } });
-
+          if (res.data.code == 200) {
+            console.log(res);
+          }
         } });
 
 
-    },
-    goShou: function goShou() {
-      var token = uni.getStorageInfoSync('token');
-      if (token) {
+    } else {
+      this.$refs.msg.show();
+      this.msg = "请先登录";
+    }
+  }), _defineProperty(_methods, "deletePing", function deletePing(
+  id) {
+    var token = uni.getStorageInfoSync("token");
+    if (token) {
+      uni.request({
+        url: this.apiserve + "comment/delete",
+        method: "POST",
+        data: {
+          token: token,
+          id: id },
+
+        success: function success(res) {
+          if (res.data.code == 200) {
+            console.log(res);
+          }
+        } });
+
+
+    } else {
+      this.$refs.msg.show();
+      this.msg = "请先登录";
+    }
+  }), _defineProperty(_methods, "getdata", function getdata(
+  id) {var _this3 = this;
+    var ip = '';
+    var other = uni.getStorageSync("other");
+    uni.request({
+      url: this.putserve + "/getIp.php",
+      method: "GET",
+      success: function success(res) {
+        ip = res.data;
+        ip = ip.split('=')[1].split(':')[1];
+        ip = ip.substring(1);
+        ip = ip.slice(0, -3);
         uni.request({
-          url: this.apiserve + "/jy/collect",
-          method: "POST",
+          url: _this3.apiserve + '/applets/building/detail',
           data: {
-            token: token,
-            id: this.detail.id,
-            type: 1 },
+            id: id,
+            other: other,
+            ip: ip },
 
           success: function success(res) {
             if (res.data.code == 200) {
-              console.log(res);
+              console.log(res, "res");
+              var data = res.data.data;
+              _this3.pro_img = data.imgs.img.effects;
+
+              _this3.effects = data.imgs.img.effects;
+              _this3.house_types = data.imgs.img.house_types;
+
+              _this3.total = data.imgs.num;
+              _this3.detail = data.abstract;
+              _this3.goodsList = data.house_types;
+              _this3.dongtai = data.dynamics;
+              _this3.staff = data.staff;
+              _this3.comments = data.comments;
+              _this3.questions = data.questions;
+              _this3.recommends = data.recommends;
+              _this3.common = data.common;
+
+              _this3.latitude = data.abstract.latitude;
+              _this3.longitude = data.abstract.longitude;
+              _this3.covers[0].latitude = data.abstract.latitude;
+              _this3.covers[0].longitude = data.abstract.longitude;
+              // this.covers[0].width = 280;
+              // this.covers[0].height = 72;
+              _this3.covers[0].title = data.abstract.name;
+              _this3.covers[0].label.content = data.abstract.name;
+              _this3.suijiData();
+
+
+              console.log(_this3.covers, 'covers');
+
+              var phone = data.common.phone;
+              _this3.telphone = phone.replace(',', '转');
+              _this3.old_telphone = phone;
+              _this3.specials = data.specials;
+              var tejia = data.specials.data;
+              if (tejia == null) {
+                _this3.tejia = [];
+              } else {
+                _this3.tejia = data.specials.data;
+              }
+
+              _this3.deal_prices = data.deal_prices;
+              console.log(_this3.telphone);
+
+              var _self2 = _this3;
+
+              var arr_data = data.deal_prices;
+              var time = [];
+              var num = [];
+              arr_data.map(function (n) {
+                num.push(n.price);
+                var str = n.time.substring(n.time.length - 5);
+                var strr = str.replace("-", '.');
+                time.push(strr);
+                var year = n.time.substring(0, 4);
+                _this3.echarts_year = year;
+              });
+
+
+              var Column = {
+                categories: [],
+                series: [] };
+
+              Column.series = [{
+                "name": _this3.echarts_year + "年",
+                "textColor": "#fff",
+                "data": num }];
+
+
+              Column.categories = time;
+              _this3.Column = Column;
+              console.log(Column, 'Column');
+              _self2.showColumn("canvasColumn", Column);
+
+
+
+              var arr = data.specials.data;
+              if (arr) {
+                arr.map(function (p) {
+                  var str = p.diff.toString();
+                  p.diff = str.substring(0, str.length - 2) + '**';
+                });
+                _this3.tableList = arr;
+              }
+
+              var analysis = data.analysis;
+              var fenxi_tou = [];
+              var fenxi_yiju = [];
+              analysis.map(function (m) {
+                if (m.type == 1) {//投资分析
+                  fenxi_tou.push(m);
+                } else if (m.type == 2) {//宜居分析
+                  fenxi_yiju.push(m);
+                }
+              });
+
+              _this3.fenxi_data = fenxi_tou;
+              _this3.fenxi_tou = fenxi_tou;
+              _this3.fenxi_yiju = fenxi_yiju;
+
             }
           } });
 
-
-      } else {
-        this.$refs.msg.show();
-        this.msg = "请先登录";
-      }
+      } });
 
 
-    },
-    quTiwen: function quTiwen(id) {
-      //先判断登陆了，再跳转
-      var token = uni.getStorageInfoSync('token');
-      if (token) {
-        uni.navigateTo({
-          url: "../tiwen/tiwen?id=" + id });
+  }), _defineProperty(_methods, "goShou", function goShou()
+  {
+    var token = uni.getStorageInfoSync('token');
+    if (token) {
+      uni.request({
+        url: this.apiserve + "/jy/collect",
+        method: "POST",
+        data: {
+          token: token,
+          id: this.detail.id,
+          type: 1 },
 
-      } else {
-        this.msg = "请先登录";
-        this.$refs.msg.show();
-      }
+        success: function success(res) {
+          if (res.data.code == 200) {
+            console.log(res);
+          }
+        } });
 
-    },
-    goDianPing: function goDianPing(id) {
-      //先判断登陆了，再跳转
-      var token = uni.getStorageInfoSync("token");
-      if (token) {
-        uni.navigateTo({
-          url: "../senddian/senddian?id=" + id });
 
-      } else {
-        this.msg = "请先登录";
-        this.$refs.msg.show();
-      }
+    } else {
+      this.$refs.msg.show();
+      this.msg = "请先登录";
+    }
 
-    },
-    goDuibi: function goDuibi(id) {
+
+  }), _defineProperty(_methods, "quTiwen", function quTiwen(
+  id) {
+    //先判断登陆了，再跳转
+    var token = uni.getStorageInfoSync('token');
+    if (token) {
       uni.navigateTo({
-        url: "../loupk/loupk?ids=".concat(id) });
+        url: "../tiwen/tiwen?id=" + id });
 
-    },
-    setiscode: function setiscode() {
-      this.codenum = 0;
-    },
-    boTel: function boTel(tel) {
-      uni.makePhoneCall({
-        phoneNumber: tel,
-        success: function success() {
-          console.log('拨打电话');
-        } //仅为示例
-      });
-    },
-    baoMing: function baoMing(pid, msg, point, title) {
-      console.log(pid, msg, point);
-      this.pid_d = pid;
-      this.position_n = point,
-      this.title_e = title;
-      this.remark_k = msg;
-      console.log(this.pid_d);
-      this.$refs.popup.show();
-    },
-    showTable: function showTable() {
-      this.num = this.tableList.length;
-      this.table_show = false;
-    },
-    showPrice: function showPrice() {
-      this.num2 = this.deal_prices.length;
-      this.table_show2 = false;
-    },
-    showColumn: function showColumn(canvasId, chartData) {
-      console.log("111", chartData.categories, chartData.series);
-      canvaColumn = new _uChartsMin.default({
-        $this: _self,
-        canvasId: canvasId,
-        type: 'column',
-        legend: true,
-        fontSize: 11,
-        background: '#FFFFFF',
-        pixelRatio: _self.pixelRatio,
-        animation: true,
-        categories: chartData.categories,
-        series: chartData.series,
-        xAxis: {
-          disableGrid: true,
-          rotateLabel: true },
+    } else {
+      this.msg = "请先登录";
+      this.$refs.msg.show();
+    }
 
-        yAxis: {
-          data: [{
-            format: function format(val) {
-              return val + " w";
-            } }] },
-
-
-        dataLabel: true,
-        width: _self.cWidth * _self.pixelRatio,
-        height: _self.cHeight * _self.pixelRatio,
-        padding: [0, 30, 0, 0],
-        extra: {
-          column: {
-            width: _self.cWidth * _self.pixelRatio * 0.45 / chartData.categories.length } } });
-
-
-
-    },
-    changeData: function changeData() {
-      canvaColumn.updateData({
-        series: _self.serverData.ColumnB.series,
-        categories: _self.serverData.ColumnB.categories });
-
-    },
-    class_qie: function class_qie(num) {
-      if (num == 1) {
-        this.class_active.active = true;
-        this.class_active.yiju = false;
-
-        this.class_active.active2 = false;
-        this.class_active.yiju2 = true;
-
-        this.fenxi_data = this.fenxi_tou;
-      } else if (num == 2) {
-        this.class_active.active2 = true;
-        this.class_active.yiju2 = false;
-
-        this.class_active.active = false;
-        this.class_active.yiju = true;
-
-        this.fenxi_data = this.fenxi_yiju;
-      }
-    },
-    showEffect: function showEffect() {
-      this.style_list.effect = false;
-      this.style_list.e_active = true;
-      this.style_list.huxing = true;
-      this.style_list.hu_active = false;
-      this.pro_img = this.effects;
-    },
-    showHuxing: function showHuxing() {
-      this.style_list.effect = true;
-      this.style_list.e_active = false;
-
-      this.style_list.huxing = false;
-      this.style_list.hu_active = true;
-      this.pro_img = this.house_types;
-    },
-    goDetail: function goDetail() {
-      var id = this.detail.id;
+  }), _defineProperty(_methods, "goDianPing", function goDianPing(
+  id) {
+    //先判断登陆了，再跳转
+    var token = uni.getStorageInfoSync("token");
+    if (token) {
       uni.navigateTo({
-        url: "../prodetail/prodetail?id=" + id });
+        url: "../senddian/senddian?id=" + id });
 
-    },
-    moreHuxing: function moreHuxing(id) {
-      uni.navigateTo({
-        url: "../prohuxing/prohuxing?id=" + id });
+    } else {
+      this.msg = "请先登录";
+      this.$refs.msg.show();
+    }
 
-    },
-    allDong: function allDong(id) {
-      uni.navigateTo({
-        url: "../loudong/loudong?id=" + id });
+  }), _defineProperty(_methods, "goDuibi", function goDuibi(
+  id) {
+    uni.navigateTo({
+      url: "../loupk/loupk?ids=".concat(id) });
 
-    },
-    allDian: function allDian(id) {
-      uni.navigateTo({
-        url: "../loudian/loudian?id=" + id });
+  }), _defineProperty(_methods, "setiscode", function setiscode()
+  {
+    this.codenum = 0;
+  }), _defineProperty(_methods, "boTel", function boTel(
+  tel) {
+    uni.makePhoneCall({
+      phoneNumber: tel,
+      success: function success() {
+        console.log('拨打电话');
+      } //仅为示例
+    });
+  }), _defineProperty(_methods, "baoMing", function baoMing(
+  pid, msg, point, title) {
+    console.log(pid, msg, point);
+    this.pid_d = pid;
+    this.position_n = point,
+    this.title_e = title;
+    this.remark_k = msg;
+    console.log(this.pid_d);
+    this.$refs.popup.show();
+  }), _defineProperty(_methods, "showTable", function showTable()
+  {
+    this.num = this.tableList.length;
+    this.table_show = false;
+  }), _defineProperty(_methods, "showPrice", function showPrice()
+  {
+    this.num2 = this.deal_prices.length;
+    this.table_show2 = false;
+  }), _defineProperty(_methods, "showColumn", function showColumn(
+  canvasId, chartData) {
+    console.log("111", chartData.categories, chartData.series);
+    canvaColumn = new _uChartsMin.default({
+      $this: _self,
+      canvasId: canvasId,
+      type: 'column',
+      legend: true,
+      fontSize: 11,
+      background: '#FFFFFF',
+      pixelRatio: _self.pixelRatio,
+      animation: true,
+      categories: chartData.categories,
+      series: chartData.series,
+      xAxis: {
+        disableGrid: true,
+        rotateLabel: true },
 
-    },
-    louwen: function louwen(id) {
-      uni.navigateTo({
-        url: "../allwenda/allwenda?id=" + id });
+      yAxis: {
+        data: [{
+          format: function format(val) {
+            return val + " w";
+          } }] },
 
-    },
-    goweb: function goweb() {
-      var id = this.detail.id;
-      uni.navigateTo({
-        url: "/pages/test/test?id=" + id });
 
-    } } };exports.default = _default;
+      dataLabel: true,
+      width: _self.cWidth * _self.pixelRatio,
+      height: _self.cHeight * _self.pixelRatio,
+      padding: [0, 30, 0, 0],
+      extra: {
+        column: {
+          width: _self.cWidth * _self.pixelRatio * 0.45 / chartData.categories.length } } });
+
+
+
+  }), _defineProperty(_methods, "changeData", function changeData()
+  {
+    canvaColumn.updateData({
+      series: _self.serverData.ColumnB.series,
+      categories: _self.serverData.ColumnB.categories });
+
+  }), _defineProperty(_methods, "class_qie", function class_qie(
+  num) {
+    if (num == 1) {
+      this.class_active.active = true;
+      this.class_active.yiju = false;
+
+      this.class_active.active2 = false;
+      this.class_active.yiju2 = true;
+
+      this.fenxi_data = this.fenxi_tou;
+    } else if (num == 2) {
+      this.class_active.active2 = true;
+      this.class_active.yiju2 = false;
+
+      this.class_active.active = false;
+      this.class_active.yiju = true;
+
+      this.fenxi_data = this.fenxi_yiju;
+    }
+  }), _defineProperty(_methods, "showEffect", function showEffect()
+  {
+    this.style_list.effect = false;
+    this.style_list.e_active = true;
+    this.style_list.huxing = true;
+    this.style_list.hu_active = false;
+    this.pro_img = this.effects;
+  }), _defineProperty(_methods, "showHuxing", function showHuxing()
+  {
+    this.style_list.effect = true;
+    this.style_list.e_active = false;
+
+    this.style_list.huxing = false;
+    this.style_list.hu_active = true;
+    this.pro_img = this.house_types;
+  }), _defineProperty(_methods, "goDetail", function goDetail()
+  {
+    var id = this.detail.id;
+    uni.navigateTo({
+      url: "../prodetail/prodetail?id=" + id });
+
+  }), _defineProperty(_methods, "moreHuxing", function moreHuxing(
+  id) {
+    uni.navigateTo({
+      url: "../prohuxing/prohuxing?id=" + id });
+
+  }), _defineProperty(_methods, "allDong", function allDong(
+  id) {
+    uni.navigateTo({
+      url: "../loudong/loudong?id=" + id });
+
+  }), _defineProperty(_methods, "allDian", function allDian(
+  id) {
+    uni.navigateTo({
+      url: "../loudian/loudian?id=" + id });
+
+  }), _defineProperty(_methods, "louwen", function louwen(
+  id) {
+    uni.navigateTo({
+      url: "../allwenda/allwenda?id=" + id });
+
+  }), _defineProperty(_methods, "goweb", function goweb()
+  {
+    var id = this.detail.id;
+    uni.navigateTo({
+      url: "/pages/test/test?id=" + id });
+
+  }), _methods) };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-baidu/dist/index.js */ 1)["default"]))
 
 /***/ }),

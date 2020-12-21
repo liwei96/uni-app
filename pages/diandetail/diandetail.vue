@@ -34,7 +34,7 @@
 							{{comment.like_num}}
 						</view>
 						
-						<view class="dianping">
+						<view class="dianping" @tap="goHuifu(comment.id)">
 							<image src="../../static/liu.png" mode=""></image>
 							{{hui_num}}
 						</view>
@@ -139,6 +139,11 @@
 			gocontent(id) {
 				uni.navigateTo({
 					url:'/pages/content/content?id='+id
+					})
+			},
+			goHuifu(id){
+				uni.navigateTo({
+					url:"../huifu/huifu?id="+id+"&pid="+this.building.id
 				})
 			},
 			baoMing(pid,remark,point,title){

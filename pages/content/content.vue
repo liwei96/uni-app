@@ -77,12 +77,17 @@
 				</view>
 				<view class="baoming_btn">
 					<view class="btn_box">
-						<view class="btn01" @tap="baoMing(detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价')">
-							<image src="../../static/content/dijia.png"></image>查询最底价
-						</view>
-						<view @tap="baoMing(detail.id,'项目落地页+变价通知我',91,'变价通知我')">
-							<image src="../../static/content/bianjia.png"></image>变价通知我
-						</view>
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价')" hover-class="none"
+						>
+							<!-- <view class="btn01" @tap="baoMing(detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价')"> -->
+								<image src="../../static/content/dijia.png"></image>查询最底价
+							<!-- </view> -->
+						</button>
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+变价通知我',91,'变价通知我')" hover-class="none">
+							<!-- <view @tap="baoMing(detail.id,'项目落地页+变价通知我',91,'变价通知我')"> -->
+								<image src="../../static/content/bianjia.png"></image>变价通知我
+							<!-- </view> -->
+						</button>
 					</view>
 					<view class="tel_box">
 						<view class="left">
@@ -116,10 +121,12 @@
 						（{{goufang_date}}截止）
 					</text>
 				</text>
-				<view class="right">
-					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+领取优惠',94,'领取优惠')">
-						领取优惠
-					</view>
+				<view class="right" >
+					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取优惠',94,'领取优惠')" hover-class="none">
+						<view class="ling_btn" >
+							领取优惠
+						</view>
+					</button>
 					<text>{{goufang_ling}}人已领取</text>
 				</view>
 			</view>
@@ -131,9 +138,11 @@
 					</text>
 				</text>
 				<view class="right">
-					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+免费领取',95,'免费领取')">
-						免费领取
-					</view>
+					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+免费领取',95,'免费领取')" hover-class="none">
+						<view class="ling_btn" >
+							免费领取
+						</view>
+					</button>
 					<text>{{seefang_ling}}人已领取</text>
 				</view>
 			</view>
@@ -172,9 +181,9 @@
 				<uni-notice-bar :text="specials.dynamic" scrollable showType="slider" background-color="#fff" :showIcon="true"
 				 color="#646466" :speed="50" v-if="specials.dynamic" :single="true"></uni-notice-bar>
 			</view>
-			<view class="button" @tap="baoMing(detail.id,'项目落地页+咨询特价房',93,'咨询特价房')">
-				咨询特价房
-			</view>
+			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+咨询特价房',93,'咨询特价房')" hover-class="none">
+					咨询特价房
+			</button>
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 主力户型 -->
@@ -209,9 +218,11 @@
 					</view>
 				</view>
 			</scroll-view>
-			<view class="hu_zi" @tap="baoMing(detail.id,'项目落地页+领取全部户型资料',1,'领取全部户型资料')">
+			<button open-type="getPhoneNumber"
+			 @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取全部户型资料',97,'领取全部户型资料')"
+			 class="hu_zi" hover-class="none">
 				领取全部户型资料
-			</view>
+			</button>
 		</view>
 		<!-- 最新动态 -->
 		<view class="bg_hui"></view>
@@ -232,9 +243,10 @@
 						<image :src="item.img" mode=""></image>
 					</navigator>
 				</view>
-				<view class="button" @tap="baoMing(detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态')">
+				<button class="button" open-type="getPhoneNumber" hover-class="none"
+				@getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态')">
 					订阅最新动态
-				</view>
+				</button>
 			</view>
 		</view>
 		<view class="bg_hui"></view>
@@ -269,9 +281,10 @@
 				</view>
 			</view>
 
-			<view class="get_di_price" @tap="baoMing(detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价')">
+			<button open-type="getPhoneNumber" class="get_di_price" hover-class="none"
+			 @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价')">
 				获取最新成交价
-			</view>
+			</button>
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 楼盘分析资料 -->
@@ -291,9 +304,10 @@
 					2、{{fenxi_data[1].content}}
 				</view>
 			</view>
-			<view class="btn" @tap="baoMing(detail.id,'项目落地页+领取分析资料',99,'领取分析资料')">
+			<button class="btn" open-type="getPhoneNumber"  hover-class="none"
+			@getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取分析资料',99,'领取分析资料')">
 				领取分析资料
-			</view>
+			</button>
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 家园咨询师 -->
@@ -328,7 +342,9 @@
 					</view>
 				</view>
 				<view class="bo_tel">
-					<image src="../../static/content/zixun.png" mode="" class="bo_zi" @tap="baoMing(detail.id,'项目落地页+咨询服务',104,'咨询服务')"></image>
+					<button open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+咨询服务',104,'咨询服务')" class="bo_zi">
+						<image src="../../static/content/zixun.png" mode=""  ></image>
+					</button>
 					<image src="../../static/content/tel.png" mode="" @tap="boTel(old_telphone)"></image>
 				</view>
 			</view>
@@ -343,43 +359,45 @@
 				<text class="left">位置:</text>
 				<text class="rig">{{detail.address}}</text>
 			</view>
-			<view class="pei" @tap="baoMing(detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')">
+			<button open-type="getPhoneNumber" class="pei" hover-class="none"
+			@getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')">
 				<text>配套:</text>
 				咨询具体位置和周边设施情况
 				<image src="../../static/content/biao.png" mode=""></image>
-			</view>
+			</button>
 			<!-- 周边配套地图 -->
 
 			<view class="address" @tap="goweb">
 				<view class="map">
-					<view class="nav_nav" >
-						<view class="nav_list active">
-							<image src="../../static/content/near_bus.png"></image>
+					<cover-view class="nav_nav" >
+						<cover-view class="nav_list active">
+							<cover-image src="../../static/content/near_bus.png"></cover-image>
 							公交
-						</view>
-						<view class="nav_list">
-							<image src="../../static/content/near_edu.png"></image>
+						</cover-view>
+						<cover-view class="nav_list">
+							<cover-image src="../../static/content/near_edu.png"></cover-image>
 							教育
-						</view>
-						<view class="nav_list">
-							<image src="../../static/content/near_yi.png"></image>
+						</cover-view>
+						<cover-view class="nav_list">
+							<cover-image src="../../static/content/near_yi.png"></cover-image>
 							医院
-						</view>
-						<view class="nav_list">
-							<image src="../../static/content/near_gou.png"></image>
+						</cover-view>
+						<cover-view class="nav_list">
+							<cover-image src="../../static/content/near_gou.png"></cover-image>
 							购物
-						</view>
-						<view class="nav_list">
-							<image src="../../static/content/near_shi.png"></image>
+						</cover-view>
+						<cover-view class="nav_list">
+							<cover-image src="../../static/content/near_shi.png"></cover-image>
 							美食
-						</view>
-					</view>
+						</cover-view>
+					</cover-view>
 					<map id="my_map" style="width:690rpx; height:120px;" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
 				</view>
 			</view>
-			<view class="button" @tap="baoMing(detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')">
+			<button class="button" open-type="getPhoneNumber" hover-class="none"
+			 @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')">
 				获取周边5公里详细配套
-			</view>
+			</button>
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 楼盘点评 -->
@@ -508,7 +526,7 @@
 			</view>
 		</view>
 
-		<view class="bottom_fixed">
+		<!-- <view class="bottom_fixed">
 			<view class="zixun">
 				<image src="../../static/content/bottom.png" mode=""></image>
 				<view class="text">
@@ -523,9 +541,10 @@
 				<image src="../../static/content/yuyue.png" mode=""></image>
 				预约看房
 			</view>
-		</view>
+		</view> -->
+		<bottom :remark="'项目落地页+预约看房'" :point="103" :title="'预约看房'" :pid="detail.id" :telphone="old_telphone"></bottom>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+			<sign ref="sign" :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
 		</wyb-popup>
 		<mytoast :txt="msg" ref="msg"></mytoast>
 
@@ -575,9 +594,9 @@
 	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
 	import sign from '@/components/sign.vue'
 	import mytoast from "@/components/mytoast/mytoast.vue"
+	import bottom from "@/components/mine/bottom.vue"
 	var _self;
 	var canvaColumn = null;
-	//let mapSearch = weex.requireModule('mapSearch')  
 	export default {
 		components: {
 			tTable,
@@ -587,7 +606,8 @@
 			uniNoticeBar,
 			sign,
 			wybPopup,
-			mytoast
+			mytoast,
+			bottom
 		},
 		data() {
 			return {
@@ -693,7 +713,9 @@
 				goufang_ling: "",
 				seefang_sheng: "",
 				seefang_ling: "",
-				pid: 0
+				pid: 0,
+				isok:0
+
 
 
 			};
@@ -792,7 +814,7 @@
 						this.seefang_sheng = sheng_num;
 						this.seefang_ling = ling_bot;
 					} else {
-						cosnole.log('小于')
+						console.log('小于')
 						my_date = date1.setDate(date1.getDate() + 1);
 						my_date = new Date(my_date);
 						uni.setStorageSync("date_add_1" + this.detail.id, my_date.getTime(my_date));
@@ -840,25 +862,72 @@
 					this.seefang_ling = ling_bot;
 				}
 
-				//加一天 
-				// my_date = date1.setDate(date1.getDate()+1);
-				// my_date = new Date(my_date);
-				// uni.setStorageSync("date_add_1",my_date.getTime(my_date));
-				//console.log(new Date().getTime(new Date()),my_date.getTime(my_date),'my_date');
-
-				// let date2 = new Date();                     
-				//    date2.setDate(date2.getDate() + 7);
-				// let time = date2.getMonth()+1+"月"+date2.getDate()+"日";
-				// // console.log(date2,'date2',time);
-				// //50-100 剩余
-				// let  num = Math.random().toFixed(2)*50 + 50;
-				// //100-300 已领
-				// let   ling_top= Math.random().toFixed(2)*200 + 100;
-
-				// let   ling_bot= Math.random().toFixed(2)*200 + 100;
-
-
-
+			},
+			async getPhoneNumber(e,pid,remark,point,title) {
+				let that = this
+				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+					that.baoMing(pid,remark,point,title,)
+				} else {
+					let session = uni.getStorageSync('session')
+					if(session){
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method:'get',
+							data:{
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res,'session')
+								let tel = res.data.mobile
+								uni.setStorageSync('phone',tel)
+								let openid = uni.getStorageSync('openid')
+							    that.tel = tel;
+								that.baoMing(pid,remark,point,title)
+							}
+						})
+					}else {
+						console.log(session,"没保存session")
+						uni.login({
+						  provider: 'baidu',
+						  success: function (res) {
+						    console.log(res.code);
+							uni.request({
+								url: 'https://api.edefang.net/applets/baidu/get_session_key',
+								method:'get',
+								data:{
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid',res.data.openid)
+									uni.setStorageSync('session',res.data.session_key)
+									uni.request({
+										url:"https://api.edefang.net/applets/baidu/decrypt",
+										data:{
+											data: e.detail.encryptedData,
+											iv:e.detail.iv,
+											session_key:res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone',tel)
+											let openid = uni.getStorageSync('openid')
+											that.$refs.sign.tel = tel
+											that.baoMing(pid,remark,point,title)
+										}
+									})
+									
+								}
+							})
+						  }
+						});
+						}
+					this.isok = 1
+				}
 			},
 			to(item, num) {
 				uni.createSelectorQuery().select(".detail").boundingClientRect(data => { //目标节点
@@ -1256,7 +1325,7 @@
 				console.log(pid, msg, point);
 				this.pid_d = pid;
 				this.position_n = point,
-					this.title_e = title;
+			    this.title_e = title;
 				this.remark_k = msg;
 				console.log(this.pid_d);
 				this.$refs.popup.show();
@@ -1382,6 +1451,7 @@
 </script>
 
 <style lang="less">
+	button::after{ border: none;}
 	/deep/ .marker-route {
 		position: relative;
 		width: 150px;
@@ -1789,8 +1859,9 @@
 						width: 100%;
 						height: 80rpx;
 						margin-bottom: 40rpx;
-
-						view {
+						display: flex;
+						justify-content: space-between;
+						button{
 							width: 334rpx;
 							height: 80rpx;
 							background: #F2F9FC;
@@ -1803,16 +1874,36 @@
 							display: flex;
 							justify-content: center;
 							align-items: center;
-
 							image {
 								width: 36rpx;
 								height: 36rpx;
 								margin-right: 7rpx;
 							}
-						}
+							// view {
+							// 	width: 334rpx;
+							// 	height: 80rpx;
+							// 	background: #F2F9FC;
+							// 	border-radius: 12rpx;
+							// 	border: none;
+							// 	float: left;
+							// 	font-size: 30rpx;
+							// 	font-weight: bold;
+							// 	color: #3EACF0;
+							// 	display: flex;
+							// 	justify-content: center;
+							// 	align-items: center;
 
+							// 	image {
+							// 		width: 36rpx;
+							// 		height: 36rpx;
+							// 		margin-right: 7rpx;
+							// 	}
+							// }
+						}
 						.btn01 {
-							margin-right: 22rpx;
+							ma
+							
+							rgin-right: 22rpx;
 						}
 					}
 
@@ -2107,7 +2198,7 @@
 				}
 			}
 
-			.button {
+			button {
 				width: 690rpx;
 				height: 80rpx;
 				background: #F2F9FC;
@@ -2118,6 +2209,7 @@
 				line-height: 80rpx;
 				margin-left: 30rpx;
 				margin-top: 30rpx;
+			    
 			}
 		}
 
@@ -2586,7 +2678,7 @@
 				height: 80rpx;
 				width: 100%;
 				margin-bottom: 50rpx;
-
+				display: flex;
 				.head_img {
 					width: 80rpx;
 					height: 80rpx;
@@ -2627,7 +2719,16 @@
 
 				.bo_tel {
 					float: left;
-
+					display: flex;
+					button{
+						width: 80rpx;
+						height: 80rpx;
+						image{
+							width: 80rpx;
+							height: 80rpx;
+							border-radius: 50%;
+						}
+					}
 					image {
 						width: 80rpx;
 						height: 80rpx;
@@ -2637,7 +2738,7 @@
 
 					.bo_zi {
 						margin-right: 50rpx;
-						margin-left: 78rpx;
+						 margin-left: 78rpx;
 					}
 				}
 			}
@@ -2738,7 +2839,7 @@
 						height: 90rpx;
 						background: #fff;
 						position: absolute;
-						bottom: -20rpx;
+						bottom: 100rpx;
 						z-index: 4000;
 						display: flex;
 						justify-content: space-between;
@@ -2750,7 +2851,7 @@
 							display: flex;
 							align-items: center;
 
-							image {
+							cover-image {
 								width: 32rpx;
 								height: 32rpx;
 							}

@@ -232,7 +232,7 @@
 	bottom: 0rpx;
 	left: 0rpx;
 	border-top: none;
-	border-top:1rpx solid #fff;
+	//border-top:1rpx solid #fff;
 	.zixun{
 		font-size: 24rpx;
 		font-weight: 500;

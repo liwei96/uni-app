@@ -20,7 +20,7 @@
 				url: 'ws://39.98.227.114:9509?uuid=' + uuid
 			});
 			uni.request({
-				url: that.putserve + '/getIp.php',
+				url: 'http://ll.edefang.net/getIp.php',
 				method: 'GET',
 				success: (res) => {
 					let ip = res.data
