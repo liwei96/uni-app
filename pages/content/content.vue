@@ -1106,7 +1106,7 @@
 				}
 			},
 			deletePing(id) {
-				let token = uni.getStorageInfoSync("token");
+				let token = uni.getStorageSync("token");
 				if (token) {
 					uni.request({
 						url: this.apiserve + "comment/delete",
@@ -1255,7 +1255,7 @@
 
 			},
 			goShou() {
-				let token = uni.getStorageInfoSync('token');
+				let token = uni.getStorageSync('token');
 				if (token) {
 					uni.request({
 						url: this.apiserve + "/jy/collect",
@@ -1281,7 +1281,7 @@
 			},
 			quTiwen(id) {
 				//先判断登陆了，再跳转
-				let token = uni.getStorageInfoSync('token');
+				let token = uni.getStorageSync('token');
 				if (token) {
 					uni.navigateTo({
 						url: "../tiwen/tiwen?id=" + id
@@ -1294,7 +1294,7 @@
 			},
 			goDianPing(id) {
 				//先判断登陆了，再跳转
-				let token = uni.getStorageInfoSync("token");
+				let token = uni.getStorageSync("token");
 				if (token) {
 					uni.navigateTo({
 						url: "../senddian/senddian?id=" + id

@@ -50,8 +50,8 @@
 		},
 		methods:{
 			getdata(id){
-				let token = uni.getStorageInfoSync("token");
-				let other = uni.getStorageInfoSync("other");
+				let token = uni.getStorageSync("token");
+				let other = uni.getStorageSync("other");
 				uni.request({
 					url:this.apiserve+"/applets/comment/detail",
 				    data:{

@@ -152,8 +152,8 @@
 				this.has_xing = true;
 			},
 			getData(id){
-				let  other = uni.getStorageInfoSync("other");
-				let  token =  uni.getStorageInfoSync("token");
+				let  other = uni.getStorageSync("other");
+				let  token =  uni.getStorageSync("token");
 				uni.request({
 					url:this.apiserve+"/applets/building/base",
 					data:{

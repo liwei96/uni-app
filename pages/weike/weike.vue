@@ -203,7 +203,7 @@
 				uni.showLoading({
 					title: '加载中'
 				})
-				let token = uni.getStorageInfoSync('token')
+				let token = uni.getStorageSync('token')
 				uni.request({
 					url: that.apiserve + '/applets/article/info',
 					method: 'GET',
@@ -226,7 +226,7 @@
 				uni.showLoading({
 					title: '加载中'
 				})
-				let token = uni.getStorageInfoSync('token')
+				let token = uni.getStorageSync('token')
 				uni.request({
 					url: that.apiserve + '/applets/article/info',
 					method: 'GET',

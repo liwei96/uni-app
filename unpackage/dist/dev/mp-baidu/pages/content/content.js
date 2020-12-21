@@ -1291,7 +1291,7 @@ var canvaColumn = null;var _default =
     }
   }), _defineProperty(_methods, "deletePing", function deletePing(
   id) {
-    var token = uni.getStorageInfoSync("token");
+    var token = uni.getStorageSync("token");
     if (token) {
       uni.request({
         url: this.apiserve + "comment/delete",
@@ -1440,7 +1440,7 @@ var canvaColumn = null;var _default =
 
   }), _defineProperty(_methods, "goShou", function goShou()
   {
-    var token = uni.getStorageInfoSync('token');
+    var token = uni.getStorageSync('token');
     if (token) {
       uni.request({
         url: this.apiserve + "/jy/collect",
@@ -1466,7 +1466,7 @@ var canvaColumn = null;var _default =
   }), _defineProperty(_methods, "quTiwen", function quTiwen(
   id) {
     //先判断登陆了，再跳转
-    var token = uni.getStorageInfoSync('token');
+    var token = uni.getStorageSync('token');
     if (token) {
       uni.navigateTo({
         url: "../tiwen/tiwen?id=" + id });
@@ -1479,7 +1479,7 @@ var canvaColumn = null;var _default =
   }), _defineProperty(_methods, "goDianPing", function goDianPing(
   id) {
     //先判断登陆了，再跳转
-    var token = uni.getStorageInfoSync("token");
+    var token = uni.getStorageSync("token");
     if (token) {
       uni.navigateTo({
         url: "../senddian/senddian?id=" + id });

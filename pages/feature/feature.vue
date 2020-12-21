@@ -122,8 +122,8 @@
 				uni.showLoading({
 					title:"加载中"
 				})
-				let token = uni.getStorageInfoSync('token')
-				let city = uni.getStorageInfoSync('city')
+				let token = uni.getStorageSync('token')
+				let city = uni.getStorageSync('city')
 				uni.request({
 					url:that.apiserve+"/applets/tops/feature",
 					method:'GET',

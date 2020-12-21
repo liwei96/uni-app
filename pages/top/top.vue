@@ -90,8 +90,8 @@
 				this.getlist()
 			},
 			getlist() {
-				let city = uni.getStorageInfoSync('city')
-				let token = uni.getStorageInfoSync('token')
+				let city = uni.getStorageSync('city')
+				let token = uni.getStorageSync('token')
 				uni.showLoading({
 					title: '加载中'
 				})

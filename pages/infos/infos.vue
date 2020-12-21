@@ -125,8 +125,8 @@
 				this.currentnum = e.detail.current
 			},
 			gettop() {
-				let city = uni.getStorageInfoSync('city')
-				let token = uni.getStorageInfoSync('token')
+				let city = uni.getStorageSync('city')
+				let token = uni.getStorageSync('token')
 				uni.request({
 					url: that.apiserve + "/applets/article/news",
 					method: "GET",
@@ -144,7 +144,7 @@
 				uni.showLoading({
 					title: '加载中'
 				})
-				let token = uni.getStorageInfoSync('token')
+				let token = uni.getStorageSync('token')
 				uni.request({
 					url: that.apiserve + '/applets/article/info',
 					method: 'GET',
@@ -168,7 +168,7 @@
 				uni.showLoading({
 					title: '加载中'
 				})
-				let token = uni.getStorageInfoSync('token')
+				let token = uni.getStorageSync('token')
 				uni.request({
 					url: that.apiserve + '/applets/article/info',
 					method: 'GET',

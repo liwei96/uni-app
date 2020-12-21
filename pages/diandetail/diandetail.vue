@@ -157,8 +157,8 @@
 				this.codenum = 0
 			},
 			getdata(id){
-				let token = uni.getStorageInfoSync("token");
-				let other = uni.getStorageInfoSync("other");
+				let token = uni.getStorageSync("token");
+				let other = uni.getStorageSync("other");
 				let that = this
 				uni.request({
 					url:this.apiserve+"/applets/comment/detail",

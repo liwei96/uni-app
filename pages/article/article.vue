@@ -91,9 +91,9 @@
 				})
 			},
 			getinfo() {
-				let city = uni.getStorageInfoSync('city')
-				let other = uni.getStorageInfoSync('other')
-				let token = uni.getStorageInfoSync('token')
+				let city = uni.getStorageSync('city')
+				let other = uni.getStorageSync('other')
+				let token = uni.getStorageSync('token')
 				uni.request({
 					url: that.apiserve+"/applets/article/detail",
 					method:"GET",

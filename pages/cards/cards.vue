@@ -75,7 +75,7 @@
 				})
 			},
 			getdata(){
-				let  token = uni.getStorageInfoSync("token");
+				let  token = uni.getStorageSync("token");
 				uni.request({
 					url:this.apiserve+"/applets/mine/ticket",
 					method:"GET",

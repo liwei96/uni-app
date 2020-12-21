@@ -329,7 +329,7 @@
 							that.$refs.toast.show()
 							that.iscode = false
 							this.$refs.popup1.hide()
-							if(!uni.getStorageInfoSync('token')) {
+							if(!uni.getStorageSync('token')) {
 								uni.setStorageSync('token',res.data.token)
 								uni.setStorageSync('usertel',that.tel)
 							}

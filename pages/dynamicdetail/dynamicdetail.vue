@@ -137,8 +137,8 @@
 				});
 			},
 			getinfo() {
-				let other = uni.getStorageInfoSync('other')
-				let token = uni.getStorageInfoSync('token')
+				let other = uni.getStorageSync('other')
+				let token = uni.getStorageSync('token')
 				uni.request({
 					url: that.apiserve + "/applets/dynamic/detail",
 					method: "GET",
