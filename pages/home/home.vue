@@ -140,7 +140,10 @@
 		onLoad() {
 			that = this
 			this.getinfo()
-			this.tel = uni.getStorageSync('phone')
+			if(uni.getStorageSync('phone')) {
+				let tel = uni.getStorageSync('phone')
+				this.tel = tel.substr(0,3)+'****'+tel.substr(7)
+			}
 		},
 		methods: {
 			call() {

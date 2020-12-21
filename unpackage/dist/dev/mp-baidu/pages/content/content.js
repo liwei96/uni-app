@@ -129,6 +129,19 @@ var render = function() {
           }
         })
       : null
+
+  if (!_vm._isMounted) {
+    _vm.e0 = function($event, item) {
+      var _temp = arguments[arguments.length - 1].currentTarget.dataset,
+        _temp2 = _temp.eventParams || _temp["event-params"],
+        item = _temp2.item
+
+      var _temp, _temp2
+
+      _vm.did = item.id
+    }
+  }
+
   _vm.$mp.data = Object.assign(
     {},
     {
@@ -741,6 +754,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _uChartsMin = _interopRequireDefault(__webpack_require__(/*! @/components/u-charts/u-charts/u-charts.min.js */ 268));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 459));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 466));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 473));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 480));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNoticeBar = function uniNoticeBar() {__webpack_require__.e(/*! require.ensure | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-notice-bar/uni-notice-bar.vue */ 445));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var wybPopup = function wybPopup() {__webpack_require__.e(/*! require.ensure | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then((function () {return resolve(__webpack_require__(/*! @/components/wyb-popup/wyb-popup.vue */ 431));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var sign = function sign() {__webpack_require__.e(/*! require.ensure | components/sign */ "components/sign").then((function () {return resolve(__webpack_require__(/*! @/components/sign.vue */ 438));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var mytoast = function mytoast() {__webpack_require__.e(/*! require.ensure | components/mytoast/mytoast */ "components/mytoast/mytoast").then((function () {return resolve(__webpack_require__(/*! @/components/mytoast/mytoast.vue */ 417));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
@@ -761,6 +776,7 @@ var _default = {
 
   data: function data() {
     return {
+      did: 0,
       total: '',
       pro_img: [],
       detail: {},
@@ -861,8 +877,8 @@ var _default = {
       goufang_date: "",
       goufang_ling: "",
       seefang_sheng: "",
-      seefang_ling: "" };
-
+      seefang_ling: "",
+      pid: 0 };
 
 
 
@@ -883,36 +899,8 @@ var _default = {
     this.cWidth = uni.upx2px(750);
     this.cHeight = uni.upx2px(500);
     var id = option.id;
+    this.pid = id;
     this.getdata(id);
-
-
-
-
-
-
-
-
-
-
-    //百度地图
-    // uni.poiSearchNearBy({
-    // 	point: {
-    // 		latitude: 39.909,
-    // 		longitude: 116.39742,
-    // 	},
-    // 	key: "公交",
-    //     success: res=>{
-    // 	   console.log(res,'中心点');
-    // 	}
-    // });
-
-
-    //授权
-
-
-
-
-
   },
   onPageScroll: function onPageScroll(e) {
     if (e.scrollTop >= 200) {
@@ -1057,9 +1045,6 @@ var _default = {
 
 
     },
-    getPhoneNumber: function getPhoneNumber(e) {
-      console.log(e);
-    },
     to: function to(item, num) {
       uni.createSelectorQuery().select(".detail").boundingClientRect(function (data) {//目标节点
         uni.createSelectorQuery().select("." + item).boundingClientRect(function (res) {//最外层盒子节点
@@ -1151,8 +1136,71 @@ var _default = {
     showRules: function showRules() {
       this.$refs.rules.show();
     },
+    getPhoneNumber: function getPhoneNumber(e) {
+      var that = this;
+      if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+        this.isok = 0;
+        var url = '/pages/content/content?id=' + this.pid;
+        uni.setStorageSync('backurl', url);
+        console.log(url);
+      } else {
+        var session = uni.getStorageSync('token');
+        if (session) {
+          that.getLike(that.did);
+        } else {
+          uni.login({
+            provider: 'baidu',
+            success: function success(res) {
+              console.log(res.code);
+              uni.request({
+                url: 'https://api.edefang.net/applets/baidu/get_session_key',
+                method: 'get',
+                data: {
+                  code: res.code },
+
+                success: function success(res) {
+                  console.log(res);
+                  uni.setStorageSync('openid', res.data.openid);
+                  uni.setStorageSync('session', res.data.session_key);
+                  uni.request({
+                    url: "https://api.edefang.net/applets/baidu/decrypt",
+                    data: {
+                      data: e.detail.encryptedData,
+                      iv: e.detail.iv,
+                      session_key: res.data.session_key },
+
+                    success: function success(res) {
+                      console.log(res);
+                      var tel = res.data.mobile;
+                      uni.setStorageSync('phone', tel);
+                      var openid = uni.getStorageSync('openid');
+                      that.tel = tel;
+                      uni.request({
+                        url: "https://api.edefang.net/applets/login",
+                        method: 'GET',
+                        data: {
+                          phone: tel,
+                          openid: openid },
+
+                        success: function success(res) {
+                          uni.setStorageSync('token', res.data.token);
+                          that.getLike(that.did);
+                        } });
+
+
+                    } });
+
+
+                } });
+
+            } });
+
+        }
+        this.isok = 1;
+      }
+    },
     getLike: function getLike(id) {
-      var token = uni.getStorageInfoSync("token");
+      var token = uni.getStorageSync("token");
       if (token) {
         uni.request({
           url: this.apiserve + "/comment/like",

@@ -5,21 +5,23 @@
 			<view class="text">
 				在线咨询
 			</view>
+			<view class="num" v-if="num!=0">
+				{{num}}
+			</view>
 		</view>
 		<view class="tel_box"  @tap="boTel(telphone)">
 			<image src="../../static/content/tel_bot.png" mode=""></image>
 			电话咨询
 		</view>
 		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-		<view class="yuyue_box">
-			<image src="../../static/content/yuyue.png" mode=""></image>
-			预约看房
-		</view>
+			<view class="yuyue_box">
+				<image src="../../static/content/yuyue.png" mode=""></image>
+				预约看房
+			</view>
 		</button>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
 		</wyb-popup>
-		
 	</view>
 </template>
 
@@ -42,6 +44,9 @@
 			},
 			telphone:{
 				type:String
+			},
+			projectid: {
+				type: Number
 			}
 		},
 		components:{
@@ -55,14 +60,75 @@
 				pid_d:0,
 				remark_k:'',
 				position_n:0,
-				isok: 0
+				isok: 0,
+				sid: 0,
+				num: 0
 			};
+		},
+		mounted(){
+			this.register()
+			let that = this
+			this.num = uni.getStorageSync('total')
+			uni.onSocketMessage(function(res) {
+				let data = JSON.parse(res.data)
+				console.log(data)
+				if(data.action == 302) {
+					that.sid = data.sid
+				}else if(data.action == 301) {
+					if (String(data.fromUserName).length < 10) {
+						if(uni.setStorageSync(String(data.fromUserName))) {
+							uni.setStorageSync(String(data.fromUserName),parseInt(sessionStorage.getItem(String(data.fromUserName))) + 1)
+						}else {
+							uni.setStorageSync(String(data.fromUserName),1)
+						}
+						if(uni.getStorageSync('total') && uni.getStorageSync('total') != 'NaN') {
+							uni.setStorageSync('total',parseInt(uni.getStorageSync('total')))
+							that.num = that.num + 1;
+						} else {
+							uni.setStorageSync('total', 1)
+							that.num = 1;
+						}
+					}
+				}
+			})
 		},
 		methods:{
 			gotalk(){
+				let id = this.sid
+				if(uni.getStorageSync(sid)){
+					let num = uni.getStorageSync(sid)
+					let total = uni.getStorageSync('total')
+					total = total - num
+					uni.setStorageSync('total',total)
+					uni.removeStorageSync(sid)
+				}
 				uni.navigateTo({
-					url:'/pages/message/message'
+					url:'/pages/talk/talk?id='+id
 				})
+			},
+			register(){
+				let uuid = uni.getStorageSync('uuid')
+				let city = uni.getStorageSync('city')
+				let ip = uni.getStorageSync('ip')
+				let arr = getCurrentPages()
+				let url = arr[arr.length-1].route
+				let host = this.host
+				let pro = this.projectid
+				let pp = {
+				      controller: "Info",
+				      action: "register",
+				      params: {
+				        city: city,
+				        project: pro,
+				        ip: ip,
+				        url: url,
+				        uuid: uuid,
+				        host: host
+				      },
+				    };
+				uni.sendSocketMessage({
+					data: JSON.stringify(pp)
+				});
 			},
 			setiscode(){
 				this.codenum = 0
@@ -176,9 +242,25 @@
 		display: flex;
 		align-items: center;
 		flex-direction: column;
+		position: relative;
+		padding-top: 6rpx;
 		image{
 			width: 48rpx;
 			height: 42rpx;
+			margin-bottom: 12rpx;
+		}
+		.num {
+			width: 26rpx;
+			height: 26rpx;
+			border-radius: 50%;
+			text-align: center;
+			line-height: 26rpx;
+			background-color: #F34F4F;
+			color: #FFFFFF;
+			font-size: 20rpx;
+			position: absolute;
+			top: 0;
+			right: 8rpx;
 		}
 	}
 	.tel_box{

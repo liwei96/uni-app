@@ -13,19 +13,32 @@
 					pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
 				}
 				timestamp = pwd + timestamp;
-				uni.setStorageSync('uuid',timestamp)
+				uni.setStorageSync('uuid', timestamp)
+				uuid = timestamp
 			}
 			uni.connectSocket({
-			  url: 'ws://39.98.227.114:9509?uuid='+uuid
+				url: 'ws://39.98.227.114:9509?uuid=' + uuid
 			});
+			uni.request({
+				url: that.putserve + '/getIp.php',
+				method: 'GET',
+				success: (res) => {
+					let ip = res.data
+					ip = ip.split('=')[1].split(':')[1]
+					ip = ip.substring(1)
+					ip = ip.slice(0, -3)
+					uni.setStorageSync('ip', ip)
+				}
+			})
 		},
 		onShow: function() {
-			
-			
 			console.log('App Show')
 		},
 		onHide: function() {
 			console.log('App Hide')
+			uni.onSocketClose(function(res) {
+				console.log('WebSocket 已关闭！');
+			});
 		}
 	}
 </script>

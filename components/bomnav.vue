@@ -5,8 +5,8 @@
 			<view class="talkmsg">
 				在线咨询
 			</view>
-			<view class="talknum">
-				1
+			<view class="talknum" v-if="num!=0">
+				{{num}}
 			</view>
 		</view>
 		<view class="btn btn1" @tap="call">
@@ -28,17 +28,83 @@
 		props: {
 			tel: {
 				type: String
+			},
+			projectid: {
+				type: Number
 			}
 		},
 		data() {
 			return {
-
+				sid: 0,
+				num: 0
 			}
 		},
+		mounted(){
+			if(this.projectid !== 0 || this.projectid == '') {
+				this.register()
+			}
+			let that = this
+			this.num = uni.getStorageSync('total')
+			uni.onSocketMessage(function(res) {
+				let data = JSON.parse(res.data)
+				console.log(data)
+				if(data.action == 302) {
+					that.sid = data.sid
+				}else if(data.action == 301) {
+					if (String(data.fromUserName).length < 10) {
+						if(uni.setStorageSync(String(data.fromUserName))) {
+							uni.setStorageSync(String(data.fromUserName),parseInt(sessionStorage.getItem(String(data.fromUserName))) + 1)
+						}else {
+							uni.setStorageSync(String(data.fromUserName),1)
+						}
+						if(uni.getStorageSync('total') && uni.getStorageSync('total') != 'NaN') {
+							uni.setStorageSync('total',parseInt(uni.getStorageSync('total')))
+							that.num = that.num + 1;
+						} else {
+							uni.setStorageSync('total', 1)
+							that.num = 1;
+						}
+					}
+				}
+			})
+		},
 		methods: {
-			gotalk() {
-				uni.switchTab({
-					url:'/pages/message/message'
+			register(){
+				let uuid = uni.getStorageSync('uuid')
+				let city = uni.getStorageSync('city')
+				let ip = uni.getStorageSync('ip')
+				let arr = getCurrentPages()
+				let url = arr[arr.length-1].route
+				let host = this.host
+				let pro = this.projectid
+				console.log(pro)
+				let pp = {
+				      controller: "Info",
+				      action: "register",
+				      params: {
+				        city: city,
+				        project: pro,
+				        ip: ip,
+				        url: url,
+				        uuid: uuid,
+				        host: host
+				      },
+				    };
+				uni.sendSocketMessage({
+					data: JSON.stringify(pp)
+				});
+			},
+			gotalk(){
+				let id = this.sid
+				if(uni.getStorageSync(sid)){
+					let num = uni.getStorageSync(sid)
+					let total = uni.getStorageSync('total')
+					total = total - num
+					uni.setStorageSync('total',total)
+					uni.removeStorageSync(sid)
+				}
+				uni.navigateTo({
+					url:'/pages/talk/talk?id='+id
 				})
 			},
 			call() {
@@ -64,7 +130,12 @@
 				}
 			}
 		},
-		
+		watch: {
+			projectid(val) {
+				console.log(val)
+				this.register()
+			}
+		}
 	}
 </script>
 

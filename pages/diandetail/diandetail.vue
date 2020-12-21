@@ -25,7 +25,6 @@
 						<text class="time">{{comment.time}}</text>
 					</view>
 					<view class="zan">
-						
 						<view class="zan_box" v-if="comment.my_like==1">
 							<image src="../../static/content/zan.png" mode=""></image>
 							{{comment.like_num}}
@@ -52,7 +51,7 @@
 				</view>
 			</view>
 			
-			<view class="pro_one">
+			<view class="pro_one" @tap="gocontent(building.id)">
 				<image :src="building.img" mode=""></image>
 				<view class="right_pro">
 					<view class="pro_name">{{building.name}}<text class="status">{{building.state}}</text></view>
@@ -137,6 +136,11 @@
 			this.project_id = option.id;
 		},
 		methods:{
+			gocontent(id) {
+				uni.navigateTo({
+					url:'/pages/content/content?id='+id
+				})
+			},
 			baoMing(pid,remark,point,title){
 				this.$refs.popup.show();
 				this.title_e = title;
@@ -150,6 +154,7 @@
 			getdata(id){
 				let token = uni.getStorageInfoSync("token");
 				let other = uni.getStorageInfoSync("other");
+				let that = this
 				uni.request({
 					url:this.apiserve+"/applets/comment/detail",
 				    data:{
@@ -169,6 +174,21 @@
 							this.hui_num =  res.data.comment.children.length;
 							this.staff = res.data.common.staff;
 							this.telphone = res.data.common.phone;
+							//#ifdef MP-BAIDU
+							let header = res.data.common.header
+							swan.setPageInfo({
+								title: header.title,
+								keywords: header.keywords,
+								description: header.description,
+								image: [that.building.img],
+								success: res => {
+									console.log('setPageInfo success', res);
+								},
+								fail: err => {
+									console.log('setPageInfo fail', err);
+								}
+							})
+							//#endif
 						}
 					}
 				})

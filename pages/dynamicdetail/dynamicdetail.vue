@@ -9,9 +9,9 @@
 			<text class="txt">{{info.content}}</text>
 			<view class="time">{{info.time}}</view>
 			<button open-type="getPhoneNumber" @tap="type = 0" @getphonenumber="getPhoneNumber">
-			<view class="btn">
-				订阅最新动态
-			</view>
+				<view class="btn">
+					订阅最新动态
+				</view>
 			</button>
 			<view class="build" @tap="gobuild(build.id)">
 				<view class="left">
@@ -86,7 +86,7 @@
 				</view>
 			</view>
 		</view>
-		<bom-nav :tel="tel" @show="nav"></bom-nav>
+		<bom-nav :tel="tel" @show="nav" :projectid="bid"></bom-nav>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="title" :pid="pid" :remark="remark" :position="position" :isok="isok"></sign>
 		</wyb-popup>
@@ -123,8 +123,12 @@
 				position: 0,
 				staff: {},
 				isok: 0,
-				type: 0
+				type: 0,
+				bid: 0
 			}
+		},
+		mounted() {
+			console.log(this.bid)
 		},
 		methods: {
 			goback() {
@@ -147,6 +151,8 @@
 						console.log(res)
 						that.info = res.data.info
 						that.build = res.data.building
+						that.bid = res.data.building.id
+						console.log(that.bid)
 						that.other = res.data.house_types
 						that.tel = res.data.common.phone
 						that.staff = res.data.common.staffs
@@ -159,14 +165,14 @@
 				})
 			},
 			async getPhoneNumber(e) {
-				console.log(e,this.isok)
+				console.log(e, this.isok)
 				let title = ''
 				let message = ''
 				console.log(this.type)
-				if(this.type == 1) {
+				if (this.type == 1) {
 					title = '免费咨询'
 					message = '动态详情页+免费咨询'
-				}else {
+				} else {
 					title = '订阅实时动态'
 					message = '动态详情页+订阅楼盘动态'
 				}
@@ -260,6 +266,11 @@
 					url: "/pages/hudetail/hudetail?id=" + id
 				})
 			}
+		},
+		watch: {
+			projectid(val) {
+				console.log(val)
+			}
 		}
 	}
 </script>
@@ -297,14 +308,17 @@
 			margin-bottom: 31.87rpx;
 			margin-top: 27.88rpx
 		}
+
 		button {
 			padding: 0;
 			margin-left: 0;
 			border: 0;
 		}
+
 		button:after {
 			border: 0;
 		}
+
 		.txt {
 			color: #4B4C4D;
 			font-size: 27.88rpx;
@@ -416,21 +430,29 @@
 			align-items: center;
 			margin-bottom: 39.84rpx;
 
-			image {
-				width: 63.74rpx;
-				height: 63.74rpx;
+			.left {
+				width: 64rpx;
+				height: 64rpx;
 				border-radius: 50%;
+				overflow: hidden;
 				margin-right: 15.93rpx;
 			}
+
+			image {
+				width: 63.74rpx;
+			}
+
 			button {
-						padding: 0;
-						margin-left: auto;
-						margin-right: 0;
-						border: 0;
-					}
-					button:after {
-						border: 0;
-					}
+				padding: 0;
+				margin-left: auto;
+				margin-right: 0;
+				border: 0;
+			}
+
+			button:after {
+				border: 0;
+			}
+
 			.staffmsg {
 				.name {
 					color: #303233;
@@ -554,7 +576,7 @@
 			}
 		}
 	}
-	
+
 	.line {
 		width: 100%;
 		height: 19.92rpx;

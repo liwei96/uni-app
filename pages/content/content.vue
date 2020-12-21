@@ -406,10 +406,12 @@
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
 									<text class="tel">{{item.mobile}}</text>
 								</navigator>
-								<view class="no_zan" v-if="item.my_like==0" @tap="getLike(item.id)">
-									<image src="../../static/content/no_zan.png" mode=""></image>
+								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="did = item.id">
+								<view class="no_zan" v-if="item.my_like==0">
+									<image :src="item.my_like == 0 ? '../../static/content/no_zan.png' : '../../static/content/zan.png'" mode=""></image>
 									赞({{item.like_num}})
 								</view>
+								</button>
 								<view class="zan" v-if="item.my_like==1" @tap="getLike(item.id)">
 									<image src="../../static/content/zan.png" mode=""></image>
 									赞({{item.like_num}})
@@ -589,6 +591,7 @@
 		},
 		data() {
 			return {
+				did: 0,
 				total: '',
 				pro_img: [],
 				detail: {},
@@ -689,8 +692,8 @@
 				goufang_date: "",
 				goufang_ling: "",
 				seefang_sheng: "",
-				seefang_ling: ""
-
+				seefang_ling: "",
+				pid: 0
 
 
 			};
@@ -711,36 +714,8 @@
 			this.cWidth = uni.upx2px(750);
 			this.cHeight = uni.upx2px(500);
 			let id = option.id;
+			this.pid = id
 			this.getdata(id);
-
-
-
-
-
-
-
-
-
-
-			//百度地图
-			// uni.poiSearchNearBy({
-			// 	point: {
-			// 		latitude: 39.909,
-			// 		longitude: 116.39742,
-			// 	},
-			// 	key: "公交",
-			//     success: res=>{
-			// 	   console.log(res,'中心点');
-			// 	}
-			// });
-
-
-			//授权
-
-
-
-
-
 		},
 		onPageScroll(e) {
 			if (e.scrollTop >= 200) {
@@ -885,9 +860,6 @@
 
 
 			},
-			getPhoneNumber(e) {
-				console.log(e);
-			},
 			to(item, num) {
 				uni.createSelectorQuery().select(".detail").boundingClientRect(data => { //目标节点
 					uni.createSelectorQuery().select("." + item).boundingClientRect((res) => { //最外层盒子节点
@@ -979,8 +951,71 @@
 			showRules() {
 				this.$refs.rules.show();
 			},
+			getPhoneNumber(e) {
+				let that = this
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+					let url = '/pages/content/content?id=' + this.pid
+					uni.setStorageSync('backurl', url)
+					console.log(url)
+				} else {
+					let session = uni.getStorageSync('token')
+					if (session) {
+						that.getLike(that.did)
+					} else {
+						uni.login({
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.tel = tel
+												uni.request({
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														uni.setStorageSync('token', res.data.token)
+														that.getLike(that.did)
+													}
+												})
+				
+											}
+										})
+				
+									}
+								})
+							}
+						});
+					}
+					this.isok = 1
+				}
+			},
 			getLike(id) {
-				let token = uni.getStorageInfoSync("token");
+				let token = uni.getStorageSync("token");
 				if (token) {
 					uni.request({
 						url: this.apiserve + "/comment/like",
@@ -1381,7 +1416,9 @@
 			}
 		}
 	}
-
+	button::after {
+		border: none;
+	}
 	.detail {
 		.toptitle {
 			color: #17181A;

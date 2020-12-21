@@ -1,58 +1,51 @@
 <template>
 	<view class="senddian">
-		 <view class="toptitle">
-			 <navigator open-type="navigateBack" delta="1">
+		<view class="toptitle">
+			<navigator open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>楼盘点评</text>
 			</navigator>
-		 </view>
-		 <view class="pro">
-		 	<view class="pro_one">
-		 		<image :src="building.img" mode=""></image>
-		 		<view class="right_pro">
-		 			<view class="pro_name">{{building.name}}<text class="status">{{building.state}}</text></view>
-		 			<view class="price">{{building.price}}元/m²</view>
-		 			<view class="type">{{building.type}}<text>|</text>{{building.city}}-江干<text>|</text>{{building.area}}m² </view>
-		 			<view class="tese">
-		 				<text class="zhuang">{{building.decorate}}</text> 
-		 				<text class="other">{{building.railway}}</text>
-		 				<text class="other" v-if="building.features">{{building.features[0]}}</text>
-		 			</view>
-		 		</view>
-		 	</view>
-			
-		 </view>
-		 
-		 <view class="see">
-		 	 <text class="tit">您看过该楼盘吗？</text>
-			 <view class="wen">
-			 	  <text :class="select==4?'active':''" @tap="selTiao(4)">未看房</text>
-				  <text :class="select==5?'active':''" @tap="selTiao(5)">已看房</text>
-			 </view>
-			 <view class="tit mine">楼盘评价</text>
-			 <view class="star">
-			 	<uni-rate v-model="value" :margin="7"
-			 	color="#E8EBED" active-color="#FF7519" 
-			 	 :size="24" @change="rateValue" class="xing">
-				 </uni-rate>
-				 <text class="text">{{text[index]}}</text>
-			 </view>
-			 <view class="textarea_box">
-			 	<textarea
-				placeholder-style="color:#7D7E80;font-weight:normal"
-			 	placeholder="这个楼盘怎么样？我来说两句"
-			 	maxlength='50'
-			 	focus="true"
-				v-model="text_value"
-				class="textarea"/>
-				<view class="num_length">
+		</view>
+		<view class="pro">
+			<view class="pro_one">
+				<image :src="building.img" mode=""></image>
+				<view class="right_pro">
+					<view class="pro_name">{{building.name}}<text class="status">{{building.state}}</text></view>
+					<view class="price">{{building.price}}元/m²</view>
+					<view class="type">{{building.type}}<text>|</text>{{building.city}}-江干<text>|</text>{{building.area}}m² </view>
+					<view class="tese">
+						<text class="zhuang">{{building.decorate}}</text>
+						<text class="other">{{building.railway}}</text>
+						<text class="other" v-if="building.features">{{building.features[0]}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="see">
+			<text class="tit">您看过该楼盘吗？</text>
+			<view class="wen">
+				<text :class="select==4?'active':''" @tap="selTiao(4)">未看房</text>
+				<text :class="select==5?'active':''" @tap="selTiao(5)">已看房</text>
+			</view>
+			<view class="tit mine">楼盘评价</text>
+				<view class="star">
+					<uni-rate v-model="value" :margin="7" color="#E8EBED" active-color="#FF7519" :size="24" @change="rateValue" class="xing">
+					</uni-rate>
+					<text class="text">{{text[index]}}</text>
+				</view>
+				<view class="textarea_box">
+					<textarea placeholder-style="color:#7D7E80;font-weight:normal" placeholder="这个楼盘怎么样？我来说两句" maxlength='50' focus="true"
+					 v-model="text_value" class="textarea" />
+					<view class="num_length">
 					{{text_value.length}}/50
 				</view>
 			 </view>
-			 <view class="fabu"  @tap="submitDian(building.id)">
+			 <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+			 <view class="fabu">
 			 	发布点评
 			 </view>
-			 
+			 </button>
 		 </view>
 		 <mytoast :txt="msg" ref="msg"></mytoast>
 	</view>
@@ -85,6 +78,70 @@
 			this.getData(option.id);
 		},
 		methods:{
+			getPhoneNumber(e) {
+				let that = this
+				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+					let url = '/pages/senddian/senddian?id='+this.building.id
+					uni.setStorageSync('backurl',url)
+					console.log(url)
+				} else {
+					let session = uni.getStorageSync('token')
+					if(session){
+						that.submitDian(that.building.id)
+					}else {
+						uni.login({
+						  provider: 'baidu',
+						  success: function (res) {
+						    console.log(res.code);
+							uni.request({
+								url: 'https://api.edefang.net/applets/baidu/get_session_key',
+								method:'get',
+								data:{
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid',res.data.openid)
+									uni.setStorageSync('session',res.data.session_key)
+									uni.request({
+										url:"https://api.edefang.net/applets/baidu/decrypt",
+										data:{
+											data: e.detail.encryptedData,
+											iv:e.detail.iv,
+											session_key:res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone',tel)
+											let openid = uni.getStorageSync('openid')
+											that.tel = tel
+											uni.request({
+												url:"https://api.edefang.net/applets/login",
+												method:'GET',
+												data:{
+													phone: tel,
+													openid: openid
+												},
+												success: (res) => {
+													uni.setStorageSync('token',res.data.token)
+													that.submitDian(that.building.id)
+												}
+											})
+											
+										}
+									})
+									
+								}
+							})
+						  }
+						});
+						}
+					this.isok = 1
+				}
+				
+			},
 			selTiao(num){
 				this.select = num;
 				this.has_sel = true;
@@ -122,13 +179,13 @@
 				})
 			},
 			submitDian(id){
-				let token = uni.getStorageInfoSync("token");
+				let token = uni.getStorageSync("token");
 				//判空
 				if(this.has_sel ==true){
 					 if(this.has_xing ==true){
 						  if(this.text_value.length!==0){
 							   uni.request({
-							   	url:this.dianserve+"/comment/save",
+							   	url:this.dianserve+"comment/save",
 							   	method:"POST",
 							   	data:{
 							   		token:token,
@@ -281,6 +338,7 @@
 		}
 	}
 	//from表单区
+	button::after{ border: none;}
 	.see{
 		padding-left: 30rpx;
 		padding-right: 30rpx;
