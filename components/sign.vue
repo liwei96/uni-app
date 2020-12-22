@@ -4,7 +4,10 @@
 		<view class="txt">{{text}}</view>
 		<view class="one" v-if="!iscode">
 			<view class="input">
-				<input type="text" value="" placeholder="请输入手机号" placeholder-class="place" v-model="tel" />
+				<input type="text" value="" placeholder="请输入手机号" placeholder-class="place" v-model="tel" :disabled="ok"/>
+				<view class="setnull" v-if="ok" @tap="setnull">
+					x
+				</view>
 			</view>
 			<view class="msg">
 				<jiuaicheckbox @change='changeBox' borderStyle='1px solid #D4D7D9' color='#40A2F4' :checked='checked' :borderRadius='6'
@@ -69,7 +72,8 @@
 				teltxt: '',
 				timetxt: '',
 				istime: false,
-				text: ''
+				text: '',
+				ok: true
 			}
 		},
 		components: {
@@ -77,6 +81,10 @@
 			toast
 		},
 		methods: {
+			setnull() {
+				this.tel = '',
+				this.ok = false
+			},
 			changeBox(e) { //选中切换事件(由组件发起)
 				console.log('点击了checkBox', e);
 				this.checked = e.detail.checked
@@ -132,6 +140,9 @@
 								if(res.data.code == 500) {
 									that.toasttxt = res.data.message;
 									that.$refs.toast.show()
+									setTimeout(()=>{
+										that.$emit('closethis', true)
+									},2000)
 								} else {
 									that.teltxt = phone.substr(0, 3) + "****" + phone.substr(7, 11);
 									let time = 60
@@ -148,7 +159,7 @@
 									};
 									fn();
 									var interval = setInterval(fn, 1000);
-									if(that.isok == 1) {
+									if(that.isok == 1 && that.ok) {
 										if(!uni.getStorageSync('token')) {
 											let openid = uni.getStorageSync('openid')
 											uni.request({
@@ -167,7 +178,9 @@
 										}
 										that.toasttxt = "订阅成功";
 										that.$refs.toast.show()
-										that.$emit('closethis', true)
+										setTimeout(()=>{
+											that.$emit('closethis', true)
+										},2000)
 									}else {
 										that.iscode = true
 									}
@@ -215,7 +228,9 @@
 						} else {
 							that.toasttxt = "订阅成功";
 							that.$refs.toast.show()
-							that.$emit('closethis', true)
+							setTimeout(()=>{
+								that.$emit('closethis', true)
+							},2000)
 							if(!uni.getStorageSync('token')) {
 								uni.setStorageSync('token',res.data.token)
 								uni.setStorageSync('phone',that.tel)
@@ -227,6 +242,11 @@
 		},
 		mounted() {
 			console.log(this.isok)
+			if(this.isok == 1) {
+				this.ok = true
+			}else {
+				this.ok = false
+			}
 			if(this.isok == 1) {
 				this.tel = uni.getStorageSync('phone')
 			}else {
@@ -321,6 +341,12 @@
 		input {
 			margin-left: 32rpx;
 			font-size: 32rpx;
+		}
+		.setnull {
+			position: absolute;
+			font-size: 40rpx;
+			right: 20rpx;
+			top: 24rpx;
 		}
 
 		.place {

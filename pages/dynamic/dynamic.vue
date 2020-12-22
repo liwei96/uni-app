@@ -1,6 +1,7 @@
 <template>
 	<view class="dynamic">
 		<view class="toptitle" @tap="back">
+			<image src="../../static/all-back.png" mode=""></image>
 			<text>楼盘动态</text>
 		</view>
 		<image src="../../static/dynamic/dynamic-top.png" mode="" class="topimg"></image>
@@ -74,6 +75,9 @@
 			this.getmore()
 		},
 		methods:{
+			setpop() {
+				this.$refs.popup.hide()
+			},
 			back(){
 				uni.navigateBack({
 					data:1
@@ -224,6 +228,12 @@
 		padding: 0 29.88rpx;
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
+		image {
+			width: 31.87rpx;
+			height: 31.87rpx;
+			margin-right: 11.95rpx;
+			margin-bottom: -3.98rpx;
+		}
 	}
 	.topimg {
 		width: 100%;

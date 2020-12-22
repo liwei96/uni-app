@@ -48,7 +48,6 @@
 						<image src="../../static/content/shou.png"></image>
 						<text>收藏</text>
 					</view>
-					<!-- 	<button type="primary" open-type="getPhoneNumber"  @tap="goLogin" >登录</button> -->
 				</view>
 			</view>
 			<view class="detail_list">
@@ -424,7 +423,7 @@
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
 									<text class="tel">{{item.mobile}}</text>
 								</navigator>
-								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="did = item.id">
+								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1)" @tap="did = item.id">
 								<view class="no_zan" v-if="item.my_like==0">
 									<image :src="item.my_like == 0 ? '../../static/content/no_zan.png' : '../../static/content/zan.png'" mode=""></image>
 									赞({{item.like_num}})
@@ -507,7 +506,7 @@
 				看了该楼盘的人还看了
 			</view>
 			<view class="pro_list">
-				<view class="peo_one" v-for="item in recommends" :key="item.id">
+				<view class="peo_one" v-for="item in recommends" :key="item.id" @tap="gocon(item.id)">
 					<image :src="item.img" mode=""></image>
 					<view class="right_pro">
 						<view class="pro_name"><text class="name">{{item.name}}</text><text class="status">{{item.status}}</text></view>
@@ -799,6 +798,11 @@
 
 		},
 		methods: {
+			gocon(id) {
+				uni.navigateTo({
+					url:'/pages/content/content?id='+id
+				})
+			},
 			suijiData() {
 				let my_date = "";
 				let date1 = new Date();
@@ -863,11 +867,14 @@
 				}
 
 			},
-			async getPhoneNumber(e,pid,remark,point,title) {
+			async getPhoneNumber(e,pid,remark,point,title,type) {
 				let that = this
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
-					that.baoMing(pid,remark,point,title,)
+					that.baoMing(pid,remark,point,title)
+					if(type) {
+						
+					}
 				} else {
 					let session = uni.getStorageSync('session')
 					if(session){
@@ -960,58 +967,6 @@
 					this.class_fixed.zhou_pei = true;
 				}
 			},
-			goLogin(result) {
-				console.log(result);
-				//登录
-				let _this = this;
-				uni.getProvider({
-					service: "oauth",
-					success: (res) => {
-						console.log(res);
-						let pingtai = res.provider[0];
-						uni.login({
-							provider: pingtai,
-							scopes: "auth_base",
-							success(res) {
-								console.log(res.code, 'code');
-								uni.request({
-									url: _this.httpsapi + "/applets/baidu/get_session_key",
-									data: {
-										code: res.code
-									},
-									method: "GET",
-									success: (res) => {
-										let openid = res.data.openid;
-										let session_key = res.data.session_key;
-										uni.setStorageSync("openid", openid);
-										uni.setStorageSync("session_key", session_key);
-										// uni.request({
-										// 	url:"/applets/baidu/decrypt"
-										// })
-										console.log(res, "res");
-									}
-								})
-							}
-						})
-						// uni.getUserInfo({
-						// 	provider:pingtai,
-						// 	lang:"zh_CN",
-						// 	success:(res)=>{
-						// 		console.log(res,"用户信息")
-						// 	},
-						// 	complete:(res)=>{
-						// 		console.log(res,"用户信息完成")
-						// 	}
-						// })
-
-					}
-				})
-				uni.checkSession({
-					success: (res) => {
-						console.log(res, '是否过期');
-					}
-				})
-			},
 			goZhou(id) {
 				uni.navigateTo({
 					url: "/pages/aroundweb/aroundweb?id=" + id
@@ -1020,69 +975,72 @@
 			showRules() {
 				this.$refs.rules.show();
 			},
-			getPhoneNumber(e) {
-				let that = this
-				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					this.isok = 0
-					let url = '/pages/content/content?id=' + this.pid
-					uni.setStorageSync('backurl', url)
-					console.log(url)
-				} else {
-					let session = uni.getStorageSync('token')
-					if (session) {
-						that.getLike(that.did)
-					} else {
-						uni.login({
-							provider: 'baidu',
-							success: function(res) {
-								console.log(res.code);
-								uni.request({
-									url: 'https://api.edefang.net/applets/baidu/get_session_key',
-									method: 'get',
-									data: {
-										code: res.code
-									},
-									success: (res) => {
-										console.log(res)
-										uni.setStorageSync('openid', res.data.openid)
-										uni.setStorageSync('session', res.data.session_key)
-										uni.request({
-											url: "https://api.edefang.net/applets/baidu/decrypt",
-											data: {
-												data: e.detail.encryptedData,
-												iv: e.detail.iv,
-												session_key: res.data.session_key
-											},
-											success: (res) => {
-												console.log(res)
-												let tel = res.data.mobile
-												uni.setStorageSync('phone', tel)
-												let openid = uni.getStorageSync('openid')
-												that.tel = tel
-												uni.request({
-													url: "https://api.edefang.net/applets/login",
-													method: 'GET',
-													data: {
-														phone: tel,
-														openid: openid
-													},
-													success: (res) => {
-														uni.setStorageSync('token', res.data.token)
-														that.getLike(that.did)
-													}
-												})
+			// getPhoneNumber(e) {
+			// 	let that = this
+			// 	if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+			// 		this.isok = 0
+			// 		let url = '/pages/content/content?id=' + this.pid
+			// 		uni.setStorageSync('backurl', url)
+			// 		uni.navigateTo({
+			// 			url:'/pages/login/login'
+			// 		})
+			// 		console.log(url)
+			// 	} else {
+			// 		let session = uni.getStorageSync('token')
+			// 		if (session) {
+			// 			that.getLike(that.did)
+			// 		} else {
+			// 			uni.login({
+			// 				provider: 'baidu',
+			// 				success: function(res) {
+			// 					console.log(res.code);
+			// 					uni.request({
+			// 						url: 'https://api.edefang.net/applets/baidu/get_session_key',
+			// 						method: 'get',
+			// 						data: {
+			// 							code: res.code
+			// 						},
+			// 						success: (res) => {
+			// 							console.log(res)
+			// 							uni.setStorageSync('openid', res.data.openid)
+			// 							uni.setStorageSync('session', res.data.session_key)
+			// 							uni.request({
+			// 								url: "https://api.edefang.net/applets/baidu/decrypt",
+			// 								data: {
+			// 									data: e.detail.encryptedData,
+			// 									iv: e.detail.iv,
+			// 									session_key: res.data.session_key
+			// 								},
+			// 								success: (res) => {
+			// 									console.log(res)
+			// 									let tel = res.data.mobile
+			// 									uni.setStorageSync('phone', tel)
+			// 									let openid = uni.getStorageSync('openid')
+			// 									that.tel = tel
+			// 									uni.request({
+			// 										url: "https://api.edefang.net/applets/login",
+			// 										method: 'GET',
+			// 										data: {
+			// 											phone: tel,
+			// 											openid: openid
+			// 										},
+			// 										success: (res) => {
+			// 											uni.setStorageSync('token', res.data.token)
+			// 											that.getLike(that.did)
+			// 										}
+			// 									})
 				
-											}
-										})
+			// 								}
+			// 							})
 				
-									}
-								})
-							}
-						});
-					}
-					this.isok = 1
-				}
-			},
+			// 						}
+			// 					})
+			// 				}
+			// 			});
+			// 		}
+			// 		this.isok = 1
+			// 	}
+			// },
 			getLike(id) {
 				let token = uni.getStorageSync("token");
 				if (token) {
@@ -3292,75 +3250,7 @@
 			}
 		}
 
-		.bottom_fixed {
-			width: 100%;
-			height: 109rpx;
-			padding-left: 45rpx;
-			padding-top: 19rpx;
-			background-color: #fff;
-			position: fixed;
-			bottom: 0rpx;
-
-			.zixun {
-				font-size: 24rpx;
-				font-weight: 500;
-				color: #626466;
-				float: left;
-				margin-right: 40rpx;
-				display: flex;
-				align-items: center;
-				flex-direction: column;
-
-				image {
-					width: 48rpx;
-					height: 42rpx;
-				}
-			}
-
-			.tel_box {
-				width: 256rpx;
-				height: 88rpx;
-				background: linear-gradient(270deg, #FF7519, #FFAE3D);
-				border-radius: 12rpx;
-				float: left;
-
-				image {
-					width: 36rpx;
-					height: 36rpx;
-				}
-
-				font-size: 32rpx;
-				font-weight: bold;
-				color: #FFFFFF;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				margin-right: 20rpx;
-			}
-
-			.yuyue_box {
-				width: 256rpx;
-				height: 88rpx;
-				background: linear-gradient(-45deg, #348AFF, #6ACCFF);
-				border-radius: 12rpx;
-				float: left;
-
-				image {
-					width: 36rpx;
-					height: 36rpx;
-				}
-
-				font-size: 32rpx;
-				font-weight: bold;
-				line-height: 88rpx;
-				color: #FFFFFF;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-		}
-
-		//优惠券规则弹框
+		
 
 		.rules {
 			width: 650rpx;

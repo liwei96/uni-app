@@ -1,11 +1,12 @@
 <template>
 	<view class="top-view">
-		<view class="toptitle">
-			<text>特色好房</text>
+		<view class="toptitle"  @tap="back">
+			<image src="../../static/all-back1.png" mode=""></image>
+			<text>楼盘榜</text>
 		</view>
-		<view class="top-nav">
+		<view class="top-nav" @tap="gocity">
 			<view class="city">
-				杭州
+				{{city}}
 				<text class="down"></text>
 			</view>
 		</view>
@@ -39,21 +40,23 @@
 							</view>
 							<view class="icons">
 								<text class="zhuang">{{item.decorate}}</text>
-								<text>4号线</text>
-								<text>地铁楼盘</text>
+								<!-- <text>4号线</text>
+								<text>地铁楼盘</text> -->
 							</view>
 						</view>
 					</view>
 					<view class="top-num">
 						<image src="../../static/feature/feature-card.png" mode=""></image>
 						<text class="nummsg">{{num == 0 ? '热搜榜' : num == 1 ? '人气榜' : '成交榜'}}第{{key+1}}名</text>
-						<text class="btn" @tap="show(item.id,'榜单页+查低价')">查底价</text>
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="bid = item.id">
+						<text class="btn">查底价</text>
+						</button>
 					</view>
 				</view>
 			</view>
 		</view>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="'查低价'" :pid="pid" :remark="remark" :position="position"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="'查低价'" :pid="pid" :remark="remark" :position="position" :isok="isok"></sign>
 		</wyb-popup>
 	</view>
 </template>
@@ -66,6 +69,7 @@
 		onLoad() {
 			that = this
 			this.getlist()
+			this.city = uni.getStorageSync('cityname')
 		},
 		components: {
 			sign,
@@ -76,10 +80,35 @@
 				num: 1,
 				tops: [],
 				pid: 0,
-				codenum: 1
+				codenum: 1,
+				bid: 0,
+				isok: 0,
+				city: '杭州'
 			}
 		},
 		methods: {
+			setpop() {
+				this.$refs.popup.hide()
+			},
+			getPhoneNumber(e) {
+				console.log(e)
+				let id = this.bid
+				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.show(id,'榜单页+查低价',0)
+				}else{
+					this.show(id,'榜单页+查低价',1)
+				}
+			},
+			back() {
+				uni.navigateBack({
+					data:1
+				})
+			},
+			gocity() {
+				uni.redirectTo({
+					url:"/pages/path/path"
+				})
+			},
 			go(id) {
 				uni.redirectTo({
 					url:"/pages/content/content?id="+id
@@ -110,11 +139,12 @@
 					}
 				})
 			},
-			show(id, txt) {
+			show(id, txt,isok) {
 				this.pid = id
 				this.remark = txt
 				this.position = 104
 				console.log(this.pid)
+				this.isok = isok
 				this.$refs.popup.show()
 			},
 			setiscode() {
@@ -132,8 +162,20 @@
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #50B3FD;
+		image {
+			width: 31.87rpx;
+			height: 31.87rpx;
+			margin-right: 11.95rpx;
+			margin-bottom: -3.98rpx;
+		}
 	}
-
+	button {
+		padding: 0;
+		margin-right: 0;
+	}
+	button:after {
+		border: none;
+	}
 	.top-nav {
 		height: 199.2rpx;
 		background: url(../../static/feature/feature-top.png);

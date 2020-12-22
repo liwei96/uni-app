@@ -95,6 +95,9 @@
 					this.isok = 0
 					let url = '/pages/content/content?id=' + this.pid
 					uni.setStorageSync('backurl', url)
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
 					console.log(url)
 				} else {
 					let session = uni.getStorageSync('token')

@@ -1,11 +1,12 @@
 <template>
 	<view class="feature">
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
+			<image src="../../static/all-back1.png" mode=""></image>
 			<text>特色好房</text>
 		</view>
-		<view class="top-nav">
+		<view class="top-nav" @tap="gocity">
 			<view class="city">
-				杭州
+				{{city}}
 				<text class="down"></text>
 			</view>
 		</view>
@@ -98,6 +99,7 @@
 		onLoad(option) {
 			that = this
 			this.setnum(option.num,option.txt);
+			this.city = uni.getStorageSync('cityname')
 			this.getdata()
 		},
 		data(){
@@ -109,10 +111,16 @@
 				remark: '',
 				codenum: 1,
 				position: 0,
-				tit: '刚需'
+				tit: '刚需',
+				city: '杭州'
 			}
 		},
 		methods:{
+			gocity () {
+				uni.navigateTo({
+					url:'/pages/path/path'
+				})
+			},
 			setnum(num,txt) {
 				this.num = num
 				this.tit = txt
@@ -155,6 +163,11 @@
 				uni.redirectTo({
 					url: "/pages/content/content?id="+id
 				})
+			},
+			back() {
+				uni.navigateBack({
+					data: 1
+				})
 			}
 		}
 	}
@@ -168,6 +181,12 @@
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #50B3FD;
+		image {
+			width: 31.87rpx;
+			height: 31.87rpx;
+			margin-right: 11.95rpx;
+			margin-bottom: -3.98rpx;
+		}
 	}
 
 	.top-nav {

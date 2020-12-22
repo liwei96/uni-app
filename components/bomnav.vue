@@ -40,9 +40,9 @@
 			}
 		},
 		mounted(){
-			if(this.projectid !== 0 || this.projectid == '') {
-				this.register()
-			}
+			// if(this.projectid !== 0 || this.projectid == '') {
+			// 	this.register()
+			// }
 			let that = this
 			this.num = uni.getStorageSync('total')
 			uni.onSocketMessage(function(res) {
@@ -131,9 +131,11 @@
 			}
 		},
 		watch: {
-			projectid(val) {
-				console.log(val)
-				this.register()
+			projectid(news,val) {
+				console.log(news,val)
+				if(news != val && val == 0) {
+					this.register()
+				} 
 			}
 		}
 	}

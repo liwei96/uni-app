@@ -223,15 +223,16 @@
 <style lang="less">
 
 .bottom_fixed{
-	width: 100%;
+	width: 94%;
 	height: 109rpx;
-	padding-left: 45rpx;
+	padding-left: 6%;
 	padding-top: 19rpx;
 	background-color: #fff;
 	position: fixed;
 	bottom: 0rpx;
 	left: 0rpx;
 	border-top: none;
+	z-index: 1000;
 	//border-top:1rpx solid #fff;
 	.zixun{
 		font-size: 24rpx;

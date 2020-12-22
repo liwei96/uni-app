@@ -7,9 +7,9 @@
 			<view class="searchbox">
 				<image src="../../static/index/index-path.png" mode="" class="search-path" @tap="gopath"></image>
 				<text class="cityname" @tap="gopath">{{cityname}}</text>
-				<view class="search-right"  @tap="goSearch">
+				<view class="search-right" @tap="goSearch">
 					<image src="../../static/index/index-search.png" mode="" class="right-icon"></image>
-					<view  class="text">
+					<view class="text">
 						请输入楼盘名
 					</view>
 				</view>
@@ -55,7 +55,7 @@
 				<swiper class="swiper" :vertical="true" :circular="true" :autoplay="true" interval="2000">
 					<swiper-item class="swiper-item" v-for="item in tops" :key="item.id">
 						<navigator :url="`../article/article?id=${item.id}`">
-						   <view class="swiper-item uni-bg-red">{{item.title}}</view>
+							<view class="swiper-item uni-bg-red">{{item.title}}</view>
 						</navigator>
 					</swiper-item>
 				</swiper>
@@ -103,43 +103,33 @@
 		<view class="feature">
 			<text class="feature-tit">特色好房</text>
 			<scroll-view class="scroll-view" scroll-x="true">
-				<view class="scroll-item">
-					<view class="feature-txt" @tap="ganglou(3,'刚需')">刚需楼盘</view>
+				<view class="scroll-item" @tap="ganglou(3,'刚需')">
+					<view class="feature-txt">刚需楼盘</view>
 					<view class="feature-imgbox">
-						<navigator :url="`../content/content?id=${rigid_demand[0].id}`" class="nav_to">
-							<image :src="rigid_demand[0].img" mode=""></image>
-						</navigator>
-						<navigator :url="`../content/content?id=${rigid_demand[1].id}`" class="nav_to">
-						    <image :src="rigid_demand[1].img" mode=""></image>
-						</navigator>
+						<image :src="rigid_demand[0].img" mode=""></image>
+						<image :src="rigid_demand[1].img" mode=""></image>
 					</view>
 					<view class="bombox">
 						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
 					</view>
 				</view>
-				<view class="scroll-item">
-					<text class="feature-txt" @tap="ganglou(5,'投资')">投资地产</text>
+				<view class="scroll-item" @tap="ganglou(5,'投资')">
+					<text class="feature-txt">投资地产</text>
 					<view class="feature-imgbox">
-						<navigator :url="`../content/content?id=${investment[0].id}`" class="nav_to">
-						  <image :src="investment[0].img" mode=""></image>
-						</navigator>
-						<navigator :url="`../content/content?id=${investment[1].id}`" class="nav_to">
-						    <image :src="investment[1].img" mode=""></image>
-						</navigator>
+						<image :src="investment[0].img" mode=""></image>
+						<image :src="investment[1].img" mode=""></image>
 					</view>
 					<view class="bombox">
 						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
 					</view>
 				</view>
-				<view class="scroll-item">
-					<text class="feature-txt" @tap="ganglou(2,'改善')">改善住宅</text>
+				<view class="scroll-item" @tap="ganglou(2,'改善')">
+					<text class="feature-txt">改善住宅</text>
 					<view class="feature-imgbox">
-						<navigator :url="`../content/content?id=${improvement[0].id}`" class="nav_to">
-						   <image :src="improvement[0].img" mode=""></image>
-						</navigator>
-						<navigator :url="`../content/content?id=${improvement[1].id}`" class="nav_to">
-						   <image :src="improvement[1].img" mode=""></image>
-						</navigator>
+
+						<image :src="improvement[0].img" mode=""></image>
+
+						<image :src="improvement[1].img" mode=""></image>
 					</view>
 					<view class="bombox">
 						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
@@ -160,8 +150,8 @@
 						成交榜
 					</text>
 				</view>
-				<view class="more">
-					<navigator url="/pages/building/building" open-type="switchTab" class="my_nav">
+				<view class="more" @tap="gotop">
+					<navigator url="/pages/top/top" open-type="switchTab" class="my_nav">
 						<text>更多楼盘</text>
 						<image src="../../static/content/right.png" mode=""></image>
 					</navigator>
@@ -170,7 +160,7 @@
 		</view>
 		<view class="toplist-swiper">
 			<scroll-view class="scroll-view" scroll-x="true">
-				<view class="scroll-item" v-for="(item,index) in common" :key="item.id" >
+				<view class="scroll-item" v-for="(item,index) in common" :key="item.id">
 					<navigator :url="`../content/content?id=${item.id}`">
 						<view class="top">
 							<image :src="item.img" mode=""></image>
@@ -186,7 +176,7 @@
 						</view>
 					</navigator>
 				</view>
-				
+
 			</scroll-view>
 		</view>
 		<view class="dynamic">
@@ -197,7 +187,7 @@
 						<text class="more">更多动态</text>
 						<image src="../../static/content/right.png" mode=""></image>
 					</view>
-					
+
 				</view>
 				<view class="dynamic-con">
 					<view class="con1">
@@ -242,32 +232,32 @@
 			<text class="tit">为你推荐</text>
 			<view class="recommend-box">
 				<view class="item" v-for="item in recommends" :key="item.id">
-				  <navigator :url="`../content/content?id=${item.id}`" class="nav_to">
-					  
-					<view class="left">
-						<image :src="item.img" mode=""></image>
-					</view>
-					<view class="right">
-						<view class="right-name">
-							<text class="name">{{item.name}}</text>
-							<text class="status">{{item.state}}</text>
+					<navigator :url="`../content/content?id=${item.id}`" class="nav_to">
+
+						<view class="left">
+							<image :src="item.img" mode=""></image>
 						</view>
-						<text class="price">{{item.price}}</text>
-						<text class="psam">元/m²</text>
-						<view>
-							<text class="right-msg">{{item.type}} | {{item.city}}-{{item.country}} | {{item.area}}m²</text>
+						<view class="right">
+							<view class="right-name">
+								<text class="name">{{item.name}}</text>
+								<text class="status">{{item.state}}</text>
+							</view>
+							<text class="price">{{item.price}}</text>
+							<text class="psam">元/m²</text>
+							<view>
+								<text class="right-msg">{{item.type}} | {{item.city}}-{{item.country}} | {{item.area}}m²</text>
+							</view>
+							<view class="right-icons">
+								<text class="jing">没有</text>
+								<text>{{item.railway}}</text>
+								<text>{{item.feature}}</text>
+							</view>
 						</view>
-						<view class="right-icons">
-							<text class="jing">没有</text>
-							<text>{{item.railway}}</text>
-							<text>{{item.feature}}</text>
-						</view>
-					</view>
-					
+
 					</navigator>
 				</view>
-				
-				
+
+
 			</view>
 		</view>
 	</view>
@@ -277,107 +267,107 @@
 	export default {
 		data() {
 			return {
-				tops:[],
-				avg_prices:{},
-				rigid_demand:[],
-				investment:[],
-				improvement:[],
-				completed_houses:[],
-				hot_searches:[],
-				popularity:[],
-				deals:[],
-				dynamics:[],
-				recommends:[],
-				common:[],
-				dynamics:[],
-				
-				style_list:{
-					hot:true,
-					people:false,
-					jiao:false,
+				tops: [],
+				avg_prices: {},
+				rigid_demand: [],
+				investment: [],
+				improvement: [],
+				completed_houses: [],
+				hot_searches: [],
+				popularity: [],
+				deals: [],
+				dynamics: [],
+				recommends: [],
+				common: [],
+				dynamics: [],
+
+				style_list: {
+					hot: true,
+					people: false,
+					jiao: false,
 				},
 				cityname: '杭州'
 			}
 		},
-		onLoad() {
-			
-		},
-		onReady(){  //监听页面初次渲染完成
-		   let city = uni.getStorageSync('city');
-		   let token = uni.getStorageSync("token");
+		onShow() {
+			this.cityname = uni.getStorageSync('cityname') || '杭州'
+			let city = uni.getStorageSync('city');
+			let token = uni.getStorageSync("token");
 			uni.request({
-				url:this.apiserve+'/applets/first',
-				data:{
-					token:token,
-					city:city
+				url: this.apiserve + '/applets/first',
+				data: {
+					token: token,
+					city: city
 				},
-				success:(res)=>{
+				success: (res) => {
 					console.log(res);
-					if(res.data.code==200){
+					if (res.data.code == 200) {
 						this.tops = res.data.data.tops;
 						this.avg_prices = res.data.data.avg_prices;
 						this.rigid_demand = res.data.data.rigid_demand;
 						this.investment = res.data.data.investment;
 						this.improvement = res.data.data.improvement;
 						this.hot_searches = res.data.data.hot_searches;
-						
+
 						this.common = this.hot_searches;
 						this.popularity = res.data.data.popularity;
 						this.deals = res.data.data.deals;
 						this.dynamics = res.data.data.dynamics;
 						this.recommends = res.data.data.recommends;
 					}
-					
+
 				}
-				
+
 			})
 		},
-		onShow() {
-			this.cityname = uni.getStorageSync('cityname') || '杭州'
-		},
 		methods: {
-			godynamic(){
+			gotop() {
 				uni.navigateTo({
-					url:'/pages/dynamic/dynamic'
+					url: '/pages/top/top'
 				})
 			},
-			ganglou(num,txt){
+			godynamic() {
 				uni.navigateTo({
-					url:`/pages/feature/feature?num=${num}&txt=${txt}`
+					url: '/pages/dynamic/dynamic'
 				})
 			},
-			goSearch(){
+			ganglou(num, txt) {
 				uni.navigateTo({
-					url:"/pages/searchname/searchname"
+					url: `/pages/feature/feature?num=${num}&txt=${txt}`
+				})
+			},
+			goSearch() {
+				uni.navigateTo({
+					url: "/pages/searchname/searchname"
 				})
 			},
 			gopath() {
 				uni.navigateTo({
-					url:'/pages/path/path'
+					url: '/pages/path/path'
 				})
 			},
-			hotSearch(){
+			hotSearch() {
 				this.common = this.hot_searches;
-				this.style_list.hot =true;
-				this.style_list.people =false;
-				this.style_list.jiao =false;
-				
+				this.style_list.hot = true;
+				this.style_list.people = false;
+				this.style_list.jiao = false;
+
 			},
-			peopleClick(){
+			peopleClick() {
 				this.common = this.popularity;
-				this.style_list.hot =false;
-				this.style_list.people =true;
-				this.style_list.jiao =false;
+				this.style_list.hot = false;
+				this.style_list.people = true;
+				this.style_list.jiao = false;
 			},
-			jiaoClick(){
+			jiaoClick() {
 				this.common = this.deals;
-				this.style_list.hot =false;
-				this.style_list.people =false;
-				this.style_list.jiao =true;
+				this.style_list.hot = false;
+				this.style_list.people = false;
+				this.style_list.jiao = true;
 			},
-			bangZhao(){
+			bangZhao() {
 				uni.navigateTo({
-					url:"../help/help"
+					url: "../help/help"
 				})
 			}
 		}
@@ -385,9 +375,10 @@
 </script>
 
 <style lang="less">
-	page{
+	page {
 		background: #fff;
 	}
+
 	.toptitle {
 		color: #17181A;
 		font-size: 29.88rpx;
@@ -395,6 +386,7 @@
 		margin-top: 39.84rpx;
 		line-height: 87.64rpx;
 	}
+
 	.search {
 		padding: 0 29.88rpx;
 
@@ -426,6 +418,7 @@
 				padding-left: 35.85rpx;
 				height: 72rpx;
 				width: 500rpx;
+
 				.right-icon {
 					width: 31.87rpx;
 					height: 31.87rpx;
@@ -433,7 +426,8 @@
 					top: 20rpx;
 					margin-right: 11.95rpx;
 				}
-				.text{
+
+				.text {
 					font-size: 28rpx;
 					font-weight: 500;
 					color: #646566;
@@ -459,6 +453,7 @@
 		.nav-li {
 			text-align: center;
 			position: relative;
+
 			image {
 				width: 87.64rpx;
 				height: 87.64rpx;
@@ -470,6 +465,7 @@
 				font-size: 23.9rpx;
 				color: #303233;
 			}
+
 			.youhui {
 				position: absolute;
 				display: block;
@@ -505,15 +501,17 @@
 				margin-left: 25.89rpx;
 				margin-right: 25.89rpx;
 			}
+
 			.swiper {
 				height: 87.64rpx;
+
 				.swiper-item {
 					line-height: 87.64rpx;
 					color: #646566;
 					font-size: 27.88rpx;
 					width: 537.84rpx;
 					overflow: hidden;
-					text-overflow:ellipsis;
+					text-overflow: ellipsis;
 					white-space: nowrap;
 				}
 			}
@@ -647,23 +645,24 @@
 				display: inline-block;
 				width: 280rpx;
 				height: 298.8rpx;
-				overflow-wrap:break-word;
+				overflow-wrap: break-word;
 				white-space: normal;
+
 				.feature-imgbox {
 					margin-top: 11.95rpx;
 					display: flex;
-					.nav_to{
-						image {
-							width: 137.45rpx;
-							height: 109.56rpx;
-						}
+
+					image {
+						width: 137.45rpx;
+						height: 109.56rpx;
 					}
-					.nav_to:nth-of-type(1) image{
+
+					image:nth-of-type(1) {
 						margin-right: 3.98rpx;
 						border-radius: 11.95rpx 1.99rpx 1.99rpx 11.95rpx;
 					}
 
-					.nav_to:nth-of-type(2) image{
+					image:nth-of-type(2) {
 						border-radius: 1.99rpx 11.95rpx 11.95rpx 1.99rpx;
 					}
 				}
@@ -684,9 +683,10 @@
 					position: absolute;
 					width: 280rpx;
 					height: 80rpx;
+
 					// word-break: break-all;
 					// word-wrap: break-word;
-					text{
+					text {
 						width: 280rpx;
 						font-size: 24rpx;
 						font-weight: 500;
@@ -711,10 +711,12 @@
 			display: flex;
 			align-items: center;
 			margin-bottom: 47.8rpx;
-			.left_btn{
+
+			.left_btn {
 				width: 560rpx;
 				float: left;
-				text{
+
+				text {
 					display: block;
 					width: 147.41rpx;
 					height: 55.77rpx;
@@ -727,23 +729,28 @@
 					margin-right: 23.9rpx;
 					float: left;
 				}
+
 				.active {
 					background: linear-gradient(41deg, #2F91FF 0%, #55BDFF 100%);
 					color: #FFFFFF;
 				}
 			}
+
 			.more {
 				display: flex;
 				align-items: center;
-				.my_nav{
+
+				.my_nav {
 					display: flex;
 					align-items: center;
-					text{
+
+					text {
 						color: #969799;
 						margin-left: auto;
 						font-size: 25.89rpx;
 					}
-					image{
+
+					image {
 						width: 24rpx;
 						height: 24rpx;
 					}
@@ -820,7 +827,7 @@
 						color: #969799;
 						font-size: 21.91rpx;
 						margin-right: 19.92rpx;
-						margin-top:10rpx ;
+						margin-top: 10rpx;
 					}
 				}
 			}
@@ -858,23 +865,26 @@
 				display: flex;
 				margin-bottom: 35.85rpx;
 				justify-content: space-between;
+
 				.title {
 					color: #17181A;
 					font-size: 33.86rpx;
 					font-weight: bold;
 				}
-				.right_t{
+
+				.right_t {
 					.more {
 						color: #969799;
 						font-size: 25.89rpx;
 						margin-left: auto;
 					}
-					image{
-						width:24rpx ;
+
+					image {
+						width: 24rpx;
 						height: 24rpx;
 					}
 				}
-				
+
 			}
 
 			.dynamic-con {
@@ -937,34 +947,36 @@
 						overflow: hidden;
 						display: flex;
 						margin-bottom: 19.92rpx;
-						.nav_nav{
+
+						.nav_nav {
 							width: 100%;
 							height: 131.47rpx;
 							border-radius: 11.95rpx;
 							overflow: hidden;
 							display: flex;
 							margin-bottom: 19.92rpx;
-						  .con2-left {
-							width: 249rpx;
-							height: 131.47rpx;
-							display: flex;
-							justify-content: center;
-							align-items: center;
-							background: #F5F6F7;
 
-							.msg {
-								display: block;
-								color: #646466;
-								font-size: 23.9rpx;
-								width: 215.13rpx;
-								line-height: 33.86rpx;
-								display: block;
-								display: -webkit-box;
-								-webkit-box-orient: vertical;
-								-webkit-line-clamp: 2;
-								overflow: hidden;
+							.con2-left {
+								width: 249rpx;
+								height: 131.47rpx;
+								display: flex;
+								justify-content: center;
+								align-items: center;
+								background: #F5F6F7;
+
+								.msg {
+									display: block;
+									color: #646466;
+									font-size: 23.9rpx;
+									width: 215.13rpx;
+									line-height: 33.86rpx;
+									display: block;
+									display: -webkit-box;
+									-webkit-box-orient: vertical;
+									-webkit-line-clamp: 2;
+									overflow: hidden;
+								}
 							}
-						}
 
 							.con2-right {
 								width: 139.44rpx;
@@ -991,7 +1003,7 @@
 									overflow: hidden;
 								}
 							}
-					  }
+						}
 					}
 
 					.con3 {
@@ -1020,84 +1032,86 @@
 		.item {
 			//display: flex;
 			margin-bottom: 59.76rpx;
-           .nav_to{
-			   width: 100%;
-			   display: flex;
-			.left {
-				margin-right: 27.88rpx;
 
-				image {
-					width: 219.12rpx;
-					height: 159.36rpx;
-					border-radius: 11.95rpx;
-				}
-			}
+			.nav_to {
+				width: 100%;
+				display: flex;
 
-			.right {
-				flex: 1;
+				.left {
+					margin-right: 27.88rpx;
 
-				.right-name {
-					position: relative;
-					top: -5.97rpx
+					image {
+						width: 219.12rpx;
+						height: 159.36rpx;
+						border-radius: 11.95rpx;
+					}
 				}
 
-				.name {
-					color: #323233;
-					font-size: 31.87rpx;
-					margin-bottom: 11.95rpx;
-					font-weight: 800;
-				}
+				.right {
+					flex: 1;
 
-				.status {
-					color: #20C657;
-					font-size: 21.91rpx;
-					background-color: #E6FAF0;
-					width: 67.72rpx;
-					height: 35.85rpx;
-					border-radius: 5.97rpx;
-					text-align: center;
-					line-height: 35.85rpx;
-					float: right;
-					display: block;
-				}
+					.right-name {
+						position: relative;
+						top: -5.97rpx
+					}
 
-				.price {
-					color: #FF6040;
-					font-size: 31.87rpx;
-					font-weight: 800;
-				}
+					.name {
+						color: #323233;
+						font-size: 31.87rpx;
+						margin-bottom: 11.95rpx;
+						font-weight: 800;
+					}
 
-				.psam {
-					color: #FF6040;
-					font-size: 25.89rpx;
-					font-weight: 800;
-				}
-
-				.right-msg {
-					color: #4B4C4D;
-					font-size: 23.9rpx;
-					margin-bottom: 7.96rpx;
-				}
-
-				.right-icons {
-					display: flex;
-
-					text {
-						padding: 5.97rpx 11.95rpx;
-						color: #7D7D80;
+					.status {
+						color: #20C657;
 						font-size: 21.91rpx;
-						background-color: #F5F5F5;
+						background-color: #E6FAF0;
+						width: 67.72rpx;
+						height: 35.85rpx;
 						border-radius: 5.97rpx;
-						margin-right: 11.95rpx;
+						text-align: center;
+						line-height: 35.85rpx;
+						float: right;
+						display: block;
 					}
 
-					.jing {
-						background-color: #EBF8FF;
-						color: #3EACF0;
+					.price {
+						color: #FF6040;
+						font-size: 31.87rpx;
+						font-weight: 800;
+					}
+
+					.psam {
+						color: #FF6040;
+						font-size: 25.89rpx;
+						font-weight: 800;
+					}
+
+					.right-msg {
+						color: #4B4C4D;
+						font-size: 23.9rpx;
+						margin-bottom: 7.96rpx;
+					}
+
+					.right-icons {
+						display: flex;
+
+						text {
+							padding: 5.97rpx 11.95rpx;
+							color: #7D7D80;
+							font-size: 21.91rpx;
+							background-color: #F5F5F5;
+							border-radius: 5.97rpx;
+							margin-right: 11.95rpx;
+						}
+
+						.jing {
+							background-color: #EBF8FF;
+							color: #3EACF0;
+						}
 					}
 				}
 			}
-		  }
 		}
 	}
 </style>

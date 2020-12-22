@@ -131,6 +131,9 @@
 			console.log(this.bid)
 		},
 		methods: {
+			setpop() {
+				this.$refs.popup.hide()
+			},
 			goback() {
 				uni.navigateBack({
 					delta: 1

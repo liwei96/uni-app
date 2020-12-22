@@ -12,7 +12,7 @@
 			</view>
 		</view>
 		<view class="list" v-if="list.length>0">
-			<view class="li" v-for="item in list" :key="item.id" @tap="gotalk(item.id)">
+			<view class="li" v-for="item in list" :key="item.id" @tap="gotalk(item.id,item.project_id,item.city_id)">
 				<view class="left">
 					<view class="leftbox">
 						<image :src="item.img" mode="widthFix"></image>
@@ -46,16 +46,17 @@
 	export default {
 		data() {
 			return {
-				list: []
+				list: [],
+				timer: ''
 			}
 		},
 		onShow() {
 			this.getlist()
 		},
 		methods: {
-			gotalk(id) {
+			gotalk(id,bid,cid) {
 				uni.navigateTo({
-					url: '/pages/talk/talk?id=' + id
+					url: '/pages/talk/talk?id=' + id+'&bid='+bid+'&cid='+cid
 				})
 			},
 			getlist() {
@@ -69,15 +70,21 @@
 				};
 				// uni.onSocketOpen(function (res) {
 				// 	console.log(22)
-
 				// });
 				uni.sendSocketMessage({
 					data: JSON.stringify(pp)
 				});
+				
+				// setTimeout(()=>{
+				// 	that.getlist()
+				// },2000)
 			}
 		},
 		mounted() {
 			let that = this
+			this.timer = setInterval(()=>{
+				that.getlist()
+			},2000)
 			uni.onSocketMessage(function(res) {
 				let data = JSON.parse(res.data)
 				console.log(data)
@@ -121,7 +128,7 @@
 				} else if (data.action == 301) {
 					if (String(data.fromUserName).length < 10) {
 						if(uni.setStorageSync(String(data.fromUserName))) {
-							uni.setStorageSync(String(data.fromUserName),parseInt(sessionStorage.getItem(String(data.fromUserName))) + 1)
+							uni.setStorageSync(String(data.fromUserName),parseInt(uni.getStorageSync(String(data.fromUserName))) + 1)
 						}else {
 							uni.setStorageSync(String(data.fromUserName),1)
 						}
@@ -135,6 +142,9 @@
 					}
 				}
 			});
+		},
+		onHide() {
+			clearInterval(this.timer)
 		}
 	}
 </script>
@@ -247,6 +257,7 @@
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
+					max-width: 480rpx;
 				}
 			}
 		}
