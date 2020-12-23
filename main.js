@@ -45,6 +45,7 @@ Vue.prototype.login = function(e,that){
 			}
 		})
 	}else {
+		console.log("main.js")
 		uni.login({
 		  provider: 'baidu',
 		  success: function (res) {

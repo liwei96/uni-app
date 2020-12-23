@@ -18,13 +18,13 @@
 				<view class="pro_bot">
 					<view class="name">{{item.name}}</view>
 					<view class="tese">
-						<text class="status">{{item.state}}</text>
-						<text class="type">{{item.type}}</text>
+						<text class="status" v-if="item.state!==''&& item.state!==null">{{item.state}}</text>
+						<text class="type" v-if="item.type!=='' && item.type!==null">{{item.type}}</text>
 					</view>
 					<view class="price">
 						约<text>{{item.price}}</text>元/m²
 					</view>
-					<view class="bo_tel_btn" @tap="boTel(tel)">
+					<view class="bo_tel_btn" @tap="boTel(telphone)">
 						<image src="../../static/other/pk_tel.png" mode=""></image>
 						电话咨询
 					</view>
@@ -44,7 +44,7 @@
 				</view>
 				<view class="pro_bot">
 					<view class="name">{{item.name}}</view>
-					<view class="bo_tel_btn" @tap="boTel(tel)">
+					<view class="bo_tel_btn" @tap="boTel(telphone)">
 						<image src="../../static/other/pk_tel.png" mode=""></image>
 						电话咨询
 					</view>
@@ -152,7 +152,9 @@
 			<view class="pro_sale" v-for="item in data" :key="item.id">
 				<view class="danjia_box">
 					<view class="price">约{{item.price}}元/m²</view>
-					<view class="btn" @tap="baoMing(item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价')">咨询底价</view>
+					<button class="btn" open-type="getPhoneNumber" hover-class="none"
+					    @getphonenumber="getPhoneNumber($event,item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价')"
+					>咨询底价</button>
 				</view>
 				<view class="zongjia">
 					{{item.total_price}}
@@ -242,14 +244,15 @@
 
 		</view>
 
-		<view class="button" @tap="baoMing(0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息')">
+		<button class="button" open-type="getPhoneNumber" hover-class="none"
+		@getphonenumber="getPhoneNumber($event,0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息')">
 			咨询详细楼盘信息
-		</view>
+		</button>
 		<twosee :title="title" :project="recommends"></twosee>
 		<bottom :remark="'楼盘pk详情页+预约看房'" :point="103" :title="'预约看房'" :pid="pid" :telphone="telphone"></bottom>
 		
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
 		</wyb-popup>
 	</view>
 </template>
@@ -282,7 +285,8 @@
 				telphone:'',
 				pid:"0",
 				
-				tel:'4009669995'
+				tel:'4009669995',
+				isok:0
 			};
 		},
 		onLoad(option) {
@@ -306,6 +310,75 @@
 			sign
 		},
 		methods: {
+			async getPhoneNumber(e,pid,remark,point,title,type) {
+				let that = this
+				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+					that.baoMing(pid,remark,point,title)
+					if(type) {
+						
+					}
+				} else {
+					let session = uni.getStorageSync('session')
+					if(session){
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method:'get',
+							data:{
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res,'session')
+								let tel = res.data.mobile
+								uni.setStorageSync('phone',tel)
+								let openid = uni.getStorageSync('openid')
+							    that.tel = tel;
+								that.baoMing(pid,remark,point,title)
+							}
+						})
+					}else {
+						console.log(session,"没保存session")
+						uni.login({
+						  provider: 'baidu',
+						  success: function (res) {
+						    console.log(res.code);
+							uni.request({
+								url: 'https://api.edefang.net/applets/baidu/get_session_key',
+								method:'get',
+								data:{
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid',res.data.openid)
+									uni.setStorageSync('session',res.data.session_key)
+									uni.request({
+										url:"https://api.edefang.net/applets/baidu/decrypt",
+										data:{
+											data: e.detail.encryptedData,
+											iv:e.detail.iv,
+											session_key:res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone',tel)
+											let openid = uni.getStorageSync('openid')
+											that.$refs.sign.tel = tel
+											that.baoMing(pid,remark,point,title)
+										}
+									})
+									
+								}
+							})
+						  }
+						});
+						}
+					this.isok = 1
+				}
+			},
 			baoMing(pid,msg,point,title){
 				this.pid_d = pid;
 				this.position_n = point,
@@ -319,7 +392,7 @@
 			},
 			boTel(tel){
 				uni.makePhoneCall({
-					phoneNumber: tel,
+					phoneNumber:tel ,
 					success: function() {
 						console.log('拨打电话');
 					} //仅为示例
@@ -369,6 +442,19 @@
 								})
 							})
 							this.recommends = my_arr;
+							// #ifdef MP-BAIDU
+							 swan.setPageInfo({
+							 	title: "允家新房-楼盘pk详情",
+							 	keywords: "允家新房-楼盘pk详情",
+							 	description: "允家新房-楼盘pk详情",
+							 	success: res => {
+							 		console.log('setPageInfo success', res);
+							 	},
+							 	fail: err => {
+							 		console.log('setPageInfo fail', err);
+							 	}
+							 })
+							// #endif
 						}
 					}
 					
@@ -436,7 +522,9 @@
 	page {
 		background: #fff;
 	}
-
+	button::after{
+		border:none;
+	}
 	.loupkdetail {
 		.toptitle {
 			color: #D4D7D9;
@@ -1138,6 +1226,8 @@
 						text-align: center;
 						line-height: 48rpx;
 						margin-left: 68rpx;
+						padding-left: 0rpx;
+						padding-right: 0rpx;
 					}
 				}
 

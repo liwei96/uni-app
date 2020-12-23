@@ -28,12 +28,14 @@
 				<image src="../../static/content/right.png" mode="" class="right"></image>
 			</view>
 			<view class="bot">
-				 <view class="zixun" @tap="baoMing(one.bid,'楼盘户型详情页+咨询详细户型',97,'咨询户型底价')">
+				 <button  open-type="getPhoneNumber"   class="zixun" hover-class="none"
+				 @getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+咨询详细户型',97,'咨询户型底价')">
 				 	咨询详细户型
-				 </view>
-				 <view class="dijia" @tap="baoMing(one.bid,'楼盘户型详情页+咨询楼盘底价',105,'咨询楼盘底价')">
+				 </button>
+				 <button open-type="getPhoneNumber" hover-class="none" class="dijia" 
+				 @getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+咨询楼盘底价',105,'咨询楼盘底价')">
 				 	咨询楼盘底价
-				 </view>
+				 </button>
 			</view>
 		</view>
 		<view class="bg_hui"></view>
@@ -66,8 +68,12 @@
 					</view>
 				</view>
 				<view class="bo_tel">
-					<image src="../../static/content/zixun.png" mode="" class="bo_zi"
-					@tap="baoMing(one.bid,'楼盘户型详情页+咨询服务',104,'咨询服务')"></image>
+					<button open-type="getPhoneNumber" hover-class="none"
+					@getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+咨询服务',104,'咨询服务')"
+					class="bo_zi">
+						<image src="../../static/content/zixun.png" mode="" 
+						></image>
+					</button>
 					<image src="../../static/content/tel.png" mode=""
 					@tap="boTel(telphone)"></image>
 				</view>
@@ -98,9 +104,10 @@
 					</text>
 				</text>
 				<view class="right">
-					<view class="ling_btn" @tap="baoMing(one.bid,'楼盘户型详情页+领取优惠',94,'领取优惠')">
+					<button open-type="getPhoneNumber"  class="ling_btn" hover-class="none"
+					@getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+领取优惠',94,'领取优惠')">
 						领取优惠
-					</view>
+					</button>
 					<text>{{num.receive_num}}人已领取</text>
 				</view>
 			</view>
@@ -108,13 +115,14 @@
 				<text class="text">
 					免费专车1对1服务限时券
 					<text class="jie">
-					（剩余124张）
+					（剩余{{shengnum}}张）
 					</text>
 				</text>
 				<view class="right">
-					<view class="ling_btn" @tap="baoMing(one.bid,'楼盘户型详情页+免费领取',95,'免费领取')">
+					<button class="ling_btn" open-type="getPhoneNumber"  hover-class="none" 
+					@getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+免费领取',95,'免费领取')">
 						免费领取
-					</view>
+					</button>
 					<text>{{num.remain_num}}人已领取</text>
 				</view>
 			</view>
@@ -171,7 +179,7 @@
 		<bottom :remark="'项目户型详情页+预约看房'" :point="103" :title="'预约看房'" :pid="one.bid" :telphone="telphone"></bottom>
 		
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
 		</wyb-popup>
 	</view>
 </template>
@@ -206,13 +214,85 @@ import sign from '@/components/sign.vue'
 				remark_k:'',
 				position_n:0,
 				telphone:'',
+				isok:0,
+				shengnum:"123"
 				
 			};
 		},
 		onLoad(option){
 			this.getdata(option.id);
+			
 		},
 		methods:{
+			async getPhoneNumber(e,pid,remark,point,title,type) {
+				let that = this
+				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+					that.baoMing(pid,remark,point,title)
+					if(type) {
+						
+					}
+				} else {
+					let session = uni.getStorageSync('session')
+					if(session){
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method:'get',
+							data:{
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res,'session')
+								let tel = res.data.mobile
+								uni.setStorageSync('phone',tel)
+								let openid = uni.getStorageSync('openid')
+							    that.tel = tel;
+								that.baoMing(pid,remark,point,title)
+							}
+						})
+					}else {
+						console.log(session,"没保存session")
+						uni.login({
+						  provider: 'baidu',
+						  success: function (res) {
+						    console.log(res.code);
+							uni.request({
+								url: 'https://api.edefang.net/applets/baidu/get_session_key',
+								method:'get',
+								data:{
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid',res.data.openid)
+									uni.setStorageSync('session',res.data.session_key)
+									uni.request({
+										url:"https://api.edefang.net/applets/baidu/decrypt",
+										data:{
+											data: e.detail.encryptedData,
+											iv:e.detail.iv,
+											session_key:res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone',tel)
+											let openid = uni.getStorageSync('openid')
+											that.$refs.sign.tel = tel
+											that.baoMing(pid,remark,point,title)
+										}
+									})
+									
+								}
+							})
+						  }
+						});
+						}
+					this.isok = 1
+				}
+			},
 			boTel(tel) {
 				uni.makePhoneCall({
 					phoneNumber: tel,
@@ -233,6 +313,7 @@ import sign from '@/components/sign.vue'
 				this.codenum = 0
 			},
 			getdata(id){
+				let that = this;
 				let other = uni.getStorageSync('other')
 				let token = uni.getStorageSync('token')
 				uni.request({
@@ -253,6 +334,31 @@ import sign from '@/components/sign.vue'
 							this.num = res.data.num;
 							this.staff = res.data.common.staff;
 					        this.telphone = res.data.common.phone;
+							
+							let id = uni.getStorageSync("sheng_num"+res.data.one.bid);
+							if(id){
+								this.shengnum = id;
+							}else{
+								this.shengnum = this.shengnum;
+							}
+							
+							
+							// #ifdef MP-BAIDU
+							let header = res.data.common.header;
+							   swan.setPageInfo({
+							   	title: header.title,
+							   	keywords: header.keywords,
+							   	description: header.description,
+							   	image: [that.one.small],
+							   	success: res => {
+							   		console.log('setPageInfo success', res);
+							   	},
+							   	fail: err => {
+							   		console.log('setPageInfo fail', err);
+							   	}
+							   })
+							// #endif
+							
 						}
 					}
 				})
@@ -262,6 +368,9 @@ import sign from '@/components/sign.vue'
 </script>
 
 <style lang="less">
+	button::after{
+		border:none
+	}
 .hu_detail{
 	.toptitle{
 		color: #17181A;
@@ -501,6 +610,7 @@ import sign from '@/components/sign.vue'
 			height: 80rpx;
 			width: 100%;
 			margin-bottom: 50rpx;
+			display: flex;
 			.head_img{
 				width: 80rpx;
 				height: 80rpx;
@@ -515,12 +625,12 @@ import sign from '@/components/sign.vue'
 					font-weight: bold;
 					color: #323233;
 					text{
-						// width: 108rpx;
+						width: 115rpx;
 						height: 30rpx;
 						background: #FA941B;
 						border-radius: 6rpx;
-						padding-left: 10rpx;
-						padding-right: 10rpx;
+						// padding-left: 10rpx;
+						// padding-right: 10rpx;
 						font-size: 20rpx;
 						font-weight: 500;
 						color: #FFFFFF;
@@ -538,15 +648,26 @@ import sign from '@/components/sign.vue'
 			}
 			.bo_tel{
 				float: left;
-				image{
+				display: flex;
+				button{
+					width: 80rpx;
+					height: 80rpx;
+					image{
+						width: 80rpx;
+						height: 80rpx;
+						border-radius: 50%;
+			
+					}
+				}
+				image {
 					width: 80rpx;
 					height: 80rpx;
 					border-radius: 50%;
-		
+				
 				}
 				.bo_zi{
-					margin-right: 50rpx;
-					margin-left: 78rpx;
+					margin-right: 60rpx;
+					margin-left: 68rpx;
 				}
 			}
 		}
@@ -631,6 +752,8 @@ import sign from '@/components/sign.vue'
 					position: absolute;
 					top: 28rpx;
 					right: 30rpx;
+					padding-left: 0rpx;
+					padding-right: 0rpx;
 				}
 				text{
 					font-size: 24rpx;
@@ -675,6 +798,8 @@ import sign from '@/components/sign.vue'
 					position: absolute;
 					top: 28rpx;
 					right: 30rpx;
+					padding-left: 0rpx;
+					padding-right: 0rpx;
 			 	}
 			 	text{
 			 		font-size: 24rpx;

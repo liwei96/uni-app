@@ -132,6 +132,27 @@
 							 this.traffic_leng = img.traffic.length;
 							 this.departments_leng = img.departments.length;
 							 this.telphone = res.data.common.phone;
+							 
+							 // #ifdef MP-BAIDU
+							        let header = res.data.common.header;
+									let  my_img = res.data.imgs.effect;
+									let arr=[];
+									my_img.map(p=>{
+										arr.push(p.small)
+									})
+									swan.setPageInfo({
+										title: header.title,
+										keywords: header.keywords,
+										description: header.description,
+										image: arr,
+										success: res => {
+											console.log('setPageInfo success', res);
+										},
+										fail: err => {
+											console.log('setPageInfo fail', err);
+										}
+									})
+							 // #endif
 						}
 					},
 					fail: (error) => {
@@ -343,7 +364,7 @@
 		width: 100%;
 		height: auto;
 		background:#fff;
-		margin-bottom: 120rpx;
+		margin-bottom: 140rpx;
 		.tit{
 			font-size: 32rpx;
 			font-weight: bold;

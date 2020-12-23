@@ -112,6 +112,7 @@
 		},
 		methods:{
 			getdata(id){
+				let that = this;
 				let other = uni.getStorageSync("other");
 				let token = uni.getStorageSync("token")
 				uni.request({
@@ -141,6 +142,27 @@
 						   this.swiperTabList[3] = `交通图(${img.traffic.length})`;
 						   this.swiperTabList[4] = `户型图(${img.departments.length})`;
 						   this.swiperTabList[5] = `配套图(${img.matching.length})`;
+						   
+						   // #ifdef MP-BAIDU
+						        let header = res.data.common.header;
+								let  my_img = res.data.imgs.effect;
+								let arr=[];
+								my_img.map(p=>{
+									arr.push(p.small)
+								})
+								swan.setPageInfo({
+									title: header.title,
+									keywords: header.keywords,
+									description: header.description,
+									image: arr,
+									success: res => {
+										console.log('setPageInfo success', res);
+									},
+									fail: err => {
+										console.log('setPageInfo fail', err);
+									}
+								})
+						   // #endif
 							
 						}
 					},

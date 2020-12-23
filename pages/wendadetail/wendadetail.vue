@@ -44,9 +44,10 @@
 							</view>
 						</view>
 					</view>
-					<view class="right_btn" @tap="baoMing(data.bid,'项目问答详情页+免费咨询',104,'免费咨询')">
+					<button class="right_btn" open-type="getPhoneNumber" hover-class="none"
+					@getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+免费咨询',104,'免费咨询')">
 						免费咨询
-					</view>
+					</button>
 				</view>
 				<!-- 允家房友-->
           <!-- <view class="top">
@@ -102,7 +103,7 @@
 	<twosee :title="title" :project="recommends"></twosee>
 	<bottom :remark="'项目问答详情页+预约看房'" :point="103" :title="'预约看房'" :pid="data.bid" :telphone="telphone"></bottom>
 	<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-		<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+		<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
 	</wyb-popup>
 	</view>
 </template>
@@ -128,6 +129,7 @@ import sign from '@/components/sign.vue'
 				remark_k:'',
 				position_n:0,
 				telphone:'',
+				isok:0
 			};
 		},
 		components:{
@@ -142,6 +144,75 @@ import sign from '@/components/sign.vue'
 			this.getdata(option.id)
 		},
 		methods:{
+			async getPhoneNumber(e,pid,remark,point,title,type) {
+				let that = this
+				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+					that.baoMing(pid,remark,point,title)
+					if(type) {
+						
+					}
+				} else {
+					let session = uni.getStorageSync('session')
+					if(session){
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method:'get',
+							data:{
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res,'session')
+								let tel = res.data.mobile
+								uni.setStorageSync('phone',tel)
+								let openid = uni.getStorageSync('openid')
+							    that.tel = tel;
+								that.baoMing(pid,remark,point,title)
+							}
+						})
+					}else {
+						console.log(session,"没保存session")
+						uni.login({
+						  provider: 'baidu',
+						  success: function (res) {
+						    console.log(res.code);
+							uni.request({
+								url: 'https://api.edefang.net/applets/baidu/get_session_key',
+								method:'get',
+								data:{
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid',res.data.openid)
+									uni.setStorageSync('session',res.data.session_key)
+									uni.request({
+										url:"https://api.edefang.net/applets/baidu/decrypt",
+										data:{
+											data: e.detail.encryptedData,
+											iv:e.detail.iv,
+											session_key:res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone',tel)
+											let openid = uni.getStorageSync('openid')
+											that.$refs.sign.tel = tel
+											that.baoMing(pid,remark,point,title)
+										}
+									})
+									
+								}
+							})
+						  }
+						});
+						}
+					this.isok = 1
+				}
+			},
 			baoMing(pid,remark,point,title){
 				this.$refs.popup.show();
 				this.title_e = title;
@@ -153,23 +224,39 @@ import sign from '@/components/sign.vue'
 				this.codenum = 0
 			},
 			getdata(id){
+				let other = uni.getStorageSync('other');
+				let token = uni.getStorageSync('token');
 				uni.request({
 					url:this.apiserve+"/applets/question/detail",
 					data:{
 						id:id,
-						other:'',
-						token:''
+						other:other,
+						token:token
 					},
 					method:"GET",
 					success: (res) => {
 						if(res.data.code==200){
-							 console.log(res);
+							
 						   this.building = res.data.building;
 						   this.data = res.data.data;
 						   this.recommends = res.data.recommends;
 						   this.relevant = res.data.relevant;
 						   this.staff = res.data.common.staff;
 						   this.telphone = res.data.common.phone;
+						   // #ifdef MP-BAIDU
+						      let header = res.data.common.header;
+							  swan.setPageInfo({
+							  	title: header.title,
+							  	keywords: header.keywords,
+							  	description: header.description,
+							  	success: res => {
+							  		console.log('setPageInfo success', res);
+							  	},
+							  	fail: err => {
+							  		console.log('setPageInfo fail', err);
+							  	}
+							  })
+						   // #endif
 						}
 					},
 					fail: (error) => {
@@ -192,6 +279,9 @@ import sign from '@/components/sign.vue'
 <style lang="less">
 	page{
 		background-color: #fff;
+	}
+	button::after{
+		border:none;
 	}
 .wendadetail{
 	.toptitle{
@@ -391,6 +481,8 @@ import sign from '@/components/sign.vue'
 				font-weight: 400;
 				color: #FFFFFF;
 				margin-top: 5rpx;
+				padding-left: 0rpx;
+				padding-right: 0rpx;
 			}
 			
 
@@ -495,6 +587,8 @@ import sign from '@/components/sign.vue'
 			line-height: 80rpx;
 			text-align: center;
 			border-radius: 12rpx;
+			padding-left: 0rpx;
+			padding-right: 0rpx;
 		}
 	}
 	.about_lou{

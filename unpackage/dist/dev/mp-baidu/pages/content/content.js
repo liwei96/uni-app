@@ -773,7 +773,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 var _uChartsMin = _interopRequireDefault(__webpack_require__(/*! @/components/u-charts/u-charts/u-charts.min.js */ 268));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 475));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 482));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 489));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 496));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNoticeBar = function uniNoticeBar() {__webpack_require__.e(/*! require.ensure | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-notice-bar/uni-notice-bar.vue */ 461));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var wybPopup = function wybPopup() {__webpack_require__.e(/*! require.ensure | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then((function () {return resolve(__webpack_require__(/*! @/components/wyb-popup/wyb-popup.vue */ 447));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var sign = function sign() {__webpack_require__.e(/*! require.ensure | components/sign */ "components/sign").then((function () {return resolve(__webpack_require__(/*! @/components/sign.vue */ 454));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var mytoast = function mytoast() {__webpack_require__.e(/*! require.ensure | components/mytoast/mytoast */ "components/mytoast/mytoast").then((function () {return resolve(__webpack_require__(/*! @/components/mytoast/mytoast.vue */ 433));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var bottom = function bottom() {Promise.all(/*! require.ensure | components/mine/bottom */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/mine/bottom")]).then((function () {return resolve(__webpack_require__(/*! @/components/mine/bottom.vue */ 503));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
@@ -898,7 +897,12 @@ var canvaColumn = null;var _default =
       seefang_sheng: "",
       seefang_ling: "",
       pid: 0,
-      isok: 0 };
+      isok: 0,
+      header: {},
+      collect: 0,
+      shou_old: __webpack_require__(/*! ../../static/content/shou.png */ 605),
+      has_shou: __webpack_require__(/*! ../../static/content/has_shou.png */ 606) };
+
 
 
 
@@ -1052,73 +1056,190 @@ var canvaColumn = null;var _default =
       }
 
     },
-    getPhoneNumber: function getPhoneNumber(e, pid, remark, point, title, type) {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var that, session;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+    getPhoneNumber: function getPhoneNumber(e, pid, remark, point, title, type, ping_id) {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var that, token, url, _token, session, _session;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
                 that = _this;
                 if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-                  _this.isok = 0;
-                  that.baoMing(pid, remark, point, title);
                   if (type) {
+                    token = uni.getStorageSync('token');
+                    if (token) {
+                      if (type == 1) {//点赞
+                        _this.getLike(ping_id);
+                      } else if (type == 2) {//收藏
+                        _this.goShou();
+                      }
+                    } else {
+                      url = "/pages/content/content?id=" + _this.detail.id;
+                      console.log(url);
+                      uni.setStorageSync("backurl", url);
+                      uni.navigateTo({
+                        url: "/pages/login/login" });
 
+                    }
+                  } else {
+                    _this.isok = 0;
+                    that.baoMing(pid, remark, point, title);
                   }
                 } else {
-                  session = uni.getStorageSync('session');
-                  if (session) {
-                    uni.request({
-                      url: 'https://api.edefang.net/applets/baidu/decrypt',
-                      method: 'get',
-                      data: {
-                        iv: e.detail.iv,
-                        data: e.detail.encryptedData,
-                        session_key: session },
-
-                      success: function success(res) {
-                        console.log(res, 'session');
-                        var tel = res.data.mobile;
-                        uni.setStorageSync('phone', tel);
-                        var openid = uni.getStorageSync('openid');
-                        that.tel = tel;
-                        that.baoMing(pid, remark, point, title);
-                      } });
-
-                  } else {
-                    console.log(session, "没保存session");
-                    uni.login({
-                      provider: 'baidu',
-                      success: function success(res) {
-                        console.log(res.code);
+                  if (type) {
+                    _token = uni.getStorageSync("token");
+                    if (_token) {
+                      if (type == 1) {//点赞
+                        _this.getLike(ping_id);
+                      } else if (type == 2) {//收藏
+                        _this.goShou();
+                      }
+                    } else {
+                      session = uni.getStorageSync('session');
+                      if (session) {
                         uni.request({
-                          url: 'https://api.edefang.net/applets/baidu/get_session_key',
+                          url: 'https://api.edefang.net/applets/baidu/decrypt',
                           method: 'get',
                           data: {
-                            code: res.code },
+                            iv: e.detail.iv,
+                            data: e.detail.encryptedData,
+                            session_key: session },
 
                           success: function success(res) {
-                            console.log(res);
-                            uni.setStorageSync('openid', res.data.openid);
-                            uni.setStorageSync('session', res.data.session_key);
+                            console.log(res, 'session');
+                            var tel = res.data.mobile;
+                            uni.setStorageSync('phone', tel);
+                            var openid = uni.getStorageSync('openid');
                             uni.request({
-                              url: "https://api.edefang.net/applets/baidu/decrypt",
+                              url: "https://api.edefang.net/applets/login",
+                              method: 'GET',
                               data: {
-                                data: e.detail.encryptedData,
-                                iv: e.detail.iv,
-                                session_key: res.data.session_key },
+                                phone: tel,
+                                openid: openid },
 
                               success: function success(res) {
                                 console.log(res);
-                                var tel = res.data.mobile;
-                                uni.setStorageSync('phone', tel);
-                                var openid = uni.getStorageSync('openid');
-                                that.$refs.sign.tel = tel;
-                                that.baoMing(pid, remark, point, title);
+                                uni.setStorageSync('token', res.data.token);
+                                if (type == 1) {//点赞
+                                  that.getLike(ping_id);
+                                } else if (type == 2) {//收藏
+                                  that.goShou();
+                                }
                               } });
-
 
                           } });
 
-                      } });
+                      } else {
+                        console.log(session, "没保存session");
+                        uni.login({
+                          provider: 'baidu',
+                          success: function success(res) {
+                            // console.log(res.code);
+                            uni.request({
+                              url: 'https://api.edefang.net/applets/baidu/get_session_key',
+                              method: 'get',
+                              data: {
+                                code: res.code },
 
+                              success: function success(res) {
+                                console.log(res);
+                                uni.setStorageSync('openid', res.data.openid);
+                                uni.setStorageSync('session', res.data.session_key);
+                                uni.request({
+                                  url: "https://api.edefang.net/applets/baidu/decrypt",
+                                  data: {
+                                    data: e.detail.encryptedData,
+                                    iv: e.detail.iv,
+                                    session_key: res.data.session_key },
+
+                                  success: function success(res) {
+                                    console.log(res);
+                                    var tel = res.data.mobile;
+                                    uni.setStorageSync('phone', tel);
+                                    var openid = uni.getStorageSync('openid');
+                                    uni.request({
+                                      url: "https://api.edefang.net/applets/login",
+                                      method: 'GET',
+                                      data: {
+                                        phone: tel,
+                                        openid: openid },
+
+                                      success: function success(res) {
+                                        console.log(res);
+                                        uni.setStorageSync('token', res.data.token);
+                                        if (type == 1) {//点赞
+                                          that.getLike(ping_id);
+                                        } else if (type == 2) {//收藏
+                                          that.goShou();
+                                        }
+
+                                      } });
+
+                                    // that.$refs.sign.tel = tel
+                                    // that.baoMing(pid,remark,point,title)
+                                  } });
+
+
+                              } });
+
+                          } });
+
+                      }
+                    }
+                  } else {
+                    _session = uni.getStorageSync('session');
+                    if (_session) {
+                      uni.request({
+                        url: 'https://api.edefang.net/applets/baidu/decrypt',
+                        method: 'get',
+                        data: {
+                          iv: e.detail.iv,
+                          data: e.detail.encryptedData,
+                          session_key: _session },
+
+                        success: function success(res) {
+                          console.log(res, 'session');
+                          var tel = res.data.mobile;
+                          uni.setStorageSync('phone', tel);
+                          var openid = uni.getStorageSync('openid');
+                          that.tel = tel;
+                          that.baoMing(pid, remark, point, title);
+                        } });
+
+                    } else {
+                      console.log(_session, "没保存session");
+                      uni.login({
+                        provider: 'baidu',
+                        success: function success(res) {
+                          console.log(res.code);
+                          uni.request({
+                            url: 'https://api.edefang.net/applets/baidu/get_session_key',
+                            method: 'get',
+                            data: {
+                              code: res.code },
+
+                            success: function success(res) {
+                              console.log(res);
+                              uni.setStorageSync('openid', res.data.openid);
+                              uni.setStorageSync('session', res.data.session_key);
+                              uni.request({
+                                url: "https://api.edefang.net/applets/baidu/decrypt",
+                                data: {
+                                  data: e.detail.encryptedData,
+                                  iv: e.detail.iv,
+                                  session_key: res.data.session_key },
+
+                                success: function success(res) {
+                                  console.log(res);
+                                  var tel = res.data.mobile;
+                                  uni.setStorageSync('phone', tel);
+                                  var openid = uni.getStorageSync('openid');
+                                  that.$refs.sign.tel = tel;
+                                  that.baoMing(pid, remark, point, title);
+                                } });
+
+
+                            } });
+
+                        } });
+
+                    }
+                    _this.isok = 1;
                   }
-                  _this.isok = 1;
                 }case 2:case "end":return _context.stop();}}}, _callee);}))();
     },
     to: function to(item, num) {
@@ -1306,6 +1427,8 @@ var canvaColumn = null;var _default =
                 _this2.questions = data.questions;
                 _this2.recommends = data.recommends;
                 _this2.common = data.common;
+                _this2.header = data.common.header;
+                _this2.collect = data.collect;
 
                 _this2.latitude = data.abstract.latitude;
                 _this2.longitude = data.abstract.longitude;
@@ -1315,6 +1438,7 @@ var canvaColumn = null;var _default =
                 // this.covers[0].height = 72;
                 _this2.covers[0].title = data.abstract.name;
                 _this2.covers[0].label.content = data.abstract.name;
+
                 _this2.suijiData();
 
 
@@ -1390,6 +1514,31 @@ var canvaColumn = null;var _default =
                 _this2.fenxi_tou = fenxi_tou;
                 _this2.fenxi_yiju = fenxi_yiju;
 
+
+                var header = data.common.header;
+                var img = data.imgs.img.effects;
+                var arrs = [];
+                if (img.length > 0) {
+                  img.map(function (p) {
+                    arrs.push(p.small);
+                  });
+                }
+                swan.setPageInfo({
+                  title: header.title,
+                  keywords: header.keywords,
+                  description: header.description,
+                  image: arrs,
+                  success: function success(res) {
+                    console.log('setPageInfo success', res);
+                  },
+                  fail: function fail(err) {
+                    console.log('setPageInfo fail', err);
+                  } });
+
+
+
+
+
               }
             } });
 
@@ -1397,7 +1546,7 @@ var canvaColumn = null;var _default =
 
 
     },
-    goShou: function goShou() {
+    goShou: function goShou() {var _this3 = this;
       var token = uni.getStorageSync('token');
       if (token) {
         uni.request({
@@ -1411,6 +1560,9 @@ var canvaColumn = null;var _default =
           success: function success(res) {
             if (res.data.code == 200) {
               console.log(res);
+            } else if (res.data.code == 500) {
+              _this3.$refs.msg.show();
+              _this3.msg = res.data.msg;
             }
           } });
 

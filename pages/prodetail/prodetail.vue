@@ -36,7 +36,9 @@
 					{{building.total_price}}
 					<text class="dan">万起</text>
 				</text>
-				<text class="cha" @tap="baoMing(building.id,'项目详情页+查低价',105,'查低价')">查底价</text>
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,building.id,'项目详情页+查低价',105,'查低价')" hover-class="none">
+				<text class="cha" >查底价</text>
+				</button>
 			</view>
 			<view class="type">
 				<text class="left">类       型：</text>
@@ -67,7 +69,9 @@
 				<text class="time">
 					{{building.open_time}}
 				</text>
-				<text class="kai_btn" @tap="baoMing(building.id,'项目详情页+开盘通知',92,'开盘提醒我')">开盘通知</text>
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,building.id,'项目详情页+开盘通知',92,'开盘提醒我')">
+				<text class="kai_btn" >开盘通知</text>
+				</button>
 			</view>
 			<view class="push_time">
 				<text class="left">加推时间：</text>
@@ -183,7 +187,7 @@
 		:pid="building.id" :telphone="telphone"></bottom>
 		
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
 		</wyb-popup>
 		
 	</view>
@@ -206,7 +210,8 @@
 				pid_d:'',
 				remark_k:'',
 				position_n:0,
-				telphone:''
+				telphone:'',
+				isok:0,
 			};
 		},
 		components:{
@@ -220,7 +225,75 @@
 			// this.text=this.text.substring(0,82);
 		},
 		methods:{
-		
+			async getPhoneNumber(e,pid,remark,point,title,type) {
+				let that = this
+				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+					that.baoMing(pid,remark,point,title)
+					if(type) {
+						
+					}
+				} else {
+					let session = uni.getStorageSync('session')
+					if(session){
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method:'get',
+							data:{
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res,'session')
+								let tel = res.data.mobile
+								uni.setStorageSync('phone',tel)
+								let openid = uni.getStorageSync('openid')
+							    that.tel = tel;
+								that.baoMing(pid,remark,point,title)
+							}
+						})
+					}else {
+						console.log(session,"没保存session")
+						uni.login({
+						  provider: 'baidu',
+						  success: function (res) {
+						    console.log(res.code);
+							uni.request({
+								url: 'https://api.edefang.net/applets/baidu/get_session_key',
+								method:'get',
+								data:{
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid',res.data.openid)
+									uni.setStorageSync('session',res.data.session_key)
+									uni.request({
+										url:"https://api.edefang.net/applets/baidu/decrypt",
+										data:{
+											data: e.detail.encryptedData,
+											iv:e.detail.iv,
+											session_key:res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone',tel)
+											let openid = uni.getStorageSync('openid')
+											that.$refs.sign.tel = tel
+											that.baoMing(pid,remark,point,title)
+										}
+									})
+									
+								}
+							})
+						  }
+						});
+						}
+					this.isok = 1
+				}
+			},
 			baoMing(pid,remark,point,title){
 				this.title_e = title;
 				this.pid_d = pid;
@@ -233,6 +306,7 @@
 				this.codenum = 0
 			},
 			getData(id){
+				let that = this;
 				let  other = uni.getStorageSync("other");
 				let  token =  uni.getStorageSync("token");
 				uni.request({
@@ -250,6 +324,22 @@
 							this.text_all = res.data.building.introduce;
 							this.text = res.data.building.introduce.substring(0,82);
 							this.telphone = res.data.common.phone;
+							// #ifdef MP-BAIDU
+							      let header = res.data.common.header;
+								 swan.setPageInfo({
+										  title:header.title,
+										  keywords:header.keywords,
+										  description:header.description,
+										  image:[that.building.img],
+										  success : res =>{
+											  console.log('setPageInfo success', res);
+										  },
+										  fail: err =>{
+											  console.log('setPageInfo fail', err);
+										  }
+								 })
+							// #endif
+							
 						}
 					},
 					fail: (error) => {
@@ -274,6 +364,7 @@
 </script>
 
 <style lang="less">
+button::after{ border: none;}
 .prodetail{
 	.toptitle{
 		// float: left;

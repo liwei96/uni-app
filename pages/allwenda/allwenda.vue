@@ -146,9 +146,22 @@ export default {
 				method:"GET",
 				success: (res) => {
 					if(res.data.code==200){
-						 console.log(res);
 						 that.data = res.data.data;
 						 that.telphone = res.data.common.phone;
+						 // #ifdef MP-BAIDU
+						  let header = res.data.common.header;
+						  swan.setPageInfo({
+						  	title: header.title,
+						  	keywords: header.keywords,
+						  	description: header.description,
+						  	success: res => {
+						  		console.log('setPageInfo success', res);
+						  	},
+						  	fail: err => {
+						  		console.log('setPageInfo fail', err);
+						  	}
+						  })
+						 // #endif
 					}
 				},
 				fail: (error) => {
