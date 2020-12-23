@@ -44,10 +44,13 @@
 						<image src="../../static/content/duibi.png"></image>
 						<text>对比</text>
 					</view>
-					<view class="shou" @tap="goShou(detail.id)">
-						<image src="../../static/content/shou.png"></image>
+					<button open-type="getPhoneNumber" hover-class="none" 
+					@getphonenumber = "getPhoneNumber($event,detail.id,'项目落地页+收藏',101,'收藏',2)"
+					 class="shou" >
+						<image :src="shou_old" v-if="collect==0"></image>
+						<image :src="has_shou" v-if="collect==1"></image>
 						<text>收藏</text>
-					</view>
+					</button>
 				</view>
 			</view>
 			<view class="detail_list">
@@ -423,16 +426,12 @@
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
 									<text class="tel">{{item.mobile}}</text>
 								</navigator>
-								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1)" @tap="did = item.id">
-								<view class="no_zan" v-if="item.my_like==0">
-									<image :src="item.my_like == 0 ? '../../static/content/no_zan.png' : '../../static/content/zan.png'" mode=""></image>
-									赞({{item.like_num}})
-								</view>
+								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1,item.id)" @tap="did = item.id">
+									<view class="no_zan" >
+										<image :src="item.my_like == 0 ? '../../static/content/no_zan.png' : '../../static/content/zan.png'" mode=""></image>
+										赞({{item.like_num}})
+									</view>
 								</button>
-								<view class="zan" v-if="item.my_like==1" @tap="getLike(item.id)">
-									<image src="../../static/content/zan.png" mode=""></image>
-									赞({{item.like_num}})
-								</view>
 							</view>
 							<view class="content">
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
@@ -713,7 +712,12 @@
 				seefang_sheng: "",
 				seefang_ling: "",
 				pid: 0,
-				isok:0
+				isok:0,
+				header:{},
+				collect:0,
+				shou_old:require("../../static/content/shou.png"),
+				has_shou:require("../../static/content/has_shou.png")
+				
 
 
 
@@ -867,15 +871,131 @@
 				}
 
 			},
-			async getPhoneNumber(e,pid,remark,point,title,type) {
+			async getPhoneNumber(e,pid,remark,point,title,type,ping_id) {
 				let that = this
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					this.isok = 0
-					that.baoMing(pid,remark,point,title)
 					if(type) {
-						
+						let token = uni.getStorageSync('token');
+						if(token){
+							if(type==1){ //点赞
+								this.getLike(ping_id)
+							}else if(type==2){ //收藏
+								this.goShou();
+							}
+						}else{
+							let url="/pages/content/content?id="+this.detail.id;
+							console.log(url);
+							uni.setStorageSync("backurl",url)
+							uni.navigateTo({
+								url:"/pages/login/login"
+							})
+						}
+					}else{
+						this.isok = 0
+						that.baoMing(pid,remark,point,title)
 					}
 				} else {
+				  if(type){
+						 let token = uni.getStorageSync("token");
+						 if(token){
+							 if(type==1){ //点赞
+							 	this.getLike(ping_id)
+							 }else if(type==2){ //收藏
+							 	this.goShou();
+							 }
+						 }else{
+							 let session = uni.getStorageSync('session')
+							 if(session){
+							 	uni.request({
+							 		url: 'https://api.edefang.net/applets/baidu/decrypt',
+							 		method:'get',
+							 		data:{
+							 			iv: e.detail.iv,
+							 			data: e.detail.encryptedData,
+							 			session_key: session
+							 		},
+							 		success: (res) => {
+							 			console.log(res,'session')
+							 			let tel = res.data.mobile
+							 			uni.setStorageSync('phone',tel)
+							 			let openid = uni.getStorageSync('openid')
+										uni.request({
+											url:"https://api.edefang.net/applets/login",
+											method:'GET',
+											data:{
+												phone: tel,
+												openid: openid
+											},
+											success: (res) => {
+												console.log(res)
+												uni.setStorageSync('token',res.data.token)
+												if(type==1){ //点赞
+													that.getLike(ping_id)
+												}else if(type==2){ //收藏
+													that.goShou();
+												}
+											}
+										})
+							 		}
+							 	})
+							 }else {
+							 	console.log(session,"没保存session")
+							 	uni.login({
+							 	  provider: 'baidu',
+							 	  success: function (res) {
+							 	   // console.log(res.code);
+							 		uni.request({
+							 			url: 'https://api.edefang.net/applets/baidu/get_session_key',
+							 			method:'get',
+							 			data:{
+							 				code: res.code
+							 			},
+							 			success: (res) => {
+							 				console.log(res)
+							 				uni.setStorageSync('openid',res.data.openid)
+							 				uni.setStorageSync('session',res.data.session_key)
+							 				uni.request({
+							 					url:"https://api.edefang.net/applets/baidu/decrypt",
+							 					data:{
+							 						data: e.detail.encryptedData,
+							 						iv:e.detail.iv,
+							 						session_key:res.data.session_key
+							 					},
+							 					success: (res) => {
+							 						console.log(res)
+							 						let tel = res.data.mobile
+							 						uni.setStorageSync('phone',tel)
+							 						let openid = uni.getStorageSync('openid')
+													uni.request({
+														url:"https://api.edefang.net/applets/login",
+														method:'GET',
+														data:{
+															phone: tel,
+															openid: openid
+														},
+														success: (res) => {
+															console.log(res)
+															uni.setStorageSync('token',res.data.token)
+															if(type==1){ //点赞
+																that.getLike(ping_id)
+															}else if(type==2){ //收藏
+																that.goShou();
+															}
+															
+														}
+													})
+							 						// that.$refs.sign.tel = tel
+							 						// that.baoMing(pid,remark,point,title)
+							 					}
+							 				})
+							 				
+							 			}
+							 		})
+							 	  }
+							 	});
+							 	} 
+						 }
+				  }else{
 					let session = uni.getStorageSync('session')
 					if(session){
 						uni.request({
@@ -934,6 +1054,7 @@
 						});
 						}
 					this.isok = 1
+					}
 				}
 			},
 			to(item, num) {
@@ -1121,6 +1242,8 @@
 									this.questions = data.questions;
 									this.recommends = data.recommends;
 									this.common = data.common;
+									this.header = data.common.header;
+									this.collect = data.collect;
 
 									this.latitude = data.abstract.latitude;
 									this.longitude = data.abstract.longitude;
@@ -1130,6 +1253,7 @@
 									// this.covers[0].height = 72;
 									this.covers[0].title = data.abstract.name;
 									this.covers[0].label.content = data.abstract.name;
+									
 									this.suijiData();
 
 
@@ -1204,6 +1328,31 @@
 									this.fenxi_data = fenxi_tou;
 									this.fenxi_tou = fenxi_tou;
 									this.fenxi_yiju = fenxi_yiju;
+									
+								   // #ifdef MP-BAIDU
+								      let  header = data.common.header;
+									  let img = data.imgs.img.effects;
+									  let arrs =[];
+									  if(img.length >0){
+										  img.map(p=>{
+											  arrs.push(p.small)
+										  })
+									  }
+									  swan.setPageInfo({
+										  title:header.title,
+										  keywords:header.keywords,
+										  description:header.description,
+										  image:arrs,
+										  success : res =>{
+											  console.log('setPageInfo success', res);
+										  },
+										  fail: err =>{
+											  console.log('setPageInfo fail', err);
+										  }
+									  })
+								   // #endif
+									
+								  
 
 								}
 							}
@@ -1226,6 +1375,9 @@
 						success: (res) => {
 							if (res.data.code == 200) {
 								console.log(res);
+							}else if(res.data.code ==500){
+								this.$refs.msg.show();
+								this.msg = res.data.msg;
 							}
 						}
 
@@ -1670,9 +1822,13 @@
 					}
 
 					.shou {
+						padding-right:0rpx;
+						padding-left: 0rpx;
+						line-height: 2.0;
 						width: 48rpx;
 						float: left;
-
+						display: inline-block;
+						font-size: 22rpx;
 						image {
 							width: 48rpx;
 							height: 48rpx;

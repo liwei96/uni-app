@@ -80,6 +80,20 @@
 							console.log(res);
 							this.other_rooms = res.data.other_rooms;
 							this.telphone = res.data.common.phone;
+							// #ifdef MP-BAIDU
+							let  header = res.data.common.header;
+							    swan.setPageInfo({
+									  title:header.title,
+									  keywords:header.keywords,
+									  description:header.description,
+									  success : res =>{
+										  console.log('setPageInfo success', res);
+									  },
+									  fail: err =>{
+										  console.log('setPageInfo fail', err);
+									  }
+							    })
+							// #endif
 						}
 					}
 				})

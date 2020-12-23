@@ -77,9 +77,10 @@
 							为客户提供专业的购房建议
 						</view>
 					</view>
-					<view class="btn" @tap="baoMing(project_id,'项目点评详情页+免费咨询',104,'免费咨询')">
+					<button class="btn" open-type="getPhoneNumber" hover-class="none"
+					@getphonenumber="getPhoneNumber($event,project_id,'项目点评详情页+免费咨询',104,'免费咨询')">
 						免费咨询
-					</view>
+					</button>
 				</view>
 		    </view>
 		</view>
@@ -90,7 +91,7 @@
 		<bottom :remark="'项目点评详情页+预约看房'" :point="103" :title="'预约看房'" :pid="parseInt(project_id)" :telphone="telphone"></bottom>
 		
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
 		</wyb-popup>
 	</view>
 </template>
@@ -120,6 +121,7 @@
 				remark_k:'',
 				position_n:0,
 				telphone:'',
+				isok:0,
 				
 			};
 		},
@@ -136,6 +138,75 @@
 			this.project_id = option.id;
 		},
 		methods:{
+			async getPhoneNumber(e,pid,remark,point,title,type) {
+				let that = this
+				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+					that.baoMing(pid,remark,point,title)
+					if(type) {
+						
+					}
+				} else {
+					let session = uni.getStorageSync('session')
+					if(session){
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method:'get',
+							data:{
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res,'session')
+								let tel = res.data.mobile
+								uni.setStorageSync('phone',tel)
+								let openid = uni.getStorageSync('openid')
+							    that.tel = tel;
+								that.baoMing(pid,remark,point,title)
+							}
+						})
+					}else {
+						console.log(session,"没保存session")
+						uni.login({
+						  provider: 'baidu',
+						  success: function (res) {
+						    console.log(res.code);
+							uni.request({
+								url: 'https://api.edefang.net/applets/baidu/get_session_key',
+								method:'get',
+								data:{
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid',res.data.openid)
+									uni.setStorageSync('session',res.data.session_key)
+									uni.request({
+										url:"https://api.edefang.net/applets/baidu/decrypt",
+										data:{
+											data: e.detail.encryptedData,
+											iv:e.detail.iv,
+											session_key:res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone',tel)
+											let openid = uni.getStorageSync('openid')
+											that.$refs.sign.tel = tel
+											that.baoMing(pid,remark,point,title)
+										}
+									})
+									
+								}
+							})
+						  }
+						});
+						}
+					this.isok = 1
+				}
+			},
 			gocontent(id) {
 				uni.navigateTo({
 					url:'/pages/content/content?id='+id
@@ -206,6 +277,9 @@
 <style lang="less">
 page{
 	background: #fff;
+}
+button::after{
+	border:none;
 }
 .diandetail{
 	.toptitle{
@@ -498,6 +572,8 @@ page{
 			.btn{
 				width: 140rpx;
 				height: 52rpx;
+				padding-left: 0rpx;
+				padding-right: 0rpx;
 				background: linear-gradient(-45deg, #38A7EA, #63D5FF);
 				border-radius: 26rpx;
 				font-size: 24rpx;
