@@ -4,9 +4,9 @@
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>买房百科</text>
 		</view>
-		<view class="tit">
+		<view class="tit" @tap="gosearch">
 			<image src="../../static/other/weike-search.png" mode=""></image>
-			<input type="text" value="" placeholder="搜搜你想要了解的房产知识吧" placeholder-class="txt" />
+			<input type="text" value="" placeholder="搜搜你想要了解的房产知识吧" placeholder-class="txt" disabled/>
 		</view>
 		<view class="swiper">
 			<swiper :autoplay="true" :interval="3000" :duration="1000" :circular="true" previous-margin="60rpx" next-margin="60rpx"
@@ -116,6 +116,11 @@
 			this.getmore()
 		},
 		methods: {
+			gosearch() {
+				uni.navigateTo({
+					url:'/pages/searchinfo/searchinfo'
+				})
+			},
 			back(){
 				uni.navigateBack({
 					data: 1
@@ -136,6 +141,20 @@
 					},
 					success: (res) => {
 						that.tops = res.data.tops
+						//#ifdef MP-BAIDU
+						let header = res.data.common.header
+						swan.setPageInfo({
+							title: header.title,
+							keywords: header.keywords,
+							description: header.description,
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
+						//#endif
 						console.log(res)
 					}
 				})

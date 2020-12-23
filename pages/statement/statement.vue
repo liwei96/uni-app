@@ -2,7 +2,7 @@
 	<view>
 		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
-			<text>预约看房</text>
+			<text>版权申明</text>
 		</view>
 		<view class="box">
 			<view class="tit">
@@ -81,6 +81,21 @@
 			return {
 				
 			}
+		},
+		onLoad() {
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-版权申明',
+				keywords: '允家新房-版权申明',
+				description: '允家新房-版权申明',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
 		},
 		methods: {
 			back() {

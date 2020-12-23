@@ -81,6 +81,19 @@
 		onLoad() {
 			that = this
 			this.getinfo()
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-我的收藏',
+				keywords: '允家新房-我的收藏',
+				description: '允家新房-我的收藏',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
 		},
 		methods: {
 			back(){

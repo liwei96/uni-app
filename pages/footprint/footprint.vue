@@ -75,6 +75,19 @@
 		onLoad() {
 			that = this
 			this.getinfo()
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-浏览足迹',
+				keywords: '允家新房-浏览足迹',
+				description: '允家新房-浏览足迹',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
 		},
 		data() {
 			return {

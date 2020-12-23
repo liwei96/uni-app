@@ -16,6 +16,10 @@
 				uni.setStorageSync('uuid', timestamp)
 				uuid = timestamp
 			}
+			if(!uni.getStorageSync('city')) {
+				uni.setStorageSync('city',1)
+				uni.setStorageSync('cityname','杭州')
+			}
 			uni.connectSocket({
 				url: 'ws://39.98.227.114:9509?uuid=' + uuid
 			});

@@ -1,6 +1,7 @@
 <template>
 	<view>
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
+			<image src="../../static/all-back1.png" mode=""></image>
 			<text>特价房源</text>
 		</view>
 		<image src="../../static/special/special-top.png" mode="" class="topimg"></image>
@@ -176,7 +177,7 @@
 				position: 0
 			}
 		},
-		onLoad() {
+		onShow() {
 			that = this
 			this.getdata()
 		},
@@ -203,6 +204,21 @@
 						that.specials = data.specials
 						that.discounts = data.discounts
 						console.log(data)
+						//#ifdef MP-BAIDU
+						let header = res.data.common.header
+						swan.setPageInfo({
+							title: header.title,
+							keywords: header.keywords,
+							description: header.description,
+							image: [that.discounts[0].img],
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
+						//#endif
 						uni.hideLoading()
 					}
 				})
@@ -272,6 +288,11 @@
 			},
 			setiscode() {
 				this.codenum = 0
+			},
+			back() {
+				uni.navigateBack({
+					data: 1
+				})
 			}
 		},
 		mounted() {
@@ -296,6 +317,12 @@
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #F63352;
+		image {
+			width: 31.87rpx;
+			height: 31.87rpx;
+			margin-right: 11.95rpx;
+			margin-bottom: -3.98rpx;
+		}
 	}
 
 	.topimg {

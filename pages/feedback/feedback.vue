@@ -32,6 +32,19 @@
 		},
 		onLoad() {
 			that = this
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-意见反馈',
+				keywords: '允家新房-意见反馈',
+				description: '允家新房-意见反馈',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
 		},
 		methods: {
 			back(){

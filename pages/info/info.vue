@@ -150,6 +150,21 @@
 						that.others = res.data.others
 						that.build = res.data.project_info
 						that.tel = res.data.common.phone
+						//#ifdef MP-BAIDU
+						let header = res.data.common.header
+						swan.setPageInfo({
+							title: header.title,
+							keywords: header.keywords,
+							description: header.description,
+							image: [that.info.img],
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
+						//#endif
 						console.log(res)
 					}
 				})

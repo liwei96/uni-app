@@ -34,12 +34,14 @@
 			想看的楼盘<text>（非必填）</text>
 		</view>
 		<view class="box" @tap="gosearch">
-			<view>{{name}}</view>
+			<view v-html="name"></view>
 			<image src="../../static/other/help-go.png" mode=""></image>
 		</view>
-		<view class="btn" @click="put">
-			确定
-		</view>
+		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+			<view class="btn">
+				确定
+			</view>
+		</button>
 		<popup ref="popup" type="center" height="438" width="578" radius="12" closeIconPos="top-right" :showCloseIcon="true"
 		 closeIconSize="32" @hide="setback">
 			<view class="popup-content">
@@ -48,7 +50,10 @@
 				</view>
 				<view class="one" v-if="!iscode">
 					<view class="input-box">
-						<input type="text" value="" placeholder="请输入手机号" placeholder-class="txt" maxlength="11" v-model="tel"/>
+						<input type="text" value="" placeholder="请输入手机号" placeholder-class="txt" maxlength="11" v-model="tel" :disabled="isok == 1"/>
+						<view class="close" v-if="isok ==1" @tap="setnull">
+							x
+						</view>
 					</view>
 					<view class="msg">
 						<check :checkBoxSize='20' :fontSize='18' :checked="true" @change="change"></check>
@@ -103,7 +108,8 @@
 				teltxt: '',
 				timetxt: '',
 				time: 0,
-				date: ''
+				date: '',
+				isok: 0
 			}
 		},
 		onLoad() {
@@ -112,8 +118,89 @@
 			if(name) {
 				this.name = name
 			}
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-预约看房',
+				keywords: '允家新房-预约看房',
+				description: '允家新房-预约看房',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
 		},
 		methods: {
+			setnull() {
+				this.isok = 0
+				this.tel = ''
+			},
+			async getPhoneNumber(e) {
+				console.log(e)
+				let that = this
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+				} else {
+					this.isok = 1
+					let session = uni.getStorageSync('session')
+					if (session) {
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method: 'get',
+							data: {
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res)
+								let tel = res.data.mobile
+								uni.setStorageSync('phone', tel)
+								let openid = uni.getStorageSync('openid')
+								that.tel = tel
+							}
+						})
+					} else {
+						uni.login({
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.tel = tel
+											}
+										})
+			
+									}
+								})
+							}
+						});
+					}
+				}
+				this.$refs.popup.show()
+			},
 			back() {
 				uni.navigateBack({
 					data:1
@@ -137,8 +224,8 @@
 					this.$refs.toast.show()
 					return;
 				}
-				let kid = uni.getStorageSync('kid') || null
-				let other = uni.getStorageSync('other') || null
+				let kid = uni.getStorageSync('kid') || ''
+				let other = uni.getStorageSync('other') || ''
 				let ip = ''
 				let city = uni.getStorageSync('city') || 1
 				let txt = `客户预约看房时间为${that.date}`;
@@ -148,7 +235,7 @@
 				}else{
 					sex = '女士'
 				}
-				let id = uni.getStorageSync('searchid')
+				let id = uni.getStorageSync('searchid') || 0
 				uni.request({
 					url: that.putserve+'/getIp.php',
 					method: 'GET',
@@ -194,7 +281,30 @@
 									};
 									fn();
 									var interval = setInterval(fn, 1000);
-									that.iscode = true
+									
+									if(that.isok == 1) {
+										that.toasttxt = "订阅成功";
+										that.$refs.toast.show()
+										that.iscode = false
+										that.$refs.popup.hide()
+										if(!uni.getStorageSync('token')) {
+											let openid = uni.getStorageSync('openid')
+											uni.request({
+												url:"https://api.edefang.net/applets/login",
+												method:'GET',
+												data:{
+													phone: phone,
+													openid: openid
+												},
+												success: (res) => {
+													console.log(res)
+													uni.setStorageSync('token',res.data.token)
+												}
+											})
+										}
+									}else {
+										that.iscode = true
+									}
 								}
 								
 							}
@@ -293,7 +403,13 @@
 			margin-bottom: -4rpx;
 		}
 	}
-
+	button {
+		padding: 0;
+		margin: 0;
+	}
+	button:after {
+		border: none;
+	}
 	.topimg {
 		width: 100%;
 		height: 200rpx;
@@ -405,7 +521,13 @@
 			margin-left: 40rpx;
 			display: flex;
 			align-items: center;
-
+			position: relative;
+			.close {
+				position: absolute;
+				right: 30rpx;
+				top: 28rpx;
+				font-size: 30rpx;
+			}
 			.txt {
 				color: #969799;
 				font-size: 32rpx;

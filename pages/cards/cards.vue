@@ -67,6 +67,19 @@
 		},
 		onLoad(){
 			this.getdata();
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-我的卡券',
+				keywords: '允家新房-我的卡券',
+				description: '允家新房-我的卡券',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
 		},
 		methods: { 
 			back() {

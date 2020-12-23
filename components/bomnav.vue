@@ -40,9 +40,9 @@
 			}
 		},
 		mounted(){
-			// if(this.projectid !== 0 || this.projectid == '') {
-			// 	this.register()
-			// }
+			if(this.projectid !== 0 || this.projectid == '') {
+				this.register()
+			}
 			let that = this
 			this.num = uni.getStorageSync('total')
 			uni.onSocketMessage(function(res) {
@@ -53,7 +53,7 @@
 				}else if(data.action == 301) {
 					if (String(data.fromUserName).length < 10) {
 						if(uni.setStorageSync(String(data.fromUserName))) {
-							uni.setStorageSync(String(data.fromUserName),parseInt(sessionStorage.getItem(String(data.fromUserName))) + 1)
+							uni.setStorageSync(String(data.fromUserName),parseInt(uni.setStorageSync(String(data.fromUserName))) + 1)
 						}else {
 							uni.setStorageSync(String(data.fromUserName),1)
 						}
@@ -132,10 +132,9 @@
 		},
 		watch: {
 			projectid(news,val) {
-				console.log(news,val)
-				if(news != val && val == 0) {
+				if (news != val && val == '') {
 					this.register()
-				} 
+				}
 			}
 		}
 	}

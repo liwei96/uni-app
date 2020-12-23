@@ -100,6 +100,7 @@
 	var that
 	export default {
 		onLoad(options) {
+			console.log(options)
 			this.id = options.id
 			that = this
 			this.getinfo()
@@ -159,6 +160,20 @@
 						that.other = res.data.house_types
 						that.tel = res.data.common.phone
 						that.staff = res.data.common.staffs
+						//#ifdef MP-BAIDU
+						let header = res.data.common.header
+						swan.setPageInfo({
+							title: header.title,
+							keywords: header.keywords,
+							description: header.description,
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
+						//#endif
 					}
 				})
 			},

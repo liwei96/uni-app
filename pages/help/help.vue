@@ -56,7 +56,7 @@
 			 v-model="remark" />
 			</view>
 		<view class="bom">
-			<button type="primary" class="btn" @tap="show1">提交</button>
+			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="btn">提交</button>
 		</view>
 		<popup ref="popup" type="bottom" height="458" width="500">
 		    <view class="popup-content">
@@ -84,7 +84,10 @@
 				</view>
 				<view class="one" v-if="!iscode">
 					<view class="input-box">
-						<input type="text" value="" placeholder="请输入手机号" placeholder-class="txt" maxlength="11" v-model="tel"/>
+						<input type="text" value="" placeholder="请输入手机号" placeholder-class="txt" maxlength="11" v-model="tel" :disabled="isok == 1"/>
+						<view class="close" @tap="setnull" v-if="isok == 1">
+							x
+						</view>
 					</view>
 					<view class="msg">
 						<check :checkBoxSize='20' :fontSize='18' :checked="true" @change="change"></check>
@@ -102,6 +105,7 @@
 						<input type="text" value="" placeholder="请输入手机号" placeholder-class="txt" maxlength="11" v-model="code"/>
 						<text @tap="sendmsg">{{timetxt}}</text>
 					</view>
+					
 					<view class="yes" @tap="sure">
 						确定
 					</view>
@@ -141,16 +145,99 @@
 				iscode: false,
 				teltxt: '',
 				timetxt: '',
-				time: 0
+				time: 0,
+				isok: 0
 			}
 		},
-		onLoad() {
+		onshow() {
 			that = this
 			this.getinfo()
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-帮我找房',
+				keywords: '允家新房-帮我找房',
+				description: '允家新房-帮我找房',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
 		},
 		methods: {
+			setnull() {
+				this.tel = ''
+				this.isok = 0
+			},
+			async getPhoneNumber(e) {
+				console.log(e)
+				let that = this
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+				} else {
+					this.isok = 1
+					let session = uni.getStorageSync('session')
+					if (session) {
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method: 'get',
+							data: {
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res)
+								let tel = res.data.mobile
+								uni.setStorageSync('phone', tel)
+								let openid = uni.getStorageSync('openid')
+								that.tel = tel
+							}
+						})
+					} else {
+						uni.login({
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.tel = tel
+											}
+										})
+			
+									}
+								})
+							}
+						});
+					}
+				}
+				this.$refs.popup1.show()
+			},
 			send() {
 				console.log(this.checked)
+				let that = this
 				if(!this.checked) {
 					that.toasttxt = '请选择用户协议'
 					that.$refs.toast.show()
@@ -167,8 +254,8 @@
 					this.$refs.toast.show()
 					return;
 				}
-				let kid = uni.getStorageSync('kid') || null
-				let other = uni.getStorageSync('other') || null
+				let kid = uni.getStorageSync('kid') || ''
+				let other = uni.getStorageSync('other') || ''
 				let ip = ''
 				let city = uni.getStorageSync('city') || 1
 				let txt = `客户想找总价为：${that.num}万`;
@@ -198,7 +285,6 @@
 							data: {
 								city: city,
 								page: 11,
-								project: null,
 								remark: txt,
 								source: '线上推广2',
 								ip: ip,
@@ -212,6 +298,9 @@
 								if(res.data.code == 500) {
 									that.toasttxt = '请不要重复报名';
 									that.$refs.toast.show()
+									setTimeout(()=>{
+										that.$refs.popup1.hide()
+									},1500)
 								} else {
 									that.teltxt = phone.substr(0, 3) + "****" + phone.substr(7, 11);
 									that.iscode = true
@@ -229,7 +318,29 @@
 									};
 									fn();
 									var interval = setInterval(fn, 1000);
-									that.iscode = true
+									if(that.isok == 1) {
+										that.toasttxt = "订阅成功";
+										that.$refs.toast.show()
+										that.iscode = false
+										that.$refs.popup1.hide()
+										if(!uni.getStorageSync('token')) {
+											let openid = uni.getStorageSync('openid')
+											uni.request({
+												url:"https://api.edefang.net/applets/login",
+												method:'GET',
+												data:{
+													phone: phone,
+													openid: openid
+												},
+												success: (res) => {
+													console.log(res)
+													uni.setStorageSync('token',res.data.token)
+												}
+											})
+										}
+									}else {
+										that.iscode = true
+									}
 								}
 								
 							}
@@ -559,9 +670,13 @@
 			height: 79.68rpx;
 			border-radius: 11.95rpx;
 			background-color: #40A2F4;
+			color: #FFFFFF;
 			font-weight: bold;
 			line-height: 79.68rpx;
 			font-size: 29.88rpx;
+		}
+		.btn:after{
+			border: none;
 		}
 	}
 	.popup-content {
@@ -635,7 +750,13 @@
 			margin-left: 40rpx;
 			display: flex;
 			align-items: center;
-	
+			position: relative;
+			.close {
+				position: absolute;
+				right: 30rpx;
+				top: 28rpx;
+				font-size: 30rpx;
+			}
 			.txt {
 				color: #969799;
 				font-size: 32rpx;

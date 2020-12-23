@@ -12,7 +12,7 @@
 			</view>
 			<view class="navs">
 				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=1">
-					<view class="nav" @tap="gofoot">
+					<view class="nav">
 						<text class="num">{{footnum}}</text>
 						<view>
 							<text class="msg">浏览足迹</text>
@@ -20,7 +20,7 @@
 					</view>
 				</button>
 				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=2">
-					<view class="nav" @tap="gofork">
+					<view class="nav">
 						<text class="num">{{collectnum}}</text>
 						<view>
 							<text class="msg">我的收藏</text>
@@ -28,20 +28,20 @@
 					</view>
 				</button>
 				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=3">
-					<view class="nav" @tap="gocards">
+					<view class="nav">
 						<text class="num">{{cardnum}}</text>
 						<view>
 							<text class="msg">我的卡券</text>
 						</view>
 					</view>
 				</button>
-					<view class="nav" @tap="gotalk">
-						<text class="num">{{talknum}}</text>
-						<text class="abo">1</text>
-						<view>
-							<text class="msg">我的联系</text>
-						</view>
+				<view class="nav" @tap="gotalk">
+					<text class="num">{{talknum}}</text>
+					<text class="abo">1</text>
+					<view>
+						<text class="msg">我的联系</text>
 					</view>
+				</view>
 			</view>
 			<view class="bom">
 				<view class="nav" @tap="gohelp">
@@ -143,13 +143,26 @@
 				tel: ''
 			}
 		},
-		onLoad() {
+		onShow() {
 			that = this
 			this.getinfo()
 			if (uni.getStorageSync('phone')) {
 				let tel = uni.getStorageSync('phone')
 				this.tel = tel.substr(0, 3) + '****' + tel.substr(7)
 			}
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-我的主页',
+				keywords: '允家新房-我的主页',
+				description: '允家新房-我的主页',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
 		},
 		methods: {
 			call() {
@@ -270,21 +283,42 @@
 			getPhoneNumber(e) {
 				console.log(e)
 				let that = this
+				console.log(uni.getStorageSync('token'))
+				if(uni.getStorageSync('token')){
+					switch (that.type) {
+						case 1:
+							uni.navigateTo({
+								url:'/pages/footprint/footprint'
+							})
+							break;
+						case 2:
+							uni.navigateTo({
+								url:'/pages/collect/collect'
+							})
+							break;
+						case 3:
+							uni.navigateTo({
+								url:'/pages/cards/cards'
+							})
+							break;
+					}
+					return
+				}
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					let url = ''
-					switch(that.type){
+					switch (that.type) {
 						case 1:
 							url = '/pages/footprint/footprint'
-							uni.setStorageSync('backurl',url)
-						break;
+							uni.setStorageSync('backurl', url)
+							break;
 						case 2:
 							url = '/pages/collect/collect'
-							uni.setStorageSync('backurl',url)
-						break;
+							uni.setStorageSync('backurl', url)
+							break;
 						case 3:
 							url = '/pages/cards/cards'
-							uni.setStorageSync('backurl',url)
-						break;
+							uni.setStorageSync('backurl', url)
+							break;
 					}
 					uni.navigateTo({
 						url: '/pages/login/login'
@@ -305,7 +339,7 @@
 								let tel = res.data.mobile
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
-								that.tel = tel
+								that.tel = tel.substr(0, 3) + '****' + tel.substr(7)
 								uni.request({
 									url: "https://api.edefang.net/applets/login",
 									method: 'GET',
@@ -316,6 +350,23 @@
 									success: (res) => {
 										console.log(res)
 										uni.setStorageSync('token', res.data.token)
+										switch (that.type) {
+											case 1:
+												uni.navigateTo({
+													url:'/pages/footprint/footprint'
+												})
+												break;
+											case 2:
+												uni.navigateTo({
+													url:'/pages/collect/collect'
+												})
+												break;
+											case 3:
+												uni.navigateTo({
+													url:'/pages/cards/cards'
+												})
+												break;
+										}
 									}
 								})
 							}
@@ -347,7 +398,7 @@
 												let tel = res.data.mobile
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
-												that.tel = tel
+												that.tel = tel.substr(0, 3) + '****' + tel.substr(7)
 												uni.request({
 													url: "https://api.edefang.net/applets/login",
 													method: 'GET',
@@ -358,6 +409,23 @@
 													success: (res) => {
 														console.log(res)
 														uni.setStorageSync('token', res.data.token)
+														switch (that.type) {
+															case 1:
+																uni.navigateTo({
+																	url:'/pages/footprint/footprint'
+																})
+																break;
+															case 2:
+																uni.navigateTo({
+																	url:'/pages/collect/collect'
+																})
+																break;
+															case 3:
+																uni.navigateTo({
+																	url:'/pages/cards/cards'
+																})
+																break;
+														}
 													}
 												})
 											}

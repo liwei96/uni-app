@@ -1,6 +1,6 @@
 <template>
 	<view class="about">
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>预约看房</text>
 		</view>
@@ -72,8 +72,27 @@
 
 			}
 		},
+		onLoad() {
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-关于我们',
+				keywords: '允家新房-关于我们',
+				description: '允家新房-关于我们',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
+		},
 		methods: {
-
+			back() {
+				uni.navigateBack({
+					data: 1
+				})
+			}
 		}
 	}
 </script>

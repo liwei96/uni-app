@@ -96,11 +96,11 @@
 			sign,
 			wybPopup
 		},
-		onLoad(option) {
+		onShow(option) {
 			that = this
 			this.setnum(option.num,option.txt);
 			this.city = uni.getStorageSync('cityname')
-			this.getdata()
+			// this.getdata()
 		},
 		data(){
 			return {
@@ -144,6 +144,19 @@
 						console.log(res)
 						that.features = res.data.data.features
 						that.other = res.data.data.recommends
+						//#ifdef MP-BAIDU
+						swan.setPageInfo({
+							title: '允家新房-特色楼盘',
+							keywords: '允家新房-特色楼盘',
+							description: '允家新房-特色楼盘',
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
+						//#endif
 						uni.hideLoading()
 					}
 				})

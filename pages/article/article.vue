@@ -108,6 +108,21 @@
 						that.others = res.data.others
 						let data = res.data.article.content
 						that.content = data.replace(/\<img/gi, '<img style="max-width:100%;height:auto" ');
+						//#ifdef MP-BAIDU
+						let header = res.data.common.header
+						swan.setPageInfo({
+							title: header.title,
+							keywords: header.keywords,
+							description: header.description,
+							image: [that.info.img],
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
+						//#endif
 					}
 				})
 			},

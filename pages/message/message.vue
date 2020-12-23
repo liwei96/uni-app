@@ -52,6 +52,23 @@
 		},
 		onShow() {
 			this.getlist()
+			let that = this
+			this.timer = setInterval(()=>{
+				that.getlist()
+			},2000)
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-我的联系',
+				keywords: '允家新房-我的联系',
+				description: '允家新房-我的联系',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
 		},
 		methods: {
 			gotalk(id,bid,cid) {
@@ -82,9 +99,7 @@
 		},
 		mounted() {
 			let that = this
-			this.timer = setInterval(()=>{
-				that.getlist()
-			},2000)
+			
 			uni.onSocketMessage(function(res) {
 				let data = JSON.parse(res.data)
 				console.log(data)

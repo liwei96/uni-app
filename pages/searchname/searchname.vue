@@ -50,7 +50,7 @@
 <script>
 	var that
 	export default {
-		onLoad() {
+		onShow() {
 			that = this
 			this.getinfo()
 		},
@@ -80,6 +80,19 @@
 					success: (res) => {
 						console.log(res)
 						that.hots = res.data.hot_search
+						//#ifdef MP-BAIDU
+						swan.setPageInfo({
+							title: '允家新房-楼盘搜索',
+							keywords: '允家新房-楼盘搜索',
+							description: '允家新房-楼盘搜索',
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
+						//#endif
 					}
 				})
 			},

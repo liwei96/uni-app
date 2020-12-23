@@ -363,6 +363,21 @@
 				
 			}
 		},
+		onLoad() {
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-服务协议',
+				keywords: '允家新房-服务协议',
+				description: '允家新房-服务协议',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
+		},
 		methods: {
 			back(){
 				uni.navigateBack({

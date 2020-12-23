@@ -13,6 +13,19 @@
 			// url = url+'&cityname='+name
 			this.url = url
 			console.log(url)
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-周边详情',
+				keywords: '允家新房-周边详情',
+				description: '允家新房-周边详情',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
 		},
 		data() {
 			return {

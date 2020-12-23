@@ -329,7 +329,7 @@
 	import jiuaicheckbox from '@/components/jiuai-checkbox/jiuai-checkbox.vue'
 	var that
 	export default {
-		onLoad(options) {
+		onShow(options) {
 			that = this
 			console.log(options)
 			this.getinfo()
@@ -647,6 +647,20 @@
 					success: (res) => {
 						console.log(res)
 						that.builds = res.data.info
+						//#ifdef MP-BAIDU
+						let header = res.data.common.header
+						swan.setPageInfo({
+							title: header.title,
+							keywords: header.keywords,
+							description: header.description,
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
+						//#endif
 						if(that.builds.length == 0) {
 							that.isnull = true
 							uni.request({
@@ -659,6 +673,7 @@
 								success: (response) => {
 									console.log(response)
 									that.other = response.data.recommends
+									
 								}
 							})
 						}else {

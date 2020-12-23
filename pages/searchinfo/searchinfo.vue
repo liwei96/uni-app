@@ -141,6 +141,19 @@
 					success: (res) => {
 						console.log(res)
 						that.list = res.data.recommends
+						//#ifdef MP-BAIDU
+						swan.setPageInfo({
+							title: '允家新房-特色楼盘',
+							keywords: '允家新房-特色楼盘',
+							description: '允家新房-特色楼盘',
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
+						//#endif
 					}
 				})
 			}

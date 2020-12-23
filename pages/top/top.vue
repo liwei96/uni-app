@@ -135,6 +135,20 @@
 					success: (res) => {
 						that.tops = res.data.data
 						console.log(res)
+						//#ifdef MP-BAIDU
+						let header = res.data.common.header
+						swan.setPageInfo({
+							title: header.title,
+							keywords: header.keywords,
+							description: header.description,
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
+						//#endif
 						uni.hideLoading()
 					}
 				})

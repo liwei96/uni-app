@@ -115,7 +115,7 @@ export default {
       that = this;
 	  this.getdata(option.id);
 	  this.project_id = option.id;
-	 
+	  console.log(this.project_id)
 	},
 	onReachBottom(){
 		if(this.hua == true){

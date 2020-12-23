@@ -45,6 +45,19 @@
 			that = this
 			this.getinfo()
 			this.name = uni.getStorageSync('cityname')
+			//#ifdef MP-BAIDU
+			swan.setPageInfo({
+				title: '允家新房-城市选择',
+				keywords: '允家新房-城市选择',
+				description: '允家新房-城市选择',
+				success: res => {
+					console.log('setPageInfo success', res);
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			})
+			//#endif
 		},
 		data() {
 			return {

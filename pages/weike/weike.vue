@@ -218,6 +218,20 @@
 						console.log(res)
 						that.total = res.data.total
 						that.infos = res.data.data
+						//#ifdef MP-BAIDU
+						let header = res.data.common.header
+						swan.setPageInfo({
+							title: header.title,
+							keywords: header.keywords,
+							description: header.description,
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
+						//#endif
 						uni.hideLoading()
 					}
 				})
