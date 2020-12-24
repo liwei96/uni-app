@@ -260,9 +260,9 @@
 					已有<text>647</text>人查询
 				</view>
 			</view>
-			<view class="zhu_box">
-				<canvas canvas-id="canvasColumn" id="canvasColumn" class="charts"> </canvas>
-			</view>
+			<!-- <view class="zhu_box">
+				<canvas canvas-id="canvasColumn" id="canvasColumn" class="charts" > </canvas>
+			</view> -->
 			<view class="table_box">
 				<view class="table">
 					<t-table border=1>
@@ -442,7 +442,9 @@
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
 									<text class="time">{{item.time}}</text>
 								</navigator>
-								<text class="delete" v-if="item.mine==true" @tap="deletePing(item.id)">删除</text>
+							<!-- 	<text class="delete"  @tap="deletePing(item.id)">删除</text> -->
+								<button class="delete" open-type="getPhoneNumber" hover-class="none"   v-if="item.mine==true"
+								@getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+删除',102,'删除',3,item.id)">删除</button>
 							</view>
 						</view>
 
@@ -881,6 +883,8 @@
 								this.getLike(ping_id)
 							}else if(type==2){ //收藏
 								this.goShou();
+							}else if(type == 3){
+							    this.deletePing(ping_id);
 							}
 						}else{
 							let url="/pages/content/content?id="+this.detail.id;
@@ -902,6 +906,8 @@
 							 	this.getLike(ping_id)
 							 }else if(type==2){ //收藏
 							 	this.goShou();
+							 }else if(type == 3){
+								 this.deletePing(ping_id)
 							 }
 						 }else{
 							 let session = uni.getStorageSync('session')
@@ -933,6 +939,8 @@
 													that.getLike(ping_id)
 												}else if(type==2){ //收藏
 													that.goShou();
+												}else if(type == 3){
+													that.deletePing(ping_id);
 												}
 											}
 										})
@@ -980,6 +988,8 @@
 																that.getLike(ping_id)
 															}else if(type==2){ //收藏
 																that.goShou();
+															}else if(type == 3){
+																that.deletePing(ping_id);
 															}
 															
 														}
@@ -2575,19 +2585,20 @@
 				}
 			}
 
-			.zhu_box {
-				.charts {
-					width: 750upx;
-					height: 500upx;
-					background-color: #FFFFFF;
-					margin-top: 40rpx;
-				}
-			}
+			// .zhu_box {
+			// 	.charts {
+			// 		width: 750upx;
+			// 		height: 500upx;
+			// 		background-color: #FFFFFF;
+			// 		margin-top: 40rpx;
+			// 	}
+			// }
 
 			.table_box {
 				width: 100%;
 				height: auto;
 				position: relative;
+				margin-top: 10rpx;
 
 				.table {
 					width: 100%;
@@ -3149,7 +3160,7 @@
 
 						.time_box {
 							margin-top: 5rpx;
-
+							display: flex;
 							.time {
 								font-size: 24rpx;
 								color: #AFAFB3;
@@ -3162,6 +3173,9 @@
 								color: #6888A2;
 								margin-left: 19rpx;
 								line-height: 26rpx;
+								padding-left: 0rpx;
+								padding-right: 0rpx;
+								margin-top: 10rpx;
 							}
 						}
 

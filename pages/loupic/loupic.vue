@@ -174,6 +174,10 @@
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 30000;
 		.nav_top{
 			image{
 						 width: 31.87rpx;
@@ -199,11 +203,11 @@
 	}
 	.effect{
 		padding-left: 30rpx;
-		//padding-right: 30rpx;
 		box-sizing: border-box;
 		width: 100%;
 		height: auto;
 		background:#fff;
+		margin-top: 130rpx;
 		.tit{
 			font-size: 32rpx;
 			font-weight: bold;

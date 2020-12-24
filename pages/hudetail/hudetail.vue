@@ -379,6 +379,10 @@ import sign from '@/components/sign.vue'
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
+		position:fixed;
+		top:0;
+		width: 100%;
+		z-index: 30000;
 		.nav_top{
 			image{
 			 width: 31.87rpx;
@@ -399,6 +403,7 @@ import sign from '@/components/sign.vue'
 		height: 400rpx;
 		background: #F5F5F5;
 		position: relative;
+		margin-top: 132rpx;
 		image{
 			width: 249rpx;
 			height: 400rpx;

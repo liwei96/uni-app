@@ -537,6 +537,7 @@
 			top: 0;
 			background: #fff;
 			width: 100%;
+			z-index: 30000;
 			.nav_top{
 				image {
 					width: 31.87rpx;
@@ -678,6 +679,7 @@
 			position: fixed;
 			top: 100rpx;
 			background: #fff;
+			z-index: 30000;
 
 			.left_tit {
 				width: 180rpx;
