@@ -122,10 +122,15 @@
 <style lang="less">
 	.toptitle {
 		color: #17181A;
-		font-size: 32rpx;
+		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
-		line-height: 87.64rpx;
+		padding-top: 40rpx;
+		line-height: 88rpx;
+		position: fixed;
+		width: 100%;
+		background-color: #FFFFFF;
+		top: 0;
+		z-index: 9999;
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -140,7 +145,7 @@
 		border-bottom: 1rpx solid #F2F3F7;
 		line-height: 98rpx;
 		margin-bottom: 30rpx;
-
+		padding-top: 128rpx;
 		image {
 			width: 32rpx;
 			height: 32rpx;

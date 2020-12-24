@@ -204,11 +204,12 @@
 					title: '加载中'
 				})
 				let token = uni.getStorageSync('token')
+				let city = uni.getStorageSync('city')
 				uni.request({
 					url: that.apiserve + '/applets/article/info',
 					method: 'GET',
 					data: {
-						city: 1,
+						city: city,
 						position: that.listnum,
 						page: that.page,
 						limit: 10,
@@ -241,11 +242,12 @@
 					title: '加载中'
 				})
 				let token = uni.getStorageSync('token')
+				let city = uni.getStorageSync('city')
 				uni.request({
 					url: that.apiserve + '/applets/article/info',
 					method: 'GET',
 					data: {
-						city: 1,
+						city: city,
 						position: that.listnum,
 						page: that.page,
 						limit: 10,

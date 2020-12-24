@@ -15,7 +15,7 @@
 				</view>
 			</view>
 		</view>
-		<image src="../../static/index/index-banner.png" mode="" class="banner"></image>
+		<image src="../../static/index/index-banner.jpg" mode="" class="banner"></image>
 		<view class="nav">
 			<view class="nav-li">
 				<navigator url="../building/building" open-type="switchTab">
@@ -82,16 +82,18 @@
 						</view>
 					</view>
 					<view class="trend-li">
-						<text class="icon"></text>
-						<text class="big">{{avg_prices.last_month_rate}}</text>
+						<text class="icon" v-if="avg_prices.last_month_rate>=0"></text>
+						<text class="down" v-if="avg_prices.last_month_rate<0"></text>
+						<text class="big">{{Math.abs(avg_prices.last_month_rate)}}</text>
 						<text class="small">%</text>
 						<view class="trend-li-bom">
 							环比上月
 						</view>
 					</view>
 					<view class="trend-li">
-						<text class="down"></text>
-						<text class="big">{{avg_prices.last_year_rate}}</text>
+						<text class="icon" v-if="avg_prices.last_year_rate>=0"></text>
+						<text class="down" v-if="avg_prices.last_year_rate<0"></text>
+						<text class="big">{{Math.abs(avg_prices.last_year_rate)}}</text>
 						<text class="small">%</text>
 						<view class="trend-li-bom">
 							同比去年
@@ -314,6 +316,20 @@
 						this.deals = res.data.data.deals;
 						this.dynamics = res.data.data.dynamics;
 						this.recommends = res.data.data.recommends;
+						// #ifdef MP-BAIDU
+						  let header = res.data.data.common.header;
+						  swan.setPageInfo({
+							  title:header.title,
+							  keywords:header.keywords,
+							  description:header.description,
+							  success : res =>{
+								  console.log('setPageInfo success', res);
+							  },
+							  fail: err =>{
+								  console.log('setPageInfo fail', err);
+							  }
+						  })
+						// #endif
 					}
 
 				}
@@ -383,13 +399,18 @@
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
-		line-height: 87.64rpx;
+		padding-top: 40rpx;
+		line-height: 88rpx;
+		position: fixed;
+		width: 100%;
+		background-color: #FFFFFF;
+		top: 0;
+		z-index: 9999;
 	}
 
 	.search {
 		padding: 0 29.88rpx;
-
+		padding-top: 128rpx;
 		.searchbox {
 			height: 71.71rpx;
 			border-radius: 35.85rpx;

@@ -141,11 +141,16 @@
 <style lang="less">
 	.toptitle {
 		color: #17181A;
-		font-size: 36rpx;
+		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
-		line-height: 87.64rpx;
+		padding-top: 40rpx;
+		line-height: 88rpx;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		z-index: 9999;
 		font-weight: bold;
+		background-color: #FFFFFF;
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -155,6 +160,7 @@
 	}
 	.recommend {
 		padding: 0 30rpx;
+		padding-top: 128rpx;
 	
 		.tit {
 			color: #17181A;
@@ -252,6 +258,7 @@
 		justify-content: center;
 		align-items: center;
 		flex-direction: column;
+		padding-top: 128rpx;
 		margin-bottom: 68rpx;
 		image {
 			width: 200rpx;

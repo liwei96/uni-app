@@ -4,7 +4,7 @@
 			<image src="../../static/all-back1.png" mode=""></image>
 			<text>帮我找房</text>
 		</view>
-		<image src="../../static/other/help-top.png" mode="" class="topimg"></image>
+		<image src="../../static/other/help-top.jpg" mode="" class="topimg"></image>
 		<view class="box">
 			<view class="tit">
 				您能接受的总价范围是多少？
@@ -149,7 +149,7 @@
 				isok: 0
 			}
 		},
-		onshow() {
+		onShow() {
 			that = this
 			this.getinfo()
 			//#ifdef MP-BAIDU
@@ -503,8 +503,12 @@
 		color: #FFFFFF;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 39.84rpx;
-		line-height: 87.64rpx;
+		padding-top: 40rpx;
+		line-height: 88rpx;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		z-index: 9999;
 		background-color: #35ACE7;
 
 		image {
@@ -518,6 +522,7 @@
 	.topimg {
 		width: 100%;
 		height: 278.88rpx;
+		margin-top: 128rpx;
 	}
 
 	.box {

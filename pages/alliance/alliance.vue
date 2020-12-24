@@ -5,7 +5,7 @@
 			<text>城市加盟</text>
 		</view>
 		<view class="top">
-			<image src="../../static/other/alliance-top.png" mode=""></image>
+			<image src="../../static/other/alliance-top.jpg" mode=""></image>
 			<view class="top-box">
 				<view class="item">
 					<view class="tit">
@@ -183,7 +183,7 @@
 			<swiper :interval="3000" :duration="1000" previous-margin="30rpx" next-margin="220rpx">
 				<swiper-item>
 					<view class="swiper-item">
-						<image src="../../static/other/alliance-swiper1.png" mode=""></image>
+						<image src="../../static/other/alliance-swiper1.jpg" mode=""></image>
 						<view class="swiper-tit">
 							三大平台
 						</view>
@@ -462,7 +462,7 @@
 			</view>
 		</view>
 		<view class="img">
-			<image src="../../static/other/alliance-code.png" mode=""></image>
+			<image src="../../static/other/alliance-code.jpg" mode=""></image>
 			<view class="sao">
 				扫码加盟官方微信号
 			</view>
@@ -625,10 +625,15 @@
 <style lang="less">
 	.toptitle {
 		color: #17181A;
-		font-size: 32rpx;
+		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
-		line-height: 87.64rpx;
+		padding-top: 40rpx;
+		line-height: 88rpx;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		z-index: 9999;
+		background-color: #FFFFFF;
 
 		image {
 			width: 32rpx;
@@ -640,6 +645,7 @@
 
 	.top {
 		margin-bottom: 18rpx;
+		margin-top: 128rpx;
 
 		image {
 			width: 100%;

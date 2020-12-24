@@ -169,8 +169,13 @@
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
-		line-height: 87.64rpx;
+		padding-top: 40rpx;
+		line-height: 88rpx;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		z-index: 9999;
+		background-color: #FFFFFF;
 		border-bottom: 1rpx solid #F7F7F7;
 	}
 
@@ -178,6 +183,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		padding-top: 128rpx;
 
 		image {
 			width: 346.61rpx;
@@ -195,6 +201,7 @@
 
 	.list {
 		padding: 0 30rpx;
+		padding-top: 128rpx;
 
 		.li {
 			display: flex;

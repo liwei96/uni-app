@@ -2,9 +2,8 @@
 	<view>
 		<view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
-			<text>预约看房</text>
 		</view>
-		<image class="topimg" src="../../static/other/forward-top.png" mode=""></image>
+		<image class="topimg" src="../../static/other/forward-top.jpg" mode=""></image>
 		<view class="txt">
 			已有<text>781</text>人成功预约免费专车看房
 		</view>

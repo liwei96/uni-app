@@ -4,7 +4,7 @@
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>楼盘动态</text>
 		</view>
-		<image src="../../static/dynamic/dynamic-top.png" mode="" class="topimg"></image>
+		<image src="../../static/dynamic/dynamic-top.jpg" mode="" class="topimg"></image>
 		<view class="box">
 			<view class="item" v-for="item in list" :key="item.id">
 				<view class="top" @tap="go(item.id)">
@@ -240,8 +240,13 @@
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 39.84rpx;
-		line-height: 87.64rpx;
+		padding-top: 40rpx;
+		line-height: 88rpx;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		z-index: 9999;
+		background-color: #FFFFFF;
 		image {
 			width: 31.87rpx;
 			height: 31.87rpx;
@@ -252,6 +257,7 @@
 	.topimg {
 		width: 100%;
 		height: 199.2rpx;
+		margin-top: 128rpx;
 	}
 	.box {
 		padding: 0 49.8rpx;

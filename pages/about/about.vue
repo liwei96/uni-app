@@ -4,7 +4,7 @@
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>预约看房</text>
 		</view>
-		<image src="../../static/other/about-top.png" mode="" class="topimg"></image>
+		<image src="../../static/other/about-top.jpg" mode="" class="topimg"></image>
 		<view class="con">
 			<view class="tit">
 				关于我们
@@ -14,7 +14,7 @@
 			</view>
 			<view class="toptxt">
 				<view class="left">
-					<image src="../../static/other/about-logo.png" mode=""></image>
+					<image src="../../static/other/about-logo.jpg" mode=""></image>
 				</view>
 				<view class="right">
 					允家是杭州易得房科技有限公司打造的一手房信息平台，集房源展示、实时咨询、房产动态跟踪、价格对比等功能于一体。
@@ -104,10 +104,15 @@
 
 	.toptitle {
 		color: #17181A;
-		font-size: 32rpx;
+		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
-		line-height: 87.64rpx;
+		padding-top: 40rpx;
+		line-height: 88rpx;
+		position: fixed;
+		width: 100%;
+		background-color: #FFFFFF;
+		top: 0;
+		z-index: 9999;
 
 		image {
 			width: 32rpx;
@@ -120,6 +125,7 @@
 	.topimg {
 		width: 100%;
 		height: 220rpx;
+		padding-top: 128rpx;
 	}
 
 	.con {

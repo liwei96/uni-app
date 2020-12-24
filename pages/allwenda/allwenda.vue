@@ -7,7 +7,7 @@
 			</navigator>
 		</view>
 		<view class="img_box">
-			<image src="../../static/other/all_wen_top.png" mode=""></image>
+			<image src="../../static/other/all_wen_top.jpg" mode=""></image>
 		</view>
 		<view class="wen_list">
 			<template v-for="item in data">

@@ -164,11 +164,12 @@
 					title: '加载中'
 				})
 				let token = uni.getStorageSync('token')
+				let city = uni.getStorageSync('city')
 				uni.request({
 					url: that.apiserve + '/applets/article/info',
 					method: 'GET',
 					data: {
-						city: 1,
+						city: city,
 						position: that.navnum,
 						page: that.page,
 						limit: 10,
@@ -188,11 +189,12 @@
 					title: '加载中'
 				})
 				let token = uni.getStorageSync('token')
+				let city = uni.getStorageSync('city')
 				uni.request({
 					url: that.apiserve + '/applets/article/info',
 					method: 'GET',
 					data: {
-						city: 1,
+						city: city,
 						position: that.navnum,
 						page: that.page,
 						limit: 10,
@@ -226,10 +228,15 @@
 <style lang="less">
 	.toptitle {
 		color: #17181A;
-		font-size: 32rpx;
+		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
-		line-height: 87.64rpx;
+		padding-top: 40rpx;
+		line-height: 88rpx;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		z-index: 9999;
+		background-color: #FFFFFF;
 
 		image {
 			width: 32rpx;
@@ -249,6 +256,7 @@
 		align-items: center;
 		margin-top: 12rpx;
 		margin-bottom: 40rpx;
+		margin-top: 128rpx;
 
 		image {
 			width: 32rpx;

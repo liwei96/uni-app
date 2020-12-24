@@ -4,7 +4,7 @@
 			<image src="../../static/all-back1.png" mode=""></image>
 			<text>特价房源</text>
 		</view>
-		<image src="../../static/special/special-top.png" mode="" class="topimg"></image>
+		<image src="../../static/special/special-top.jpg" mode="" class="topimg"></image>
 		<view class="limit-time">
 			<view class="limit-tit">
 				<text class="title">限时特价房</text>
@@ -174,7 +174,8 @@
 				pid: 0,
 				codenum: 1,
 				remark: "",
-				position: 0
+				position: 0,
+				timer: ''
 			}
 		},
 		onShow() {
@@ -191,9 +192,13 @@
 				    title: '加载中',
 					mask: true
 				});
+				let city = uni.getStorageSync('city')
 				uni.request({
-					url: that.apiserve+'/applets/discounts?city=1',
+					url: that.apiserve+'/applets/discounts',
 					method:"GET",
+					data: {
+						city: city
+					},
 					success: (res) => {
 						let data = res.data.data
 						that.limits = data.limit_time_specials.data
@@ -228,17 +233,16 @@
 				let now = new Date().getTime()
 				let time = (end-now)/1000
 				that.day = parseInt(time/(60*60*24))
-				that.hour = parseInt(time/(60*60)%24)
-				that.min = parseInt(time/60%60)
-				that.secnod = parseInt(time%60)
-				console.log(that.second)
-				setInterval(()=>{
+				that.hour = parseInt(time/(60*60)%24) ? parseInt(time/(60*60)%24) : '0'+parseInt(time/(60*60)%24)
+				that.min = parseInt(time/60%60) > 10 ? parseInt(time/60%60) : '0'+parseInt(time/60%60)
+				that.second = parseInt(time%60) > 10 ? parseInt(time%60) : '0'+parseInt(time%60)
+				that.timer = setInterval(()=>{
 					let now = new Date().getTime()
 					let time = (end-now)/1000
 					that.day = parseInt(time/(60*60*24))
-					that.hour = parseInt(time/(60*60)%24)
-					that.min = parseInt(time/60%60)
-					that.secnod = parseInt(time%60)
+					that.hour = parseInt(time/(60*60)%24) ? parseInt(time/(60*60)%24) : '0'+parseInt(time/(60*60)%24)
+					that.min = parseInt(time/60%60) > 10 ? parseInt(time/60%60) : '0'+parseInt(time/60%60)
+					that.second = parseInt(time%60) > 10 ? parseInt(time%60) : '0'+parseInt(time%60)
 				},1000)
 			},
 			changemsg() {
@@ -305,6 +309,9 @@
 			// 		this.time = (5 * data.width / 264).toFixed(2) //动画过渡时间
 			// 	}
 			// }).exec();
+		},
+		onHide() {
+			clearInterval(this.timer)
 		}
 	}
 </script>
@@ -314,8 +321,12 @@
 		color: #FFFFFF;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 39.84rpx;
-		line-height: 87.64rpx;
+		padding-top: 40rpx;
+		line-height: 88rpx;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		z-index: 9999;
 		background-color: #F63352;
 		image {
 			width: 31.87rpx;
@@ -329,6 +340,7 @@
 		width: 100%;
 		height: 278.88rpx;
 		margin-bottom: 47.8rpx;
+		padding-top: 128rpx;
 	}
 
 	.limit-time {

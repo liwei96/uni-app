@@ -68,10 +68,15 @@
 <style lang="less">
 	.toptitle {
 		color: #17181A;
-		font-size: 32rpx;
+		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
-		line-height: 87.64rpx;
+		padding-top: 40rpx;
+		line-height: 88rpx;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		z-index: 9999;
+		background-color: #FFFFFF;
 	
 		image {
 			width: 32rpx;
@@ -82,6 +87,7 @@
 	}
 	.box {
 		padding: 0 30rpx;
+		padding-top: 128rpx;
 	}
 	.tit {
 		margin-top: 34rpx;
