@@ -300,7 +300,11 @@
 		padding: 0 29.88rpx;
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
-
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 30000;
+		background-color: #fff;
 		image {
 			width: 31.87rpx;
 			height: 31.87rpx;
@@ -318,7 +322,7 @@
 
 	.box {
 		padding: 0 29.88rpx;
-
+		margin-top: 150rpx;
 		.dynamic-tit {
 			color: #17181A;
 			font-size: 31.87rpx;

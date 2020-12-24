@@ -367,23 +367,22 @@
 button::after{ border: none;}
 .prodetail{
 	.toptitle{
-		// float: left;
-		// color: #17181A;
-		// font-size: 32rpx;
-		// padding-top:60rpx ;
-		// padding-left:30rpx ;
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 30000;
 		.nav_top{
 			image{
-						 width: 31.87rpx;
-						 height: 31.87rpx;
-						 margin-right: 11.95rpx;
-						 margin-bottom: -3.98rpx;
+				 width: 31.87rpx;
+				 height: 31.87rpx;
+				 margin-right: 11.95rpx;
+				 margin-bottom: -3.98rpx;
 			}
 			text{
 						  width: 221rpx;
@@ -399,6 +398,7 @@ button::after{ border: none;}
 		padding-right: 30rpx;
 		padding-top: 40rpx;
 		padding-bottom: 32rpx;
+		margin-top: 120rpx;
 		.name{
 			font-size: 40rpx;
 			font-weight: 800;

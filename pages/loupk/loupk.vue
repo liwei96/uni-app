@@ -288,7 +288,10 @@
 			padding-top: 39.84rpx;
 			line-height: 87.64rpx;
 			background-color: #fff;
-
+			position: fixed;
+			top: 0;
+			width: 100%;
+			z-index: 30000;
 			image {
 				width: 31.87rpx;
 				height: 31.87rpx;
@@ -311,6 +314,7 @@
 			box-sizing: border-box;
 			position: relative;
 			margin-bottom: 140rpx;
+			margin-top: 150rpx;
 			.add_tan {
 				width: 100%;
 				height: 94rpx;

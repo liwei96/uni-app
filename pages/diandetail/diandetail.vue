@@ -25,19 +25,28 @@
 						<text class="time">{{comment.time}}</text>
 					</view>
 					<view class="zan">
-						<view class="zan_box" v-if="comment.my_like==1">
-							<image src="../../static/content/zan.png" mode=""></image>
-							{{comment.like_num}}
-						</view>
-						<view class="zan_box_no" v-if="comment.my_like==0">
-							<image src="../../static/content/no_zan.png" mode=""></image>
-							{{comment.like_num}}
-						</view>
+						<button open-type="getPhoneNumber" v-if="comment.my_like==1"
+						@getphonenumber="getPhoneNumber($event,project_id,'项目点评详情页+点赞',104,'点赞',1,comment.id)" 
+						>
+							<view class="zan_box" >
+								<image src="../../static/content/zan.png" mode=""></image>
+								{{comment.like_num}}
+							</view>
+						</button>
+						<button open-type="getPhoneNumber" v-if="comment.my_like==0"
+						@getphonenumber="getPhoneNumber($event,project_id,'项目详情页+点赞',104,'点赞',1,comment.id)" >
+							<view class="zan_box_no" >
+								<image src="../../static/content/no_zan.png" mode=""></image>
+								{{comment.like_num}}
+							</view>
+						</button>
 						
-						<view class="dianping" @tap="goHuifu(comment.id)">
+						<button class="dianping"  open-type="getPhoneNumber" hover-class="none"
+						@getphonenumber="getPhoneNumber($event,project_id,'项目详情页+回复',104,'回复',2,comment.id)"
+						>
 							<image src="../../static/liu.png" mode=""></image>
 							{{hui_num}}
-						</view>
+						</button>
 					</view>
 				</view>
 			<!-- 	回复框 -->
@@ -46,7 +55,9 @@
 					<text class="con">{{ite.content}}</text>
 					<view class="time_box">
 						<text class="time"> {{ite.time}}</text>
-						<text class='shan' v-if="ite.mine==1">删除</text>
+						<button class='shan' v-if="ite.mine==1" open-type="getPhoneNumber" hover-class="none"
+						@getphonenumber="getPhoneNumber($event,project_id,'项目详情页+删除',104,'删除',3,comment.id)"
+						>删除</button>
 					</view>
 				</view>
 			</view>
@@ -138,35 +149,199 @@
 			this.project_id = option.id;
 		},
 		methods:{
-			async getPhoneNumber(e,pid,remark,point,title,type) {
+			deletePing(id) {
+				let token = uni.getStorageSync("token");
+				if (token) {
+					uni.request({
+						url: this.apiserve + "comment/delete",
+						method: "POST",
+						data: {
+							token: token,
+							id: id,
+						},
+						success: (res) => {
+							if (res.data.code == 200) {
+								console.log(res);
+							}
+						}
+			
+					})
+				} else {
+					this.$refs.msg.show();
+					this.msg = "请先登录"
+				}
+			},
+			getLike(id) {
+				let token = uni.getStorageSync("token");
+				if (token) {
+					uni.request({
+						url: this.apiserve + "/comment/like",
+						data: {
+							token: token,
+							id: id,
+						},
+						method: "POST",
+						success: (res) => {
+							if (res.data.code == 200) {
+								console.log(res);
+							}
+						}
+			
+					})
+				} else {
+					this.$refs.msg.show();
+					this.msg = "请先登录"
+				}
+			},
+			async getPhoneNumber(e,pid,remark,point,title,type,ping_id) {
 				let that = this
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					this.isok = 0
-					that.baoMing(pid,remark,point,title)
-					if(type) {
+					if(type) { 
+						 let token = uni.getStorageSync("token");
+						 if(token){
+							 if(type==1){ //点赞
+							 		this.getLike(ping_id)	
+								    this.getdata(pid)
+							 }else if(type==2){ //回复
+							 		this.goHuifu(ping_id)			 
+							 }else if(type==3){ //删除
+							 		this.deletePing(ping_id)
+									this.getdata(pid)
+							 }
+						 }else{
+							 let url="/pages/diandetail/diandetail?id="+pid;
+							 uni.setStorageSync("backurl",url)
+							 uni.navigateTo({
+							 	url:"/pages/login/login"
+							 })
+						 }
 						
+					}else{
+						this.isok = 0
+						that.baoMing(pid,remark,point,title)
 					}
 				} else {
-					let session = uni.getStorageSync('session')
-					if(session){
-						uni.request({
-							url: 'https://api.edefang.net/applets/baidu/decrypt',
-							method:'get',
-							data:{
-								iv: e.detail.iv,
-								data: e.detail.encryptedData,
-								session_key: session
-							},
-							success: (res) => {
-								console.log(res,'session')
-								let tel = res.data.mobile
-								uni.setStorageSync('phone',tel)
-								let openid = uni.getStorageSync('openid')
-							    that.tel = tel;
-								that.baoMing(pid,remark,point,title)
-							}
-						})
-					}else {
+					if(type){
+					   	let session = uni.getStorageSync('session')
+					   	if(session){
+					   		uni.request({
+					   			url: 'https://api.edefang.net/applets/baidu/decrypt',
+					   			method:'get',
+					   			data:{
+					   				iv: e.detail.iv,
+					   				data: e.detail.encryptedData,
+					   				session_key: session
+					   			},
+					   			success: (res) => {
+					   				console.log(res,'session')
+					   				let tel = res.data.mobile
+					   				uni.setStorageSync('phone',tel)
+					   				let openid = uni.getStorageSync('openid')
+									uni.request({
+										url:"https://api.edefang.net/applets/login",
+										method:'GET',
+										data:{
+											phone: tel,
+											openid: openid
+										},
+										success: (res) => {
+											console.log(res)
+											uni.setStorageSync('token',res.data.token)
+											if(type==1){ //点赞
+												that.getLike(ping_id)
+												that.getdata(pid)
+											}else if(type==2){ //回复
+												that.goHuifu(ping_id);
+											}else if(type == 3){ //删除
+												that.deletePing(ping_id);
+												that.getdata(pid)
+											}
+										}
+									})
+					   			}
+					   		})
+					   	}else {
+					   		console.log(session,"没保存session")
+					   		uni.login({
+					   		  provider: 'baidu',
+					   		  success: function (res) {
+					   		   // console.log(res.code);
+					   			uni.request({
+					   				url: 'https://api.edefang.net/applets/baidu/get_session_key',
+					   				method:'get',
+					   				data:{
+					   					code: res.code
+					   				},
+					   				success: (res) => {
+					   					console.log(res)
+					   					uni.setStorageSync('openid',res.data.openid)
+					   					uni.setStorageSync('session',res.data.session_key)
+					   					uni.request({
+					   						url:"https://api.edefang.net/applets/baidu/decrypt",
+					   						data:{
+					   							data: e.detail.encryptedData,
+					   							iv:e.detail.iv,
+					   							session_key:res.data.session_key
+					   						},
+					   						success: (res) => {
+					   							console.log(res)
+					   							let tel = res.data.mobile
+					   							uni.setStorageSync('phone',tel)
+					   							let openid = uni.getStorageSync('openid')
+												uni.request({
+													url:"https://api.edefang.net/applets/login",
+													method:'GET',
+													data:{
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token',res.data.token)
+														if(type==1){ //点赞
+															that.getLike(ping_id)
+															that.getdata(pid)
+														}else if(type==2){ //回复
+															that.goHuifu(ping_id);
+														}else if(type == 3){ //删除
+															that.deletePing(ping_id);
+															that.getdata(pid)
+														}
+														
+													}
+												})
+					   							// that.$refs.sign.tel = tel
+					   							// that.baoMing(pid,remark,point,title)
+					   						}
+					   					})
+					   					
+					   				}
+					   			})
+					   		  }
+					   		});
+					   		} 
+						
+					}else{
+						let session = uni.getStorageSync('session')
+						if(session){
+							uni.request({
+								url: 'https://api.edefang.net/applets/baidu/decrypt',
+								method:'get',
+								data:{
+									iv: e.detail.iv,
+									data: e.detail.encryptedData,
+									session_key: session
+								},
+								success: (res) => {
+									console.log(res,'session')
+									let tel = res.data.mobile
+									uni.setStorageSync('phone',tel)
+									let openid = uni.getStorageSync('openid')
+									that.tel = tel;
+									that.baoMing(pid,remark,point,title)
+								}
+							})
+						}else {
 						console.log(session,"没保存session")
 						uni.login({
 						  provider: 'baidu',
@@ -204,7 +379,9 @@
 						  }
 						});
 						}
-					this.isok = 1
+					    this.isok = 1
+					
+					}
 				}
 			},
 			gocontent(id) {
@@ -289,6 +466,10 @@ button::after{
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 30000;
 		.nav_top{
 			image{
 			 width: 31.87rpx;
@@ -308,6 +489,7 @@ button::after{
 		padding-left:30rpx;
 		padding-right: 30rpx;
 		box-sizing: border-box;
+		margin-top: 13rpx;
 	    .dian_one{
 	    	margin-top: 30rpx;
 	    	.top:after{

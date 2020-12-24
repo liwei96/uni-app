@@ -246,6 +246,10 @@
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 30000;
 		.nav_top{
 			image{
 			 width: 31.87rpx;
@@ -271,6 +275,7 @@
 		height: 60rpx;
 		padding-bottom: 13rpx;
 		padding-top: 13rpx;
+		margin-top: 120rpx;
 		view{
 			font-size: 28rpx;
 			color:#323233;

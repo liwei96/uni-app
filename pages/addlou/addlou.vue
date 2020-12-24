@@ -20,8 +20,10 @@
 							<view class="price">{{item.price}}元/m²</view>
 							<view class="type">{{item.type}}<text class="ge">|</text>{{item.city}}-{{item.country}}<text class="ge">|</text>{{item.area}}m²</view>
 							<view class="tese">
-								<text class="zhuang">{{item.decorate}}</text>
-								<text class="other" v-for="(ite,index) in item.features" :key="index">{{ite}}</text>
+								<text class="zhuang" v-if="item.decorate!=='' && item.decorate!==null">{{item.decorate}}</text>
+								<template v-if="item.features">
+								   <text class="other" v-for="(ite,index) in item.features" :key="index">{{ite}}</text>
+								</template>
 							</view>
 						</view>
 					</view>
@@ -142,7 +144,10 @@
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
-	
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 30000;
 		image {
 			width: 31.87rpx;
 			height: 31.87rpx;
@@ -160,6 +165,7 @@
 	.pro_list {
 			width: 100%;
 			position: relative;
+			margin-top: 165rpx;
 			//列表部分
 		.sel_pro:after {
 			height: 0;
@@ -262,6 +268,7 @@
 		}
 	 //浏览足迹
 	.liu_zu{
+		margin-bottom: 150rpx;
 		.tit{
 			font-size: 32rpx;
 			font-weight: 800;

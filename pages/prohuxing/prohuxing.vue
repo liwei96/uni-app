@@ -114,6 +114,10 @@
 			padding-top: 39.84rpx;
 			line-height: 87.64rpx;
 			background-color: #fff;
+			position: fixed;
+			top: 0;
+			width: 100%;
+			z-index: 30000;
 			.nav_top{
 				display: inline-block;
 				image {
@@ -136,6 +140,7 @@
 		padding-right: 30rpx;
 		box-sizing: border-box;
 		width: 100%;
+		margin-top: 120rpx;
 		.huxing_one{
 			height: 188rpx;
 			border-bottom: 1rpx solid #F2F2F2;

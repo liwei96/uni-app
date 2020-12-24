@@ -23,10 +23,10 @@
 				<view class="gong">
 					<view class="left">
 						<text class="time">{{item.time}}</text>
-						<text class="shan" v-if="item.mine==1">删除</text>
+						<button class="shan" v-if="item.mine==1" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,1)" @tap="did = item.id">删除</button>
 					</view>
 					<view class="zan">
-						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="did = item.id">
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id">
 							<view class="zan_box_no">
 								<image :src="item.my_like == 0 ? '../../static/content/no_zan.png' : '../../static/content/zan.png'" mode=""></image>
 								{{item.like_num}}
@@ -89,7 +89,12 @@
 			}
 		},
 		methods: {
-			getPhoneNumber(e) {
+			goHuifu(id){
+				uni.navigateTo({
+					url:"/pages/huifu/huifu?id="+id
+				})
+			},
+			getPhoneNumber(e,type) {
 				let that = this
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
@@ -102,7 +107,11 @@
 				} else {
 					let session = uni.getStorageSync('token')
 					if (session) {
-						that.getLike(that.did)
+						if(type==1){ //删除
+							that.deletePing(that.did)
+						}else if(type ==2){ //点赞
+							that.getLike(that.did)
+						}
 					} else {
 						uni.login({
 							provider: 'baidu',
@@ -140,7 +149,12 @@
 													},
 													success: (res) => {
 														uni.setStorageSync('token', res.data.token)
-														that.getLike(that.did)
+														if(type ==1){ //删除 
+															that.deletePing(that.did)
+														}else if(type ==2){ //点赞
+															that.getLike(that.did)
+														}
+													
 													}
 												})
 
@@ -153,6 +167,28 @@
 						});
 					}
 					this.isok = 1
+				}
+			},
+			deletePing(id) {
+				let token = uni.getStorageSync("token");
+				if (token) {
+					uni.request({
+						url: this.apiserve + "comment/delete",
+						method: "POST",
+						data: {
+							token: token,
+							id: id,
+						},
+						success: (res) => {
+							if (res.data.code == 200) {
+								console.log(res);
+							}
+						}
+			
+					})
+				} else {
+					this.$refs.msg.show();
+					this.msg = "请先登录"
 				}
 			},
 			getLike(id) {
@@ -276,7 +312,10 @@
 			padding-top: 39.84rpx;
 			line-height: 87.64rpx;
 			background-color: #fff;
-
+			position: fixed;
+			top: 0;
+			width: 100%;
+			z-index: 30000;
 			.nav_top {
 				image {
 					width: 31.87rpx;
@@ -300,6 +339,7 @@
 			box-sizing: border-box;
 			background: #fff;
 			padding-bottom: 130rpx;
+			margin-top: 140rpx;
 
 			.dian_one {
 				margin-top: 30rpx;

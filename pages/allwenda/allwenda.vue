@@ -220,6 +220,10 @@ export default {
 		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #36ACE7;
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 30000;
 		.nav_top{
 			image{
 			 width: 31.87rpx;
@@ -236,6 +240,7 @@ export default {
 		}
 	}
 	.img_box{
+		margin-top: 128rpx;
 		image{
 		   width: 100%;
 		   height: 200rpx;
@@ -247,7 +252,7 @@ export default {
 		box-sizing: border-box;
 		width: 100%;
 		background:#fff;
-		padding-bottom: 109rpx;
+		padding-bottom: 110rpx;
 		.list_one{
 			.tit{
 				.wen{
