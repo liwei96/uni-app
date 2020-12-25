@@ -1033,7 +1033,7 @@ var canvaColumn = null;var _default =
           uni.setStorageSync("ling_bot" + this.detail.id, _ling_bot);
           this.goufang_date = time;
           this.goufang_ling = _ling_top;
-          this.seefang_sheng = num;
+          this.seefang_sheng = parseInt(num);
           this.seefang_ling = _ling_bot;
         }
       } else {
@@ -1057,7 +1057,7 @@ var canvaColumn = null;var _default =
         uni.setStorageSync("ling_bot" + this.detail.id, _ling_bot2);
         this.goufang_date = _time;
         this.goufang_ling = _ling_top2;
-        this.seefang_sheng = _num;
+        this.seefang_sheng = parseInt(_num);
         this.seefang_ling = _ling_bot2;
       }
 
@@ -1377,7 +1377,7 @@ var canvaColumn = null;var _default =
     // 		this.isok = 1
     // 	}
     // },
-    getLike: function getLike(id) {
+    getLike: function getLike(id) {var _this2 = this;
       var token = uni.getStorageSync("token");
       if (token) {
         uni.request({
@@ -1392,7 +1392,9 @@ var canvaColumn = null;var _default =
           method: "POST",
           success: function success(res) {
             if (res.data.code == 200) {
-              console.log(res);
+              _this2.$refs.msg.show();
+              _this2.msg = res.data.message;
+              _this2.getdata(_this2.detail.id);
             }
           } });
 
@@ -1427,9 +1429,10 @@ var canvaColumn = null;var _default =
         this.msg = "请先登录";
       }
     },
-    getdata: function getdata(id) {var _this2 = this;
+    getdata: function getdata(id) {var _this3 = this;
       var ip = '';
       var other = uni.getStorageSync("other");
+      var token = uni.getStorageSync("token");
       uni.request({
         url: this.putserve + "/getIp.php",
         method: "GET",
@@ -1439,62 +1442,63 @@ var canvaColumn = null;var _default =
           ip = ip.substring(1);
           ip = ip.slice(0, -3);
           uni.request({
-            url: _this2.apiserve + '/applets/building/detail',
+            url: _this3.apiserve + '/applets/building/detail',
             data: {
               id: id,
               other: other,
-              ip: ip },
+              ip: ip,
+              token: token },
 
             success: function success(res) {
               if (res.data.code == 200) {
                 console.log(res, "res");
                 var data = res.data.data;
-                _this2.pro_img = data.imgs.img.effects;
+                _this3.pro_img = data.imgs.img.effects;
 
-                _this2.effects = data.imgs.img.effects;
-                _this2.house_types = data.imgs.img.house_types;
+                _this3.effects = data.imgs.img.effects;
+                _this3.house_types = data.imgs.img.house_types;
 
-                _this2.total = data.imgs.num;
-                _this2.detail = data.abstract;
-                _this2.goodsList = data.house_types;
-                _this2.dongtai = data.dynamics;
-                _this2.staff = data.staff;
-                _this2.comments = data.comments;
-                _this2.questions = data.questions;
-                _this2.recommends = data.recommends;
-                _this2.common = data.common;
-                _this2.header = data.common.header;
-                _this2.collect = data.collect;
+                _this3.total = data.imgs.num;
+                _this3.detail = data.abstract;
+                _this3.goodsList = data.house_types;
+                _this3.dongtai = data.dynamics;
+                _this3.staff = data.staff;
+                _this3.comments = data.comments;
+                _this3.questions = data.questions;
+                _this3.recommends = data.recommends;
+                _this3.common = data.common;
+                _this3.header = data.common.header;
+                _this3.collect = data.collect;
 
-                _this2.latitude = data.abstract.latitude;
-                _this2.longitude = data.abstract.longitude;
-                _this2.covers[0].latitude = data.abstract.latitude;
-                _this2.covers[0].longitude = data.abstract.longitude;
+                _this3.latitude = data.abstract.latitude;
+                _this3.longitude = data.abstract.longitude;
+                _this3.covers[0].latitude = data.abstract.latitude;
+                _this3.covers[0].longitude = data.abstract.longitude;
                 // this.covers[0].width = 280;
                 // this.covers[0].height = 72;
-                _this2.covers[0].title = data.abstract.name;
-                _this2.covers[0].label.content = data.abstract.name;
+                _this3.covers[0].title = data.abstract.name;
+                _this3.covers[0].label.content = data.abstract.name;
 
-                _this2.suijiData();
+                _this3.suijiData();
 
 
-                console.log(_this2.covers, 'covers');
+                console.log(_this3.covers, 'covers');
 
                 var phone = data.common.phone;
-                _this2.telphone = phone.replace(',', '转');
-                _this2.old_telphone = phone;
-                _this2.specials = data.specials;
+                _this3.telphone = phone.replace(',', '转');
+                _this3.old_telphone = phone;
+                _this3.specials = data.specials;
                 var tejia = data.specials.data;
                 if (tejia == null) {
-                  _this2.tejia = [];
+                  _this3.tejia = [];
                 } else {
-                  _this2.tejia = data.specials.data;
+                  _this3.tejia = data.specials.data;
                 }
 
-                _this2.deal_prices = data.deal_prices;
-                console.log(_this2.telphone);
+                _this3.deal_prices = data.deal_prices;
+                console.log(_this3.telphone);
 
-                var _self2 = _this2;
+                var _self2 = _this3;
 
                 var arr_data = data.deal_prices;
                 var time = [];
@@ -1505,7 +1509,7 @@ var canvaColumn = null;var _default =
                   var strr = str.replace("-", '.');
                   time.push(strr);
                   var year = n.time.substring(0, 4);
-                  _this2.echarts_year = year;
+                  _this3.echarts_year = year;
                 });
 
 
@@ -1514,13 +1518,13 @@ var canvaColumn = null;var _default =
                   series: [] };
 
                 Column.series = [{
-                  "name": _this2.echarts_year + "年",
+                  "name": _this3.echarts_year + "年",
                   "textColor": "#fff",
                   "data": num }];
 
 
                 Column.categories = time;
-                _this2.Column = Column;
+                _this3.Column = Column;
                 console.log(Column, 'Column');
                 _self2.showColumn("canvasColumn", Column);
 
@@ -1532,7 +1536,7 @@ var canvaColumn = null;var _default =
                     var str = p.diff.toString();
                     p.diff = str.substring(0, str.length - 2) + '**';
                   });
-                  _this2.tableList = arr;
+                  _this3.tableList = arr;
                 }
 
                 var analysis = data.analysis;
@@ -1546,9 +1550,9 @@ var canvaColumn = null;var _default =
                   }
                 });
 
-                _this2.fenxi_data = fenxi_tou;
-                _this2.fenxi_tou = fenxi_tou;
-                _this2.fenxi_yiju = fenxi_yiju;
+                _this3.fenxi_data = fenxi_tou;
+                _this3.fenxi_tou = fenxi_tou;
+                _this3.fenxi_yiju = fenxi_yiju;
 
 
                 var header = data.common.header;
@@ -1582,7 +1586,7 @@ var canvaColumn = null;var _default =
 
 
     },
-    goShou: function goShou() {var _this3 = this;
+    goShou: function goShou() {var _this4 = this;
       var token = uni.getStorageSync('token');
       if (token) {
         uni.request({
@@ -1598,10 +1602,12 @@ var canvaColumn = null;var _default =
 
           success: function success(res) {
             if (res.data.code == 200) {
-              console.log(res);
+              _this4.$refs.msg.show();
+              _this4.msg = res.data.message;
+              _this4.getdata(_this4.detail.id);
             } else if (res.data.code == 500) {
-              _this3.$refs.msg.show();
-              _this3.msg = res.data.msg;
+              _this4.$refs.msg.show();
+              _this4.msg = res.data.msg;
             }
           } });
 

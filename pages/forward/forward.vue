@@ -322,6 +322,9 @@
 								phone: phone,
 								source: 3
 							},
+							header: {
+								'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+							},
 							success: (res) => {
 								console.log(res)
 							}
@@ -343,6 +346,9 @@
 						code: code,
 						phone: phone,
 						source: 3
+					},
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
 					},
 					success: (res) => {
 						console.log(res)
