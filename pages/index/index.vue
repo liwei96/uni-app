@@ -1,6 +1,9 @@
 <template>
 	<view class="content">
 		<view class="toptitle">
+			<view class="status_bar">
+				<!-- 这里是状态栏 -->
+			</view>
 			<text>允家新房</text>
 		</view>
 		<view class="search">
@@ -317,24 +320,33 @@
 						this.dynamics = res.data.data.dynamics;
 						this.recommends = res.data.data.recommends;
 						// #ifdef MP-BAIDU
-						  let header = res.data.data.common.header;
-						  swan.setPageInfo({
-							  title:header.title,
-							  keywords:header.keywords,
-							  description:header.description,
-							  success : res =>{
-								  console.log('setPageInfo success', res);
-							  },
-							  fail: err =>{
-								  console.log('setPageInfo fail', err);
-							  }
-						  })
+						let header = res.data.data.common.header;
+						swan.setPageInfo({
+							title: header.title,
+							keywords: header.keywords,
+							description: header.description,
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
 						// #endif
 					}
 
 				}
 
 			})
+		},
+		onReady() {
+			var view = uni.createSelectorQuery().select(".toptitle");
+
+			view.boundingClientRect(function(data) {
+
+				console.log(data.height);
+
+			}).exec();
 		},
 		methods: {
 			gotop() {
@@ -396,10 +408,14 @@
 	}
 
 	.toptitle {
+		.status_bar {
+			height: var(--status-bar-height);
+			width: 50%;
+		}
+
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 40rpx;
 		line-height: 88rpx;
 		position: fixed;
 		width: 100%;
@@ -410,7 +426,9 @@
 
 	.search {
 		padding: 0 29.88rpx;
-		padding-top: 128rpx;
+		margin-top: var(--status-bar-height);
+		padding-top: 88rpx;
+
 		.searchbox {
 			height: 71.71rpx;
 			border-radius: 35.85rpx;

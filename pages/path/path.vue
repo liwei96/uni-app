@@ -1,6 +1,9 @@
 <template>
 	<view class="path">
 		<view class="toptitle" @tap="back">
+			<view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>选择城市</text>
 		</view>
@@ -124,13 +127,16 @@
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 40rpx;
 		line-height: 88rpx;
 		position: fixed;
 		width: 100%;
 		background-color: #FFFFFF;
 		top: 0;
 		z-index: 9999;
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -145,7 +151,8 @@
 		border-bottom: 1rpx solid #F2F3F7;
 		line-height: 98rpx;
 		margin-bottom: 30rpx;
-		padding-top: 128rpx;
+		padding-top: 88rpx;
+		margin-top: var(--status-bar-height);
 		image {
 			width: 32rpx;
 			height: 32rpx;

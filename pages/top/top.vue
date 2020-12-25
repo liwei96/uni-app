@@ -1,8 +1,14 @@
 <template>
 	<view class="top-view">
 		<view class="toptitle"  @tap="back">
+			<view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			      </view>
 			<image src="../../static/all-back1.png" mode=""></image>
 			<text>楼盘榜</text>
+		</view>
+		<view class="topbb">
+			
 		</view>
 		<view class="top-nav" @tap="gocity">
 			<view class="city">
@@ -173,19 +179,26 @@
 		color: #FFFFFF;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 40rpx;
 		line-height: 88rpx;
 		position: fixed;
 		width: 100%;
 		top: 0;
 		z-index: 9999;
 		background-color: #50B3FD;
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		image {
 			width: 31.87rpx;
 			height: 31.87rpx;
 			margin-right: 11.95rpx;
 			margin-bottom: -3.98rpx;
 		}
+	}
+	.topbb {
+		height: var(--status-bar-height);
+		width: 100%;
 	}
 	button {
 		padding: 0;
@@ -199,7 +212,7 @@
 		background: url(../../static/feature/feature-top.jpg);
 		background-size: 100%;
 		position: relative;
-		margin-top: 128rpx;
+		margin-top: 88rpx;
 
 		.city {
 			position: absolute;

@@ -1,7 +1,13 @@
 <template>
 	<view>
 		<view class="toptitle" @tap="back">
+			<view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
+		</view>
+		<view class="topbb">
+			
 		</view>
 		<image class="topimg" src="../../static/other/forward-top.jpg" mode=""></image>
 		<view class="txt">
@@ -392,9 +398,11 @@
 		color: #17181A;
 		font-size: 32rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
 		line-height: 87.64rpx;
-
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		image {
 			width: 32rpx;
 			height: 32rpx;

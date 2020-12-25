@@ -1,6 +1,9 @@
 <template>
 	<view class="article">
 		<view class="toptitle" @tap="back">
+			<view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>买房资格</text>
 		</view>
@@ -29,12 +32,14 @@
 				<text>{{info.keywords}}</text>
 			</view>
 			<view class="agree">
-				<view class="agree-box">
-					<image src="../../static/other/article-agree.png" mode=""></image>
-					<view class="agree-num">
-						{{info.like_num}}
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+					<view class="agree-box">
+						<image src="../../static/other/article-agree.png" mode=""></image>
+						<view class="agree-num">
+							{{info.like_num}}
+						</view>
 					</view>
-				</view>
+				</button>
 			</view>
 			<view class="statement">
 				<text>
@@ -130,6 +135,127 @@
 				uni.redirectTo({
 					url: "/pages/article/article?id="+id
 				})
+			},
+			agree() {
+				let token = uni.getStorageSync('token')
+				uni.request({
+					url: that.apiserve + "/jy/article/like",
+					method: 'POST',
+					data: {
+						id: that.info.id,
+						token: token
+					},
+					header:{
+						'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+					},
+					success: (res) => {
+						console.log(res)
+						if (that.info.my_like == 0) {
+							that.info.like_num++
+							that.info.my_like = 1
+						} else {
+							that.info.like_num--
+							that.info.my_like = 0
+						}
+					}
+				})
+			},
+			async getPhoneNumber(e) {
+				console.log(e)
+				let that = this
+				let token = uni.getStorageSync('token')
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					if(!token) {
+						let url = '/pages/info/info?id=' + this.id
+						uni.setStorageSync('backurl', url)
+						uni.navigateTo({
+							url:'/pages/login/login'
+						})
+					} else {
+						that.agree()
+					}
+				} else {
+					if(token) {
+						that.agree()
+						return
+					}
+					let session = uni.getStorageSync('session')
+					if (session) {
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method: 'get',
+							data: {
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res)
+								let tel = res.data.mobile
+								uni.setStorageSync('phone', tel)
+								let openid = uni.getStorageSync('openid')
+								uni.request({
+									url:"https://api.edefang.net/applets/login",
+									method:'GET',
+									data:{
+										phone: tel,
+										openid: openid
+									},
+									success: (res) => {
+										uni.setStorageSync('token',res.data.token)
+										that.agree()
+									}
+								})
+							}
+						})
+					} else {
+						uni.login({
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												uni.request({
+													url:"https://api.edefang.net/applets/login",
+													method:'GET',
+													data:{
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														uni.setStorageSync('token',res.data.token)
+														that.agree()
+													}
+												})
+											}
+										})
+									}
+								})
+							}
+						});
+					}
+				}
+			
 			}
 		}
 	}
@@ -140,14 +266,16 @@
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 40rpx;
 		line-height: 88rpx;
 		position: fixed;
 		width: 100%;
 		top: 0;
 		z-index: 9999;
 		background-color: #FFFFFF;
-
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -155,10 +283,17 @@
 			margin-bottom: -4rpx;
 		}
 	}
-
+	button{
+		padding: 0;
+		margin: 0
+	}
+	button:after{
+		border: none;
+	}
 	.box {
 		padding: 0 30rpx;
-		padding-top: 128rpx;
+		padding-top: 88rpx;
+		margin-top: var(--status-bar-height);
 
 		.tit {
 			color: #323333;

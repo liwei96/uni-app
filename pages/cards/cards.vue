@@ -1,6 +1,9 @@
 <template>
 	<view>
 		<view class="toptitle" @tap="back">
+			<view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			      </view>
 		   <navigator url="../index/index" class="nav_top" open-type="switchTab">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>我的卡券</text>
@@ -115,9 +118,11 @@
 		color: #17181A;
 		font-size: 32rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
 		line-height: 87.64rpx;
-	
+		 .status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -147,6 +152,7 @@
 		box-sizing: border-box;
 		width: 100%;
 		background: #fff;
+		padding-top: 20rpx;
 		.youhui_01 {
 			width: 100%;
 			height: 140rpx;

@@ -1,8 +1,14 @@
 <template>
 	<view class="dynamic">
 		<view class="toptitle" @tap="back">
+			<view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>楼盘动态</text>
+		</view>
+		<view class="topbb">
+			
 		</view>
 		<image src="../../static/dynamic/dynamic-top.jpg" mode="" class="topimg"></image>
 		<view class="box">
@@ -240,13 +246,16 @@
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 40rpx;
 		line-height: 88rpx;
 		position: fixed;
 		width: 100%;
 		top: 0;
 		z-index: 9999;
 		background-color: #FFFFFF;
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		image {
 			width: 31.87rpx;
 			height: 31.87rpx;
@@ -254,10 +263,14 @@
 			margin-bottom: -3.98rpx;
 		}
 	}
+	.topbb {
+		height: var(--status-bar-height);
+		width: 100%;
+	}
 	.topimg {
 		width: 100%;
 		height: 199.2rpx;
-		margin-top: 128rpx;
+		margin-top: 88rpx;
 	}
 	.box {
 		padding: 0 49.8rpx;

@@ -1366,6 +1366,9 @@ var canvaColumn = null;var _default =
             token: token,
             id: id },
 
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
+
           method: "POST",
           success: function success(res) {
             if (res.data.code == 200) {
@@ -1388,6 +1391,9 @@ var canvaColumn = null;var _default =
           data: {
             token: token,
             id: id },
+
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
 
           success: function success(res) {
             if (res.data.code == 200) {
@@ -1566,6 +1572,9 @@ var canvaColumn = null;var _default =
             token: token,
             id: this.detail.id,
             type: 1 },
+
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
 
           success: function success(res) {
             if (res.data.code == 200) {

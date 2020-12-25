@@ -1,6 +1,9 @@
 <template>
 	<view class="article">
 		<view class="toptitle" @tap="back">
+			<view class="status_bar">
+				<!-- 这里是状态栏 -->
+			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>本地楼市</text>
 		</view>
@@ -63,12 +66,14 @@
 				<text>楼盘导购</text>
 			</view>
 			<view class="agree">
-				<view class="agree-box" @tap="agree">
-					<image src="../../static/other/article-agree.png" mode=""></image>
-					<view class="agree-num">
-						{{info.like_num}}
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+					<view class="agree-box">
+						<image src="../../static/other/article-agree.png" mode=""></image>
+						<view class="agree-num">
+							{{info.like_num}}
+						</view>
 					</view>
-				</view>
+				</button>
 			</view>
 			<view class="statement">
 				<text>
@@ -97,7 +102,6 @@
 				</view>
 			</view>
 		</view>
-		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">getPhoneNumber</button>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="'咨询服务'" :pid="pid" :remark="remark" :position="position"></sign>
 		</wyb-popup>
@@ -125,11 +129,14 @@
 				codenum: 1
 			}
 		},
-		components: {sign,wybPopup},
+		components: {
+			sign,
+			wybPopup
+		},
 		methods: {
-			back(){
+			back() {
 				uni.navigateBack({
-					data:1
+					data: 1
 				})
 			},
 			getinfo() {
@@ -137,8 +144,8 @@
 				let other = uni.getStorageSync('other')
 				let token = uni.getStorageSync('token')
 				uni.request({
-					url: that.apiserve+"/applets/article/detail",
-					method:"GET",
+					url: that.apiserve + "/applets/article/detail",
+					method: "GET",
 					data: {
 						id: that.id,
 						city: city,
@@ -171,15 +178,15 @@
 			},
 			go(id) {
 				uni.redirectTo({
-					url: "/pages/article/article?id="+id
+					url: "/pages/article/article?id=" + id
 				})
 			},
 			gobuild(id) {
 				uni.redirectTo({
-					url: "/pages/content/content?id="+id
+					url: "/pages/content/content?id=" + id
 				})
 			},
-			show(id,txt) {
+			show(id, txt) {
 				this.pid = id
 				this.remark = txt
 				this.position = 104
@@ -191,49 +198,138 @@
 			},
 			call() {
 				uni.makePhoneCall({
-				 	// 手机号
-				    phoneNumber: that.tel, 
+					// 手机号
+					phoneNumber: that.tel,
 					// 成功回调
 					success: (res) => {
-						console.log('调用成功!')	
+						console.log('调用成功!')
 					},
 					// 失败回调
 					fail: (res) => {
 						console.log('调用失败!')
 					}
-					
-				  });
+				});
 			},
 			agree() {
-				// if(!this.isok) {
-				// 	return
-				// }
 				let token = uni.getStorageSync('token')
-				this.isok = false
-				if(!token){
-					
-				}
 				uni.request({
-					url: that.apiserve+"/jy/article/like",
-					method:'POST',
+					url: that.apiserve + "/jy/article/like",
+					method: 'POST',
 					data: {
 						id: that.info.id,
 						token: token
 					},
+					header:{
+						'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+					},
 					success: (res) => {
 						console.log(res)
-						if(that.info.my_like == 0) {
+						if (that.info.my_like == 0) {
 							that.info.like_num++
-						}else{
+							that.info.my_like = 1
+						} else {
 							that.info.like_num--
+							that.info.my_like = 0
 						}
-						that.isok = true
 					}
 				})
 			},
-			getPhoneNumber(e){
+			async getPhoneNumber(e) {
 				console.log(e)
-				
+				let that = this
+				let token = uni.getStorageSync('token')
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					if(!token) {
+						let url = '/pages/info/info?id=' + this.id
+						uni.setStorageSync('backurl', url)
+						uni.navigateTo({
+							url:'/pages/login/login'
+						})
+					} else {
+						that.agree()
+					}
+				} else {
+					if(token) {
+						that.agree()
+						return
+					}
+					let session = uni.getStorageSync('session')
+					if (session) {
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method: 'get',
+							data: {
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res)
+								let tel = res.data.mobile
+								uni.setStorageSync('phone', tel)
+								let openid = uni.getStorageSync('openid')
+								uni.request({
+									url:"https://api.edefang.net/applets/login",
+									method:'GET',
+									data:{
+										phone: tel,
+										openid: openid
+									},
+									success: (res) => {
+										uni.setStorageSync('token',res.data.token)
+										that.agree()
+									}
+								})
+							}
+						})
+					} else {
+						uni.login({
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												uni.request({
+													url:"https://api.edefang.net/applets/login",
+													method:'GET',
+													data:{
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														uni.setStorageSync('token',res.data.token)
+														that.agree()
+													}
+												})
+											}
+										})
+									}
+								})
+							}
+						});
+					}
+				}
+
 			}
 		}
 	}
@@ -244,13 +340,17 @@
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 40rpx;
 		line-height: 88rpx;
 		position: fixed;
 		width: 100%;
 		top: 0;
 		z-index: 9999;
 		background-color: #FFFFFF;
+
+		.status_bar {
+			height: var(--status-bar-height);
+			width: 100%;
+		}
 
 		image {
 			width: 32rpx;
@@ -259,10 +359,17 @@
 			margin-bottom: -4rpx;
 		}
 	}
-
+	button {
+		padding: 0;
+		margin: 0;
+	}
+	button:after {
+		border: none;
+	}
 	.box {
 		padding: 0 30rpx;
-		margin-top: 128rpx;
+		margin-top: 88rpx;
+		padding-top: var(--status-bar-height);
 
 		.tit {
 			color: #323333;
@@ -307,14 +414,17 @@
 				margin-right: 24rpx;
 			}
 		}
+
 		.build {
 			padding: 24rpx 24rpx 36rpx 24rpx;
 			box-shadow: 0px 0px 38rpx 2rpx rgba(0, 0, 0, 0.03);
 			border-radius: 24rpx;
 			margin-top: 48rpx;
+
 			.top {
 				display: flex;
 				margin-bottom: 32rpx;
+
 				.left {
 					image {
 						width: 220rpx;
@@ -323,15 +433,18 @@
 						margin-right: 24rpx;
 					}
 				}
+
 				.right {
 					flex: 1;
 					position: relative;
 					top: -4rpx;
+
 					.right-tit {
 						color: #303233;
 						font-size: 32rpx;
 						font-size: 800;
 						margin-bottom: 6rpx;
+
 						.status {
 							width: 72rpx;
 							height: 34rpx;
@@ -345,20 +458,24 @@
 							margin-top: 4rpx;
 						}
 					}
+
 					.price {
 						color: #FF6040;
 						font-size: 26rpx;
+
 						.big {
 							font-size: 32rpx;
 							font-weight: 800rpx;
 						}
 					}
+
 					.right-infos {
 						color: #646566;
 						font-size: 24rpx;
 						margin-top: 4rpx;
 						margin-bottom: 4rpx;
 					}
+
 					.right-icons {
 						text {
 							color: #7D7F80;
@@ -368,6 +485,7 @@
 							background-color: #F5F5F5;
 							margin-right: 12rpx;
 						}
+
 						.zhuang {
 							color: #50B2EC;
 							background-color: #F0F5F9;
@@ -375,9 +493,11 @@
 					}
 				}
 			}
+
 			.bom {
 				display: flex;
 				flex-direction: row-reverse;
+
 				view {
 					width: 140rpx;
 					height: 48rpx;
@@ -387,11 +507,13 @@
 					font-size: 24rpx;
 					color: #FFFFFF;
 				}
+
 				.btn {
 					background: linear-gradient(-45deg, #348AFF, #6ACCFF);
 					margin-right: 7rpx;
 					margin-left: 24rpx;
 				}
+
 				.tel {
 					background: linear-gradient(270deg, #FF7519, #FFAE3D);
 				}
@@ -450,22 +572,27 @@
 			font-size: 24rpx;
 			line-height: 40rpx;
 			margin-bottom: 56rpx;
+
 			text {
 				color: #323333;
 			}
 		}
+
 		.other-tit {
 			color: #17191A;
 			font-size: 32rpx;
 			font-weight: bold;
 			margin-bottom: 48rpx;
 		}
+
 		.other {
 			.other-li {
 				display: flex;
 				margin-bottom: 18rpx;
+
 				.left {
 					flex: 1;
+
 					.li-tit {
 						color: #303233;
 						font-size: 28rpx;
@@ -476,6 +603,7 @@
 						overflow: hidden;
 						margin-bottom: 20rpx;
 					}
+
 					.li-icons {
 						text {
 							color: #626466;
@@ -484,9 +612,11 @@
 						}
 					}
 				}
+
 				.right {
 					width: 200rpx;
 					margin-left: 42rpx;
+
 					image {
 						width: 100%;
 						height: 140rpx;

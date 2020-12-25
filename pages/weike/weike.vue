@@ -1,6 +1,9 @@
 <template>
 	<view class="weike">
 		<view class="toptitle" @tap=back>
+			<view class="status_bar">
+				<!-- 这里是状态栏 -->
+			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>买房百科</text>
 		</view>
@@ -180,9 +183,9 @@
 			}
 		},
 		methods: {
-			back(){
+			back() {
 				uni.navigateBack({
-					data:1
+					data: 1
 				})
 			},
 			setnum(num) {
@@ -267,12 +270,12 @@
 				this.getlist()
 			},
 			lower() {
-				this.page = this.page+1
+				this.page = this.page + 1
 				this.getmore()
 			},
 			goinfo(id) {
 				uni.navigateTo({
-					url: "/pages/article/article?id="+id
+					url: "/pages/article/article?id=" + id
 				})
 			},
 			gosearch() {
@@ -288,7 +291,7 @@
 			console.log(e)
 		},
 		mounted() {
-			
+
 		}
 	}
 </script>
@@ -304,8 +307,11 @@
 		color: #17181A;
 		font-size: 32rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
 		line-height: 87.64rpx;
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 
 		image {
 			width: 32rpx;
@@ -464,9 +470,11 @@
 			flex: 1;
 			// overflow: auto;
 			height: 100%;
+
 			.scroll {
 				height: 100%;
 			}
+
 			.li {
 				display: flex;
 				padding-top: 30rpx;
