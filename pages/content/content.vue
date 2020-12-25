@@ -1,6 +1,8 @@
 <template>
 	<view class="detail">
 		<view class="toptitle">
+			<view class="status_bar">
+			</view>
 			<navigator url="../index/index" class="nav_top" open-type="switchTab">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>{{detail.name}}</text>
@@ -458,9 +460,10 @@
 				</template>
 
 			</view>
-			<view class="dian_btn" @tap="goDianPing(detail.id)">
+			<button class="dian_btn" hover-class="none" open-type="getPhoneNumber"
+			@getphonenumber="getPhoneNumber($event,detail.id,'跳点评',12,'跳点评',4,detail.id)">
 				我要点评
-			</view>
+			</button>
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 楼盘问答 -->
@@ -495,9 +498,10 @@
 					</view>
 				</template>
 
-				<view class="ti_btn" @tap="quTiwen(detail.id)">
+				<button class="ti_btn" hover-class="none" open-type="getPhoneNumber"
+				@getphonenumber="getPhoneNumber($event,detail.id,'跳提问',13,'跳提问',5,)">
 					我要提问
-				</view>
+				</button>
 			</view>
 		</view>
 		<view class="bg_hui"></view>
@@ -885,6 +889,10 @@
 								this.goShou();
 							}else if(type == 3){
 							    this.deletePing(ping_id);
+							}else if(type == 4){ //我要点评
+								this.goDianPing(pid)
+							}else if(type == 5){ //我要提问
+								 this.quTiwen(ping_id)
 							}
 						}else{
 							let url="/pages/content/content?id="+this.detail.id;
@@ -908,6 +916,10 @@
 							 	this.goShou();
 							 }else if(type == 3){
 								 this.deletePing(ping_id)
+							 }else if(type == 4){ //我要点评
+								 this.goDianPing(pid)
+							 }else if(type == 5){ //我要提问
+								  this.quTiwen(ping_id)
 							 }
 						 }else{
 							 let session = uni.getStorageSync('session')
@@ -941,6 +953,10 @@
 													that.goShou();
 												}else if(type == 3){
 													that.deletePing(ping_id);
+												}else if(type == 4){ //我要点评
+													that.goDianPing(pid);
+												}else if( type == 5){ //我要提问
+													 that.quTiwen(ping_id)
 												}
 											}
 										})
@@ -988,8 +1004,12 @@
 																that.getLike(ping_id)
 															}else if(type==2){ //收藏
 																that.goShou();
-															}else if(type == 3){
+															}else if(type == 3){ 
 																that.deletePing(ping_id);
+															}else if(type == 4){ //我要点评
+																that.goDianPing(pid);
+															}else if(type == 5){ //我要提问
+																 that.quTiwen(ping_id)
 															}
 															
 														}
@@ -1614,14 +1634,16 @@
 			color: #17181A;
 			font-size: 29.88rpx;
 			padding: 0 29.88rpx;
-			padding-top: 39.84rpx;
 			line-height: 87.64rpx;
 			background-color: #fff;
 			position: fixed;
 			top: 0rpx;
 			z-index: 3000;
 			width: 100%;
-
+             .status_bar{
+				height: var(--status-bar-height);
+				width: 100%;
+			 }
 			.nav_top {
 				display: inline-block;
 
@@ -1648,7 +1670,7 @@
 			display: flex;
 			justify-content: space-around;
 			position: fixed;
-			top: 110rpx;
+			top: 130rpx;
 			z-index: 2000;
 
 			view {
@@ -3130,7 +3152,8 @@
 									height: 32rpx;
 								}
 							}
-
+							button{
+								line-height:0rpx;
 							.no_zan {
 								font-size: 24rpx;
 								font-weight: 400;
@@ -3138,11 +3161,12 @@
 								float: right;
 								display: flex;
 								align-items: center;
-
+								margin-bottom: 20rpx;
 								image {
 									width: 32rpx;
 									height: 32rpx;
 								}
+							}
 							}
 
 						}

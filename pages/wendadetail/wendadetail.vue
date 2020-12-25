@@ -1,7 +1,10 @@
 <template>
 	<view class="wendadetail">
 		<view class="toptitle">
-			<navigator :url="`../allwenda/allwenda?id=${data.bid}`" class="nav_top" open-type="navigate">
+			 <view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			  </view>
+			<navigator  class="nav_top" open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>问答详情</text>
 			</navigator>
@@ -26,9 +29,11 @@
 				</view>
 			</view>
 			<!-- 没回复-->
-			<view class="huifu_btn" v-if="data.answer==''">
+			<button class="huifu_btn" v-if="data.answer==''" open-type="getPhoneNumber" hover-class="none"
+			@getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+免费咨询',104,'免费咨询',2,data.id)"
+			>
 				我来回答
-			</view>
+			</button>
 			<!-- 免费咨询 -->
 			<view class="da" v-show="data.answer!==''">
 				<view class="top">
@@ -150,7 +155,15 @@ import sign from '@/components/sign.vue'
 			console.log(option);
 			this.getdata(option.id)
 		},
-		methods:{
+		methods:{ 
+			//没有回答的，跳问答回答页
+			gowenda(id){
+				let url = '/pages/wendadetail/wendadetail?id='+this.data.id;
+				uni.setStorageSync('backurl',url)
+				uni.navigateTo({
+					url:"/pages/wenhui/wenhui?id="+id
+				})
+			},
 			wenDian(id){
 				let token = uni.getStorageSync("token")
 				uni.request({
@@ -178,6 +191,8 @@ import sign from '@/components/sign.vue'
 							if(type ==1){ //点赞
 								this.wenDian(wen_id)
 								this.getdata(pid)
+							}else if(type == 2){ //跳回答
+								this.gowenda(wen_id)
 							}
 						}else{
 							let url="/pages/wendadetail/wendadetail?id="+pid;
@@ -221,6 +236,8 @@ import sign from '@/components/sign.vue'
 											if(type==1){ //点赞
 												that.wenDian(wen_id)
 												that.getdata(pid)
+											}else if( type == 2){ //跳回答
+												that.gowenda(wen_id)
 											}
 										}
 									})
@@ -267,6 +284,8 @@ import sign from '@/components/sign.vue'
 														if(type==1){ //点赞
 															that.wenDian(wen_id)
 															that.getdata(pid)
+														}else if( type == 2){ //跳没回答的问答
+															that.gowenda(wen_id)
 														}
 														
 													}
@@ -419,13 +438,16 @@ import sign from '@/components/sign.vue'
 		color: #fff;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #FFF;
 		position: fixed;
 		top: 0;
 		width: 100%;
 		z-index: 30000;
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		.nav_top{
 			image{
 			 width: 31.87rpx;
@@ -445,6 +467,7 @@ import sign from '@/components/sign.vue'
 		padding-left: 30rpx;
 		padding-right: 30rpx;
 		box-sizing: border-box;
+		margin-top: 160rpx;
 	   .tit{
 		   .wen{
 		   	width: 30rpx;

@@ -1,6 +1,8 @@
 <template>
 	<view class="dynamicdetail">
 		<view class="toptitle" @tap="goback">
+			<view class="status_bar">
+			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>动态详情</text>
 		</view>
@@ -298,14 +300,16 @@
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 40rpx;
 		line-height: 88rpx;
 		position: fixed;
 		width: 100%;
 		top: 0;
 		z-index: 9999;
 		background-color: #FFFFFF;
-
+         .status_bar{
+         	height: var(--status-bar-height);
+         	width: 100%;
+         }
 		image {
 			width: 31.87rpx;
 			height: 31.87rpx;

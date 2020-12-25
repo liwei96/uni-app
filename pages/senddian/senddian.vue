@@ -1,6 +1,9 @@
 <template>
 	<view class="senddian">
 		<view class="toptitle">
+			 <view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			 </view>
 			<navigator open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>楼盘点评</text>
@@ -238,9 +241,12 @@
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		image{
 		 width: 31.87rpx;
 		 height: 31.87rpx;
@@ -414,7 +420,9 @@
 				line-height: 24rpx;
 			}
 		}
-		
+		 button{
+			 padding-left: 0rpx;
+			 padding-right: 0rpx;
 		.fabu{
 			width: 100%;
 			height: 80rpx;
@@ -425,6 +433,7 @@
 			text-align: center;
 			line-height: 80rpx;
 			margin-top: 70rpx;
+		}
 		}
 		
 	}

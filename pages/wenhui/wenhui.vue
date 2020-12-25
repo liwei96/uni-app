@@ -1,12 +1,17 @@
 <template>
 	<view  class="wenhui">
 		<view class="toptitle">
-			<image src="../../static/all-back.png" mode=""></image>
-			<text>我要回答</text>
+			 <view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			 </view>
+			 <navigator open-type="navigateBack" delta="1" class="nav_top">
+				<image src="../../static/all-back.png" mode=""></image>
+				<text>我要回答</text>
+			</navigator>
 		</view>
 		<view class="tit">
 			<text class="wen">问</text>
-			     我宁可去买周边二手房了，二手房投资更划算
+			     {{data.question}}
 		</view>
 		<view class="da_box">
 			<textarea placeholder="在这里输入您的解答" class="text_box"
@@ -18,19 +23,86 @@
 				{{text.length}}/50
 			</view>
 		</view>
-		<view class="tijiao_btn">
+		<view class="tijiao_btn" @tap="submitHuiDa">
 			提交回答
 		</view>
-		
+		 <mytoast :txt="msg" ref="msg"></mytoast>
 	</view>
 </template>
 
 <script>
+	import mytoast from "@/components/mytoast/mytoast.vue"
 	export default {
+		components:{
+			mytoast
+		},
 		data() {
 			return {
-				text:''
+				text:'',
+				data:{},
+				msg:""
 			};
+		},
+		onLoad(option){
+			this.getdata(option.id);
+		},
+		methods:{
+			submitHuiDa(){
+				console.log('123');
+				if(this.text!== ''){
+					uni.request({
+						url:this.apiserve+"/jy/question/answer",
+						method:"POST",
+						header:{
+							"Content-Type":"application/x-www-form-urlencoded"
+						},
+						data:{
+							id:this.data.id,
+							answer:this.text
+						},
+						success:(res)=>{
+							if(res.data.code ==200){
+								this.$refs.msg.show();
+								this.msg = res.data.message;
+								let his_url =  uni.getStorageSync('backurl')
+								console.log(his_url)
+								uni.navigateTo({
+									url:his_url
+								})
+							}else if(res.data.code ==500){
+								this.$refs.msg.show();
+								this.msg = res.data.message;
+							}
+						}
+						
+					})
+				}else{
+					 this.$refs.msg.show();
+					 this.msg ="解答内容不能为空"
+				}
+			},
+			getdata(id){
+				let other = uni.getStorageSync('other');
+				let token = uni.getStorageSync('token');
+				uni.request({
+					url:this.apiserve+"/applets/question/detail",
+					data:{
+						id:id,
+						other:other,
+						token:token
+					},
+					method:"GET",
+					success: (res) => {
+						if(res.data.code==200){
+						   
+						   this.data = res.data.data;
+						}
+					},
+					fail: (error) => {
+						console.log(error);
+					}
+				})
+			},
 		}
 	}
 </script>
@@ -40,31 +112,38 @@
 		background:#fff;
 	}
 .wenhui{
-	padding-left: 30rpx;
-	padding-right: 30rpx;
+	
 	background: #fff;
-	box-sizing: border-box;
+	
 	.toptitle{
 		color: #fff;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #FFF;
-		image{
-		 width: 31.87rpx;
-		 height: 31.87rpx;
-		 margin-right: 11.95rpx;
-		 margin-bottom: -3.98rpx;
-		}
-		text{
-		  width: 221rpx;
-		  font-size: 32rpx;
-		  font-weight: 500;
-		  color: #17181A;
+		 .status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
+		  .nav_top{
+			image{
+			 width: 31.87rpx;
+			 height: 31.87rpx;
+			 margin-right: 11.95rpx;
+			 margin-bottom: -3.98rpx;
+			}
+			text{
+			  width: 221rpx;
+			  font-size: 32rpx;
+			  font-weight: 500;
+			  color: #17181A;
+			}
 		}
 	}
 	.tit{
+		padding-left: 30rpx;
+		padding-right: 30rpx;
+		box-sizing: border-box;
 		.wen{
 			width: 30rpx;
 			height: 30rpx;
@@ -89,6 +168,9 @@
 		width: 100%;
 		height: 320rpx;
 		position: relative;
+		padding-left: 30rpx;
+		padding-right: 30rpx;
+		box-sizing: border-box;
 		.text_box{
 			width: 630rpx;
 			height: 290rpx;
@@ -102,12 +184,12 @@
 			font-weight: 400;
 			color: #969799;
 			position: absolute;
-			right: 20rpx;
+			right: 40rpx;
 			bottom: 17rpx;
 		}
 	}
 	.tijiao_btn{
-		width: 100%;
+		width: 690rpx;
 		height:80rpx ;
 		background:#F0F6FA ;
 		line-height: 80rpx;
@@ -117,6 +199,9 @@
 		color: #40A2F4;
 		text-align: center;
 		margin-top: 70rpx;
+	    margin-left: 30rpx;
+		margin-right: 30rpx;
+		box-sizing: border-box;
 	}
 	
 }

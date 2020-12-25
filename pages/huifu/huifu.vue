@@ -1,6 +1,9 @@
 <template>
 	<view  class="wenhui">
 		<view class="toptitle">
+			 <view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			      </view>
 			<navigator open-type="navigateBack" delta="1" class="nav_top">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>我要回复</text>
@@ -116,9 +119,12 @@
 		color: #fff;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #FFF;
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		.nav_top{
 			image{
 			 width: 31.87rpx;

@@ -1,6 +1,9 @@
 <template>
 	<view class="loupkdetail" >
 		<view class="toptitle">
+			 <view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			 </view>
 			<navigator open-type="navigateBack" class="nav_top">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>楼盘对比</text>
@@ -530,7 +533,6 @@
 			color: #D4D7D9;
 			font-size: 29.88rpx;
 			padding: 0 29.88rpx;
-			padding-top: 39.84rpx;
 			line-height: 87.64rpx;
 			background-color: #fff;
 			position: fixed;
@@ -538,6 +540,10 @@
 			background: #fff;
 			width: 100%;
 			z-index: 30000;
+			.status_bar {
+			      height: var(--status-bar-height);
+			      width: 100%;
+			  }
 			.nav_top{
 				image {
 					width: 31.87rpx;
