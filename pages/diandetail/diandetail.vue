@@ -1,6 +1,8 @@
 <template>
 	<view class="diandetail">
 		<view class="toptitle">
+			<view class="status_bar">
+			</view>
 			<navigator  class="nav_top" open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>点评详情</text>
@@ -463,13 +465,16 @@ button::after{
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
 		position: fixed;
 		top: 0;
 		width: 100%;
 		z-index: 30000;
+		.status_bar{
+			height: var(--status-bar-height);
+			width: 100%;
+		}
 		.nav_top{
 			image{
 			 width: 31.87rpx;
@@ -489,7 +494,8 @@ button::after{
 		padding-left:30rpx;
 		padding-right: 30rpx;
 		box-sizing: border-box;
-		margin-top: 13rpx;
+		// margin-top: 13rpx;
+		margin-top: 145rpx;
 	    .dian_one{
 	    	margin-top: 30rpx;
 	    	.top:after{

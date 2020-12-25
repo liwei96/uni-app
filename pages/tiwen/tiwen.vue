@@ -1,6 +1,9 @@
 <template>
 	<view class="wenhui">
 		<view class="toptitle">
+			 <view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			  </view>
 			<navigator open-type="navigateBack" delta="1" class="nav_top">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>我要提问</text>
@@ -154,10 +157,12 @@
 		.toptitle {
 			color: #fff;
 			font-size: 29.88rpx;
-			padding-top: 39.84rpx;
 			line-height: 87.64rpx;
 			background-color: #FFF;
-
+			.status_bar {
+			      height: var(--status-bar-height);
+			      width: 100%;
+			  }
 			.nav_top {
 				image {
 					width: 31.87rpx;
@@ -206,7 +211,9 @@
 				bottom: 17rpx;
 			}
 		}
-
+		button{
+			padding-left: 0rpx;
+			padding-right: 0rpx;
 		.tijiao_btn {
 			width: 100%;
 			height: 80rpx;
@@ -218,6 +225,8 @@
 			color: #40A2F4;
 			text-align: center;
 			margin-top: 70rpx;
+			
+		}
 		}
 
 	}

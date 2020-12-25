@@ -1,6 +1,9 @@
 <template>
 	<view class="allwenda">
 		<view class="toptitle">
+			 <view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			  </view>
 			<navigator :url="`../content/content?id=${project_id}`" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back1.png" mode=""></image>
 				<text>楼盘问问</text>
@@ -10,50 +13,43 @@
 			<image src="../../static/other/all_wen_top.jpg" mode=""></image>
 		</view>
 		<view class="wen_list">
-			<template v-for="item in data">
-				<view class="list_one" v-if="item.answer!==''" :key="item.id">
+				<view class="list_one" v-for="item in data"  :key="item.id">
 					<navigator :url="`../wendadetail/wendadetail?id=${item.id}`">
 						<view class="tit">
 							<text class="wen">问</text>
 							{{item.question}}
 						</view>
-						<view class="da">
-							<view class="top">
-								<image :src="item.staff.head_img" mode=""></image>
-								<view class="rig">
-									<view class="name_box">
-									    {{item.staff.name}}
-										<text>专业解答</text>
-									</view>
-									<view class="pp">
-										咨询师帮您在线解答
+					</navigator>
+					
+						<view class="da" v-if="item.answer!==''">
+							<navigator :url="`../wendadetail/wendadetail?id=${item.id}`">
+								<view class="top">
+									<image :src="item.staff.head_img" mode=""></image>
+									<view class="rig">
+										<view class="name_box">
+											{{item.staff.name}}
+											<text>专业解答</text>
+										</view>
+										<view class="pp">
+											咨询师帮您在线解答
+										</view>
 									</view>
 								</view>
-							</view>
-							<view class="bottom" >
-								{{item.answer.substring(0,42)}}
-								<text v-if="item.answer.length>=42" >[全文]</text>
-							</view>
-						</view>
-					</navigator>
-				</view>
-			</template>
-			<!-- 没回答的 -->
-			<template v-for="item in data">
-				<view class="list_one_no" v-if="item.answer==''">
-						<view class="tit">
-							<navigator :url="`../wendadetail/wendadetail?id=${item.id}`">
-							     <text class="wen">问</text>
-								  {{item.question}}
+								<view class="bottom" >
+									{{item.answer.substring(0,42)}}
+									<text v-if="item.answer.length>=42" >[全文]</text>
+								</view>
 							</navigator>
 						</view>
-						<view class="da_box">
-							<view class="da">
+						<view class="da_box" v-else>
+							<button class="da" hover-class="none" open-type="getPhoneNumber" 
+							@getphonenumber ="getPhoneNumber($event,item.id)">
 								我来回答
-							</view>
+							</button>
 						</view>
+						
+					
 				</view>
-			</template>
 			<!-- 允家房友 -->
 			<!-- <view class="list_one_yun">
 					<view class="tit">
@@ -124,9 +120,75 @@ export default {
 	},
 	methods:{
 		goTiwen(id){
+			let url = '/pages/allwenda/allwenda?id='+this.project_id;
+			uni.setStorageSync('backurl',url)
 			uni.navigateTo({
-				url:`../tiwen/tiwen?id=id`
+				url:"../wenhui/wenhui?id="+id
 			})
+		},
+		getPhoneNumber(e,hui_id) {
+			let that = this
+			if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+				this.isok = 0
+				let url = '/pages/allwenda/allwenda?id='+this.project_id
+				uni.setStorageSync('backurl',url)
+				console.log(url)
+			} else {
+				let session = uni.getStorageSync('token')
+				if(session){
+					that.goTiwen(hui_id)
+				}else {
+					uni.login({
+					  provider: 'baidu',
+					  success: function (res) {
+					    console.log(res.code);
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/get_session_key',
+							method:'get',
+							data:{
+								code: res.code
+							},
+							success: (res) => {
+								console.log(res)
+								uni.setStorageSync('openid',res.data.openid)
+								uni.setStorageSync('session',res.data.session_key)
+								uni.request({
+									url:"https://api.edefang.net/applets/baidu/decrypt",
+									data:{
+										data: e.detail.encryptedData,
+										iv:e.detail.iv,
+										session_key:res.data.session_key
+									},
+									success: (res) => {
+										console.log(res)
+										let tel = res.data.mobile
+										uni.setStorageSync('phone',tel)
+										let openid = uni.getStorageSync('openid')
+										that.tel = tel
+										uni.request({
+											url:"https://api.edefang.net/applets/login",
+											method:'GET',
+											data:{
+												phone: tel,
+												openid: openid
+											},
+											success: (res) => {
+												uni.setStorageSync('token',res.data.token)
+												that.goTiwen(hui_id)
+											}
+										})
+										
+									}
+								})
+								
+							}
+						})
+					  }
+					});
+					}
+				this.isok = 1
+			}
+			
 		},
 		getdata(id){
 			let city_id = uni.getStorageSync('city');
@@ -212,18 +274,24 @@ export default {
 	page{
 		background: #fff;
 	}
+	button::after{
+		border:none;
+	}
 .allwenda{
 	.toptitle{
 		color: #fff;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color: #36ACE7;
 		position: fixed;
 		top: 0;
 		width: 100%;
 		z-index: 30000;
+		 .status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		.nav_top{
 			image{
 			 width: 31.87rpx;
@@ -333,6 +401,26 @@ export default {
 					}
 				}
 			}
+			
+			.da_box{
+						  width: 100%;
+						  height: 52rpx;
+						  .da{
+							  width: 140rpx;
+							  height: 52rpx;
+							  border: 1rpx solid #AFB0B3;
+							  border-radius: 26rpx;
+							  font-size: 24rpx;
+							  font-weight: 500;
+							  color: #4B4C4D;
+							  text-align: center;
+							  line-height: 52rpx;
+							  float: right;
+							  padding-left: 0rpx;
+							  padding-right: 0rpx;
+						  }
+			}
+			
 	  }
 	  .list_one_no{
 		  .tit{

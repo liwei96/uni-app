@@ -2,8 +2,7 @@
 	<view class="dynamicdetail">
 		<view class="toptitle" @tap="goback">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
-			      </view>
+			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>动态详情</text>
 		</view>
@@ -307,6 +306,7 @@
 		top: 0;
 		z-index: 9999;
 		background-color: #FFFFFF;
+
 		.status_bar {
 		      height: var(--status-bar-height);
 		      width: 100%;

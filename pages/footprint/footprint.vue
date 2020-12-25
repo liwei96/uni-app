@@ -18,9 +18,11 @@
 							<text class="name">{{item.name}}</text>
 							<text class="status">{{item.state}}</text>
 						</view>
-						<text class="price">{{item.price}}</text>
-						<text class="psam">元/m²</text>
-						<view>
+						<view class="pp">
+							<text class="price">{{item.price}}</text>
+							<text class="psam">元/m²</text>
+						</view>
+						<view class="kk">
 							<text class="right-msg">{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</text>
 						</view>
 						<view class="right-icons">
@@ -199,7 +201,7 @@
 	
 				.right-name {
 					position: relative;
-					top: -5.97rpx
+					top: -14rpx
 				}
 	
 				.name {
@@ -208,7 +210,14 @@
 					margin-bottom: 11.95rpx;
 					font-weight: 800;
 				}
-	
+				.pp {
+					position: relative;
+					top: -14rpx;
+				}
+				.kk {
+					position: relative;
+					top: -22rpx;
+				}
 				.status {
 					color: #20C657;
 					font-size: 21.91rpx;
@@ -242,6 +251,8 @@
 	
 				.right-icons {
 					display: flex;
+					position: relative;
+					top: -18rpx;
 	
 					text {
 						padding: 5.97rpx 11.95rpx;

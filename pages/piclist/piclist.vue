@@ -1,6 +1,9 @@
 <template>
 	<view  class="piclist">
 		<view class="toptitle">
+			 <view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			  </view>
 			<navigator :url="`../content/content?id=${project_id}`" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back1.png" mode=""></image>
 				<text>楼盘相册</text>
@@ -220,9 +223,12 @@
 		color: #D4D7D9;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 39.84rpx;
 		line-height: 87.64rpx;
 		background-color:#000000;
+		 .status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		.nav_top{
 			image{
 			 width: 31.87rpx;

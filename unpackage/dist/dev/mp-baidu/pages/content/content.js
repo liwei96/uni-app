@@ -775,6 +775,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 var _uChartsMin = _interopRequireDefault(__webpack_require__(/*! @/components/u-charts/u-charts/u-charts.min.js */ 268));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var tTable = function tTable() {__webpack_require__.e(/*! require.ensure | components/t-table/t-table */ "components/t-table/t-table").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-table.vue */ 477));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTh = function tTh() {__webpack_require__.e(/*! require.ensure | components/t-table/t-th */ "components/t-table/t-th").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-th.vue */ 484));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTr = function tTr() {__webpack_require__.e(/*! require.ensure | components/t-table/t-tr */ "components/t-table/t-tr").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-tr.vue */ 491));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tTd = function tTd() {__webpack_require__.e(/*! require.ensure | components/t-table/t-td */ "components/t-table/t-td").then((function () {return resolve(__webpack_require__(/*! @/components/t-table/t-td.vue */ 498));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNoticeBar = function uniNoticeBar() {__webpack_require__.e(/*! require.ensure | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-notice-bar/uni-notice-bar.vue */ 463));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var wybPopup = function wybPopup() {__webpack_require__.e(/*! require.ensure | components/wyb-popup/wyb-popup */ "components/wyb-popup/wyb-popup").then((function () {return resolve(__webpack_require__(/*! @/components/wyb-popup/wyb-popup.vue */ 449));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var sign = function sign() {__webpack_require__.e(/*! require.ensure | components/sign */ "components/sign").then((function () {return resolve(__webpack_require__(/*! @/components/sign.vue */ 456));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var mytoast = function mytoast() {__webpack_require__.e(/*! require.ensure | components/mytoast/mytoast */ "components/mytoast/mytoast").then((function () {return resolve(__webpack_require__(/*! @/components/mytoast/mytoast.vue */ 435));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var bottom = function bottom() {Promise.all(/*! require.ensure | components/mine/bottom */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/mine/bottom")]).then((function () {return resolve(__webpack_require__(/*! @/components/mine/bottom.vue */ 505));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
@@ -1070,6 +1074,10 @@ var canvaColumn = null;var _default =
                         _this.goShou();
                       } else if (type == 3) {
                         _this.deletePing(ping_id);
+                      } else if (type == 4) {//我要点评
+                        _this.goDianPing(pid);
+                      } else if (type == 5) {//我要提问
+                        _this.quTiwen(ping_id);
                       }
                     } else {
                       url = "/pages/content/content?id=" + _this.detail.id;
@@ -1093,6 +1101,10 @@ var canvaColumn = null;var _default =
                         _this.goShou();
                       } else if (type == 3) {
                         _this.deletePing(ping_id);
+                      } else if (type == 4) {//我要点评
+                        _this.goDianPing(pid);
+                      } else if (type == 5) {//我要提问
+                        _this.quTiwen(ping_id);
                       }
                     } else {
                       session = uni.getStorageSync('session');
@@ -1126,6 +1138,10 @@ var canvaColumn = null;var _default =
                                   that.goShou();
                                 } else if (type == 3) {
                                   that.deletePing(ping_id);
+                                } else if (type == 4) {//我要点评
+                                  that.goDianPing(pid);
+                                } else if (type == 5) {//我要提问
+                                  that.quTiwen(ping_id);
                                 }
                               } });
 
@@ -1175,6 +1191,10 @@ var canvaColumn = null;var _default =
                                           that.goShou();
                                         } else if (type == 3) {
                                           that.deletePing(ping_id);
+                                        } else if (type == 4) {//我要点评
+                                          that.goDianPing(pid);
+                                        } else if (type == 5) {//我要提问
+                                          that.quTiwen(ping_id);
                                         }
 
                                       } });

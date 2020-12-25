@@ -1,10 +1,11 @@
 <template>
 	<view>
-		<view class="toptitle" @tap="back">
+		<view :class="type ==0?'toptitle':'toptitle centitle'" @tap="back">
 			<view class="status_bar">
 			          <!-- 这里是状态栏 -->
 			      </view>
-			<image src="../../static/all-back1.png" mode=""></image>
+			<image v-if="type == 0" src="../../static/all-back1.png" mode=""></image>
+			<image v-if="type == 1" src="../../static/all-back.png" mode=""></image>
 			<text>特价房源</text>
 		</view>
 		<image src="../../static/special/special-top.jpg" mode="" class="topimg"></image>
@@ -178,12 +179,20 @@
 				codenum: 1,
 				remark: "",
 				position: 0,
-				timer: ''
+				timer: '',
+				type: 0
 			}
 		},
 		onShow() {
 			that = this
 			this.getdata()
+		},
+		onPageScroll(e) {
+			if(e.scrollTop >= 100) {
+				this.type = 1
+			} else {
+				this.type = 0
+			}
 		},
 		components: {uniNoticeBar,sign,wybPopup},
 		methods:{
@@ -340,6 +349,10 @@
 			margin-right: 11.95rpx;
 			margin-bottom: -3.98rpx;
 		}
+	}
+	.centitle {
+		background-color: #FFFFFF;
+		color: #17181A;
 	}
 
 	.topimg {

@@ -481,6 +481,7 @@
 		margin-left: 29.88rpx;
 		height: 199.2rpx;
 		margin-bottom: 39.84rpx;
+		border-radius: 12rpx;
 	}
 
 	.nav {
