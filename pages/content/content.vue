@@ -848,7 +848,7 @@
 						uni.setStorageSync("ling_bot" + this.detail.id, ling_bot)
 						this.goufang_date = time;
 						this.goufang_ling = ling_top;
-						this.seefang_sheng = num;
+						this.seefang_sheng = parseInt(num);
 						this.seefang_ling = ling_bot;
 					}
 				} else {
@@ -872,7 +872,7 @@
 					uni.setStorageSync("ling_bot" + this.detail.id, ling_bot)
 					this.goufang_date = time;
 					this.goufang_ling = ling_top;
-					this.seefang_sheng = num;
+					this.seefang_sheng = parseInt(num);
 					this.seefang_ling = ling_bot;
 				}
 
@@ -1207,7 +1207,9 @@
 						method: "POST",
 						success: (res) => {
 							if (res.data.code == 200) {
-								console.log(res);
+								this.$refs.msg.show();
+								this.msg = res.data.message;
+								this.getdata(this.detail.id)
 							}
 						}
 
@@ -1245,6 +1247,7 @@
 			getdata(id) {
 				let ip = '';
 				let other = uni.getStorageSync("other");
+				let token = uni.getStorageSync("token");
 				uni.request({
 					url: this.putserve + "/getIp.php",
 					method: "GET",
@@ -1258,7 +1261,8 @@
 							data: {
 								id: id,
 								other: other,
-								ip: ip
+								ip: ip,
+								token:token
 							},
 							success: (res) => {
 								if (res.data.code == 200) {
@@ -1413,7 +1417,9 @@
 						},
 						success: (res) => {
 							if (res.data.code == 200) {
-								console.log(res);
+								this.$refs.msg.show();
+								this.msg = res.data.message;
+								this.getdata(this.detail.id)
 							}else if(res.data.code ==500){
 								this.$refs.msg.show();
 								this.msg = res.data.msg;

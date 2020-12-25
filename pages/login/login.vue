@@ -142,6 +142,9 @@
 			  				phone: phone,
 			  				source: 3
 			  			},
+						header: {
+							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+						},
 			  			success: (res) => {
 			  				console.log(res);
 							if(res.data.code==500){
@@ -149,7 +152,8 @@
 								this.$refs.toast.show();
 								console.log("500");
 							}else {
-								
+								this.msg= res.data.message;
+								this.$refs.toast.show();
 							}
 			  			}
 			  		})
@@ -174,12 +178,21 @@
 						source: 3,
 						code: that.code
 					},
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+					},
 					success: (res) => {
 						console.log(res)
 						if(res.data.code === 500) {
 							that.msg = res.data.message;
 							that.$refs.toast.show()
 						} else {
+							let  basurl = uni.getStorageSync('backurl');
+							if(basurl){
+								uni.navigateTo({
+									url:basurl
+								})
+							}
 							that.msg = "订阅成功";
 							that.$refs.toast.show()
 							that.$emit('closethis', true)

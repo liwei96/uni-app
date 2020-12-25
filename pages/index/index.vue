@@ -812,7 +812,8 @@
 				height: 278.88rpx;
 				margin-right: 19.92rpx;
 				display: inline-block;
-
+				overflow-wrap: break-word;
+				white-space: normal;
 				.top {
 					position: relative;
 
@@ -843,18 +844,22 @@
 					height: 99.6rpx;
 					border-radius: 0 0 11.95rpx 11.95rpx;
 					border: 0.99rpx solid #F0F1F5;
-					padding-left: 19.92rpx;
-
+					// padding-left: 19.92rpx;
+				   overflow:hidden;
+				   width:100%;
+				   white-space:nowrap;
 					.name {
 						color: #303233;
 						font-weight: bold;
 						margin-top: 15.93rpx;
 						margin-bottom: 7.96rpx;
+						margin-left:  19.92rpx;
 					}
 
 					.price {
 						color: #FF6040;
 						font-size: 23.9rpx;
+						margin-left:  19.92rpx;
 					}
 
 					.psam {
@@ -867,7 +872,7 @@
 						color: #969799;
 						font-size: 21.91rpx;
 						margin-right: 19.92rpx;
-						margin-top: 10rpx;
+						margin-top: 18rpx;
 					}
 				}
 			}
