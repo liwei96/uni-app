@@ -181,6 +181,9 @@
 							token: token,
 							id: id,
 						},
+						header:{
+							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+						},
 						success: (res) => {
 							if (res.data.code == 200) {
 								console.log(res);
@@ -201,6 +204,9 @@
 						data: {
 							token: token,
 							id: id,
+						},
+						header:{
+							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
 						},
 						method: "POST",
 						success: (res) => {
@@ -491,3 +497,8 @@
 		}
 	}
 </style>
+
+
+
+
+

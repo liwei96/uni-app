@@ -1,6 +1,9 @@
 <template>
 	<view>
 		<view class="toptitle" @tap="back">
+			 <view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>我的足迹</text>
 		</view>
@@ -143,7 +146,6 @@
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 40rpx;
 		line-height: 88rpx;
 		position: fixed;
 		width: 100%;
@@ -151,6 +153,10 @@
 		z-index: 9999;
 		font-weight: bold;
 		background-color: #FFFFFF;
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -160,7 +166,8 @@
 	}
 	.recommend {
 		padding: 0 30rpx;
-		padding-top: 128rpx;
+		padding-top: 88rpx;
+		margin-top: var(--status-bar-height);
 	
 		.tit {
 			color: #17181A;

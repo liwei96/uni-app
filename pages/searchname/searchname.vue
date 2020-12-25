@@ -1,6 +1,9 @@
 <template>
 	<view class="searchname">
 		<view class="toptitle" @tap="back">
+			<view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>选择城市</text>
 		</view>
@@ -142,9 +145,11 @@
 		color: #17181A;
 		font-size: 32rpx;
 		padding: 0 29.88rpx;
-		margin-top: 39.84rpx;
 		line-height: 87.64rpx;
-
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -155,7 +160,7 @@
 
 	.box {
 		padding: 0 30rpx;
-
+		
 		.top-input {
 			height: 64rpx;
 			border-radius: 32rpx;

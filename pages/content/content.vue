@@ -1201,6 +1201,9 @@
 							token: token,
 							id: id,
 						},
+						header:{
+							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+						},
 						method: "POST",
 						success: (res) => {
 							if (res.data.code == 200) {
@@ -1223,6 +1226,9 @@
 						data: {
 							token: token,
 							id: id,
+						},
+						header:{
+							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
 						},
 						success: (res) => {
 							if (res.data.code == 200) {
@@ -1401,6 +1407,9 @@
 							token: token,
 							id: this.detail.id,
 							type: 1
+						},
+						header:{
+							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
 						},
 						success: (res) => {
 							if (res.data.code == 200) {
@@ -3481,3 +3490,5 @@
 
 	}
 </style>
+
+

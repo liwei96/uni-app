@@ -172,6 +172,9 @@ import sign from '@/components/sign.vue'
 						token:token,
 						id:id
 					},
+					header:{
+						'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+					},
 					method:"POST",
 					success: (res)=>{
 						if(res.data.code ==200){
@@ -433,7 +436,7 @@ import sign from '@/components/sign.vue'
 	button::after{
 		border:none;
 	}
-.wendadetail{
+   .wendadetail{
 	.toptitle{
 		color: #fff;
 		font-size: 29.88rpx;
@@ -755,3 +758,5 @@ import sign from '@/components/sign.vue'
 	
 }
 </style>
+
+

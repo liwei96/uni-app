@@ -1,6 +1,9 @@
 <template>
 	<view>
 		<view class="toptitle" @tap="back">
+			<view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			      </view>
 			<image src="../../static/all-back1.png" mode=""></image>
 			<text>特价房源</text>
 		</view>
@@ -318,10 +321,13 @@
 
 <style lang="less">
 	.toptitle {
+		.status_bar {
+			height: var(--status-bar-height);
+			width: 50%;
+		}
 		color: #FFFFFF;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 40rpx;
 		line-height: 88rpx;
 		position: fixed;
 		width: 100%;
@@ -340,7 +346,8 @@
 		width: 100%;
 		height: 278.88rpx;
 		margin-bottom: 47.8rpx;
-		padding-top: 128rpx;
+		margin-top: var(--status-bar-height);
+		padding-top: 88rpx;
 	}
 
 	.limit-time {

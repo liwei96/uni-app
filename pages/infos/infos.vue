@@ -1,6 +1,9 @@
 <template>
 	<view>
 		<view class="toptitle" @tap="back">
+			<view class="status_bar">
+			          <!-- 这里是状态栏 -->
+			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>买房百科</text>
 		</view>
@@ -230,14 +233,16 @@
 		color: #17181A;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
-		padding-top: 40rpx;
 		line-height: 88rpx;
 		position: fixed;
 		width: 100%;
 		top: 0;
 		z-index: 9999;
 		background-color: #FFFFFF;
-
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -256,8 +261,8 @@
 		align-items: center;
 		margin-top: 12rpx;
 		margin-bottom: 40rpx;
-		margin-top: 128rpx;
-
+		margin-top: 88rpx;
+		padding-top: var(--status-bar-height);
 		image {
 			width: 32rpx;
 			height: 32rpx;

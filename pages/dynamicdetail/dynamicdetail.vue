@@ -306,10 +306,11 @@
 		top: 0;
 		z-index: 9999;
 		background-color: #FFFFFF;
-         .status_bar{
-         	height: var(--status-bar-height);
-         	width: 100%;
-         }
+
+		.status_bar {
+		      height: var(--status-bar-height);
+		      width: 100%;
+		  }
 		image {
 			width: 31.87rpx;
 			height: 31.87rpx;
@@ -327,7 +328,8 @@
 
 	.box {
 		padding: 0 29.88rpx;
-		padding-top: 128rpx;
+		padding-top: 88rpx;
+		margin-top: var(--status-bar-height);
 		.dynamic-tit {
 			color: #17181A;
 			font-size: 31.87rpx;
