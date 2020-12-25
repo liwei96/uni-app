@@ -58,7 +58,9 @@
 					<view class="top-num">
 						<image src="../../static/feature/feature-card.png" mode=""></image>
 						<text class="nummsg">{{tit}}榜第{{key+1}}名</text>
-						<text class="btn" @tap="show(item.id,'特色房源页+查底价')">查底价</text>
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="bid = item.id">
+						<text class="btn">查底价</text>
+						</button>
 					</view>
 				</view>
 			</view>
@@ -88,7 +90,7 @@
 			</view>
 		</view>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="'查低价'" :pid="pid" :remark="remark" :position="position"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="'查低价'" :pid="pid" :remark="remark" :position="position" :isok="isok"></sign>
 		</wyb-popup>
 	</view>
 </template>
@@ -118,7 +120,9 @@
 				codenum: 1,
 				position: 0,
 				tit: '刚需',
-				city: '杭州'
+				city: '杭州',
+				bid: 0,
+				isok: 0
 			}
 		},
 		methods:{
@@ -178,6 +182,70 @@
 			setiscode() {
 				this.codenum = 0
 			},
+			async getPhoneNumber(e) {
+				let that = this
+				let token = uni.getStorageSync('token')
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					that.show(that.id,'特色房源页+查底价')
+					that.isok = 0
+				} else {
+					that.isok = 1
+					let session = uni.getStorageSync('session')
+					if (session) {
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method: 'get',
+							data: {
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res)
+								let tel = res.data.mobile
+								uni.setStorageSync('phone', tel)
+								let openid = uni.getStorageSync('openid')
+								that.show(that.id,'特色房源页+查底价')
+							}
+						})
+					} else {
+						uni.login({
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.show(that.id,'特色房源页+查底价')
+											}
+										})
+									}
+								})
+							}
+						});
+					}
+				}
+			
+			},
 			go(id) {
 				uni.redirectTo({
 					url: "/pages/content/content?id="+id
@@ -213,6 +281,14 @@
 			margin-right: 11.95rpx;
 			margin-bottom: -3.98rpx;
 		}
+	}
+	button {
+		padding: 0;
+		margin: 0;
+		margin-left: auto;
+	}
+	button:after {
+		border: none;
 	}
 	.topbb {
 		height: var(--status-bar-height);
