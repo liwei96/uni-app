@@ -19,11 +19,11 @@
 				{{text.length}}/50
 			</view>
 		</view>
-		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-			<view class="tijiao_btn">
+		<!-- <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"> -->
+			<view class="tijiao_btn" @tap="SendTiwen">
 				发布提问
 			</view>
-		</button>
+	<!-- 	</button> -->
 		<mytoast :txt="msg" ref="msg"></mytoast>
 	</view>
 </template>
@@ -124,8 +124,14 @@
 						method: "GET",
 						success: (res) => {
 							if (res.data.code == 200) {
-								this.msg = res.data.message;
+								this.msg = "提交成功";
 								this.$refs.msg.show();
+								let baseurl = uni.getStorageSync('backurl');
+								uni.navigateTo({
+									url:baseurl
+								})
+							}else{
+								console.log(res)
 							}
 						}
 					})
@@ -211,9 +217,9 @@
 				bottom: 17rpx;
 			}
 		}
-		button{
-			padding-left: 0rpx;
-			padding-right: 0rpx;
+		// button{
+		// 	padding-left: 0rpx;
+		// 	padding-right: 0rpx;
 		.tijiao_btn {
 			width: 100%;
 			height: 80rpx;
@@ -227,7 +233,7 @@
 			margin-top: 70rpx;
 			
 		}
-		}
+		// }
 
 	}
 </style>

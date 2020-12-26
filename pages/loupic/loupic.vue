@@ -106,6 +106,9 @@
 		},
 		methods:{
 			getdata(id){
+				uni.showLoading({
+				    title: '加载中'
+				});
 				let other = uni.getStorageSync("other");
 				let token = uni.getStorageSync("token")
 				uni.request({
@@ -155,6 +158,7 @@
 										}
 									})
 							 // #endif
+							  uni.hideLoading();
 						}
 					},
 					fail: (error) => {

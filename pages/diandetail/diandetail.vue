@@ -58,7 +58,7 @@
 					<view class="time_box">
 						<text class="time"> {{ite.time}}</text>
 						<button class='shan' v-if="ite.mine==1" open-type="getPhoneNumber" hover-class="none"
-						@getphonenumber="getPhoneNumber($event,project_id,'项目详情页+删除',104,'删除',3,comment.id)"
+						@getphonenumber="getPhoneNumber($event,project_id,'项目详情页+删除',104,'删除',3,ite.id)"
 						>删除</button>
 					</view>
 				</view>
@@ -106,6 +106,7 @@
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
 		</wyb-popup>
+		<mytoast  :txt="msg" ref="msg"></mytoast>
 	</view>
 </template>
 <script>
@@ -114,6 +115,7 @@
 	import uniRate from '@/components/uni-rate/uni-rate.vue';
 	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
 	import sign from '@/components/sign.vue'
+	import mytoast from "@/components/mytoast/mytoast.vue"
 	export default {
 		data() {
 			return {
@@ -135,6 +137,7 @@
 				position_n:0,
 				telphone:'',
 				isok:0,
+				msg:""
 				
 			};
 		},
@@ -143,7 +146,8 @@
 			bottom,
 			uniRate,
 			wybPopup,
-			sign
+			sign,
+			mytoast
 		},
 		onLoad(option) {
 			console.log(option.id);
@@ -151,19 +155,26 @@
 			this.project_id = option.id;
 		},
 		methods:{
-			deletePing(id) {
+			deletePing(id) { //删除回复
 				let token = uni.getStorageSync("token");
 				if (token) {
 					uni.request({
-						url: this.apiserve + "comment/delete",
+						url: this.apiserve + "/comment/delete",
 						method: "POST",
 						data: {
 							token: token,
 							id: id,
 						},
+						header:{
+							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+						},
 						success: (res) => {
 							if (res.data.code == 200) {
-								console.log(res);
+								this.$refs.msg.show();
+								this.msg = res.data.message;
+								this.getdata(this.project_id)
+							}else{
+								console.log(res)
 							}
 						}
 			
@@ -182,10 +193,15 @@
 							token: token,
 							id: id,
 						},
+						header:{
+							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+						},
 						method: "POST",
 						success: (res) => {
 							if (res.data.code == 200) {
-								console.log(res);
+								this.$refs.msg.show();
+								this.msg = res.data.message;
+								this.getdata(this.project_id)
 							}
 						}
 			
@@ -203,12 +219,10 @@
 						 if(token){
 							 if(type==1){ //点赞
 							 		this.getLike(ping_id)	
-								    this.getdata(pid)
 							 }else if(type==2){ //回复
 							 		this.goHuifu(ping_id)			 
 							 }else if(type==3){ //删除
 							 		this.deletePing(ping_id)
-									this.getdata(pid)
 							 }
 						 }else{
 							 let url="/pages/diandetail/diandetail?id="+pid;
@@ -251,12 +265,10 @@
 											uni.setStorageSync('token',res.data.token)
 											if(type==1){ //点赞
 												that.getLike(ping_id)
-												that.getdata(pid)
 											}else if(type==2){ //回复
 												that.goHuifu(ping_id);
 											}else if(type == 3){ //删除
 												that.deletePing(ping_id);
-												that.getdata(pid)
 											}
 										}
 									})
@@ -392,6 +404,8 @@
 					})
 			},
 			goHuifu(id){
+				let basurl = "/pages/diandetail/diandetail?id="+this.project_id;
+				uni.setStorageSync("backurl",basurl)
 				uni.navigateTo({
 					url:"../huifu/huifu?id="+id+"&pid="+this.building.id
 				})
@@ -407,6 +421,9 @@
 				this.codenum = 0
 			},
 			getdata(id){
+				uni.showLoading({
+				    title: '加载中'
+				});
 				let token = uni.getStorageSync("token");
 				let other = uni.getStorageSync("other");
 				let that = this
@@ -444,6 +461,7 @@
 								}
 							})
 							//#endif
+							uni.hideLoading();
 						}
 					}
 				})
@@ -457,6 +475,13 @@
 page{
 	background: #fff;
 }
+/* #ifdef MP-BAIDU */
+   swan-button{
+	   padding-left: 0rpx;
+	   padding-right: 0rpx;
+	   display: inline-block;
+   }
+/* #endif */
 button::after{
 	border:none;
 }

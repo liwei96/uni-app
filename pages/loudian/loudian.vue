@@ -9,47 +9,62 @@
 			</navigator>
 		</view>
 		<view class="dian_list">
-			<view class="dian_one" v-for="item in data" :key="item.id">
-				<navigator :url="`../diandetail/diandetail/?id=${item.id}`">
-					<view class="top">
-						<image src="../../static/content/ping_img.png" mode=""></image>
-						<view class="right_tel">
-							<text class="tel">{{item.name}}</text>
-							<view class="rate">
-								<uni-rate v-model="item.score" :margin="7" color="#E8EBED" active-color="#FF7519" :readonly="true" :size="18"></uni-rate>
+			<template  v-if="data.length>0">
+				<view class="dian_one" v-for="item in data" :key="item.id">
+					<navigator :url="`../diandetail/diandetail/?id=${item.id}`">
+						<view class="top">
+							<image src="../../static/content/ping_img.png" mode=""></image>
+							<view class="right_tel">
+								<text class="tel">{{item.name}}</text>
+								<view class="rate">
+									<uni-rate v-model="item.score" :margin="7" color="#E8EBED" active-color="#FF7519" :readonly="true" :size="18"></uni-rate>
+								</view>
 							</view>
 						</view>
-					</view>
-					<text class="con">{{item.content}}</text>
-				</navigator>
-				<view class="gong">
-					<view class="left">
-						<text class="time">{{item.time}}</text>
-						<button class="shan" v-if="item.mine==1" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,1)" @tap="did = item.id">删除</button>
-					</view>
-					<view class="zan">
-						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id">
-							<view class="zan_box_no">
-								<image :src="item.my_like == 0 ? '../../static/content/no_zan.png' : '../../static/content/zan.png'" mode=""></image>
-								{{item.like_num}}
-							</view>
-						</button>
-						<!-- <view class="zan_box_zan" v-if="item.my_like==1">
-							<image src="../../static/content/zan.png" mode=""></image>
-							{{item.like_num}}
-						</view> -->
-						<view class="dianping" @tap="goHuifu(item.id)">
-							<image src="../../static/liu.png" mode=""></image>
-							{{item.children.length}}
+						<text class="con">{{item.content}}</text>
+					</navigator>
+					<view class="gong">
+						<view class="left">
+							<text class="time">{{item.time}}</text>
+							<button class="shan" v-if="item.mine==1" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,1)" @tap="did = item.id">删除</button>
+						</view>
+						<view class="zan">
+							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id">
+								<view class="zan_box_no" v-if="item.my_like==0">
+									<image src="../../static/content/no_zan.png" mode=""></image>
+									{{item.like_num}}
+								</view>
+							</button>
+							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id">
+								<view class="zan_box_zan" v-if="item.my_like==1">
+									<image src="../../static/content/zan.png" mode=""></image>
+									{{item.like_num}}
+								</view>
+							</button>
+							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,3)" @tap="did = item.id">
+								<view class="dianping" >
+									<image src="../../static/liu.png" mode=""></image>
+									{{item.children.length}}
+								</view>
+							</button>
 						</view>
 					</view>
 				</view>
-			</view>
+			</template>
+			<template v-else>
+				<view class="zanwu">
+				 暂无评论，快来评论吧
+				 </view>
+		    </template>
 
 		</view>
-		<view class="white_ping" @tap="godian">
-			<image src="../../static/other/white.png" mode=""></image>
-		</view>
+	    <!-- 传入项目id 先判断是否登录-->
+		<button open-type="getPhoneNumber" hover-class="none"
+		@getphonenumber="getPhoneNumber($event,4)">
+			<view class="white_ping" >
+				<image src="../../static/other/white.png" mode=""></image>
+			</view>
+		</button>
 
 		<bottom :remark="'项目楼盘点评页+预约看房'" :point="103" :title="'预约看房'" :pid="parseInt(project_id)" :telphone="telphone"></bottom>
 		<mytoast :txt="msg" ref="msg"></mytoast>
@@ -92,20 +107,34 @@
 		},
 		methods: {
 			goHuifu(id){
+				//pid 项目id id 评价id
 				uni.navigateTo({
-					url:"/pages/huifu/huifu?id="+id
+					url:"/pages/huifu/huifu?id="+id+"&pid="+this.project_id
 				})
 			},
 			getPhoneNumber(e,type) {
 				let that = this
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					this.isok = 0
-					let url = '/pages/content/content?id=' + this.pid
-					uni.setStorageSync('backurl', url)
-					uni.navigateTo({
-						url:'/pages/login/login'
-					})
-					console.log(url)
+					
+					let token = uni.getStorageSync('token')
+					if (token) {
+						if(type==1){ //删除
+							that.deletePing(that.did)
+						}else if(type ==2){ //点赞
+							that.getLike(that.did)
+						}else if(type == 3){ //跳回复
+							that.goHuifu(that.did)
+						}else if( type == 4){ //右下角跳写点评
+							that.godian()
+						}
+					} else{
+						this.isok = 0
+						let url = '/pages/loudian/loudian?id=' + this.project_id
+						uni.setStorageSync('backurl', url)
+						uni.navigateTo({
+							url:'/pages/login/login'
+						})
+					}
 				} else {
 					let session = uni.getStorageSync('token')
 					if (session) {
@@ -113,6 +142,10 @@
 							that.deletePing(that.did)
 						}else if(type ==2){ //点赞
 							that.getLike(that.did)
+						}else if(type == 3){ //跳回复
+							that.goHuifu(that.did)
+						}else if( type == 4){ //右下角跳写点评
+							that.godian()
 						}
 					} else {
 						uni.login({
@@ -155,6 +188,10 @@
 															that.deletePing(that.did)
 														}else if(type ==2){ //点赞
 															that.getLike(that.did)
+														}else if(type == 3){ //跳回复
+														    that.goHuifu(that.did)					
+														}else if( type == 4){ //右下角跳写点评
+															that.godian()
 														}
 													
 													}
@@ -175,7 +212,7 @@
 				let token = uni.getStorageSync("token");
 				if (token) {
 					uni.request({
-						url: this.apiserve + "comment/delete",
+						url: this.apiserve + "/comment/delete",
 						method: "POST",
 						data: {
 							token: token,
@@ -186,7 +223,12 @@
 						},
 						success: (res) => {
 							if (res.data.code == 200) {
-								console.log(res);
+								this.$refs.msg.show();
+								this.msg = res.data.message;
+								let page = this.page;
+								this.getdata(this.project_id,page)
+							}else {
+								console.log(res)
 							}
 						}
 			
@@ -211,7 +253,10 @@
 						method: "POST",
 						success: (res) => {
 							if (res.data.code == 200) {
-								console.log(res);
+								this.$refs.msg.show();
+								this.msg = res.data.message;
+								let page = this.page;
+								this.getdata(this.project_id,page)
 							}
 						}
 
@@ -222,12 +267,17 @@
 				}
 			},
 			godian() {
+				let url = '/pages/loudian/loudian?id=' + this.project_id
+				uni.setStorageSync('backurl', url)
 				let id = this.project_id;
 				uni.navigateTo({
 					url: '/pages/senddian/senddian?id=' + id
 				})
 			},
 			getdata(id, page) {
+				uni.showLoading({
+				    title: '加载中'
+				});
 				let token = uni.getStorageSync('token');
 				let other = uni.getStorageSync('other');
 				uni.request({
@@ -259,6 +309,7 @@
 								}
 							})
 							//#endif
+							uni.hideLoading();
 						}
 					},
 					fail: (error) => {
@@ -351,7 +402,14 @@
 			background: #fff;
 			padding-bottom: 130rpx;
 			margin-top: 140rpx;
-
+			.zanwu {
+				font-size: 26rpx;
+				color: #000;
+				height: 100rpx;
+				line-height: 100rpx;
+				text-align: center;
+				margin-bottom: 20rpx;
+			}
 			.dian_one {
 				margin-top: 30rpx;
 
@@ -409,7 +467,7 @@
 
 					.left {
 						float: left;
-
+						display: flex;
 						.time {
 							font-size: 26rpx;
 							font-weight: 400;
@@ -421,6 +479,9 @@
 							font-weight: 400;
 							color: #919499;
 							margin-left: 20rpx;
+							padding-left: 0rpx;
+							padding-right: 0rpx;
+							line-height: 30rpx;
 						}
 					}
 

@@ -147,6 +147,10 @@
 				})
 			},
 			getdata(id){
+				uni.showLoading({
+				    title: '加载中'
+				});
+				
 				let token = uni.getStorageSync("token");
 				let other = uni.getStorageSync("other");
 				let city_id = uni.getStorageSync("city");
@@ -183,6 +187,7 @@
 								  }
 							})
 							// #endif
+							 uni.hideLoading();
 						}
 					}
 				})

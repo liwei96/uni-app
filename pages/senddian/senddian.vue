@@ -44,8 +44,8 @@
 					{{text_value.length}}/50
 				</view>
 			 </view>
-			 <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-			 <view class="fabu">
+			<!-- <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"> -->
+			 <view class="fabu" @tap="submitDian(building.id)">
 			 	发布点评
 			 </view>
 			 </button>
@@ -155,6 +155,9 @@
 				this.has_xing = true;
 			},
 			getData(id){
+				uni.showLoading({
+				    title: '加载中'
+				});
 				let  other = uni.getStorageSync("other");
 				let  token =  uni.getStorageSync("token");
 				uni.request({
@@ -169,6 +172,7 @@
 						if(res.data.code==200){
 							 console.log(res);
 						    this.building = res.data.building; 
+							  uni.hideLoading();
 							// this.text_all = res.data.building.introduce;
 							// this.text = res.data.building.introduce.substring(0,82);
 						}else {
@@ -198,13 +202,20 @@
 							   		consider_buy: this.index,  //是否考虑买  1 有兴趣 2 待对比 3 不考虑 4未看房 5 已看房 
 							   		score:this.value
 							   	},
+								header:{
+									'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+								},
 							   	success:(res)=>{
 							   		if(res.data.code== 200){
 							   			console.log(res);
-										this.msg = res.data.msg;
+										this.msg = res.data.message;
 										this.$refs.msg.show() ;
+										let baseurl = uni.getStorageSync('backurl');
+										uni.navigateTo({
+											url:baseurl
+										})
 							   		}else{
-										 this.msg = res.data.msg;
+										 this.msg = res.data.message;
 										 this.$refs.msg.show() ;
 									}
 							   	},
@@ -423,6 +434,8 @@
 		 button{
 			 padding-left: 0rpx;
 			 padding-right: 0rpx;
+		
+		}
 		.fabu{
 			width: 100%;
 			height: 80rpx;
@@ -433,7 +446,6 @@
 			text-align: center;
 			line-height: 80rpx;
 			margin-top: 70rpx;
-		}
 		}
 		
 	}

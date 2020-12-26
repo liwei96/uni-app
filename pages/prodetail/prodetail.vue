@@ -308,6 +308,10 @@
 				this.codenum = 0
 			},
 			getData(id){
+				uni.showLoading({
+				    title: '加载中'
+				});
+				
 				let that = this;
 				let  other = uni.getStorageSync("other");
 				let  token =  uni.getStorageSync("token");
@@ -348,6 +352,8 @@
 						console.log(error);
 					}
 				})
+				
+				 uni.hideLoading();
 			},
 			showHide(){
 				this.text = this.text_all;

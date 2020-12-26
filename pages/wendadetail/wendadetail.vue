@@ -181,6 +181,7 @@
 							console.log(res,'res');
 							this.$refs.msg.show();
 							this.msg = res.data.message;
+							this.getdata(this.data.id)
 						} else {
 							console.log(res)
 						}
@@ -195,7 +196,6 @@
 						if (token) {
 							if (type == 1) { //点赞
 								this.wenDian(wen_id)
-								this.getdata(wen_id)
 							} else if (type == 2) { //跳回答
 								this.gowenda(wen_id)
 							}
@@ -240,7 +240,6 @@
 											uni.setStorageSync('token', res.data.token)
 											if (type == 1) { //点赞
 												that.wenDian(wen_id)
-												that.getdata(wen_id)
 											} else if (type == 2) { //跳回答
 												that.gowenda(wen_id)
 											}
@@ -288,7 +287,6 @@
 															uni.setStorageSync('token', res.data.token)
 															if (type == 1) { //点赞
 																that.wenDian(wen_id)
-																that.getdata(wen_id)
 															} else if (type == 2) { //跳没回答的问答
 																that.gowenda(wen_id)
 															}
@@ -379,6 +377,9 @@
 				this.codenum = 0
 			},
 			getdata(id) {
+				uni.showLoading({
+				    title: '加载中'
+				});
 				let other = uni.getStorageSync('other');
 				let token = uni.getStorageSync('token');
 				uni.request({
@@ -412,6 +413,7 @@
 								}
 							})
 							// #endif
+							uni.hideLoading();
 						}
 					},
 					fail: (error) => {

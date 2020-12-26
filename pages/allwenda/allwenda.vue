@@ -43,7 +43,7 @@
 						</view>
 						<view class="da_box" v-else>
 							<button class="da" hover-class="none" open-type="getPhoneNumber" 
-							@getphonenumber ="getPhoneNumber($event,item.id)">
+							@getphonenumber ="getPhoneNumber($event,item.id,1)">
 								我来回答
 							</button>
 						</view>
@@ -75,9 +75,12 @@
 					</view> -->
 <!-- 			</view> -->
 			<!-- 写问答 -->
-			<view class="white_wen" @tap="goTiwen(project_id)">
-				<image src="../../static/other/loudian.png" mode=""></image>
-			</view>
+			<button open-type="getPhoneNumber" hover-class="none" 
+			@getphonenumber ="getPhoneNumber($event,project_id,2)">
+				<view class="white_wen" >
+					<image src="../../static/other/loudian.png" mode=""></image>
+				</view>
+			</button>
 			
 			<bottom :remark="remark" :point="103" :title="'预约看房'" :pid="parseInt(project_id)" :telphone="telphone"></bottom>
 		</view>
@@ -119,24 +122,47 @@ export default {
 		}
 	},
 	methods:{
-		goTiwen(id){
+		 goQuestion(id){ //去提问
+			 let url = '/pages/allwenda/allwenda?id='+this.project_id;
+			 uni.setStorageSync('backurl',url)
+			 uni.navigateTo({
+			 	url:"../tiwen/tiwen?id="+id
+			 })
+		 },         
+		goTiwen(id){ //去回复问题
 			let url = '/pages/allwenda/allwenda?id='+this.project_id;
 			uni.setStorageSync('backurl',url)
 			uni.navigateTo({
 				url:"../wenhui/wenhui?id="+id
 			})
 		},
-		getPhoneNumber(e,hui_id) {
+		getPhoneNumber(e,hui_id,type) {
 			let that = this
 			if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-				this.isok = 0
-				let url = '/pages/allwenda/allwenda?id='+this.project_id
-				uni.setStorageSync('backurl',url)
-				console.log(url)
+				let token = uni.getStorageSync('token')
+				if(token){
+					if(type==1){
+						that.goTiwen(hui_id)
+					}else if(type==2){
+						that.goQuestion(hui_id)
+					}
+				}else{
+					this.isok = 0
+					let url = '/pages/allwenda/allwenda?id='+this.project_id
+					uni.setStorageSync('backurl',url)
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+				}
 			} else {
 				let session = uni.getStorageSync('token')
 				if(session){
-					that.goTiwen(hui_id)
+					if(type==1){
+						that.goTiwen(hui_id)
+					}else if(type==2){
+						that.goQuestion(hui_id)
+					}
+					
 				}else {
 					uni.login({
 					  provider: 'baidu',
@@ -174,7 +200,12 @@ export default {
 											},
 											success: (res) => {
 												uni.setStorageSync('token',res.data.token)
-												that.goTiwen(hui_id)
+												if(type==1){
+													that.goTiwen(hui_id)
+												}else if(type==2){
+													that.goQuestion(hui_id)
+												}
+												
 											}
 										})
 										
@@ -191,6 +222,9 @@ export default {
 			
 		},
 		getdata(id){
+			uni.showLoading({
+			    title: '加载中'
+			});
 			let city_id = uni.getStorageSync('city');
 			let token = uni.getStorageSync('token');
 			let other = uni.getStorageSync('other');
@@ -224,6 +258,7 @@ export default {
 						  	}
 						  })
 						 // #endif
+						 uni.hideLoading();
 					}
 				},
 				fail: (error) => {

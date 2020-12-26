@@ -315,6 +315,9 @@ import sign from '@/components/sign.vue'
 				this.codenum = 0
 			},
 			getdata(id){
+				uni.showLoading({
+				    title: '加载中'
+				});
 				let that = this;
 				let other = uni.getStorageSync('other')
 				let token = uni.getStorageSync('token')
@@ -361,6 +364,7 @@ import sign from '@/components/sign.vue'
 							   })
 							// #endif
 							
+							 uni.hideLoading();
 						}
 					}
 				})

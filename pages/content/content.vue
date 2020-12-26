@@ -429,8 +429,14 @@
 									<text class="tel">{{item.mobile}}</text>
 								</navigator>
 								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1,item.id)" @tap="did = item.id">
-									<view class="no_zan" >
-										<image :src="item.my_like == 0 ? '../../static/content/no_zan.png' : '../../static/content/zan.png'" mode=""></image>
+									<view class="no_zan" v-if="item.my_like == 0">
+										<image src="../../static/content/no_zan.png" mode=""></image>
+										赞({{item.like_num}})
+									</view>
+								</button>
+								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1,item.id)" @tap="did = item.id">
+									<view class="zan" v-if="item.my_like ==1">
+										<image src="../../static/content/zan.png" mode=""></image>
 										赞({{item.like_num}})
 									</view>
 								</button>
@@ -892,7 +898,7 @@
 							}else if(type == 4){ //我要点评
 								this.goDianPing(pid)
 							}else if(type == 5){ //我要提问
-								 this.quTiwen(ping_id)
+								 this.quTiwen(pid)
 							}
 						}else{
 							let url="/pages/content/content?id="+this.detail.id;
@@ -914,12 +920,12 @@
 							 	this.getLike(ping_id)
 							 }else if(type==2){ //收藏
 							 	this.goShou();
-							 }else if(type == 3){
+							 }else if(type == 3){ //删除
 								 this.deletePing(ping_id)
 							 }else if(type == 4){ //我要点评
 								 this.goDianPing(pid)
 							 }else if(type == 5){ //我要提问
-								  this.quTiwen(ping_id)
+								  this.quTiwen(pid)
 							 }
 						 }else{
 							 let session = uni.getStorageSync('session')
@@ -956,7 +962,7 @@
 												}else if(type == 4){ //我要点评
 													that.goDianPing(pid);
 												}else if( type == 5){ //我要提问
-													 that.quTiwen(ping_id)
+													 that.quTiwen(pid)
 												}
 											}
 										})
@@ -1009,7 +1015,7 @@
 															}else if(type == 4){ //我要点评
 																that.goDianPing(pid);
 															}else if(type == 5){ //我要提问
-																 that.quTiwen(ping_id)
+																 that.quTiwen(pid)
 															}
 															
 														}
@@ -1223,7 +1229,7 @@
 				let token = uni.getStorageSync("token");
 				if (token) {
 					uni.request({
-						url: this.apiserve + "comment/delete",
+						url: this.apiserve + '/comment/delete',
 						method: "POST",
 						data: {
 							token: token,
@@ -1234,8 +1240,15 @@
 						},
 						success: (res) => {
 							if (res.data.code == 200) {
-								console.log(res);
+								this.$refs.msg.show();
+								this.msg = res.data.message;
+								this.getdata(this.detail.id)
+							}else {
+								 console.log(res)
 							}
+						},
+						fail:(err)=>{
+							console.log(err)
 						}
 
 					})
@@ -1245,6 +1258,9 @@
 				}
 			},
 			getdata(id) {
+				uni.showLoading({
+					title:"加载中"
+				})
 				let ip = '';
 				let other = uni.getStorageSync("other");
 				let token = uni.getStorageSync("token");
@@ -1392,7 +1408,7 @@
 									  })
 								   // #endif
 									
-								  
+								  uni.hideLoading()
 
 								}
 							}
@@ -1436,6 +1452,8 @@
 			},
 			quTiwen(id) {
 				//先判断登陆了，再跳转
+				let url="/pages/content/content?id="+this.detail.id;
+				uni.setStorageSync("backurl",url)
 				let token = uni.getStorageSync('token');
 				if (token) {
 					uni.navigateTo({
@@ -1449,6 +1467,8 @@
 			},
 			goDianPing(id) {
 				//先判断登陆了，再跳转
+				let url="/pages/content/content?id="+this.detail.id;
+				uni.setStorageSync("backurl",url)
 				let token = uni.getStorageSync("token");
 				if (token) {
 					uni.navigateTo({
