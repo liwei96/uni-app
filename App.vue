@@ -21,10 +21,10 @@
 				uni.setStorageSync('cityname','杭州')
 			}
 			uni.connectSocket({
-				url: 'ws://39.98.227.114:9509?uuid=' + uuid
+				url: 'wss://ws.edefang.net?uuid=' + uuid
 			});
 			uni.request({
-				url: 'http://ll.edefang.net/getIp.php',
+				url: 'https://ll.edefang.net/getIp.php',
 				method: 'GET',
 				success: (res) => {
 					let ip = res.data
@@ -34,6 +34,12 @@
 					uni.setStorageSync('ip', ip)
 				}
 			})
+			// var VConsole = require('./components/vconsole.min.js'); 
+			// var vConsole = new VConsole();
+			// console.log('开启调试');
+			// const meta = document.querySelector('meta[name=viewport]');
+			//       if (!meta) return;
+			//       meta.setAttribute('content', 'upgrade-insecure-requests')
 		},
 		onShow: function() {
 			console.log('App Show')

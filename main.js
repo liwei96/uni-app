@@ -4,13 +4,12 @@ import App from './App'
 Vue.config.productionTip = false
 
 App.mpType = 'app'
-Vue.prototype.apiserve = 'http://39.98.227.114:9560'
-Vue.prototype.putserve = 'http://ll.edefang.net'
-Vue.prototype.dianserve = 'http://39.98.227.114:9550/'
+Vue.prototype.apiserve = 'https://api.edefang.net'
+Vue.prototype.putserve = 'https://ll.edefang.net/'
+Vue.prototype.dianserve = 'https://api.edefang.net/'
 Vue.prototype.host = 'm.jy1980.com'
 
 Vue.prototype.login = function(e,that){
-	
 	let session = uni.getStorageSync('session')
 	if(session){
 		uni.request({

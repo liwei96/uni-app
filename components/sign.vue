@@ -4,7 +4,7 @@
 		<view class="txt">{{text}}</view>
 		<view class="one" v-if="!iscode">
 			<view class="input">
-				<input type="text" value="" placeholder="请输入手机号" placeholder-class="place" v-model="tel" :disabled="ok"/>
+				<input type="text" placeholder="请输入手机号" placeholder-class="place" v-model="tel" :disabled="ok"/>
 				<view class="setnull" v-if="ok" @tap="setnull">
 					x
 				</view>
@@ -192,6 +192,9 @@
 						uni.request({
 							url: that.apiserve + '/send',
 							method: "POST",
+							header: {
+								'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+							},
 							data: {
 								ip: ip,
 								phone: phone,
@@ -219,6 +222,9 @@
 						phone: phone,
 						source: 3,
 						code: that.code
+					},
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
 					},
 					success: (res) => {
 						console.log(res)

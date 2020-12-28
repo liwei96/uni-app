@@ -262,6 +262,9 @@
 </script>
 
 <style lang="less">
+	.article {
+		background-color: #FFFFFF;
+	}
 	.toptitle {
 		color: #17181A;
 		font-size: 29.88rpx;

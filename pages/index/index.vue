@@ -30,7 +30,7 @@
 				<navigator url="../special/special" open-type="navigate">
 					<image src="../../static/index/index-luck.png" mode=""></image>
 					<text>特价房</text>
-					<text class="youhui">优惠</text>
+					<!-- <text class="youhui">优惠</text> -->
 				</navigator>
 			</view>
 			<view class="nav-li">

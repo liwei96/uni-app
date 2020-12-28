@@ -9,7 +9,7 @@
 			</navigator>
 		</view>
 		<view class="top_img">
-			<image :src="one.big" mode=""></image>
+			<image :src="one.big" mode="" @tap="showbig(one.big)"></image>
 		</view>
 		<view class="name_box">
 			<view class="name">{{one.title}} <text>{{one.state}}</text></view>
@@ -22,7 +22,7 @@
 			</view>
 			<view class="tese_one"> <text>特色：</text>{{one.special}}</view>
 			<view class="address">
-				<view class="left">
+				<view class="left" @tap="goaround">
 					<image src="../../static/address.png" mode="" class="icon_ad"></image>
 					<text>{{one.address}}</text>
 				</view>
@@ -179,9 +179,11 @@
 	     	<seebottom :title="title" :project="recommends"></seebottom>
 	     </view>
 		<bottom :remark="'项目户型详情页+预约看房'" :point="103" :title="'预约看房'" :pid="one.bid" :telphone="telphone"></bottom>
-		
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
+		</wyb-popup>
+		<wyb-popup ref="popup1" type="center" height="1000" width="700" radius="0" :showCloseIcon="false" @hide="setiscode">
+			<image :src="url" mode="" class="bigimg" @tap="hideimg"></image>
 		</wyb-popup>
 	</view>
 </template>
@@ -202,14 +204,13 @@ import sign from '@/components/sign.vue'
 			return {
 				title:"看了该楼盘的人还看了",
 				num:'',
-				
+				url: '',
 				one:{},
 				other_rooms:[],
 				recommends:[],
 				num:{},
 				common:{},
 				staff:{},
-				
 				codenum:1,
 				title_e:'',
 				pid_d:0,
@@ -218,14 +219,25 @@ import sign from '@/components/sign.vue'
 				telphone:'',
 				isok:0,
 				shengnum:"123"
-				
 			};
 		},
 		onLoad(option){
 			this.getdata(option.id);
-			
 		},
 		methods:{
+			hideimg() {
+				this.$refs.popup1.hide()
+			},
+			showbig(url) {
+				this.url = url
+				this.$refs.popup1.show()
+			},
+			goaround() {
+				let id = this.one.bid
+				uni.navigateTo({
+					url: "/pages/test/test?id=" + id
+				})
+			},
 			async getPhoneNumber(e,pid,remark,point,title,type) {
 				let that = this
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
@@ -374,6 +386,10 @@ import sign from '@/components/sign.vue'
 </script>
 
 <style lang="less">
+	.bigimg {
+		width: 100%;
+		height: 100%;
+	}
 	button::after{
 		border:none
 	}

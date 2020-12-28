@@ -46,13 +46,16 @@
 						<image src="../../static/content/duibi.png"></image>
 						<text>对比</text>
 					</view>
-					<button open-type="getPhoneNumber" hover-class="none" 
-					@getphonenumber = "getPhoneNumber($event,detail.id,'项目落地页+收藏',101,'收藏',2)"
-					 class="shou" >
+					<button open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+收藏',101,'收藏',2)" class="shou" v-if="!pass">
 						<image :src="shou_old" v-if="collect==0"></image>
 						<image :src="has_shou" v-if="collect==1"></image>
 						<text>收藏</text>
 					</button>
+					<view v-if="pass" class="shou" @tap="goShou">
+						<image :src="shou_old" v-if="collect==0"></image>
+						<image :src="has_shou" v-if="collect==1"></image>
+						<text>收藏</text>
+					</view>
 				</view>
 			</view>
 			<view class="detail_list">
@@ -64,7 +67,7 @@
 						<view class="kai_time">
 							<text class="left">开盘:</text> <text class="com">{{detail.opentime}}</text>
 						</view>
-						<view class="address">
+						<view class="address" @tap="goweb">
 							<text class="left">地址:</text> <text class="com">{{detail.address}}</text>
 						</view>
 						<view class="zhu">
@@ -76,22 +79,23 @@
 							<text>详细信息</text>
 							<image src="../../static/content/right.png" mode="" class="nav"></image>
 						</view>
-						<image src="../../static/content/address.png" mode=""></image>
+						<image src="../../static/content/address.png" mode="" @tap="goweb"></image>
 					</view>
 				</view>
 				<view class="baoming_btn">
 					<view class="btn_box">
-						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价')" hover-class="none"
-						>
-							<!-- <view class="btn01" @tap="baoMing(detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价')"> -->
-								<image src="../../static/content/dijia.png"></image>查询最底价
-							<!-- </view> -->
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价')" hover-class="none" v-if="!pass">
+							<image src="../../static/content/dijia.png"></image>查询最底价
 						</button>
-						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+变价通知我',91,'变价通知我')" hover-class="none">
-							<!-- <view @tap="baoMing(detail.id,'项目落地页+变价通知我',91,'变价通知我')"> -->
-								<image src="../../static/content/bianjia.png"></image>变价通知我
-							<!-- </view> -->
+						<view class="btn01" @tap="baoMing(detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价', 1)" v-if="pass">
+						<image src="../../static/content/dijia.png"></image>查询最底价
+						</view>
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+变价通知我',91,'变价通知我')" hover-class="none" v-if="!pass">
+							<image src="../../static/content/bianjia.png"></image>变价通知我
 						</button>
+						<view @tap="baoMing(detail.id,'项目落地页+变价通知我',91,'变价通知我',1)" v-if="pass">
+						<image src="../../static/content/bianjia.png"></image>变价通知我
+						</view>
 					</view>
 					<view class="tel_box">
 						<view class="left">
@@ -125,12 +129,16 @@
 						（{{goufang_date}}截止）
 					</text>
 				</text>
-				<view class="right" >
-					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取优惠',94,'领取优惠')" hover-class="none">
-						<view class="ling_btn" >
+				<view class="right">
+					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取优惠',94,'领取优惠')"
+					 hover-class="none" v-if="!pass">
+						<view class="ling_btn">
 							领取优惠
 						</view>
 					</button>
+					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+领取优惠',94,'领取优惠',1)" v-if="pass">
+						领取优惠
+					</view>
 					<text>{{goufang_ling}}人已领取</text>
 				</view>
 			</view>
@@ -142,11 +150,15 @@
 					</text>
 				</text>
 				<view class="right">
-					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+免费领取',95,'免费领取')" hover-class="none">
-						<view class="ling_btn" >
+					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+免费领取',95,'免费领取')"
+					 hover-class="none" v-if="!pass">
+						<view class="ling_btn">
 							免费领取
 						</view>
 					</button>
+					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+免费领取',95,'免费领取',1)" v-if="pass">
+						免费领取
+					</view>
 					<text>{{seefang_ling}}人已领取</text>
 				</view>
 			</view>
@@ -185,8 +197,9 @@
 				<uni-notice-bar :text="specials.dynamic" scrollable showType="slider" background-color="#fff" :showIcon="true"
 				 color="#646466" :speed="50" v-if="specials.dynamic" :single="true"></uni-notice-bar>
 			</view>
-			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+咨询特价房',93,'咨询特价房')" hover-class="none">
-					咨询特价房
+			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+咨询特价房',93,'咨询特价房')"
+			 hover-class="none">
+				咨询特价房
 			</button>
 		</view>
 		<view class="bg_hui"></view>
@@ -222,11 +235,13 @@
 					</view>
 				</view>
 			</scroll-view>
-			<button open-type="getPhoneNumber"
-			 @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取全部户型资料',97,'领取全部户型资料')"
-			 class="hu_zi" hover-class="none">
+			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取全部户型资料',97,'领取全部户型资料')"
+			 class="hu_zi" hover-class="none" v-if="!pass">
 				领取全部户型资料
 			</button>
+			<view class="hu_zi" @tap="baoMing(detail.id,'项目落地页+领取全部户型资料',97,'领取全部户型资料',1)" v-if="pass">
+				领取全部户型资料
+			</view>
 		</view>
 		<!-- 最新动态 -->
 		<view class="bg_hui"></view>
@@ -247,8 +262,7 @@
 						<image :src="item.img" mode=""></image>
 					</navigator>
 				</view>
-				<button class="button" open-type="getPhoneNumber" hover-class="none"
-				@getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态')">
+				<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态')">
 					订阅最新动态
 				</button>
 			</view>
@@ -285,10 +299,12 @@
 				</view>
 			</view>
 
-			<button open-type="getPhoneNumber" class="get_di_price" hover-class="none"
-			 @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价')">
+			<button open-type="getPhoneNumber" class="get_di_price" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价')" v-if="!pass">
 				获取最新成交价
 			</button>
+			<view class="get_di_price" @tap="baoMing(detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价',1)" v-if="pass">
+				获取最新成交价
+			</view>
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 楼盘分析资料 -->
@@ -308,8 +324,7 @@
 					2、{{fenxi_data[1].content}}
 				</view>
 			</view>
-			<button class="btn" open-type="getPhoneNumber"  hover-class="none"
-			@getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取分析资料',99,'领取分析资料')">
+			<button class="btn" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取分析资料',99,'领取分析资料')">
 				领取分析资料
 			</button>
 		</view>
@@ -346,9 +361,13 @@
 					</view>
 				</view>
 				<view class="bo_tel">
-					<button open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+咨询服务',104,'咨询服务')" class="bo_zi">
-						<image src="../../static/content/zixun.png" mode=""  ></image>
+					<button open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+咨询服务',104,'咨询服务')"
+					 class="bo_zi" v-if="!pass">
+						<image src="../../static/content/zixun.png" mode=""></image>
 					</button>
+					<view class="bo_zi" @tap="baoMing(detail.id,'项目落地页+咨询服务',104,'咨询服务',1)" v-if="pass">
+						<image src="../../static/content/zixun.png" mode=""></image>
+					</view>
 					<image src="../../static/content/tel.png" mode="" @tap="boTel(old_telphone)"></image>
 				</view>
 			</view>
@@ -359,21 +378,25 @@
 		<!-- 周边配套 -->
 		<view class="zhou_pei">
 			<view class="zhou">周边配套</view>
-			<view class="wei" @tap="goZhou(detail.id)">
+			<view class="wei">
 				<text class="left">位置:</text>
 				<text class="rig">{{detail.address}}</text>
 			</view>
-			<button open-type="getPhoneNumber" class="pei" hover-class="none"
-			@getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')">
+			<button open-type="getPhoneNumber" class="pei" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')" v-if="!pass">
 				<text>配套:</text>
 				咨询具体位置和周边设施情况
 				<image src="../../static/content/biao.png" mode=""></image>
 			</button>
+			<view class="pei" @tap="baoMing(detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1)" v-if="pass">
+				<text>配套:</text>
+				咨询具体位置和周边设施情况
+				<image src="../../static/content/biao.png" mode=""></image>
+			</view>
 			<!-- 周边配套地图 -->
 
 			<view class="address" @tap="goweb">
 				<view class="map">
-					<cover-view class="nav_nav" >
+					<cover-view class="nav_nav">
 						<cover-view class="nav_list active">
 							<cover-image src="../../static/content/near_bus.png"></cover-image>
 							公交
@@ -398,8 +421,7 @@
 					<map id="my_map" style="width:690rpx; height:120px;" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
 				</view>
 			</view>
-			<button class="button" open-type="getPhoneNumber" hover-class="none"
-			 @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')">
+			<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')">
 				获取周边5公里详细配套
 			</button>
 		</view>
@@ -428,18 +450,28 @@
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
 									<text class="tel">{{item.mobile}}</text>
 								</navigator>
-								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1,item.id)" @tap="did = item.id">
+								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1,item.id)"
+								 @tap="did = item.id" v-if="!pass">
 									<view class="no_zan" v-if="item.my_like == 0">
 										<image src="../../static/content/no_zan.png" mode=""></image>
 										赞({{item.like_num}})
 									</view>
 								</button>
-								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1,item.id)" @tap="did = item.id">
+								<view class="no_zan" v-if="item.my_like == 0 && pass" @tap="getLike(item.id)">
+									<image src="../../static/content/no_zan.png" mode=""></image>
+									赞({{item.like_num}})
+								</view>
+								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1,item.id)"
+								 @tap="did = item.id" v-if="!pass">
 									<view class="zan" v-if="item.my_like ==1">
 										<image src="../../static/content/zan.png" mode=""></image>
 										赞({{item.like_num}})
 									</view>
 								</button>
+								<view class="zan" v-if="item.my_like ==1 && pass"  @tap="getLike(item.id)">
+									<image src="../../static/content/zan.png" mode=""></image>
+									赞({{item.like_num}})
+								</view>
 							</view>
 							<view class="content">
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
@@ -450,9 +482,8 @@
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
 									<text class="time">{{item.time}}</text>
 								</navigator>
-							<!-- 	<text class="delete"  @tap="deletePing(item.id)">删除</text> -->
-								<button class="delete" open-type="getPhoneNumber" hover-class="none"   v-if="item.mine==true"
-								@getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+删除',102,'删除',3,item.id)">删除</button>
+								<!-- 	<text class="delete"  @tap="deletePing(item.id)">删除</text> -->
+								<button class="delete" open-type="getPhoneNumber" hover-class="none" v-if="item.mine==true" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+删除',102,'删除',3,item.id)">删除</button>
 							</view>
 						</view>
 
@@ -466,10 +497,12 @@
 				</template>
 
 			</view>
-			<button class="dian_btn" hover-class="none" open-type="getPhoneNumber"
-			@getphonenumber="getPhoneNumber($event,detail.id,'跳点评',12,'跳点评',4,detail.id)">
+			<button class="dian_btn" hover-class="none" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'跳点评',12,'跳点评',4,detail.id)" v-if="!pass">
 				我要点评
 			</button>
+			<view class="dian_btn" @tap="goDianPing(detail.id)" v-if="pass">
+				我要点评
+			</view>
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 楼盘问答 -->
@@ -504,8 +537,7 @@
 					</view>
 				</template>
 
-				<button class="ti_btn" hover-class="none" open-type="getPhoneNumber"
-				@getphonenumber="getPhoneNumber($event,detail.id,'跳提问',13,'跳提问',5,)">
+				<button class="ti_btn" hover-class="none" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'跳提问',13,'跳提问',5,)">
 					我要提问
 				</button>
 			</view>
@@ -535,26 +567,10 @@
 
 			</view>
 		</view>
-
-		<!-- <view class="bottom_fixed">
-			<view class="zixun">
-				<image src="../../static/content/bottom.png" mode=""></image>
-				<view class="text">
-					在线咨询
-				</view>
-			</view>
-			<view class="tel_box" @tap="boTel(old_telphone)">
-				<image src="../../static/content/tel_bot.png" mode=""></image>
-				电话咨询
-			</view>
-			<view class="yuyue_box" @tap="baoMing(detail.id,'项目落地页+预约看房',103,'预约看房')">
-				<image src="../../static/content/yuyue.png" mode=""></image>
-				预约看房
-			</view>
-		</view> -->
 		<bottom :remark="'项目落地页+预约看房'" :point="103" :title="'预约看房'" :pid="detail.id" :telphone="old_telphone"></bottom>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign ref="sign" :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
+			<sign ref="sign" :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"
+			 :isok="isok"></sign>
 		</wyb-popup>
 		<mytoast :txt="msg" ref="msg"></mytoast>
 
@@ -621,6 +637,7 @@
 		},
 		data() {
 			return {
+				pass: false,
 				did: 0,
 				total: '',
 				pro_img: [],
@@ -724,12 +741,12 @@
 				seefang_sheng: "",
 				seefang_ling: "",
 				pid: 0,
-				isok:0,
-				header:{},
-				collect:0,
-				shou_old:require("../../static/content/shou.png"),
-				has_shou:require("../../static/content/has_shou.png")
-				
+				isok: 0,
+				header: {},
+				collect: 0,
+				shou_old: require("../../static/content/shou.png"),
+				has_shou: require("../../static/content/has_shou.png")
+
 
 
 
@@ -737,22 +754,12 @@
 		},
 		onLoad(option) {
 			_self = this;
-			//#ifdef MP-ALIPAY
-			uni.getSystemInfo({
-				success: function(res) {
-					if (res.pixelRatio > 1) { //设备像素比
-						//正常这里给2就行，如果pixelRatio=3性能会降低一点
-						//_self.pixelRatio =res.pixelRatio;
-						_self.pixelRatio = 2;
-					}
-				}
-			});
-			//#endif
 			this.cWidth = uni.upx2px(750);
 			this.cHeight = uni.upx2px(500);
 			let id = option.id;
 			this.pid = id
 			this.getdata(id);
+			this.pass = uni.getStorageSync('pass')
 		},
 		onPageScroll(e) {
 			if (e.scrollTop >= 200) {
@@ -761,62 +768,10 @@
 				this.fixed_show = false;
 			}
 		},
-		onReady() {
-			var nmap = uni.createMapContext('my_map', this);
-			nmap.moveToLocation({
-				longitude: this.longitude,
-				latitude: this.latitude,
-				success: (res) => {
-					console.log(res, '转移');
-				}
-			})
-			// mapSearch.poiSearchNearBy({
-			// 	point:{
-			// 		latitude:this.latitude,
-			// 		longitude:this.longitude
-			// 	},
-			// 	key:"学校",
-			// 	radius:3000,
-			// 	index:1,
-			// 	success:(res)=>{
-			// 		console.log(res);
-			// 	}
-
-			// })
-
-
-
-
-			console.log(nmap);
-			this.map = nmap;
-			nmap.getCenterLocation({
-				success(res) {
-					console.log(res, '中心点');
-				}
-			})
-
-
-
-			// var  bmap= new plus.maps.Map('my_app');
-			// var searchObj = new plus.maps.Search(bmap);  
-			// searchObj.poiSearchNearBy({
-			// 	point: {
-			// 		latitude: 39.909,
-			// 		longitude: 116.39742,
-			// 	},
-			// 	key: "公交",
-			//     success: res=>{
-			// 	   console.log(res,'res');
-			// 	}
-			// });
-
-
-
-		},
 		methods: {
 			gocon(id) {
 				uni.navigateTo({
-					url:'/pages/content/content?id='+id
+					url: '/pages/content/content?id=' + id
 				})
 			},
 			suijiData() {
@@ -883,213 +838,211 @@
 				}
 
 			},
-			async getPhoneNumber(e,pid,remark,point,title,type,ping_id) {
+			async getPhoneNumber(e, pid, remark, point, title, type, ping_id) {
 				let that = this
-				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					if(type) {
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					if (type) {
 						let token = uni.getStorageSync('token');
-						if(token){
-							if(type==1){ //点赞
+						if (token) {
+							if (type == 1) { //点赞
 								this.getLike(ping_id)
-							}else if(type==2){ //收藏
+							} else if (type == 2) { //收藏
 								this.goShou();
-							}else if(type == 3){
-							    this.deletePing(ping_id);
-							}else if(type == 4){ //我要点评
+							} else if (type == 3) {
+								this.deletePing(ping_id);
+							} else if (type == 4) { //我要点评
 								this.goDianPing(pid)
-							}else if(type == 5){ //我要提问
-								 this.quTiwen(pid)
+							} else if (type == 5) { //我要提问
+								this.quTiwen(pid)
 							}
-						}else{
-							let url="/pages/content/content?id="+this.detail.id;
+						} else {
+							let url = "/pages/content/content?id=" + this.detail.id;
 							console.log(url);
-							uni.setStorageSync("backurl",url)
+							uni.setStorageSync("backurl", url)
 							uni.navigateTo({
-								url:"/pages/login/login"
+								url: "/pages/login/login"
 							})
 						}
-					}else{
-						this.isok = 0
-						that.baoMing(pid,remark,point,title)
+					} else {
+						that.baoMing(pid, remark, point, title,0)
 					}
 				} else {
-				  if(type){
-						 let token = uni.getStorageSync("token");
-						 if(token){
-							 if(type==1){ //点赞
-							 	this.getLike(ping_id)
-							 }else if(type==2){ //收藏
-							 	this.goShou();
-							 }else if(type == 3){ //删除
-								 this.deletePing(ping_id)
-							 }else if(type == 4){ //我要点评
-								 this.goDianPing(pid)
-							 }else if(type == 5){ //我要提问
-								  this.quTiwen(pid)
-							 }
-						 }else{
-							 let session = uni.getStorageSync('session')
-							 if(session){
-							 	uni.request({
-							 		url: 'https://api.edefang.net/applets/baidu/decrypt',
-							 		method:'get',
-							 		data:{
-							 			iv: e.detail.iv,
-							 			data: e.detail.encryptedData,
-							 			session_key: session
-							 		},
-							 		success: (res) => {
-							 			console.log(res,'session')
-							 			let tel = res.data.mobile
-							 			uni.setStorageSync('phone',tel)
-							 			let openid = uni.getStorageSync('openid')
+					if (type) {
+						let token = uni.getStorageSync("token");
+						if (token) {
+							if (type == 1) { //点赞
+								this.getLike(ping_id)
+							} else if (type == 2) { //收藏
+								this.goShou();
+							} else if (type == 3) { //删除
+								this.deletePing(ping_id)
+							} else if (type == 4) { //我要点评
+								this.goDianPing(pid)
+							} else if (type == 5) { //我要提问
+								this.quTiwen(pid)
+							}
+						} else {
+							let session = uni.getStorageSync('session')
+							if (session) {
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/decrypt',
+									method: 'get',
+									data: {
+										iv: e.detail.iv,
+										data: e.detail.encryptedData,
+										session_key: session
+									},
+									success: (res) => {
+										console.log(res, 'session')
+										let tel = res.data.mobile
+										uni.setStorageSync('phone', tel)
+										let openid = uni.getStorageSync('openid')
 										uni.request({
-											url:"https://api.edefang.net/applets/login",
-											method:'GET',
-											data:{
+											url: "https://api.edefang.net/applets/login",
+											method: 'GET',
+											data: {
 												phone: tel,
 												openid: openid
 											},
 											success: (res) => {
 												console.log(res)
-												uni.setStorageSync('token',res.data.token)
-												if(type==1){ //点赞
+												uni.setStorageSync('token', res.data.token)
+												if (type == 1) { //点赞
 													that.getLike(ping_id)
-												}else if(type==2){ //收藏
+												} else if (type == 2) { //收藏
 													that.goShou();
-												}else if(type == 3){
+												} else if (type == 3) {
 													that.deletePing(ping_id);
-												}else if(type == 4){ //我要点评
+												} else if (type == 4) { //我要点评
 													that.goDianPing(pid);
-												}else if( type == 5){ //我要提问
-													 that.quTiwen(pid)
+												} else if (type == 5) { //我要提问
+													that.quTiwen(pid)
 												}
 											}
 										})
-							 		}
-							 	})
-							 }else {
-							 	console.log(session,"没保存session")
-							 	uni.login({
-							 	  provider: 'baidu',
-							 	  success: function (res) {
-							 	   // console.log(res.code);
-							 		uni.request({
-							 			url: 'https://api.edefang.net/applets/baidu/get_session_key',
-							 			method:'get',
-							 			data:{
-							 				code: res.code
-							 			},
-							 			success: (res) => {
-							 				console.log(res)
-							 				uni.setStorageSync('openid',res.data.openid)
-							 				uni.setStorageSync('session',res.data.session_key)
-							 				uni.request({
-							 					url:"https://api.edefang.net/applets/baidu/decrypt",
-							 					data:{
-							 						data: e.detail.encryptedData,
-							 						iv:e.detail.iv,
-							 						session_key:res.data.session_key
-							 					},
-							 					success: (res) => {
-							 						console.log(res)
-							 						let tel = res.data.mobile
-							 						uni.setStorageSync('phone',tel)
-							 						let openid = uni.getStorageSync('openid')
-													uni.request({
-														url:"https://api.edefang.net/applets/login",
-														method:'GET',
-														data:{
-															phone: tel,
-															openid: openid
-														},
-														success: (res) => {
-															console.log(res)
-															uni.setStorageSync('token',res.data.token)
-															if(type==1){ //点赞
-																that.getLike(ping_id)
-															}else if(type==2){ //收藏
-																that.goShou();
-															}else if(type == 3){ 
-																that.deletePing(ping_id);
-															}else if(type == 4){ //我要点评
-																that.goDianPing(pid);
-															}else if(type == 5){ //我要提问
-																 that.quTiwen(pid)
+									}
+								})
+							} else {
+								console.log(session, "没保存session")
+								uni.login({
+									provider: 'baidu',
+									success: function(res) {
+										// console.log(res.code);
+										uni.request({
+											url: 'https://api.edefang.net/applets/baidu/get_session_key',
+											method: 'get',
+											data: {
+												code: res.code
+											},
+											success: (res) => {
+												console.log(res)
+												uni.setStorageSync('openid', res.data.openid)
+												uni.setStorageSync('session', res.data.session_key)
+												uni.request({
+													url: "https://api.edefang.net/applets/baidu/decrypt",
+													data: {
+														data: e.detail.encryptedData,
+														iv: e.detail.iv,
+														session_key: res.data.session_key
+													},
+													success: (res) => {
+														console.log(res)
+														let tel = res.data.mobile
+														uni.setStorageSync('phone', tel)
+														let openid = uni.getStorageSync('openid')
+														uni.request({
+															url: "https://api.edefang.net/applets/login",
+															method: 'GET',
+															data: {
+																phone: tel,
+																openid: openid
+															},
+															success: (res) => {
+																console.log(res)
+																uni.setStorageSync('token', res.data.token)
+																if (type == 1) { //点赞
+																	that.getLike(ping_id)
+																} else if (type == 2) { //收藏
+																	that.goShou();
+																} else if (type == 3) {
+																	that.deletePing(ping_id);
+																} else if (type == 4) { //我要点评
+																	that.goDianPing(pid);
+																} else if (type == 5) { //我要提问
+																	that.quTiwen(pid)
+																}
+
 															}
-															
-														}
-													})
-							 						// that.$refs.sign.tel = tel
-							 						// that.baoMing(pid,remark,point,title)
-							 					}
-							 				})
-							 				
-							 			}
-							 		})
-							 	  }
-							 	});
-							 	} 
-						 }
-				  }else{
-					let session = uni.getStorageSync('session')
-					if(session){
-						uni.request({
-							url: 'https://api.edefang.net/applets/baidu/decrypt',
-							method:'get',
-							data:{
-								iv: e.detail.iv,
-								data: e.detail.encryptedData,
-								session_key: session
-							},
-							success: (res) => {
-								console.log(res,'session')
-								let tel = res.data.mobile
-								uni.setStorageSync('phone',tel)
-								let openid = uni.getStorageSync('openid')
-							    that.tel = tel;
-								that.baoMing(pid,remark,point,title)
+														})
+														// that.$refs.sign.tel = tel
+														// that.baoMing(pid,remark,point,title)
+													}
+												})
+
+											}
+										})
+									}
+								});
 							}
-						})
-					}else {
-						console.log(session,"没保存session")
-						uni.login({
-						  provider: 'baidu',
-						  success: function (res) {
-						    console.log(res.code);
+						}
+					} else {
+						let session = uni.getStorageSync('session')
+						if (session) {
 							uni.request({
-								url: 'https://api.edefang.net/applets/baidu/get_session_key',
-								method:'get',
-								data:{
-									code: res.code
+								url: 'https://api.edefang.net/applets/baidu/decrypt',
+								method: 'get',
+								data: {
+									iv: e.detail.iv,
+									data: e.detail.encryptedData,
+									session_key: session
 								},
 								success: (res) => {
-									console.log(res)
-									uni.setStorageSync('openid',res.data.openid)
-									uni.setStorageSync('session',res.data.session_key)
+									console.log(res, 'session')
+									let tel = res.data.mobile
+									uni.setStorageSync('phone', tel)
+									let openid = uni.getStorageSync('openid')
+									that.tel = tel;
+									that.baoMing(pid, remark, point, title,1)
+								}
+							})
+						} else {
+							console.log(session, "没保存session")
+							uni.login({
+								provider: 'baidu',
+								success: function(res) {
+									console.log(res.code);
 									uni.request({
-										url:"https://api.edefang.net/applets/baidu/decrypt",
-										data:{
-											data: e.detail.encryptedData,
-											iv:e.detail.iv,
-											session_key:res.data.session_key
+										url: 'https://api.edefang.net/applets/baidu/get_session_key',
+										method: 'get',
+										data: {
+											code: res.code
 										},
 										success: (res) => {
 											console.log(res)
-											let tel = res.data.mobile
-											uni.setStorageSync('phone',tel)
-											let openid = uni.getStorageSync('openid')
-											that.$refs.sign.tel = tel
-											that.baoMing(pid,remark,point,title)
+											uni.setStorageSync('openid', res.data.openid)
+											uni.setStorageSync('session', res.data.session_key)
+											uni.request({
+												url: "https://api.edefang.net/applets/baidu/decrypt",
+												data: {
+													data: e.detail.encryptedData,
+													iv: e.detail.iv,
+													session_key: res.data.session_key
+												},
+												success: (res) => {
+													console.log(res)
+													let tel = res.data.mobile
+													uni.setStorageSync('phone', tel)
+													let openid = uni.getStorageSync('openid')
+													that.$refs.sign.tel = tel
+													that.baoMing(pid, remark, point, title,1)
+												}
+											})
+
 										}
 									})
-									
 								}
-							})
-						  }
-						});
+							});
 						}
-					this.isok = 1
 					}
 				}
 			},
@@ -1132,72 +1085,6 @@
 			showRules() {
 				this.$refs.rules.show();
 			},
-			// getPhoneNumber(e) {
-			// 	let that = this
-			// 	if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-			// 		this.isok = 0
-			// 		let url = '/pages/content/content?id=' + this.pid
-			// 		uni.setStorageSync('backurl', url)
-			// 		uni.navigateTo({
-			// 			url:'/pages/login/login'
-			// 		})
-			// 		console.log(url)
-			// 	} else {
-			// 		let session = uni.getStorageSync('token')
-			// 		if (session) {
-			// 			that.getLike(that.did)
-			// 		} else {
-			// 			uni.login({
-			// 				provider: 'baidu',
-			// 				success: function(res) {
-			// 					console.log(res.code);
-			// 					uni.request({
-			// 						url: 'https://api.edefang.net/applets/baidu/get_session_key',
-			// 						method: 'get',
-			// 						data: {
-			// 							code: res.code
-			// 						},
-			// 						success: (res) => {
-			// 							console.log(res)
-			// 							uni.setStorageSync('openid', res.data.openid)
-			// 							uni.setStorageSync('session', res.data.session_key)
-			// 							uni.request({
-			// 								url: "https://api.edefang.net/applets/baidu/decrypt",
-			// 								data: {
-			// 									data: e.detail.encryptedData,
-			// 									iv: e.detail.iv,
-			// 									session_key: res.data.session_key
-			// 								},
-			// 								success: (res) => {
-			// 									console.log(res)
-			// 									let tel = res.data.mobile
-			// 									uni.setStorageSync('phone', tel)
-			// 									let openid = uni.getStorageSync('openid')
-			// 									that.tel = tel
-			// 									uni.request({
-			// 										url: "https://api.edefang.net/applets/login",
-			// 										method: 'GET',
-			// 										data: {
-			// 											phone: tel,
-			// 											openid: openid
-			// 										},
-			// 										success: (res) => {
-			// 											uni.setStorageSync('token', res.data.token)
-			// 											that.getLike(that.did)
-			// 										}
-			// 									})
-				
-			// 								}
-			// 							})
-				
-			// 						}
-			// 					})
-			// 				}
-			// 			});
-			// 		}
-			// 		this.isok = 1
-			// 	}
-			// },
 			getLike(id) {
 				let token = uni.getStorageSync("token");
 				if (token) {
@@ -1207,8 +1094,8 @@
 							token: token,
 							id: id,
 						},
-						header:{
-							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+						header: {
+							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
 						},
 						method: "POST",
 						success: (res) => {
@@ -1235,19 +1122,19 @@
 							token: token,
 							id: id,
 						},
-						header:{
-							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+						header: {
+							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
 						},
 						success: (res) => {
 							if (res.data.code == 200) {
 								this.$refs.msg.show();
 								this.msg = res.data.message;
 								this.getdata(this.detail.id)
-							}else {
-								 console.log(res)
+							} else {
+								console.log(res)
 							}
 						},
-						fail:(err)=>{
+						fail: (err) => {
 							console.log(err)
 						}
 
@@ -1259,7 +1146,7 @@
 			},
 			getdata(id) {
 				uni.showLoading({
-					title:"加载中"
+					title: "加载中"
 				})
 				let ip = '';
 				let other = uni.getStorageSync("other");
@@ -1278,7 +1165,7 @@
 								id: id,
 								other: other,
 								ip: ip,
-								token:token
+								token: token
 							},
 							success: (res) => {
 								if (res.data.code == 200) {
@@ -1309,7 +1196,7 @@
 									// this.covers[0].height = 72;
 									this.covers[0].title = data.abstract.name;
 									this.covers[0].label.content = data.abstract.name;
-									
+
 									this.suijiData();
 
 
@@ -1384,31 +1271,31 @@
 									this.fenxi_data = fenxi_tou;
 									this.fenxi_tou = fenxi_tou;
 									this.fenxi_yiju = fenxi_yiju;
-									
-								   // #ifdef MP-BAIDU
-								      let  header = data.common.header;
-									  let img = data.imgs.img.effects;
-									  let arrs =[];
-									  if(img.length >0){
-										  img.map(p=>{
-											  arrs.push(p.small)
-										  })
-									  }
-									  swan.setPageInfo({
-										  title:header.title,
-										  keywords:header.keywords,
-										  description:header.description,
-										  image:arrs,
-										  success : res =>{
-											  console.log('setPageInfo success', res);
-										  },
-										  fail: err =>{
-											  console.log('setPageInfo fail', err);
-										  }
-									  })
-								   // #endif
-									
-								  uni.hideLoading()
+
+									// #ifdef MP-BAIDU
+									let header = data.common.header;
+									let img = data.imgs.img.effects;
+									let arrs = [];
+									if (img.length > 0) {
+										img.map(p => {
+											arrs.push(p.small)
+										})
+									}
+									swan.setPageInfo({
+										title: header.title,
+										keywords: header.keywords,
+										description: header.description,
+										image: arrs,
+										success: res => {
+											console.log('setPageInfo success', res);
+										},
+										fail: err => {
+											console.log('setPageInfo fail', err);
+										}
+									})
+									// #endif
+
+									uni.hideLoading()
 
 								}
 							}
@@ -1428,15 +1315,15 @@
 							id: this.detail.id,
 							type: 1
 						},
-						header:{
-							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+						header: {
+							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
 						},
 						success: (res) => {
 							if (res.data.code == 200) {
 								this.$refs.msg.show();
 								this.msg = res.data.message;
 								this.getdata(this.detail.id)
-							}else if(res.data.code ==500){
+							} else if (res.data.code == 500) {
 								this.$refs.msg.show();
 								this.msg = res.data.msg;
 							}
@@ -1452,8 +1339,8 @@
 			},
 			quTiwen(id) {
 				//先判断登陆了，再跳转
-				let url="/pages/content/content?id="+this.detail.id;
-				uni.setStorageSync("backurl",url)
+				let url = "/pages/content/content?id=" + this.detail.id;
+				uni.setStorageSync("backurl", url)
 				let token = uni.getStorageSync('token');
 				if (token) {
 					uni.navigateTo({
@@ -1467,8 +1354,8 @@
 			},
 			goDianPing(id) {
 				//先判断登陆了，再跳转
-				let url="/pages/content/content?id="+this.detail.id;
-				uni.setStorageSync("backurl",url)
+				let url = "/pages/content/content?id=" + this.detail.id;
+				uni.setStorageSync("backurl", url)
 				let token = uni.getStorageSync("token");
 				if (token) {
 					uni.navigateTo({
@@ -1496,11 +1383,12 @@
 					} //仅为示例
 				});
 			},
-			baoMing(pid, msg, point, title) {
+			baoMing(pid, msg, point, title,n) {
+				this.isok = n
 				console.log(pid, msg, point);
 				this.pid_d = pid;
 				this.position_n = point,
-			    this.title_e = title;
+					this.title_e = title;
 				this.remark_k = msg;
 				console.log(this.pid_d);
 				this.$refs.popup.show();
@@ -1621,12 +1509,14 @@
 				})
 			}
 		},
-
 	}
 </script>
 
 <style lang="less">
-	button::after{ border: none;}
+	button::after {
+		border: none;
+	}
+
 	/deep/ .marker-route {
 		position: relative;
 		width: 150px;
@@ -1661,9 +1551,11 @@
 			}
 		}
 	}
+
 	button::after {
 		border: none;
 	}
+
 	.detail {
 		.toptitle {
 			color: #17181A;
@@ -1675,10 +1567,12 @@
 			top: 0rpx;
 			z-index: 3000;
 			width: 100%;
-             .status_bar{
+
+			.status_bar {
 				height: var(--status-bar-height);
 				width: 100%;
-			 }
+			}
+
 			.nav_top {
 				display: inline-block;
 
@@ -1889,13 +1783,14 @@
 					}
 
 					.shou {
-						padding-right:0rpx;
+						padding-right: 0rpx;
 						padding-left: 0rpx;
 						line-height: 2.0;
 						width: 48rpx;
 						float: left;
 						display: inline-block;
 						font-size: 22rpx;
+
 						image {
 							width: 48rpx;
 							height: 48rpx;
@@ -2042,7 +1937,8 @@
 						margin-bottom: 40rpx;
 						display: flex;
 						justify-content: space-between;
-						button{
+
+						button {
 							width: 334rpx;
 							height: 80rpx;
 							background: #F2F9FC;
@@ -2055,36 +1951,35 @@
 							display: flex;
 							justify-content: center;
 							align-items: center;
+
 							image {
 								width: 36rpx;
 								height: 36rpx;
 								margin-right: 7rpx;
 							}
-							// view {
-							// 	width: 334rpx;
-							// 	height: 80rpx;
-							// 	background: #F2F9FC;
-							// 	border-radius: 12rpx;
-							// 	border: none;
-							// 	float: left;
-							// 	font-size: 30rpx;
-							// 	font-weight: bold;
-							// 	color: #3EACF0;
-							// 	display: flex;
-							// 	justify-content: center;
-							// 	align-items: center;
-
-							// 	image {
-							// 		width: 36rpx;
-							// 		height: 36rpx;
-							// 		margin-right: 7rpx;
-							// 	}
-							// }
+						}
+						view {
+							width: 334rpx;
+							height: 80rpx;
+							background: #F2F9FC;
+							border-radius: 12rpx;
+							border: none;
+							float: left;
+							font-size: 30rpx;
+							font-weight: bold;
+							color: #3EACF0;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+						
+							image {
+								width: 36rpx;
+								height: 36rpx;
+								margin-right: 7rpx;
+							}
 						}
 						.btn01 {
-							ma
-							
-							rgin-right: 22rpx;
+							margin-right: 22rpx;
 						}
 					}
 
@@ -2390,7 +2285,7 @@
 				line-height: 80rpx;
 				margin-left: 30rpx;
 				margin-top: 30rpx;
-			    
+
 			}
 		}
 
@@ -2432,6 +2327,7 @@
 
 			.floor-list {
 				white-space: nowrap;
+
 				.scoll-wrapper {
 					padding-left: 30rpx;
 				}
@@ -2861,6 +2757,7 @@
 				width: 100%;
 				margin-bottom: 50rpx;
 				display: flex;
+
 				.head_img {
 					width: 80rpx;
 					height: 80rpx;
@@ -2902,15 +2799,18 @@
 				.bo_tel {
 					float: left;
 					display: flex;
-					button{
+
+					button {
 						width: 80rpx;
 						height: 80rpx;
-						image{
+
+						image {
 							width: 80rpx;
 							height: 80rpx;
 							border-radius: 50%;
 						}
 					}
+
 					image {
 						width: 80rpx;
 						height: 80rpx;
@@ -2920,7 +2820,7 @@
 
 					.bo_zi {
 						margin-right: 50rpx;
-						 margin-left: 78rpx;
+						margin-left: 78rpx;
 					}
 				}
 			}
@@ -3187,21 +3087,24 @@
 									height: 32rpx;
 								}
 							}
-							button{
-								line-height:0rpx;
-							.no_zan {
-								font-size: 24rpx;
-								font-weight: 400;
-								color: #B2B2B6;
-								float: right;
-								display: flex;
-								align-items: center;
-								margin-bottom: 20rpx;
-								image {
-									width: 32rpx;
-									height: 32rpx;
+
+							button {
+								line-height: 0rpx;
+
+								.no_zan {
+									font-size: 24rpx;
+									font-weight: 400;
+									color: #B2B2B6;
+									float: right;
+									display: flex;
+									align-items: center;
+									margin-bottom: 20rpx;
+
+									image {
+										width: 32rpx;
+										height: 32rpx;
+									}
 								}
-							}
 							}
 
 						}
@@ -3220,6 +3123,7 @@
 						.time_box {
 							margin-top: 5rpx;
 							display: flex;
+
 							.time {
 								font-size: 24rpx;
 								color: #AFAFB3;
@@ -3479,7 +3383,7 @@
 			}
 		}
 
-		
+
 
 		.rules {
 			width: 650rpx;
@@ -3516,5 +3420,3 @@
 
 	}
 </style>
-
-
