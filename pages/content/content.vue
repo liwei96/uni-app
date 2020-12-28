@@ -198,9 +198,12 @@
 				 color="#646466" :speed="50" v-if="specials.dynamic" :single="true"></uni-notice-bar>
 			</view>
 			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+咨询特价房',93,'咨询特价房')"
-			 hover-class="none">
+			 hover-class="none" v-if="!pass">
 				咨询特价房
 			</button>
+			<view @tap="baoMing(detail.id,'项目落地页+咨询特价房',93,'咨询特价房',1)" class="button" v-if="pass">
+				咨询特价房
+			</view>
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 主力户型 -->
@@ -262,9 +265,12 @@
 						<image :src="item.img" mode=""></image>
 					</navigator>
 				</view>
-				<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态')">
+				<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态')" v-if="!pass">
 					订阅最新动态
 				</button>
+				<view class="button" @tap="baoMing(detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态',1)" v-if="pass">
+					订阅最新动态
+				</view>
 			</view>
 		</view>
 		<view class="bg_hui"></view>
@@ -324,9 +330,12 @@
 					2、{{fenxi_data[1].content}}
 				</view>
 			</view>
-			<button class="btn" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取分析资料',99,'领取分析资料')">
+			<button class="btn" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取分析资料',99,'领取分析资料')" v-if="!pass">
 				领取分析资料
 			</button>
+			<view class="btn" @tap="baoMing(detail.id,'项目落地页+领取分析资料',99,'领取分析资料',1)" v-if="pass">
+				领取分析资料
+			</view>
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 家园咨询师 -->
@@ -421,9 +430,12 @@
 					<map id="my_map" style="width:690rpx; height:120px;" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
 				</view>
 			</view>
-			<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')">
+			<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')" v-if="!pass">
 				获取周边5公里详细配套
 			</button>
+			<view class="button" @tap="baoMing(detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1)" v-if="pass">
+				获取周边5公里详细配套
+			</view>
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 楼盘点评 -->
@@ -482,8 +494,8 @@
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
 									<text class="time">{{item.time}}</text>
 								</navigator>
-								<!-- 	<text class="delete"  @tap="deletePing(item.id)">删除</text> -->
-								<button class="delete" open-type="getPhoneNumber" hover-class="none" v-if="item.mine==true" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+删除',102,'删除',3,item.id)">删除</button>
+								<text class="delete"  @tap="deletePing(item.id)" v-if="item.mine == true && pass">删除</text>
+								<button class="delete" open-type="getPhoneNumber" hover-class="none" v-if="item.mine==true && !pass" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+删除',102,'删除',3,item.id)">删除</button>
 							</view>
 						</view>
 
@@ -537,9 +549,12 @@
 					</view>
 				</template>
 
-				<button class="ti_btn" hover-class="none" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'跳提问',13,'跳提问',5,)">
+				<button class="ti_btn" hover-class="none" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'跳提问',13,'跳提问',5,)" v-if="!pass">
 					我要提问
 				</button>
+				<view class="ti_btn" @tap="quTiwen(detail.id)"  v-if="pass">
+					我要提问
+				</view>
 			</view>
 		</view>
 		<view class="bg_hui"></view>
@@ -741,14 +756,11 @@
 				seefang_sheng: "",
 				seefang_ling: "",
 				pid: 0,
-				isok: 0,
-				header: {},
-				collect: 0,
-				shou_old: require("../../static/content/shou.png"),
-				has_shou: require("../../static/content/has_shou.png")
-
-
-
+				isok:0,
+				header:{},
+				collect:0,
+				shou_old:require("../../static/content/shou.png"),
+				has_shou:require("../../static/content/has_shou.png")
 
 			};
 		},
@@ -2285,8 +2297,20 @@
 				line-height: 80rpx;
 				margin-left: 30rpx;
 				margin-top: 30rpx;
-
 			}
+			.button{
+				width: 690rpx;
+				height: 80rpx;
+				background: #F2F9FC;
+				font-size: 30rpx;
+				font-weight: 800;
+				color: #3EACF0;
+				text-align: center;
+				line-height: 80rpx;
+				margin-left: 30rpx;
+				margin-top: 30rpx;
+			}
+			
 		}
 
 		//  主力户型 
@@ -3082,6 +3106,20 @@
 								display: flex;
 								align-items: center;
 
+								image {
+									width: 32rpx;
+									height: 32rpx;
+								}
+							}
+							.no_zan {
+								font-size: 24rpx;
+								font-weight: 400;
+								color: #B2B2B6;
+								float: right;
+								display: flex;
+								align-items: center;
+								margin-bottom: 20rpx;
+							
 								image {
 									width: 32rpx;
 									height: 32rpx;

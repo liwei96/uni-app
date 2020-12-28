@@ -208,7 +208,7 @@
 			},
 			zIndex: {
 				type: [String, Number],
-				default: 10076
+				default: 50000
 			},
 			maskClickClose: {
 				type: Boolean,
