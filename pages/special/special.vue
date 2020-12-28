@@ -73,7 +73,7 @@
 							领优惠
 						</view>
 						</button>
-						<view class="btn" @tap="show(item.id,'特价房源页+领优惠',1)">
+						<view class="btn" @tap="show(item.id,'特价房源页+领优惠',1)" v-if="pass">
 							领优惠
 						</view>
 						<text>{{item.count}}人已领取</text>
@@ -126,7 +126,7 @@
 						马上抢
 					</view>
 					</button>
-					<view class="btn" @tap="show(item.id,'特价房源页+马上抢',1)">
+					<view class="btn" @tap="show(item.id,'特价房源页+马上抢',1)" v-if="pass">
 						马上抢
 					</view>
 				</view>
@@ -449,7 +449,15 @@
 			margin-bottom: -3.98rpx;
 		}
 	}
-
+	button {
+		padding: 0;
+		margin: 0;
+		margin-left: auto;
+		background: rgba(0,0,0,0);
+	}
+	button:after{
+		border: none;
+	}
 	.centitle {
 		background-color: #FFFFFF;
 		color: #17181A;

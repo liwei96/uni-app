@@ -185,6 +185,13 @@
 </script>
 
 <style lang="less">
+	button {
+		padding: 0;
+		margin: 0;
+	}
+	button:after {
+		border: none;
+	}
 	.toptitle {
 		color: #17181A;
 		font-size: 32rpx;
