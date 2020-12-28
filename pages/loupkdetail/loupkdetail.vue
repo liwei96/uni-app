@@ -683,9 +683,9 @@
 			height: 340rpx;
 			padding-top: 40rpx;
 			position: fixed;
-			top: 100rpx;
+			top: 120rpx;
 			background: #fff;
-			z-index: 30000;
+			z-index: 15000;
 
 			.left_tit {
 				width: 180rpx;
@@ -704,7 +704,7 @@
 					font-size: 30rpx;
 					font-weight: 500;
 					color: #121212;
-					margin-top: 121rpx;
+					margin-top: 111rpx;
 					text-align: center;
 				}
 			}

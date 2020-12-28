@@ -729,10 +729,6 @@
 				collect:0,
 				shou_old:require("../../static/content/shou.png"),
 				has_shou:require("../../static/content/has_shou.png")
-				
-
-
-
 			};
 		},
 		onLoad(option) {
