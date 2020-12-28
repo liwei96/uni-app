@@ -58,9 +58,10 @@
 					<view class="top-num">
 						<image src="../../static/feature/feature-card.png" mode=""></image>
 						<text class="nummsg">{{tit}}榜第{{key+1}}名</text>
-						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="bid = item.id">
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="bid = item.id" v-if="!pass">
 						<text class="btn">查底价</text>
 						</button>
+						<text class="btn" v-if="pass" @tap="show(item.id,'特色房源页+查底价',1)">查底价</text>
 					</view>
 				</view>
 			</view>
@@ -108,6 +109,7 @@
 			that = this
 			this.setnum(option.num,option.txt);
 			this.city = uni.getStorageSync('cityname')
+			this.pass = uni.getStorageSync('pass')
 			// this.getdata()
 		},
 		data(){
@@ -122,10 +124,14 @@
 				tit: '刚需',
 				city: '杭州',
 				bid: 0,
-				isok: 0
+				isok: 0,
+				pass: false
 			}
 		},
 		methods:{
+			setpop() {
+				this.$refs.popup.hide()
+			},
 			gocity () {
 				uni.navigateTo({
 					url:'/pages/path/path'
@@ -171,7 +177,8 @@
 					}
 				})
 			},
-			show(id,txt) {
+			show(id,txt,n) {
+				this.isok = n
 				this.pid = id
 				this.remark = txt
 				this.position = 98
@@ -186,7 +193,7 @@
 				let that = this
 				let token = uni.getStorageSync('token')
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					that.show(that.id,'特色房源页+查底价')
+					that.show(that.bid,'特色房源页+查底价',0)
 					that.isok = 0
 				} else {
 					that.isok = 1
@@ -205,7 +212,7 @@
 								let tel = res.data.mobile
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
-								that.show(that.id,'特色房源页+查底价')
+								that.show(that.bid,'特色房源页+查底价',1)
 							}
 						})
 					} else {
@@ -235,7 +242,7 @@
 												let tel = res.data.mobile
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
-												that.show(that.id,'特色房源页+查底价')
+												that.show(that.bid,'特色房源页+查底价',1)
 											}
 										})
 									}

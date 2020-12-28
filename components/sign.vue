@@ -247,7 +247,7 @@
 			}
 		},
 		mounted() {
-			console.log(this.isok)
+			console.log(this.position)
 			if(this.isok == 1) {
 				this.ok = true
 			}else {

@@ -24,11 +24,11 @@
 			</view>
 		</view>
 		<view v-for="(item,key) in list" :key="key">
-			<view class="line" :id="item">
+			<view class="line" :id="item" >
 				{{item}}
 			</view>
 			<view class="box">
-				<view class="cityitem" v-for="val in lists[item]" :key="val.area_id" @tap=gocity(val.area_id,val.short)>
+				<view class="cityitem" v-for="(val,index) in lists[item]" :key="val.area_id" @tap="gocity(val.area_id,lists[item],index)">
 					{{val.short}}
 				</view>
 			</view>
@@ -38,15 +38,31 @@
 				{{item}}
 			</view>
 		</view>
+		<wyb-popup ref="popup" type="center" height="650" width="550" radius="20" :showCloseIcon="true" closeIcon="../../static/close.png" closeIconSize="32">
+			<view class="bbox">
+				<image class="bbimg" src="../../static/path-null.png" mode=""></image>
+				<view class="btn" @tap="showff">
+					申请开放
+				</view>
+				<view class="txt" v-if="show">
+					我们已收到您诚挚的申请，在下一个开放城市中我们会优先开放—{{bname}}
+				</view>
+			</view>
+		</wyb-popup>
 	</view>
 </template>
 
 <script>
+	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
 	var that
 	export default {
+		components: {
+			wybPopup
+		},
 		onLoad() {
 			that = this
 			this.getinfo()
+			
 			this.name = uni.getStorageSync('cityname')
 			//#ifdef MP-BAIDU
 			swan.setPageInfo({
@@ -70,10 +86,25 @@
 				toView: 'A',
 				hots: [],
 				lists: [],
-				name: ''
+				name: '',
+				bname: '',
+				show:false
 			};
 		},
 		methods: {
+			showdd(name) {
+				this.bname = name
+				this.$refs.popup.show()
+			},
+			showff() {
+				this.show = true
+				let that = this
+				setTimeout(()=>{
+					that.show = false
+					that.bname = ''
+					that.$refs.popup.hide()
+				},2000)
+			},
 			back() {
 				uni.navigateBack({
 					data: 1
@@ -111,10 +142,13 @@
 					url: "/pages/index/index"
 				})
 			},
-			gocity(id, name) {
+			gocity(id, name,k) {
+				let type = false
 				for (let item of this.hots) {
 					if (id == item.area_id) {
 						this.setcity(id, name)
+					}else {
+						this.showdd(name[k].short)
 					}
 				}
 			}
@@ -146,7 +180,7 @@
 			margin-bottom: -4rpx;
 		}
 	}
-
+	
 	.nowcity {
 		height: 98rpx;
 		padding: 0 30rpx;
@@ -246,6 +280,49 @@
 			color: #646566;
 			font-size: 20rpx;
 			margin-bottom: 20rpx;
+		}
+	}
+	
+	.bbox {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		.bbimg {
+			width: 100%;
+			height: 100%;
+			border-radius: 20rpx;
+		}
+		.btn {
+			width: 300rpx;
+			height: 72rpx;
+			border-radius: 36rpx;
+			background: #3EACF0;
+			box-shadow: 0px 8rpx 16rpx 2rpx rgba(0, 101, 196, 0.16);
+			text-align: center;
+			line-height: 72rpx;
+			color: #FFFFFF;
+			font-size: 26rpx;
+			position: absolute;
+			left: 50%;
+			margin-left: -150rpx;
+			bottom: 42rpx;
+		}
+		.txt {
+			width: 260rpx;
+			height: 160rpx;
+			background: rgba(0,0,0,0.8);
+			padding: 40rpx;
+			color: #DADADA;
+			font-size: 28rpx;
+			line-height: 40rpx;
+			position: absolute;
+			z-index: 55;
+			left: 50%;
+			transform: translateX(-50%);
+			margin-left: -160rpx;
+			top: 50%;
+			transform: translateY(-50%);
+			border-radius: 24rpx;
 		}
 	}
 </style>

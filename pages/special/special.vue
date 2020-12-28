@@ -2,14 +2,14 @@
 	<view>
 		<view :class="type ==0?'toptitle':'toptitle centitle'" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
-			      </view>
+				<!-- 这里是状态栏 -->
+			</view>
 			<image v-if="type == 0" src="../../static/all-back1.png" mode=""></image>
 			<image v-if="type == 1" src="../../static/all-back.png" mode=""></image>
 			<text>特价房源</text>
 		</view>
 		<image src="../../static/special/special-top.jpg" mode="" class="topimg"></image>
-		<view class="limit-time">
+		<view class="limit-time" v-if="limits.length>0">
 			<view class="limit-tit">
 				<text class="title">限时特价房</text>
 				<view class="right">
@@ -40,7 +40,10 @@
 							<text class="big">{{(item.diff/10000).toFixed(1)}}</text>
 							<text class="small">万</text>
 						</view>
-						<view class="btn" @tap="show(item.id,'特价房源页+立即领')">立即领</view>
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,item.id,'特价房源页+立即领')" v-if="!pass">
+							<view class="btn">立即领</view>
+						</button>
+						<view class="btn" @tap="show(item.id,'特价房源页+立即领',1)" v-if="pass">立即领</view>
 						<text class="bommsg">已有{{item.count}}人领取</text>
 					</view>
 				</view>
@@ -65,17 +68,21 @@
 						<view class="leftmsg">优惠盘</view>
 					</view>
 					<view class="bom">
-						<view class="btn" @tap="show(item.id,'特价房源页+领优惠')">
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,item.id,'特价房源页+领优惠')" v-if="!pass">
+						<view class="btn">
+							领优惠
+						</view>
+						</button>
+						<view class="btn" @tap="show(item.id,'特价房源页+领优惠',1)">
 							领优惠
 						</view>
 						<text>{{item.count}}人已领取</text>
 					</view>
 				</view>
-				</scroll-view>
+			</scroll-view>
 		</view>
-		<view class="selection">
+		<view class="selection" v-if="specials.length>0">
 			<text class="tit">精选特价房</text>
-			
 			<view class="item" v-for="item in specials" :key="item.id">
 				<view class="top" @tap="gobuild(item.id)">
 					<view class="left">
@@ -111,48 +118,54 @@
 				</view>
 				<view class="bom">
 					<view class="notice-content">
-						<uni-notice-bar class="notice" background-color="#F7F7F7" color="#646566" :showIcon="true" :scrollable="true" :single="true" :text="item.dynamic" :speed="50"></uni-notice-bar>
+						<uni-notice-bar class="notice" background-color="#F7F7F7" color="#646566" :showIcon="true" :scrollable="true"
+						 :single="true" :text="item.dynamic" :speed="50"></uni-notice-bar>
 					</view>
-					<view class="btn" @tap="show(item.id,'特价房源页+马上抢')">
+					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,item.id,'特价房源页+马上抢')" v-if="!pass">
+					<view class="btn">
+						马上抢
+					</view>
+					</button>
+					<view class="btn" @tap="show(item.id,'特价房源页+马上抢',1)">
 						马上抢
 					</view>
 				</view>
 			</view>
 		</view>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="'领取优惠'" :pid="pid" :remark="remark" :position="position"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="'领取优惠'" :pid="pid" :remark="remark" :position="position" :isok="isok"></sign>
 		</wyb-popup>
 		<wyb-popup ref="rules" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<view class="rules">
-						<view class="title">
-							活动规则
-						</view>
-						<scroll-view class="text_box" scroll-y="true" :scroll-top="scrollTop">
-							<view class="">
-								1、本次团购活动以分档累计补发的方案执行，通过允家网站成交该项目具体团购费用如下所示：
-							</view>
-							<view class="">0-5套---------每套1000元</view>
-							<view class="">6-10套--------每套2000元</view>
-							<view class="">11-15套-------每套3000元</view>
-							<view class="">16-20套-------每套4000元</view>
-							<view class="">21套以上------每套5000元</view>
-							<view class="">
-								2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放
-							</view>
-							<view class="">
-							 3、核算方式：由开发商或代理公司判定为允家平台客户即可享受这个优惠
-							</view>
-							<view class="">
-							 4、结算方式：提供已实名的支付宝账户给与您对接的允家咨询师，规定时间内会将优惠费用打至该账户
-							</view>
-							<view class="">
-							详细活动方案请致电允家客服电话：
-							</view>
-							<view class="">
-							注：活动最终解释权归允家所有
-							</view>
-						</scroll-view>
+				<view class="title">
+					活动规则
 				</view>
+				<scroll-view class="text_box" scroll-y="true" :scroll-top="scrollTop">
+					<view class="">
+						1、本次团购活动以分档累计补发的方案执行，通过允家网站成交该项目具体团购费用如下所示：
+					</view>
+					<view class="">0-5套---------每套1000元</view>
+					<view class="">6-10套--------每套2000元</view>
+					<view class="">11-15套-------每套3000元</view>
+					<view class="">16-20套-------每套4000元</view>
+					<view class="">21套以上------每套5000元</view>
+					<view class="">
+						2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放
+					</view>
+					<view class="">
+						3、核算方式：由开发商或代理公司判定为允家平台客户即可享受这个优惠
+					</view>
+					<view class="">
+						4、结算方式：提供已实名的支付宝账户给与您对接的允家咨询师，规定时间内会将优惠费用打至该账户
+					</view>
+					<view class="">
+						详细活动方案请致电允家客服电话：
+					</view>
+					<view class="">
+						注：活动最终解释权归允家所有
+					</view>
+				</scroll-view>
+			</view>
 		</wyb-popup>
 	</view>
 </template>
@@ -180,34 +193,107 @@
 				remark: "",
 				position: 0,
 				timer: '',
-				type: 0
+				type: 0,
+				isok: 0,
+				bid:0,
+				pass: false
 			}
 		},
 		onShow() {
 			that = this
+			this.pass = uni.getStorageSync('pass')
 			this.getdata()
 		},
 		onPageScroll(e) {
-			if(e.scrollTop >= 100) {
+			if (e.scrollTop >= 100) {
 				this.type = 1
 			} else {
 				this.type = 0
 			}
 		},
-		components: {uniNoticeBar,sign,wybPopup},
-		methods:{
-			showRules(){
+		components: {
+			uniNoticeBar,
+			sign,
+			wybPopup
+		},
+		methods: {
+			showRules() {
 				this.$refs.rules.show();
 			},
-			getdata(){
+			async getPhoneNumber(e,bid,txt) {
+				console.log(e)
+				let that = this
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					that.show(bid,txt, 0)
+				} else {
+					uni.setStorageSync('pass', true)
+					let session = uni.getStorageSync('session')
+					if (session) {
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method: 'get',
+							data: {
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res)
+								let tel = res.data.mobile
+								uni.setStorageSync('phone', tel)
+								let openid = uni.getStorageSync('openid')
+								that.tel = tel
+								that.show(bid,txt, 1)
+							}
+						})
+					} else {
+						uni.login({
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.tel = tel
+												that.show(bid,txt, 1)
+											}
+										})
+
+									}
+								})
+							}
+						});
+					}
+				}
+			},
+			getdata() {
 				uni.showLoading({
-				    title: '加载中',
+					title: '加载中',
 					mask: true
 				});
 				let city = uni.getStorageSync('city')
 				uni.request({
-					url: that.apiserve+'/applets/discounts',
-					method:"GET",
+					url: that.apiserve + '/applets/discounts',
+					method: "GET",
 					data: {
 						city: city
 					},
@@ -215,7 +301,7 @@
 						let data = res.data.data
 						that.limits = data.limit_time_specials.data
 						let all = data.limit_time_specials.total
-						that.total = Math.ceil(all/6)
+						that.total = Math.ceil(all / 6)
 						console.log(that.total)
 						that.settime(data.endline)
 						that.specials = data.specials
@@ -243,59 +329,70 @@
 			settime(date) {
 				let end = new Date(date).getTime()
 				let now = new Date().getTime()
-				let time = (end-now)/1000
-				that.day = parseInt(time/(60*60*24))
-				that.hour = parseInt(time/(60*60)%24) ? parseInt(time/(60*60)%24) : '0'+parseInt(time/(60*60)%24)
-				that.min = parseInt(time/60%60) > 10 ? parseInt(time/60%60) : '0'+parseInt(time/60%60)
-				that.second = parseInt(time%60) > 10 ? parseInt(time%60) : '0'+parseInt(time%60)
-				that.timer = setInterval(()=>{
+				let time = (end - now) / 1000
+				that.day = parseInt(time / (60 * 60 * 24))
+				that.hour = parseInt(time / (60 * 60) % 24) ? parseInt(time / (60 * 60) % 24) : '0' + parseInt(time / (60 * 60) %
+					24)
+				that.min = parseInt(time / 60 % 60) > 10 ? parseInt(time / 60 % 60) : '0' + parseInt(time / 60 % 60)
+				that.second = parseInt(time % 60) > 10 ? parseInt(time % 60) : '0' + parseInt(time % 60)
+				that.timer = setInterval(() => {
 					let now = new Date().getTime()
-					let time = (end-now)/1000
-					that.day = parseInt(time/(60*60*24))
-					that.hour = parseInt(time/(60*60)%24) ? parseInt(time/(60*60)%24) : '0'+parseInt(time/(60*60)%24)
-					that.min = parseInt(time/60%60) > 10 ? parseInt(time/60%60) : '0'+parseInt(time/60%60)
-					that.second = parseInt(time%60) > 10 ? parseInt(time%60) : '0'+parseInt(time%60)
-				},1000)
+					let time = (end - now) / 1000
+					that.day = parseInt(time / (60 * 60 * 24))
+					that.hour = parseInt(time / (60 * 60) % 24) ? parseInt(time / (60 * 60) % 24) : '0' + parseInt(time / (60 * 60) %
+						24)
+					that.min = parseInt(time / 60 % 60) > 10 ? parseInt(time / 60 % 60) : '0' + parseInt(time / 60 % 60)
+					that.second = parseInt(time % 60) > 10 ? parseInt(time % 60) : '0' + parseInt(time % 60)
+				}, 1000)
 			},
 			changemsg() {
+				if (that.total <= 1) {
+					uni.showToast({
+						title: "没有更多了",
+						icon: "none"
+					})
+					return
+				}
 				uni.showLoading({
-				    title: '加载中',
+					title: '加载中',
 					mask: true
 				});
+				let city = uni.getStorageSync('city')
 				uni.request({
-					url: that.apiserve+'/applets/discounts/info',
-					data:{
-						city: 1,
+					url: that.apiserve + '/applets/discounts/info',
+					data: {
+						city: city,
 						page: that.page,
 						limit: 6
 					},
-					method:"GET",
+					method: "GET",
 					success: (res) => {
 						that.page = that.page + 1
-						if(that.page > that.total) {
+						if (that.page > that.total) {
 							that.page = 1
 						}
 						let data = res.data.data
 						that.limits = data.data
-						console.log(data,res)
+						console.log(data, res)
 						uni.hideLoading()
 					}
 				})
 			},
 			gosearch() {
 				uni.switchTab({
-					url:"/pages/building/building"
+					url: "/pages/building/building"
 				})
 			},
 			gobuild(id) {
 				uni.redirectTo({
-					url:"/pages/content/content?id="+id
+					url: "/pages/content/content?id=" + id
 				})
 			},
 			setpop(e) {
 				this.$refs.popup.hide()
 			},
-			show(id,txt) {
+			show(id, txt,n) {
+				this.isok = n
 				this.pid = id
 				this.remark = txt
 				this.position = 94
@@ -334,6 +431,7 @@
 			height: var(--status-bar-height);
 			width: 50%;
 		}
+
 		color: #FFFFFF;
 		font-size: 29.88rpx;
 		padding: 0 29.88rpx;
@@ -343,6 +441,7 @@
 		top: 0;
 		z-index: 9999;
 		background-color: #F63352;
+
 		image {
 			width: 31.87rpx;
 			height: 31.87rpx;
@@ -350,6 +449,7 @@
 			margin-bottom: -3.98rpx;
 		}
 	}
+
 	.centitle {
 		background-color: #FFFFFF;
 		color: #17181A;
@@ -451,8 +551,10 @@
 						margin-left: 13.94rpx;
 						margin-top: 7.96rpx;
 					}
+
 					.top {
 						display: flex;
+
 						image {
 							width: 20rpx;
 							height: 20rpx;
@@ -614,6 +716,7 @@
 						left: 0;
 						top: 0;
 					}
+
 					.zhao {
 						width: 100%;
 						height: 80rpx;
@@ -621,6 +724,7 @@
 						background: linear-gradient(0deg, #000000);
 						position: absolute;
 					}
+
 					.tit {
 						color: #FFFFFF;
 						font-size: 28rpx;
@@ -775,6 +879,7 @@
 				.notice-content {
 					width: 466.13rpx;
 					height: 36rpx;
+
 					// border-radius: 1.99rpx;
 					// background-color: #F7F7F7;
 					// display: flex;
@@ -798,35 +903,37 @@
 			}
 		}
 	}
-	
-	.rules{
-					   width: 650rpx;
-					   height: 750rpx;
-					   background: #FFFFFF;
-					   border-radius: 24rpx;
-					   position: absolute;
-					   top: 50%;
-					   left: 50%;
-					   transform: translate(-50%,-50%);
-					   padding-left: 30rpx;
-					   padding-right: 30rpx;
-					   box-sizing: border-box;
-					   .title{
-							font-size: 34rpx;
-							font-weight: 800;
-							color: #19191A;
-							line-height: 114rpx;
-					   }
-					   .text_box{
-						  width: 100%;
-						  height: 580rpx;
-						  view{
-							  font-size: 26rpx;
-							  font-weight: 500;
-							  color: #999999;
-							  line-height: 44rpx;
-						  } 
-					   }
+
+	.rules {
+		width: 650rpx;
+		height: 750rpx;
+		background: #FFFFFF;
+		border-radius: 24rpx;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		padding-left: 30rpx;
+		padding-right: 30rpx;
+		box-sizing: border-box;
+
+		.title {
+			font-size: 34rpx;
+			font-weight: 800;
+			color: #19191A;
+			line-height: 114rpx;
+		}
+
+		.text_box {
+			width: 100%;
+			height: 580rpx;
+
+			view {
+				font-size: 26rpx;
+				font-weight: 500;
+				color: #999999;
+				line-height: 44rpx;
+			}
+		}
 	}
-	
 </style>

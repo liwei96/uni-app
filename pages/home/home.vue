@@ -11,7 +11,7 @@
 				<text v-if="tel">{{tel}}</text>
 			</view>
 			<view class="navs">
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=1">
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=1" v-if="!pass">
 					<view class="nav">
 						<text class="num">{{footnum}}</text>
 						<view>
@@ -19,7 +19,13 @@
 						</view>
 					</view>
 				</button>
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=2">
+				<view class="nav" v-if="pass" @tap="gofoot">
+					<text class="num">{{footnum}}</text>
+					<view>
+						<text class="msg">浏览足迹</text>
+					</view>
+				</view>
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=2" v-if="!pass">
 					<view class="nav">
 						<text class="num">{{collectnum}}</text>
 						<view>
@@ -27,7 +33,13 @@
 						</view>
 					</view>
 				</button>
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=3">
+				<view class="nav" v-if="pass" @tap="gofork">
+					<text class="num">{{collectnum}}</text>
+					<view>
+						<text class="msg">我的收藏</text>
+					</view>
+				</view>
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=3" v-if="!pass">
 					<view class="nav">
 						<text class="num">{{cardnum}}</text>
 						<view>
@@ -35,13 +47,21 @@
 						</view>
 					</view>
 				</button>
-				<view class="nav" @tap="gotalk">
-					<text class="num">{{talknum}}</text>
-					<text class="abo">1</text>
+				<view class="nav" v-if="pass" @tap="gocards">
+					<text class="num">{{cardnum}}</text>
 					<view>
-						<text class="msg">我的联系</text>
+						<text class="msg">我的卡券</text>
 					</view>
 				</view>
+				<button type="default">
+					<view class="nav" @tap="gotalk">
+						<text class="num">{{talknum}}</text>
+						<!-- <text class="abo">1</text> -->
+						<view>
+							<text class="msg">我的联系</text>
+						</view>
+					</view>
+				</button>
 			</view>
 			<view class="bom">
 				<view class="nav" @tap="gohelp">
@@ -140,11 +160,13 @@
 				collectnum: 0,
 				cardnum: 0,
 				talknum: 0,
-				tel: ''
+				tel: '',
+				pass: false
 			}
 		},
 		onShow() {
 			that = this
+			this.pass = uni.getStorageSync('pass')
 			this.getinfo()
 			if (uni.getStorageSync('phone')) {
 				let tel = uni.getStorageSync('phone')
@@ -281,7 +303,6 @@
 				})
 			},
 			getPhoneNumber(e) {
-				console.log(e)
 				let that = this
 				console.log(uni.getStorageSync('token'))
 				if(uni.getStorageSync('token')){

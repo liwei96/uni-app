@@ -2,8 +2,8 @@
 	<view>
 		<view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
-			      </view>
+				<!-- 这里是状态栏 -->
+			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>意见反馈</text>
 		</view>
@@ -12,7 +12,12 @@
 			<view class="txt">
 				您有任何问题需要帮助可以写在这里，我们的人员将在最短时间内回复您，感谢您对允家新房的支持！
 			</view>
-			<view class="btn" @tap="put">
+			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass">
+			<view class="btn">
+				确定
+			</view>
+			</button>
+			<view class="btn" @tap="put" v-if="pass">
 				确定
 			</view>
 		</view>
@@ -27,13 +32,18 @@
 		data() {
 			return {
 				txt: '',
-				toasttxt: ''
+				toasttxt: '',
+				pass: false
 			}
 		},
 		components:{
 			toast
 		},
 		onLoad() {
+			this.pass = uni.getStorageSync('pass')
+			if(uni.getStorageSync('txt')) {
+				this.txt = uni.getStorageSync('txt')
+			}
 			that = this
 			//#ifdef MP-BAIDU
 			swan.setPageInfo({
@@ -55,11 +65,86 @@
 					data:1
 				})
 			},
+			getPhoneNumber(e) {
+				console.log(e)
+				let that = this
+				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					uni.setStorageSync('txt',this.txt)
+					let url = '/pages/feedback/feedback'
+					uni.setStorageSync('backurl',url)
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+				}else{
+					this.pass = true
+					uni.setStorageSync('pass',true)
+					let session = uni.getStorageSync('session')
+					if (session) {
+						uni.request({
+							url: 'https://api.edefang.net/applets/baidu/decrypt',
+							method: 'get',
+							data: {
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res)
+								let tel = res.data.mobile
+								uni.setStorageSync('phone', tel)
+								let openid = uni.getStorageSync('openid')
+								that.tel = tel
+								that.put
+							}
+						})
+					} else {
+						uni.login({
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.tel = tel
+												that.put()
+											}
+										})
+									}
+								})
+							}
+						});
+					}
+				}
+			},
 			put(){
 				let tel = uni.getStorageSync('phone')
 				let city = uni.getStorageSync('city')
 				let kid = uni.getStorageSync('kid')
 				let other = uni.getStorageSync('other')
+				if(!this.txt) {
+					uni.showToast({
+						title:'请输入您的建议'
+					})
+				}
 				let ip = ''
 				uni.request({
 					url: that.putserve+'/getIp.php',
@@ -75,19 +160,20 @@
 							data:{
 								tel: tel,
 								city: city,
-								page: 4,
-								source: "线上推广1",
+								page: 11,
+								source: "线上推广2",
 								kid: kid,
 								other: other,
 								position: 107,
 								remark: that.txt,
 								ip: ip,
-								staff_id: 106,
+								staff_id: 1,
 							  },
 							 success: (res) => {
 							 	console.log(res)
 								if(res.data.code == 200) {
 									that.toasttxt = '已为您成功提交'
+									that.$refs.toast.show()
 								}
 							 }
 						})

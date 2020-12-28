@@ -51,7 +51,7 @@
 		 closeIconSize="32" @hide="setback">
 			<view class="popup-content">
 				<view class="tit">
-					帮我找房
+					预约看房
 				</view>
 				<view class="one" v-if="!iscode">
 					<view class="input-box">
@@ -73,7 +73,7 @@
 						验证码已发送到{{teltxt}}  请注意查看
 					</view>
 					<view class="input-box">
-						<input type="text" value="" placeholder="请输入手机号" placeholder-class="txt" maxlength="11" v-model="code"/>
+						<input type="text" value="" placeholder="请输入验证码" placeholder-class="txt" maxlength="11" v-model="code"/>
 						<text @tap="sendmsg">{{timetxt}}</text>
 					</view>
 					<view class="yes" @tap="sure">
@@ -277,7 +277,7 @@
 										that.time--;
 										if (that.time > 0) {
 											that.istime = true
-											that.timetxt = `重新发送${that.time}s`
+											that.timetxt = `等待${that.time}s`
 										} else {
 											that.istime = false
 											clearInterval(interval);

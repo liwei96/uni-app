@@ -54,9 +54,10 @@
 					<view class="top-num">
 						<image src="../../static/feature/feature-card.png" mode=""></image>
 						<text class="nummsg">{{num == 0 ? '热搜榜' : num == 1 ? '人气榜' : '成交榜'}}第{{key+1}}名</text>
-						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="bid = item.id">
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="bid = item.id" v-if="!pass">
 						<text class="btn">查底价</text>
 						</button>
+						<text class="btn" v-if="pass" @tap="show(item.id,'榜单页+查低价',1)">查底价</text>
 					</view>
 				</view>
 			</view>
@@ -76,6 +77,7 @@
 			that = this
 			this.getlist()
 			this.city = uni.getStorageSync('cityname')
+			this.pass = uni.getStorageSync('pass')
 		},
 		components: {
 			sign,
@@ -89,7 +91,9 @@
 				codenum: 1,
 				bid: 0,
 				isok: 0,
-				city: '杭州'
+				city: '杭州',
+				pass: false,
+				position: 104
 			}
 		},
 		methods: {
@@ -102,6 +106,8 @@
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.show(id,'榜单页+查低价',0)
 				}else{
+					this.pass = true
+					uni.setStorageSync('pass',true)
 					let session = uni.getStorageSync('session')
 					if (session) {
 						uni.request({
@@ -215,7 +221,7 @@
 				this.pid = id
 				this.remark = txt
 				this.position = 104
-				console.log(this.pid)
+				console.log(this.position)
 				this.isok = isok
 				this.$refs.popup.show()
 			},

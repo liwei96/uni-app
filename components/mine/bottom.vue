@@ -163,6 +163,7 @@
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					that.baoMing(that.remark, that.point, that.title, that.pid,0)
 				} else {
+					this.pass = true
 					uni.setStorageSync('pass',true)
 					let session = uni.getStorageSync('session')
 					if (session) {
