@@ -5,7 +5,7 @@
 		</view>
 		<view class="input">
 			<view class="left">
-				<text class="city" @tap="gopath">杭州</text>
+				<text class="city" @tap="gopath">{{cityname}}</text>
 				<image src="../../static/search/search-down.png" mode="" class="down" @tap="gopath"></image>
 				<view class="line">
 				</view>
@@ -333,9 +333,11 @@
 			that = this
 			console.log(options)
 			this.getinfo()
+			this.cityname = uni.getStorageSync('cityname')
 		},
 		data() {
 			return {
+				cityname: '',
 				toasttxt: '为您找到233个楼盘',
 				typenum: 0,
 				pricenum: 0,

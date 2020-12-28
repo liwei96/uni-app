@@ -13,13 +13,16 @@
 			<image src="../static/components/component-tel.png" mode=""></image>
 			<text>电话咨询</text>
 		</view>
-		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass">
 			<view class="btn btn2">
 				<image src="../static/components/component-yue.png" mode=""></image>
 				<text>预约看房</text>
 			</view>
 		</button>
-		
+		<view class="btn btn2" v-if="pass" @tap="okput">
+			<image src="../static/components/component-yue.png" mode=""></image>
+			<text>预约看房</text>
+		</view>
 	</view>
 </template>
 
@@ -36,7 +39,8 @@
 		data() {
 			return {
 				sid: 0,
-				num: 0
+				num: 0,
+				pass: false
 			}
 		},
 		mounted(){
@@ -44,6 +48,7 @@
 				this.register()
 			}
 			let that = this
+			this.pass = uni.getStorageSync('pass')
 			this.num = uni.getStorageSync('total')
 			uni.onSocketMessage(function(res) {
 				let data = JSON.parse(res.data)
@@ -122,12 +127,21 @@
 						isok: 0
 					})
 				}else{
+					uni.setStorageSync('pass',true)
+					this.pass = true
 					this.$emit('show', {
 						position: 103,
 						title: '预约看房',
 						isok: 1
 					})
 				}
+			},
+			okput() {
+				this.$emit('show', {
+					position: 103,
+					title: '预约看房',
+					isok: 1
+				})
 			}
 		},
 		watch: {

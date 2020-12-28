@@ -13,12 +13,16 @@
 			<image src="../../static/content/tel_bot.png" mode=""></image>
 			电话咨询
 		</view>
-		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass">
 			<view class="yuyue_box">
 				<image src="../../static/content/yuyue.png" mode=""></image>
 				预约看房
 			</view>
 		</button>
+		<view class="yuyue_box" v-if="pass" @tap="baoMing(remark, point, title, pid,1)">
+			<image src="../../static/content/yuyue.png" mode=""></image>
+			预约看房
+		</view>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"
 			 :isok="isok"></sign>
@@ -63,12 +67,13 @@
 				position_n: 0,
 				isok: 0,
 				sid: 0,
-				num: 0
+				num: 0,
+				pass: false
 			};
 		},
 		mounted() {
 			let that = this
-			
+			this.pass = uni.getStorageSync('pass')
 			this.num = uni.getStorageSync('total')
 			uni.onSocketMessage(function(res) {
 				let data = JSON.parse(res.data)
@@ -143,21 +148,22 @@
 					} //仅为示例
 				});
 			},
-			baoMing(remark, point, title, pid) {
-				console.log(remark, point, title, pid);
-				this.$refs.popup.show();
+			baoMing(remark, point, title, pid,n) {
+				this.isok = n
+				console.log(remark, point, title, pid,n);
 				this.pid_d = pid;
 				this.position_n = point;
 				this.title_e = title;
 				this.remark_k = remark;
+				this.$refs.popup.show();
 			},
 			async getPhoneNumber(e) {
 				console.log(e)
 				let that = this
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					this.isok = 0
-					that.baoMing(that.remark, that.point, that.title, that.pid)
+					that.baoMing(that.remark, that.point, that.title, that.pid,0)
 				} else {
+					uni.setStorageSync('pass',true)
 					let session = uni.getStorageSync('session')
 					if (session) {
 						uni.request({
@@ -174,7 +180,7 @@
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
 								that.tel = tel
-								that.baoMing(that.remark, that.point, that.title, that.pid)
+								that.baoMing(that.remark, that.point, that.title, that.pid,1)
 							}
 						})
 					} else {
@@ -205,7 +211,7 @@
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel
-												that.baoMing(that.remark, that.point, that.title, that.pid)
+												that.baoMing(that.remark, that.point, that.title, that.pid,1)
 											}
 										})
 
@@ -214,7 +220,6 @@
 							}
 						});
 					}
-					this.isok = 1
 				}
 			}
 		},

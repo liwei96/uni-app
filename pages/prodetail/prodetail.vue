@@ -38,8 +38,11 @@
 					{{building.total_price}}
 					<text class="dan">万起</text>
 				</text>
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,building.id,'项目详情页+查低价',105,'查低价')" hover-class="none">
-				<text class="cha" >查底价</text>
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,building.id,'项目详情页+查低价',105,'查低价')" hover-class="none" v-if="!pass">
+				   <text class="cha" >查底价</text>
+				</button>
+				<button @tap="baoMing(building.id,'项目详情页+查低价',105,'查低价',1)" v-if="pass">
+				   <text class="cha" >查底价</text>
 				</button>
 			</view>
 			<view class="type">
@@ -71,8 +74,11 @@
 				<text class="time">
 					{{building.open_time}}
 				</text>
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,building.id,'项目详情页+开盘通知',92,'开盘提醒我')">
-				<text class="kai_btn" >开盘通知</text>
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,building.id,'项目详情页+开盘通知',92,'开盘提醒我')" v-if="!pass">
+				    <text class="kai_btn" >开盘通知</text>
+				</button>
+				<button  @tap="baoMing(building.id,'项目详情页+开盘通知',92,'开盘提醒我',1)" v-if="pass">
+				    <text class="kai_btn" >开盘通知</text>
 				</button>
 			</view>
 			<view class="push_time">
@@ -202,6 +208,7 @@
 	export default {
 		data() {
 			return {
+				pass:false,
 				text:'',
 				building:{},
 				text_all:'',
@@ -224,6 +231,7 @@
 		onLoad(option){
 			console.log(option);
 			this.getData(option.id);
+			this.pass = uni.getStorageSync('pass')
 			// this.text=this.text.substring(0,82);
 		},
 		methods:{
@@ -231,7 +239,7 @@
 				let that = this
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
-					that.baoMing(pid,remark,point,title)
+					that.baoMing(pid,remark,point,title,0)
 					if(type) {
 						
 					}
@@ -252,7 +260,7 @@
 								uni.setStorageSync('phone',tel)
 								let openid = uni.getStorageSync('openid')
 							    that.tel = tel;
-								that.baoMing(pid,remark,point,title)
+								that.baoMing(pid,remark,point,title,0)
 							}
 						})
 					}else {
@@ -296,7 +304,8 @@
 					this.isok = 1
 				}
 			},
-			baoMing(pid,remark,point,title){
+			baoMing(pid,remark,point,title,n){
+				this.isok = n 
 				this.title_e = title;
 				this.pid_d = pid;
 				this.remark_k = remark;

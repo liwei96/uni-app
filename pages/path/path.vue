@@ -2,8 +2,8 @@
 	<view class="path">
 		<view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
-			      </view>
+				<!-- 这里是状态栏 -->
+			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>选择城市</text>
 		</view>
@@ -23,16 +23,16 @@
 				全部城市
 			</view>
 		</view>
-			<view v-for="(item,key) in list" :key="key">
-				<view class="line" :id="item">
-					{{item}}
-				</view>
-				<view class="box">
-					<view class="cityitem" v-for="val in lists[item]" :key="val.area_id" @tap=gocity(val.area_id,val.short)>
-						{{val.short}}
-					</view>
+		<view v-for="(item,key) in list" :key="key">
+			<view class="line" :id="item">
+				{{item}}
+			</view>
+			<view class="box">
+				<view class="cityitem" v-for="val in lists[item]" :key="val.area_id" @tap=gocity(val.area_id,val.short)>
+					{{val.short}}
 				</view>
 			</view>
+		</view>
 		<view class="right-list">
 			<view class="li" @click="to(item)" v-for="(item,key) in list" :key="key">
 				{{item}}
@@ -74,13 +74,13 @@
 			};
 		},
 		methods: {
-			back(){
+			back() {
 				uni.navigateBack({
-					data:1
+					data: 1
 				})
 			},
 			to(id) {
-				uni.createSelectorQuery().select('#'+id).boundingClientRect(data => { //目标位置的节点：类或者id
+				uni.createSelectorQuery().select('#' + id).boundingClientRect(data => { //目标位置的节点：类或者id
 					uni.createSelectorQuery().select(".path").boundingClientRect(res => { //最外层盒子的节点：类或者id
 						uni.pageScrollTo({
 							duration: 100, //过渡时间
@@ -89,13 +89,13 @@
 					}).exec()
 				}).exec();
 			},
-			getinfo(){
+			getinfo() {
 				uni.showLoading({
-					title:"加载中"
+					title: "加载中"
 				})
 				uni.request({
-					url:that.putserve+"/api/first/city",
-					method:"POST",
+					url: that.putserve + "/api/first/city",
+					method: "POST",
 					success: (res) => {
 						console.log(res)
 						that.hots = res.data.data.hots
@@ -104,17 +104,17 @@
 					}
 				})
 			},
-			setcity(id,name) {
-				uni.setStorageSync('city',id)
-				uni.setStorageSync('cityname',name)
+			setcity(id, name) {
+				uni.setStorageSync('city', id)
+				uni.setStorageSync('cityname', name)
 				uni.switchTab({
-					url:"/pages/index/index"
+					url: "/pages/index/index"
 				})
 			},
-			gocity(id,name) {
-				for(let item of this.hots) {
-					if(id == item.area_id) {
-						this.setcity(id,name)
+			gocity(id, name) {
+				for (let item of this.hots) {
+					if (id == item.area_id) {
+						this.setcity(id, name)
 					}
 				}
 			}
@@ -133,10 +133,12 @@
 		background-color: #FFFFFF;
 		top: 0;
 		z-index: 9999;
+
 		.status_bar {
-		      height: var(--status-bar-height);
-		      width: 100%;
-		  }
+			height: var(--status-bar-height);
+			width: 100%;
+		}
+
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -153,6 +155,7 @@
 		margin-bottom: 30rpx;
 		padding-top: 88rpx;
 		margin-top: var(--status-bar-height);
+
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -233,10 +236,12 @@
 			font-size: 28rpx;
 		}
 	}
+
 	.right-list {
 		position: fixed;
 		right: 28rpx;
 		top: 300rpx;
+
 		.li {
 			color: #646566;
 			font-size: 20rpx;

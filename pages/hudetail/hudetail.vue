@@ -9,7 +9,7 @@
 			</navigator>
 		</view>
 		<view class="top_img">
-			<image :src="one.big" mode=""></image>
+			<image :src="one.big" mode="" @tap="showbig(one.big)"></image>
 		</view>
 		<view class="name_box">
 			<view class="name">{{one.title}} <text>{{one.state}}</text></view>
@@ -22,7 +22,7 @@
 			</view>
 			<view class="tese_one"> <text>特色：</text>{{one.special}}</view>
 			<view class="address">
-				<view class="left">
+				<view class="left" @tap="goaround">
 					<image src="../../static/address.png" mode="" class="icon_ad"></image>
 					<text>{{one.address}}</text>
 				</view>
@@ -31,13 +31,19 @@
 			</view>
 			<view class="bot">
 				 <button  open-type="getPhoneNumber"   class="zixun" hover-class="none"
-				 @getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+咨询详细户型',97,'咨询户型底价')">
+				 @getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+咨询详细户型',97,'咨询户型底价')" v-if="!pass">
 				 	咨询详细户型
 				 </button>
+				 <view class="zixun" @tap="baoMing(one.bid,'楼盘户型详情页+咨询详细户型',97,'咨询户型底价',1)" v-if="pass"> 
+				 		咨询详细户型
+				 </view>
 				 <button open-type="getPhoneNumber" hover-class="none" class="dijia" 
-				 @getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+咨询楼盘底价',105,'咨询楼盘底价')">
+				 @getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+咨询楼盘底价',105,'咨询楼盘底价')" v-if="!pass">
 				 	咨询楼盘底价
 				 </button>
+				 <view class="dijia" @tap="baoMing(one.bid,'楼盘户型详情页+咨询楼盘底价',105,'咨询楼盘底价',1)" v-if="pass">
+				 	咨询楼盘底价
+				 </view>
 			</view>
 		</view>
 		<view class="bg_hui"></view>
@@ -72,10 +78,13 @@
 				<view class="bo_tel">
 					<button open-type="getPhoneNumber" hover-class="none"
 					@getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+咨询服务',104,'咨询服务')"
-					class="bo_zi">
+					class="bo_zi" v-if="!pass">
 						<image src="../../static/content/zixun.png" mode="" 
 						></image>
 					</button>
+					<image src="../../static/content/zixun.png" mode="" v-if="pass" class="bo_zi"
+					 @tap="baoMing(one.bid,'楼盘户型详情页+咨询服务',104,'咨询服务',1)"
+					></image>
 					<image src="../../static/content/tel.png" mode=""
 					@tap="boTel(telphone)"></image>
 				</view>
@@ -107,9 +116,12 @@
 				</text>
 				<view class="right">
 					<button open-type="getPhoneNumber"  class="ling_btn" hover-class="none"
-					@getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+领取优惠',94,'领取优惠')">
+					@getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+领取优惠',94,'领取优惠')" v-if='!pass'>
 						领取优惠
 					</button>
+					<view class="ling_btn" v-if="pass" @tap="baoMing(one.bid,'楼盘户型详情页+领取优惠',94,'领取优惠',1)">
+						领取优惠
+					</view>
 					<text>{{num.receive_num}}人已领取</text>
 				</view>
 			</view>
@@ -122,9 +134,12 @@
 				</text>
 				<view class="right">
 					<button class="ling_btn" open-type="getPhoneNumber"  hover-class="none" 
-					@getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+免费领取',95,'免费领取')">
+					@getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+免费领取',95,'免费领取')" v-if="!pass">
 						免费领取
 					</button>
+					<view class="ling_btn" v-if="pass" @tap="baoMing(one.bid,'楼盘户型详情页+免费领取',95,'免费领取',1)" >
+						免费领取
+					</view>
 					<text>{{num.remain_num}}人已领取</text>
 				</view>
 			</view>
@@ -179,9 +194,11 @@
 	     	<seebottom :title="title" :project="recommends"></seebottom>
 	     </view>
 		<bottom :remark="'项目户型详情页+预约看房'" :point="103" :title="'预约看房'" :pid="one.bid" :telphone="telphone"></bottom>
-		
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
+		</wyb-popup>
+		<wyb-popup ref="popup1" type="center" height="1000" width="700" radius="0" :showCloseIcon="false" @hide="setiscode">
+			<image :src="url" mode="" class="bigimg" @tap="hideimg"></image>
 		</wyb-popup>
 	</view>
 </template>
@@ -202,14 +219,13 @@ import sign from '@/components/sign.vue'
 			return {
 				title:"看了该楼盘的人还看了",
 				num:'',
-				
+				url: '',
 				one:{},
 				other_rooms:[],
 				recommends:[],
 				num:{},
 				common:{},
 				staff:{},
-				
 				codenum:1,
 				title_e:'',
 				pid_d:0,
@@ -217,20 +233,33 @@ import sign from '@/components/sign.vue'
 				position_n:0,
 				telphone:'',
 				isok:0,
-				shengnum:"123"
-				
+				shengnum:"123",
+				pass:false
 			};
 		},
 		onLoad(option){
 			this.getdata(option.id);
-			
+			this.pass = uni.getStorageSync('pass')
 		},
 		methods:{
+			hideimg() {
+				this.$refs.popup1.hide()
+			},
+			showbig(url) {
+				this.url = url
+				this.$refs.popup1.show()
+			},
+			goaround() {
+				let id = this.one.bid
+				uni.navigateTo({
+					url: "/pages/test/test?id=" + id
+				})
+			},
 			async getPhoneNumber(e,pid,remark,point,title,type) {
 				let that = this
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
-					that.baoMing(pid,remark,point,title)
+					that.baoMing(pid,remark,point,title,0)
 					if(type) {
 						
 					}
@@ -303,7 +332,8 @@ import sign from '@/components/sign.vue'
 					} //仅为示例
 				});
 			},
-			baoMing(pid,remark,point,title){
+			baoMing(pid,remark,point,title,n){
+				this.isok = n;
 				this.title_e = title;
 				this.pid_d = pid;
 				this.remark_k = remark;
@@ -374,6 +404,10 @@ import sign from '@/components/sign.vue'
 </script>
 
 <style lang="less">
+	.bigimg {
+		width: 100%;
+		height: 100%;
+	}
 	button::after{
 		border:none
 	}
