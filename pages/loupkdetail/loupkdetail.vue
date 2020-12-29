@@ -1,9 +1,9 @@
 <template>
-	<view class="loupkdetail" >
+	<view class="loupkdetail">
 		<view class="toptitle">
-			 <view class="status_bar">
-			          <!-- 这里是状态栏 -->
-			 </view>
+			<view class="status_bar">
+				<!-- 这里是状态栏 -->
+			</view>
 			<navigator open-type="navigateBack" class="nav_top">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>楼盘对比</text>
@@ -33,7 +33,7 @@
 					</view>
 				</view>
 			</view>
-			
+
 		</view>
 		<!-- 隐藏 -->
 		<view class="yin" v-show="hua_show_yin">
@@ -53,7 +53,7 @@
 					</view>
 				</view>
 			</view>
-			
+
 		</view>
 
 
@@ -96,7 +96,7 @@
 				<view class="address">
 					{{item.address}}
 				</view>
-				<view class="tese" >
+				<view class="tese">
 					<text v-for="ite in item.features">{{ite}}</text>
 				</view>
 				<view class="state">
@@ -155,9 +155,7 @@
 			<view class="pro_sale" v-for="item in data" :key="item.id">
 				<view class="danjia_box">
 					<view class="price">约{{item.price}}元/m²</view>
-					<button class="btn" open-type="getPhoneNumber" hover-class="none"
-					    @getphonenumber="getPhoneNumber($event,item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价')"
-					>咨询底价</button>
+					<button class="btn" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价')">咨询底价</button>
 				</view>
 				<view class="zongjia">
 					{{item.total_price}}
@@ -175,7 +173,7 @@
 					{{item.discount}}
 				</view>
 			</view>
-			
+
 		</view>
 
 		<!-- 建筑信息 -->
@@ -247,15 +245,15 @@
 
 		</view>
 
-		<button class="button" open-type="getPhoneNumber" hover-class="none"
-		@getphonenumber="getPhoneNumber($event,0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息')">
+		<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息')">
 			咨询详细楼盘信息
 		</button>
 		<twosee :title="title" :project="recommends"></twosee>
 		<bottom :remark="'楼盘pk详情页+预约看房'" :point="103" :title="'预约看房'" :pid="pid" :telphone="telphone"></bottom>
-		
+
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"
+			 :isok="isok"></sign>
 		</wyb-popup>
 	</view>
 </template>
@@ -276,35 +274,35 @@
 				text: '',
 				lastX: 0,
 				lastY: 0,
-				data:[],
-				recommends:[],
-				common:{},
-				
-				codenum:1,
-				title_e:'',
-				pid_d:0,
-				remark_k:'',
-				position_n:0,
-				telphone:'',
-				pid:"0",
-				
-				tel:'4009669995',
-				isok:0
+				data: [],
+				recommends: [],
+				common: {},
+
+				codenum: 1,
+				title_e: '',
+				pid_d: 0,
+				remark_k: '',
+				position_n: 0,
+				telphone: '',
+				pid: "0",
+
+				tel: '4009669995',
+				isok: 0
 			};
 		},
 		onLoad(option) {
 			console.log(option);
 			this.getdata(option.id);
 		},
-		onPageScroll(e){
-			if(e.scrollTop>=50){
+		onPageScroll(e) {
+			if (e.scrollTop >= 50) {
 				this.hua_old_show = false;
 				this.hua_show_yin = true;
-			}else{
+			} else {
 				this.hua_old_show = true;
 				this.hua_show_yin = false;
 			}
-			
+
 		},
 		components: {
 			twosee,
@@ -313,154 +311,154 @@
 			sign
 		},
 		methods: {
-			async getPhoneNumber(e,pid,remark,point,title,type) {
+			async getPhoneNumber(e, pid, remark, point, title, type) {
 				let that = this
-				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
-					that.baoMing(pid,remark,point,title)
-					if(type) {
-						
+					that.baoMing(pid, remark, point, title)
+					if (type) {
+
 					}
 				} else {
 					let session = uni.getStorageSync('session')
-					if(session){
+					if (session) {
 						uni.request({
 							url: 'https://api.edefang.net/applets/baidu/decrypt',
-							method:'get',
-							data:{
+							method: 'get',
+							data: {
 								iv: e.detail.iv,
 								data: e.detail.encryptedData,
 								session_key: session
 							},
 							success: (res) => {
-								console.log(res,'session')
+								console.log(res, 'session')
 								let tel = res.data.mobile
-								uni.setStorageSync('phone',tel)
+								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
-							    that.tel = tel;
-								that.baoMing(pid,remark,point,title)
+								that.tel = tel;
+								that.baoMing(pid, remark, point, title)
 							}
 						})
-					}else {
-						console.log(session,"没保存session")
+					} else {
+						console.log(session, "没保存session")
 						uni.login({
-						  provider: 'baidu',
-						  success: function (res) {
-						    console.log(res.code);
-							uni.request({
-								url: 'https://api.edefang.net/applets/baidu/get_session_key',
-								method:'get',
-								data:{
-									code: res.code
-								},
-								success: (res) => {
-									console.log(res)
-									uni.setStorageSync('openid',res.data.openid)
-									uni.setStorageSync('session',res.data.session_key)
-									uni.request({
-										url:"https://api.edefang.net/applets/baidu/decrypt",
-										data:{
-											data: e.detail.encryptedData,
-											iv:e.detail.iv,
-											session_key:res.data.session_key
-										},
-										success: (res) => {
-											console.log(res)
-											let tel = res.data.mobile
-											uni.setStorageSync('phone',tel)
-											let openid = uni.getStorageSync('openid')
-											that.$refs.sign.tel = tel
-											that.baoMing(pid,remark,point,title)
-										}
-									})
-									
-								}
-							})
-						  }
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.$refs.sign.tel = tel
+												that.baoMing(pid, remark, point, title)
+											}
+										})
+
+									}
+								})
+							}
 						});
-						}
+					}
 					this.isok = 1
 				}
 			},
-			baoMing(pid,msg,point,title){
+			baoMing(pid, msg, point, title) {
 				this.pid_d = pid;
 				this.position_n = point,
-				this.title_e = title;
+					this.title_e = title;
 				this.remark_k = msg;
 				console.log(this.pid_d);
 				this.$refs.popup.show();
 			},
-			setiscode(){
+			setiscode() {
 				this.codenum = 0
 			},
-			boTel(tel){
+			boTel(tel) {
 				uni.makePhoneCall({
-					phoneNumber:tel ,
+					phoneNumber: tel,
 					success: function() {
 						console.log('拨打电话');
 					} //仅为示例
 				});
 			},
-			
-			getdata(id){
-				 let other = uni.getStorageSync('other');
-				 let token = uni.getStorageSync('token');
+
+			getdata(id) {
+				let other = uni.getStorageSync('other');
+				let token = uni.getStorageSync('token');
 				uni.request({
-					url:this.apiserve+'/jy/base/compare',
-					method:"GET",
-					data:{
-						ids:id,
-						other:other,
-						token:token,
+					url: this.apiserve + '/jy/base/compare',
+					method: "GET",
+					data: {
+						ids: id,
+						other: other,
+						token: token,
 					},
-					success:(res)=>{
-						if(res.data.code==200){
+					success: (res) => {
+						if (res.data.code == 200) {
 							console.log(res);
-						//	this.recommends = res.data.recommends;
+							//	this.recommends = res.data.recommends;
 							this.common = res.data.common;
 							this.telphone = res.data.common.phone;
 							this.data = res.data.data;
-							let  arr = res.data.recommends;
-							let  my_arr =[];
-							arr.map(p=>{
-								let  number = p.railways;
+							let arr = res.data.recommends;
+							let my_arr = [];
+							arr.map(p => {
+								let number = p.railways;
 								let item = "";
-								number.map(m=>{
-									 item = m.name
+								number.map(m => {
+									item = m.name
 								})
 								my_arr.push({
-									id:p.id,
-									img:p.img,
-									name:p.name,
-									status:p.state,
-									single_price:p.price,
-									type:p.type,
-									city:p.city,
-									country:p.country,
-									area:p.area,
-									decorate:p.decorate,
-									railway:p.railway,
-									features:p.feature,
-									railway:item
+									id: p.id,
+									img: p.img,
+									name: p.name,
+									status: p.state,
+									single_price: p.price,
+									type: p.type,
+									city: p.city,
+									country: p.country,
+									area: p.area,
+									decorate: p.decorate,
+									railway: p.railway,
+									features: p.feature,
+									railway: item
 								})
 							})
 							this.recommends = my_arr;
 							// #ifdef MP-BAIDU
-							 swan.setPageInfo({
-							 	title: "允家新房-楼盘pk详情",
-							 	keywords: "允家新房-楼盘pk详情",
-							 	description: "允家新房-楼盘pk详情",
-							 	success: res => {
-							 		console.log('setPageInfo success', res);
-							 	},
-							 	fail: err => {
-							 		console.log('setPageInfo fail', err);
-							 	}
-							 })
+							swan.setPageInfo({
+								title: "允家新房-楼盘pk详情",
+								keywords: "允家新房-楼盘pk详情",
+								description: "允家新房-楼盘pk详情",
+								success: res => {
+									console.log('setPageInfo success', res);
+								},
+								fail: err => {
+									console.log('setPageInfo fail', err);
+								}
+							})
 							// #endif
 						}
 					}
-					
+
 				})
 			},
 			handletouchmove: function(event) {
@@ -525,9 +523,11 @@
 	page {
 		background: #fff;
 	}
-	button::after{
-		border:none;
+
+	button::after {
+		border: none;
 	}
+
 	.loupkdetail {
 		.toptitle {
 			color: #D4D7D9;
@@ -540,11 +540,13 @@
 			background: #fff;
 			width: 100%;
 			z-index: 30000;
+
 			.status_bar {
-			      height: var(--status-bar-height);
-			      width: 100%;
-			  }
-			.nav_top{
+				height: var(--status-bar-height);
+				width: 100%;
+			}
+
+			.nav_top {
 				image {
 					width: 31.87rpx;
 					height: 31.87rpx;

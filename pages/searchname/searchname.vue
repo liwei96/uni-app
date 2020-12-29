@@ -18,7 +18,7 @@
 					<text>大家都在搜</text>
 				</view>
 				<view class="content">
-					<text v-for="item in hots" :key="item.id" @tap="go(item.id)">{{item.name}}</text>
+					<text v-for="item in hots" :key="item.id" @tap="go(item.id,item.name)">{{item.name}}</text>
 				</view>
 			</view>
 			<!-- <view class="hots">

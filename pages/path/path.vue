@@ -103,6 +103,9 @@
 					that.show = false
 					that.bname = ''
 					that.$refs.popup.hide()
+					uni.navigateTo({
+						url:'/pages/alliance/alliance'
+					})
 				},2000)
 			},
 			back() {

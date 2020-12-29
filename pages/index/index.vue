@@ -172,7 +172,7 @@
 							<text>TOP{{index+1}}</text>
 						</view>
 						<view class="bom">
-							<text class="name">{{item.name}}</text>
+							<view class="name">{{item.name}}</view>
 							<view>
 								<text class="price">{{item.price}}</text>
 								<text class="psam">元/m²</text>
@@ -801,22 +801,24 @@
 	}
 
 	.toplist-swiper {
-		margin-bottom: 67.72rpx;
+		margin-bottom: 56rpx;
 
 		.scroll-view {
 			width: 100%;
 			white-space: nowrap;
+			padding-bottom: 10rpx;
 
 			.scroll-item {
 				width: 278.88rpx;
-				height: 278.88rpx;
+				height: 300rpx;
 				margin-right: 19.92rpx;
 				display: inline-block;
 				overflow-wrap: break-word;
 				white-space: normal;
+				border-radius: 12rpx;
 				.top {
 					position: relative;
-
+					height: 179.28rpx;
 					image {
 						width: 100%;
 						height: 179.28rpx;
@@ -841,7 +843,7 @@
 				}
 
 				.bom {
-					height: 99.6rpx;
+					height: 108rpx;
 					border-radius: 0 0 11.95rpx 11.95rpx;
 					border: 0.99rpx solid #F0F1F5;
 					// padding-left: 19.92rpx;
@@ -851,9 +853,12 @@
 					.name {
 						color: #303233;
 						font-weight: bold;
-						margin-top: 15.93rpx;
-						margin-bottom: 7.96rpx;
+						margin-top: 8rpx;
 						margin-left:  19.92rpx;
+						max-width: 220rpx;
+						overflow: hidden;
+						text-overflow:ellipsis;
+						white-space: nowrap;
 					}
 
 					.price {
@@ -872,7 +877,7 @@
 						color: #969799;
 						font-size: 21.91rpx;
 						margin-right: 19.92rpx;
-						margin-top: 18rpx;
+						margin-top: 14rpx;
 					}
 				}
 			}

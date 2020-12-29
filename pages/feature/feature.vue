@@ -58,7 +58,7 @@
 					<view class="top-num">
 						<image src="../../static/feature/feature-card.png" mode=""></image>
 						<text class="nummsg">{{tit}}榜第{{key+1}}名</text>
-						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="bid = item.id" v-if="!pass">
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,item.id)" @tap="bid = item.id" v-if="!pass">
 						<text class="btn">查底价</text>
 						</button>
 						<text class="btn" v-if="pass" @tap="show(item.id,'特色房源页+查底价',1)">查底价</text>
@@ -189,11 +189,11 @@
 			setiscode() {
 				this.codenum = 0
 			},
-			async getPhoneNumber(e) {
+			async getPhoneNumber(e,bid) {
 				let that = this
 				let token = uni.getStorageSync('token')
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					that.show(that.bid,'特色房源页+查底价',0)
+					that.show(bid,'特色房源页+查底价',0)
 					that.isok = 0
 				} else {
 					that.isok = 1
@@ -212,7 +212,7 @@
 								let tel = res.data.mobile
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
-								that.show(that.bid,'特色房源页+查底价',1)
+								that.show(bid,'特色房源页+查底价',1)
 							}
 						})
 					} else {
@@ -242,7 +242,7 @@
 												let tel = res.data.mobile
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
-												that.show(that.bid,'特色房源页+查底价',1)
+												that.show(bid,'特色房源页+查底价',1)
 											}
 										})
 									}

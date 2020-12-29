@@ -54,7 +54,7 @@
 					<view class="top-num">
 						<image src="../../static/feature/feature-card.png" mode=""></image>
 						<text class="nummsg">{{num == 0 ? '热搜榜' : num == 1 ? '人气榜' : '成交榜'}}第{{key+1}}名</text>
-						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="bid = item.id" v-if="!pass">
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,item.id)" @tap="bid = item.id" v-if="!pass">
 						<text class="btn">查底价</text>
 						</button>
 						<text class="btn" v-if="pass" @tap="show(item.id,'榜单页+查低价',1)">查底价</text>
@@ -93,18 +93,17 @@
 				isok: 0,
 				city: '杭州',
 				pass: false,
-				position: 104
+				position: 34
 			}
 		},
 		methods: {
 			setpop() {
 				this.$refs.popup.hide()
 			},
-			getPhoneNumber(e) {
+			getPhoneNumber(e,bid) {
 				console.log(e)
-				let id = this.bid
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					this.show(id,'榜单页+查低价',0)
+					this.show(bid,'榜单页+查低价',0)
 				}else{
 					this.pass = true
 					uni.setStorageSync('pass',true)
@@ -123,7 +122,7 @@
 								let tel = res.data.mobile
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
-								that.show(id,'榜单页+查低价',1)
+								that.show(bid,'榜单页+查低价',1)
 							}
 						})
 					} else {
@@ -153,7 +152,7 @@
 												let tel = res.data.mobile
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
-												that.show(id,'榜单页+查低价',1)
+												that.show(bid,'榜单页+查低价',1)
 											}
 										})
 									}
@@ -220,7 +219,7 @@
 			show(id, txt,isok) {
 				this.pid = id
 				this.remark = txt
-				this.position = 104
+				this.position = 34
 				console.log(this.position)
 				this.isok = isok
 				this.$refs.popup.show()

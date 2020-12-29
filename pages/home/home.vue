@@ -224,6 +224,21 @@
 							uni.hideLoading()
 						}
 					})
+					uni.request({
+						url:this.apiserve+"/applets/mine/ticket",
+						method:"GET",
+						data:{
+							token:token
+						},
+						success:(res)=>{
+							 if(res.data.code == 200){
+								if(res.data.num > 0) {
+									that.cardnum = 2
+								}
+							 }
+							 uni.hideLoading()
+						}
+					})
 				}
 			},
 			show() {
@@ -305,26 +320,6 @@
 			getPhoneNumber(e) {
 				let that = this
 				console.log(uni.getStorageSync('token'))
-				if(uni.getStorageSync('token')){
-					switch (that.type) {
-						case 1:
-							uni.navigateTo({
-								url:'/pages/footprint/footprint'
-							})
-							break;
-						case 2:
-							uni.navigateTo({
-								url:'/pages/collect/collect'
-							})
-							break;
-						case 3:
-							uni.navigateTo({
-								url:'/pages/cards/cards'
-							})
-							break;
-					}
-					return
-				}
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					let url = ''
 					switch (that.type) {
@@ -345,6 +340,9 @@
 						url: '/pages/login/login'
 					})
 				} else {
+					uni.setStorageSync('pass', true)
+					that.pass = true
+					console.log(that.pass)
 					let session = uni.getStorageSync('session')
 					if (session) {
 						uni.request({

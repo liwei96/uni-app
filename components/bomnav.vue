@@ -100,13 +100,14 @@
 				});
 			},
 			gotalk(){
-				let id = this.sid
-				if(uni.getStorageSync(sid)){
-					let num = uni.getStorageSync(sid)
+				let id = String(this.sid)
+				if(uni.getStorageSync(id)){
+					let num = uni.getStorageSync(id)
 					let total = uni.getStorageSync('total')
 					total = total - num
+					this.num = total
 					uni.setStorageSync('total',total)
-					uni.removeStorageSync(sid)
+					uni.removeStorageSync(id)
 				}
 				uni.navigateTo({
 					url:'/pages/talk/talk?id='+id

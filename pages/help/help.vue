@@ -62,7 +62,8 @@
 			 v-model="remark" />
 			</view>
 		<view class="bom">
-			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="btn">提交</button>
+			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="btn" v-if="!pass">提交</button>
+			<view class="btn" v-if="pass" @tap="show1(1)">提交</view>
 		</view>
 		<popup ref="popup" type="bottom" height="458" width="500">
 		    <view class="popup-content">
@@ -135,6 +136,7 @@
 		    },
 		data() {
 			return {
+				pass: false,
 				num: 240,
 				houses: [],
 				areas: [],
@@ -152,12 +154,15 @@
 				teltxt: '',
 				timetxt: '',
 				time: 0,
-				isok: 0
+				isok: 0,
+				position: 0
 			}
 		},
 		onShow() {
 			that = this
 			this.getinfo()
+			this.pass = uni.getStorageSync('pass')
+			this.tel = uni.getStorageSync('phone')
 			//#ifdef MP-BAIDU
 			swan.setPageInfo({
 				title: '允家新房-帮我找房',
@@ -184,6 +189,8 @@
 					this.isok = 0
 				} else {
 					this.isok = 1
+					this.pass = true
+					uni.setStorageSync('pass',true)
 					let session = uni.getStorageSync('session')
 					if (session) {
 						uni.request({
@@ -433,7 +440,8 @@
 					this.$refs.toast.show()
 					return;
 				}
-				var phone = this.tel;
+				let phone = this.tel;
+				let code = this.code
 				uni.request({
 					url: that.apiserve + '/sure',
 					method: "POST",
@@ -448,7 +456,7 @@
 					success: (res) => {
 						console.log(res)
 						if(res.data.code === 500) {
-							that.toasttxt = res.data.msg;
+							that.toasttxt = '验证码不正确';
 							that.$refs.toast.show()
 						} else {
 							that.toasttxt = "订阅成功";
@@ -463,7 +471,8 @@
 					}
 				})
 			},
-			show1() {
+			show1(n) {
+				this.isok = n
 				this.$refs.popup1.show()
 			},
 			sliderChange(e) {
@@ -699,6 +708,7 @@
 			font-weight: bold;
 			line-height: 79.68rpx;
 			font-size: 29.88rpx;
+			text-align: center;
 		}
 		.btn:after{
 			border: none;
@@ -747,8 +757,9 @@
 				.active {
 					border: 1rpx solid #3EB3F0;
 					background: #F0F7FA;
-					height: 56rpx;
-					line-height: 56rpx;
+					width: 154rpx;
+					height: 54rpx;
+					line-height: 54rpx;
 					color: #3EACF0;
 				}
 			}

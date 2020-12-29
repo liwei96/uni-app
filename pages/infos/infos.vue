@@ -31,7 +31,7 @@
 		<view class="swiper-nav">
 			<swiper :interval="3000" :duration="1000" display-multiple-items="4" next-margin="76rpx" previous-margin="30rpx">
 				<swiper-item v-for="(item,key) in navs" :key="key">
-					<view :class="navnum === item.id ? 'swiper-item active' : ''" @click="setnavnum(item.id)">{{item.name}}
+					<view :class="navnum === item.id ? 'swiper-item active' : 'swiper-item'" @click="setnavnum(item.id)">{{item.name}}
 						<view class="bom">
 						</view>
 					</view>
@@ -290,6 +290,7 @@
 			overflow: hidden;
 			height: 280rpx;
 			margin: 0 15rpx;
+			text-align: center;
 
 			image {
 				width: 630rpx;
@@ -353,6 +354,7 @@
 			font-size: 30rpx;
 			margin-right: 36rpx;
 			height: 60rpx;
+			text-align: center;
 		}
 
 		.active {

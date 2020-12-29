@@ -66,6 +66,9 @@
 					<view class="top" @tap="gobuild(item.id)">
 						<image :src="item.img" mode=""></image>
 						<view class="leftmsg">优惠盘</view>
+						<view class="tit">
+							{{item.name}}
+						</view>
 					</view>
 					<view class="bom">
 						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,item.id,'特价房源页+领优惠')" v-if="!pass">
@@ -737,6 +740,9 @@
 						color: #FFFFFF;
 						font-size: 28rpx;
 						font-weight: bold;
+						position: absolute;
+						left: 20rpx;
+						bottom: 20rpx;
 					}
 				}
 
