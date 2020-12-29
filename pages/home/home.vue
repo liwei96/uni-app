@@ -6,7 +6,7 @@
 		<view class="top-nav">
 			<view class="login">
 				<image src="../../static/home/home-peo.png" mode=""></image>
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!tel"><text>登录/注册</text>
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=4" v-if="!tel"><text>登录/注册</text>
 				</button>
 				<text v-if="tel">{{tel}}</text>
 			</view>
@@ -225,18 +225,18 @@
 						}
 					})
 					uni.request({
-						url:this.apiserve+"/applets/mine/ticket",
-						method:"GET",
-						data:{
-							token:token
+						url: this.apiserve + "/applets/mine/ticket",
+						method: "GET",
+						data: {
+							token: token
 						},
-						success:(res)=>{
-							 if(res.data.code == 200){
-								if(res.data.num > 0) {
+						success: (res) => {
+							if (res.data.code == 200) {
+								if (res.data.num > 0) {
 									that.cardnum = 2
 								}
-							 }
-							 uni.hideLoading()
+							}
+							uni.hideLoading()
 						}
 					})
 				}
@@ -335,6 +335,10 @@
 							url = '/pages/cards/cards'
 							uni.setStorageSync('backurl', url)
 							break;
+						case 4:
+							url = '/pages/home/home'
+							uni.setStorageSync('backurl', url)
+							break;
 					}
 					uni.navigateTo({
 						url: '/pages/login/login'
@@ -359,35 +363,57 @@
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
 								that.tel = tel.substr(0, 3) + '****' + tel.substr(7)
-								uni.request({
-									url: "https://api.edefang.net/applets/login",
-									method: 'GET',
-									data: {
-										phone: tel,
-										openid: openid
-									},
-									success: (res) => {
-										console.log(res)
-										uni.setStorageSync('token', res.data.token)
-										switch (that.type) {
-											case 1:
-												uni.navigateTo({
-													url:'/pages/footprint/footprint'
-												})
-												break;
-											case 2:
-												uni.navigateTo({
-													url:'/pages/collect/collect'
-												})
-												break;
-											case 3:
-												uni.navigateTo({
-													url:'/pages/cards/cards'
-												})
-												break;
-										}
+								let token = uni.getStorageSync('token')
+								if (token) {
+									switch (that.type) {
+										case 1:
+											uni.navigateTo({
+												url: '/pages/footprint/footprint'
+											})
+											break;
+										case 2:
+											uni.navigateTo({
+												url: '/pages/collect/collect'
+											})
+											break;
+										case 3:
+											uni.navigateTo({
+												url: '/pages/cards/cards'
+											})
+											break;
 									}
-								})
+								} else {
+									uni.request({
+										url: "https://api.edefang.net/applets/login",
+										method: 'GET',
+										data: {
+											phone: tel,
+											openid: openid
+										},
+										success: (res) => {
+											console.log(res)
+											uni.setStorageSync('token', res.data.token)
+											switch (that.type) {
+												case 1:
+													uni.navigateTo({
+														url: '/pages/footprint/footprint'
+													})
+													break;
+												case 2:
+													uni.navigateTo({
+														url: '/pages/collect/collect'
+													})
+													break;
+												case 3:
+													uni.navigateTo({
+														url: '/pages/cards/cards'
+													})
+													break;
+											}
+										}
+									})
+								}
+
 							}
 						})
 					} else {
@@ -418,35 +444,56 @@
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel.substr(0, 3) + '****' + tel.substr(7)
-												uni.request({
-													url: "https://api.edefang.net/applets/login",
-													method: 'GET',
-													data: {
-														phone: tel,
-														openid: openid
-													},
-													success: (res) => {
-														console.log(res)
-														uni.setStorageSync('token', res.data.token)
-														switch (that.type) {
-															case 1:
-																uni.navigateTo({
-																	url:'/pages/footprint/footprint'
-																})
-																break;
-															case 2:
-																uni.navigateTo({
-																	url:'/pages/collect/collect'
-																})
-																break;
-															case 3:
-																uni.navigateTo({
-																	url:'/pages/cards/cards'
-																})
-																break;
-														}
+												let token = uni.getStorageSync('token')
+												if (token) {
+													switch (that.type) {
+														case 1:
+															uni.navigateTo({
+																url: '/pages/footprint/footprint'
+															})
+															break;
+														case 2:
+															uni.navigateTo({
+																url: '/pages/collect/collect'
+															})
+															break;
+														case 3:
+															uni.navigateTo({
+																url: '/pages/cards/cards'
+															})
+															break;
 													}
-												})
+												} else {
+													uni.request({
+														url: "https://api.edefang.net/applets/login",
+														method: 'GET',
+														data: {
+															phone: tel,
+															openid: openid
+														},
+														success: (res) => {
+															console.log(res)
+															uni.setStorageSync('token', res.data.token)
+															switch (that.type) {
+																case 1:
+																	uni.navigateTo({
+																		url: '/pages/footprint/footprint'
+																	})
+																	break;
+																case 2:
+																	uni.navigateTo({
+																		url: '/pages/collect/collect'
+																	})
+																	break;
+																case 3:
+																	uni.navigateTo({
+																		url: '/pages/cards/cards'
+																	})
+																	break;
+															}
+														}
+													})
+												}
 											}
 										})
 

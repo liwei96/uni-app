@@ -78,6 +78,9 @@
 				})
 			},
 			gotalk(id,bid,cid) {
+				if(uni.getStorageSync(String(id))){
+					uni.removeStorageSync(String(id))
+				}
 				uni.navigateTo({
 					url: '/pages/talk/talk?id=' + id+'&bid='+bid+'&cid='+cid
 				})

@@ -18,7 +18,7 @@
 						<image :src="item.img" mode="widthFix"></image>
 					</view>
 					<view class="num" v-if="item.num">
-						{{item.num}}
+						
 					</view>
 				</view>
 				<view class="right">
@@ -72,6 +72,14 @@
 		},
 		methods: {
 			gotalk(id,bid,cid) {
+				if(uni.getStorageSync(String(id))){
+					uni.removeStorageSync(String(id))
+				}
+				for(let item of this.list) {
+					if(item.id == id) {
+						item.num = 0
+					}
+				}
 				uni.navigateTo({
 					url: '/pages/talk/talk?id=' + id+'&bid='+bid+'&cid='+cid
 				})
@@ -147,7 +155,7 @@
 					console.log(that.list)
 				} else if (data.action == 301) {
 					if (String(data.fromUserName).length < 10) {
-						if(uni.setStorageSync(String(data.fromUserName))) {
+						if(uni.getStorageSync(String(data.fromUserName))) {
 							uni.setStorageSync(String(data.fromUserName),parseInt(uni.getStorageSync(String(data.fromUserName))) + 1)
 						}else {
 							uni.setStorageSync(String(data.fromUserName),1)

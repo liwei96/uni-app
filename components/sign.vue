@@ -243,6 +243,7 @@
 							if(!uni.getStorageSync('token')) {
 								uni.setStorageSync('token',res.data.token)
 								uni.setStorageSync('phone',that.tel)
+								uni.setStorageSync('pass',true)
 							}
 						}
 					}

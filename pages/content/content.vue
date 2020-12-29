@@ -1058,7 +1058,6 @@
 													that.baoMing(pid, remark, point, title,1)
 												}
 											})
-
 										}
 									})
 								}

@@ -6,7 +6,6 @@
 				在线咨询
 			</view>
 			<view class="num" v-if="num!=0">
-				{{num}}
 			</view>
 		</view>
 		<view class="tel_box" @tap="boTel(telphone)">
@@ -74,7 +73,7 @@
 		mounted() {
 			let that = this
 			this.pass = uni.getStorageSync('pass')
-			this.num = uni.getStorageSync('total')
+			// this.num = uni.getStorageSync('total')
 			uni.onSocketMessage(function(res) {
 				let data = JSON.parse(res.data)
 				console.log(data)
@@ -82,7 +81,8 @@
 					that.sid = data.sid
 				} else if (data.action == 301) {
 					if (String(data.fromUserName).length < 10) {
-						if (uni.setStorageSync(String(data.fromUserName))) {
+						that.sid = data.fromUserName
+						if (uni.getStorageSync(String(data.fromUserName))) {
 							uni.setStorageSync(String(data.fromUserName), parseInt(uni.getStorageSync(String(data.fromUserName))) + 1)
 						} else {
 							uni.setStorageSync(String(data.fromUserName), 1)
@@ -105,10 +105,10 @@
 					let num = uni.getStorageSync(id)
 					let total = uni.getStorageSync('total')
 					total = total - num
-					this.num = total
 					uni.setStorageSync('total', total)
 					uni.removeStorageSync(id)
 				}
+				this.num = 0
 				let pid = this.pid
 				uni.navigateTo({
 					url: '/pages/talk/talk?id=' + id+'&bid='+pid

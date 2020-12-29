@@ -72,14 +72,14 @@
 			</view>
 			<view class="agree">
 				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass">
-					<view class="agree-box">
+					<view :class="info.my_like == 0 ? 'agree-box' : 'agree-box active'">
 						<image src="../../static/other/article-agree.png" mode=""></image>
 						<view class="agree-num">
 							{{info.like_num}}
 						</view>
 					</view>
 				</button>
-				<view class="agree-box" v-if="pass" @tap="agree">
+				<view :class="info.my_like == 0 ? 'agree-box' : 'agree-box active'" v-if="pass" @tap="agree">
 					<image src="../../static/other/article-agree.png" mode=""></image>
 					<view class="agree-num">
 						{{info.like_num}}
@@ -304,6 +304,7 @@
 									},
 									success: (res) => {
 										uni.setStorageSync('token',res.data.token)
+										uni.setStorageSync('phone',tel)
 										if(bid){
 											that.show(bid,txt,1)
 										}else{
@@ -349,6 +350,7 @@
 													},
 													success: (res) => {
 														uni.setStorageSync('token',res.data.token)
+														uni.setStorageSync('phone',tel)
 														if(bid){
 															that.show(bid,txt,1)
 														}else{

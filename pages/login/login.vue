@@ -125,7 +125,6 @@
 			  						}
 			  						that.msg = "订阅成功";
 			  						that.$refs.toast.show()
-			  						that.$emit('closethis', true)
 			  					}else {
 			  						that.iscode = true
 			  					}
@@ -148,11 +147,11 @@
 			  			success: (res) => {
 			  				console.log(res);
 							if(res.data.code==500){
-								this.msg= res.data.message;
+								this.msg= '发送失败，请重试';
 								this.$refs.toast.show();
 								console.log("500");
 							}else {
-								this.msg= res.data.message;
+								this.msg= '短信已发您手机';
 								this.$refs.toast.show();
 							}
 			  			}
@@ -184,21 +183,26 @@
 					success: (res) => {
 						console.log(res)
 						if(res.data.code === 500) {
-							that.msg = res.data.message;
+							that.msg = '验证码不正确';
 							that.$refs.toast.show()
 						} else {
+							uni.setStorageSync('phone',phone)
 							let  basurl = uni.getStorageSync('backurl');
-							if(basurl){
-								uni.navigateTo({
-									url:basurl
-								})
-							}
 							that.msg = "订阅成功";
 							that.$refs.toast.show()
-							that.$emit('closethis', true)
-							if(!uni.getStorageSync('token')) {
-								uni.setStorageSync('token',res.data.token)
-								uni.setStorageSync('phone',that.tel)
+							uni.setStorageSync('token',res.data.token)
+							uni.setStorageSync('pass',true)
+							if(basurl){
+								if(basurl == '/pages/home/home') {
+									uni.switchTab({
+										url:basurl
+									})
+								}else{
+									uni.navigateTo({
+										url:basurl
+									})
+								}
+								
 							}
 						}
 					}
