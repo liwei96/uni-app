@@ -375,7 +375,7 @@
 					max_total_price: '',
 					min_total_price: ''
 				},
-				page: 1,
+				page: 2,
 				isspecial: false,
 				isnormal: true,
 				isnull: false,
@@ -704,6 +704,7 @@
 					success: (res) => {
 						console.log(res)
 						that.page = that.page+1
+						console.log(data.page)
 						that.builds = that.builds.concat(res.data.info)
 						that.isloading = false
 					}
