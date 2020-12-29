@@ -87,9 +87,9 @@
 					<view class="price">{{building.price}}元/m²</view>
 					<view class="type">{{building.type}}<text>|</text>{{building.cityname}}-{{building.country}}<text>|</text>{{building.area}}m² </view>
 					<view class="tese">
-						<text class="zhuang">{{building.decorate}}</text> 
+						<text class="zhuang" v-if="building.decorate">{{building.decorate}}</text> 
 						<text class="other" v-if="building.railway">{{building.railway}}</text>
-						<text class="other" v-for="itm in building.features">{{item.value}}</text>
+						<text class="other" >{{building.features.value}}</text>
 					</view>
 				</view>
 			</view>

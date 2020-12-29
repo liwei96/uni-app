@@ -151,7 +151,7 @@
 	.toptitle {
 		color: #D4D7D9;
 		font-size: 29.88rpx;
-		padding: 0 29.88rpx;
+		// padding: 0 29.88rpx;
 		line-height: 87.64rpx;
 		background-color: #fff;
 		position: fixed;
@@ -193,6 +193,7 @@
 			width: 120%;
 			height: auto;
 			margin-bottom: 60rpx;
+			display:flex;
 			.left_checkbox {
 				float: left;
 				margin-top: 30rpx;
@@ -201,7 +202,7 @@
 
 			.pro_one {
 				float: left;
-
+				display:flex;
 				image {
 					width: 220rpx;
 					height: 160rpx;
@@ -213,7 +214,7 @@
 				.right_name {
 					width: 610rpx;
 					height: 160rpx;
-
+					
 					.name {
 						font-size: 30rpx;
 						font-weight: 800;
@@ -301,6 +302,7 @@
 			width: 120%;
 			height: auto;
 			margin-bottom: 60rpx;
+			display: flex;
 			.left_checkbox {
 				float: left;
 				margin-top: 30rpx;
@@ -309,7 +311,7 @@
 		
 			.pro_one {
 				float: left;
-		
+				display: flex;
 				image {
 					width: 220rpx;
 					height: 160rpx;

@@ -35,9 +35,9 @@
 				<view class="top_name">
 					<view class="name">{{detail.name}}</view>
 					<text class="tese">
-						<text class="one">{{detail.state}}</text>
-						<text class="other">{{detail.type}}</text>
-						<text class="other">{{detail.railway}}</text>
+						<text class="one" v-if="detail.state">{{detail.state}}</text>
+						<text class="other" v-if="detail.type">{{detail.type}}</text>
+						<text class="other" v-if="detail.railway">{{detail.railway}}</text>
 						<text class="other" v-for="(item,index) in detail.features" :key="index">{{item}}</text>
 					</text>
 				</view>
@@ -3327,7 +3327,7 @@
 			padding-right: 30rpx;
 			width: 100%;
 			box-sizing: border-box;
-			padding-bottom: 60rpx;
+			padding-bottom: 75rpx;
 
 			.tit {
 				font-size: 34rpx;
