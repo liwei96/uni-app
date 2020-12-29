@@ -405,7 +405,7 @@
 
 			<view class="address" @tap="goweb">
 				<view class="map">
-					<view class="nav_nav">
+					<!-- <view class="nav_nav">
 						<view class="nav_list active">
 							<image src="../../static/content/near_bus.png"></image>
 							公交
@@ -426,7 +426,7 @@
 							<image src="../../static/content/near_shi.png"></image>
 							美食
 						</view>
-					</view>
+					</view> -->
 				    <image :src="map_image" v-if="map_image!==''"></image>
 					<!-- <map id="my_map" style="width:690rpx; height:120px;" :latitude="latitude" :longitude="longitude" :markers="covers"></map> -->
 				</view>
