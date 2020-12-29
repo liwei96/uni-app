@@ -13,10 +13,12 @@
 				{{building.name}}
 			</view>
 			<view class="tese_line">
-				<text class="tese">{{building.state}}</text>
-				<text class="other">{{building.type}}</text>
-				<text class="other">{{building.railway}}</text>
-				<text class="other" v-for="(item,index) in building.features" :key="item.id" v-if="index<=3">{{item}}</text>
+				<text class="tese" v-if="building.state">{{building.state}}</text>
+				<text class="other" v-if="building.type">{{building.type}}</text>
+				<text class="other" v-if="building.railway">{{building.railway}}</text>
+				<template v-if="building.features">
+				   <text class="other" v-for="(item,index) in building.features" :key="item.id" v-if="index<=3">{{item}}</text>
+				</template>
 			</view>
 		</view>
 		<view class="bg_hui"></view>
@@ -235,6 +237,9 @@
 			// this.text=this.text.substring(0,82);
 		},
 		methods:{
+			setpop(){
+				this.$refs.popup.hide()
+			},
 			async getPhoneNumber(e,pid,remark,point,title,type) {
 				let that = this
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
@@ -244,6 +249,9 @@
 						
 					}
 				} else {
+					this.pass  = true;
+					uni.setStorageSync('pass',true)
+					
 					let session = uni.getStorageSync('session')
 					if(session){
 						uni.request({
@@ -260,7 +268,7 @@
 								uni.setStorageSync('phone',tel)
 								let openid = uni.getStorageSync('openid')
 							    that.tel = tel;
-								that.baoMing(pid,remark,point,title,0)
+								that.baoMing(pid,remark,point,title,1)
 							}
 						})
 					}else {
@@ -292,7 +300,7 @@
 											uni.setStorageSync('phone',tel)
 											let openid = uni.getStorageSync('openid')
 											that.$refs.sign.tel = tel
-											that.baoMing(pid,remark,point,title)
+											that.baoMing(pid,remark,point,title,1)
 										}
 									})
 									

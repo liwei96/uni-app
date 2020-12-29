@@ -427,7 +427,8 @@
 							美食
 						</cover-view>
 					</cover-view>
-					<map id="my_map" style="width:690rpx; height:120px;" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
+				    <image :src="map_image" v-if="map_image!==''"></image>
+					<!-- <map id="my_map" style="width:690rpx; height:120px;" :latitude="latitude" :longitude="longitude" :markers="covers"></map> -->
 				</view>
 			</view>
 			<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')" v-if="!pass">
@@ -537,8 +538,11 @@
 								<text class="wen">问</text>
 								<text class="wen_t">{{item.question}}</text>
 							</view>
-							<view class="da">
+							<view class="da" v-if="item.answer!==''">
 								共1个回答
+							</view>
+							<view class="da" v-else>
+								共0个回答
 							</view>
 						</navigator>
 					</view>
@@ -760,7 +764,8 @@
 				header:{},
 				collect:0,
 				shou_old:require("../../static/content/shou.png"),
-				has_shou:require("../../static/content/has_shou.png")
+				has_shou:require("../../static/content/has_shou.png"),
+				map_image:""
 
 			};
 		},
@@ -781,6 +786,9 @@
 			}
 		},
 		methods: {
+			setpop(){
+				this.$refs.popup.hide()
+			},
 			gocon(id) {
 				uni.navigateTo({
 					url: '/pages/content/content?id=' + id
@@ -879,6 +887,8 @@
 						that.baoMing(pid, remark, point, title,0)
 					}
 				} else {
+					 uni.setStorageSync("pass",true);
+					 this.pass = true;
 					if (type) {
 						let token = uni.getStorageSync("token");
 						if (token) {
@@ -986,8 +996,7 @@
 
 															}
 														})
-														// that.$refs.sign.tel = tel
-														// that.baoMing(pid,remark,point,title)
+														
 													}
 												})
 
@@ -1208,6 +1217,12 @@
 									// this.covers[0].height = 72;
 									this.covers[0].title = data.abstract.name;
 									this.covers[0].label.content = data.abstract.name;
+									let lng = data.abstract.longitude;
+									let lat = data.abstract.latitude;
+									let name = data.abstract.name;
+									console.log(name);
+									let img_map = require('../../static/content/map_icon.png');
+									this.map_image =`http://api.map.baidu.com/staticimage/v2?ak=Tz47quqSiGkQi7RyS3QKaFZxMy3GbH5o&center=${lng},${lat}&width=512&height=200&zoom=17&markers=${lng},${lat}&labels`;
 
 									this.suijiData();
 
@@ -2856,7 +2871,6 @@
 			background-color: #fff;
 			height: auto;
 			padding-bottom: 40rpx;
-
 			.zhou {
 				font-size: 34rpx;
 				font-weight: 800;
@@ -2934,18 +2948,17 @@
 
 				.map {
 					width: 100%;
-					height: 520rpx;
+					height: 360rpx;
 					padding-left: 30rpx;
 					padding-right: 30rpx;
 					box-sizing: border-box;
 					position: relative;
-
 					.nav_nav {
 						width: 596rpx;
 						height: 90rpx;
 						background: #fff;
 						position: absolute;
-						bottom: 100rpx;
+						bottom: 19rpx;
 						z-index: 4000;
 						display: flex;
 						justify-content: space-between;
@@ -2967,6 +2980,10 @@
 							color: #3D3D3D;
 						}
 
+					}
+					image{
+						width: 690rpx;
+						height: 360rpx;
 					}
 				}
 
@@ -3019,6 +3036,7 @@
 				text-align: center;
 				line-height: 80rpx;
 				margin-left: 30rpx;
+				margin-top: 50rpx;
 			}
 		}
 

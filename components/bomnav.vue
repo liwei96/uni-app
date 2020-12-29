@@ -58,7 +58,8 @@
 				}else if(data.action == 301) {
 					if (String(data.fromUserName).length < 10) {
 						if(uni.setStorageSync(String(data.fromUserName))) {
-							uni.setStorageSync(String(data.fromUserName),parseInt(uni.setStorageSync(String(data.fromUserName))) + 1)
+							console.log(uni.setStorageSync(String(data.fromUserName),parseInt(uni.getStorageSync(String(data.fromUserName))) + 1)
+							uni.setStorageSync(String(data.fromUserName),parseInt(uni.getStorageSync(String(data.fromUserName))) + 1)
 						}else {
 							uni.setStorageSync(String(data.fromUserName),1)
 						}

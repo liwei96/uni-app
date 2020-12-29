@@ -35,8 +35,10 @@
 						{{build.type}} | {{build.cityname}}-{{build.country}} | {{build.area}}m²
 					</view>
 					<view class="icons">
-						<text class="zhuang">{{build.decorate}}</text>
-						<text v-for="(item,key) in build.features">{{item}}</text>
+						<text class="zhuang" v-if="build.decorate">{{build.decorate}}</text>
+						<template v-if="build.features">
+						   <text v-for="(item,key) in build.features">{{item}}</text>
+						</template>
 					</view>
 				</view>
 			</view>

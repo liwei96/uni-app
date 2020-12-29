@@ -43,9 +43,10 @@
 						</view>
 						<view class="da_box" v-else>
 							<button class="da" hover-class="none" open-type="getPhoneNumber" 
-							@getphonenumber ="getPhoneNumber($event,item.id,1)">
+							@getphonenumber ="getPhoneNumber($event,item.id,1)" v-if="!pass">
 								我来回答
 							</button>
+							<button class="da" @tap="goTiwen(item.id)" v-if="pass">我来回答</button>
 						</view>
 						
 					
@@ -76,11 +77,14 @@
 <!-- 			</view> -->
 			<!-- 写问答 -->
 			<button open-type="getPhoneNumber" hover-class="none" 
-			@getphonenumber ="getPhoneNumber($event,project_id,2)">
+			@getphonenumber ="getPhoneNumber($event,project_id,2)" v-if="!pass">
 				<view class="white_wen" >
 					<image src="../../static/other/loudian.png" mode=""></image>
 				</view>
 			</button>
+			<view class="white_wen" v-if="pass" @tap="goQuestion(project_id)">
+				<image src="../../static/other/loudian.png" mode=""></image>
+			</view>
 			
 			<bottom :remark="remark" :point="103" :title="'预约看房'" :pid="parseInt(project_id)" :telphone="telphone"></bottom>
 		</view>
@@ -99,6 +103,7 @@ export default {
 			telphone:'',
 			page:1,
 			hua:true,
+			pass:false
 		};
 	},
 	components:{
@@ -115,6 +120,7 @@ export default {
 	  this.getdata(option.id);
 	  this.project_id = option.id;
 	  console.log(this.project_id)
+	  this.pass = uni.getStorageSync('pass')
 	},
 	onReachBottom(){
 		if(this.hua == true){
@@ -155,6 +161,8 @@ export default {
 					})
 				}
 			} else {
+				this.pass = true
+				uni.setStorageSync('pass',true)
 				let session = uni.getStorageSync('token')
 				if(session){
 					if(type==1){

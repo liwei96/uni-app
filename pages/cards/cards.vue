@@ -4,10 +4,8 @@
 			<view class="status_bar">
 			          <!-- 这里是状态栏 -->
 			      </view>
-		   <navigator url="../index/index" class="nav_top" open-type="switchTab">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>我的卡券</text>
-		   </navigator>
 		</view>
 		
 		

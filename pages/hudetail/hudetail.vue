@@ -242,6 +242,9 @@ import sign from '@/components/sign.vue'
 			this.pass = uni.getStorageSync('pass')
 		},
 		methods:{
+			setpop(){
+				this.$refs.popup.hide()
+			},
 			hideimg() {
 				this.$refs.popup1.hide()
 			},
@@ -264,6 +267,8 @@ import sign from '@/components/sign.vue'
 						
 					}
 				} else {
+					this.pass = true
+					uni.setStorageSync('pass',true)
 					let session = uni.getStorageSync('session')
 					if(session){
 						uni.request({
@@ -280,7 +285,7 @@ import sign from '@/components/sign.vue'
 								uni.setStorageSync('phone',tel)
 								let openid = uni.getStorageSync('openid')
 							    that.tel = tel;
-								that.baoMing(pid,remark,point,title)
+								that.baoMing(pid,remark,point,title,1)
 							}
 						})
 					}else {
@@ -312,7 +317,7 @@ import sign from '@/components/sign.vue'
 											uni.setStorageSync('phone',tel)
 											let openid = uni.getStorageSync('openid')
 											that.$refs.sign.tel = tel
-											that.baoMing(pid,remark,point,title)
+											that.baoMing(pid,remark,point,title,1)
 										}
 									})
 									
