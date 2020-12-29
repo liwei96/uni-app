@@ -99,6 +99,9 @@
 			})
 		},
 		methods: {
+			setpop(){
+				this.$refs.popup.hide()
+			},
 			gotalk() {
 				let id = String(this.sid)
 				if (uni.getStorageSync(id)) {

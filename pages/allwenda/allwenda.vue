@@ -129,18 +129,38 @@ export default {
 	},
 	methods:{
 		 goQuestion(id){ //去提问
-			 let url = '/pages/allwenda/allwenda?id='+this.project_id;
-			 uni.setStorageSync('backurl',url)
-			 uni.navigateTo({
-			 	url:"../tiwen/tiwen?id="+id
-			 })
+		     let token = uni.getStorageSync('token');
+			 if(token){
+				 let url = '/pages/allwenda/allwenda?id='+this.project_id;
+				 uni.setStorageSync('backurl',url)
+				 uni.navigateTo({
+				 	url:"../tiwen/tiwen?id="+id
+				 })
+			 }else{
+				 let url = '/pages/allwenda/allwenda?id='+this.project_id
+				 uni.setStorageSync('backurl',url)
+				 uni.navigateTo({
+				 	url:'/pages/login/login'
+				 })
+			 }
+			
 		 },         
 		goTiwen(id){ //去回复问题
-			let url = '/pages/allwenda/allwenda?id='+this.project_id;
-			uni.setStorageSync('backurl',url)
-			uni.navigateTo({
-				url:"../wenhui/wenhui?id="+id
-			})
+		    let token = uni.getStorageSync('token');
+			if(token){
+				let url = '/pages/allwenda/allwenda?id='+this.project_id;
+				uni.setStorageSync('backurl',url)
+				uni.navigateTo({
+					url:"../wenhui/wenhui?id="+id
+				})
+			}else{
+				let url = '/pages/allwenda/allwenda?id='+this.project_id
+				uni.setStorageSync('backurl',url)
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+			}
+			
 		},
 		getPhoneNumber(e,hui_id,type) {
 			let that = this

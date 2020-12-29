@@ -19,7 +19,6 @@
 						<image :src="item.img" mode="widthFix"></image>
 					</view>
 					<view class="num" v-if="item.num">
-						{{item.num}}
 					</view>
 				</view>
 				<view class="right">

@@ -126,9 +126,21 @@
 		methods: {
 			goHuifu(id){
 				//pid 项目id id 评价id
-				uni.navigateTo({
-					url:"/pages/huifu/huifu?id="+id+"&pid="+this.project_id
-				})
+				let token = uni.getStorageSync("token");
+				if(token){
+					uni.navigateTo({
+						url:"/pages/huifu/huifu?id="+id+"&pid="+this.project_id
+					})
+				}else{
+					this.$refs.msg.show();
+					this.msg = "请先登录"
+					let url = '/pages/loudian/loudian?id=' + this.project_id
+					uni.setStorageSync('backurl', url)
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+				}
+				
 			},
 			getPhoneNumber(e,type) {
 				let that = this
@@ -256,6 +268,12 @@
 				} else {
 					this.$refs.msg.show();
 					this.msg = "请先登录"
+					let url = '/pages/loudian/loudian?id=' + this.project_id
+					uni.setStorageSync('backurl', url)
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+					
 				}
 			},
 			getLike(id) {
@@ -284,15 +302,32 @@
 				} else {
 					this.$refs.msg.show();
 					this.msg = "请先登录"
+					let url = '/pages/loudian/loudian?id=' + this.project_id
+					uni.setStorageSync('backurl', url)
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
 				}
 			},
 			godian() {
-				let url = '/pages/loudian/loudian?id=' + this.project_id
-				uni.setStorageSync('backurl', url)
-				let id = this.project_id;
-				uni.navigateTo({
-					url: '/pages/senddian/senddian?id=' + id
-				})
+				let token = uni.getStorageSync('token');
+				if(token){
+					let url = '/pages/loudian/loudian?id=' + this.project_id
+					uni.setStorageSync('backurl', url)
+					let id = this.project_id;
+					uni.navigateTo({
+						url: '/pages/senddian/senddian?id=' + id
+					})
+				}else{
+					this.$refs.msg.show();
+					this.msg = "请先登录"
+					let url = '/pages/loudian/loudian?id=' + this.project_id
+					uni.setStorageSync('backurl', url)
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+				}
+				
 			},
 			getdata(id, page) {
 				uni.showLoading({

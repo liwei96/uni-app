@@ -343,7 +343,6 @@ import sign from '@/components/sign.vue'
 				this.pid_d = pid;
 				this.remark_k = remark;
 				this.position_n = point;
-				console.log(pid);
 				this.$refs.popup.show();
 			},
 			setiscode(){
@@ -366,7 +365,6 @@ import sign from '@/components/sign.vue'
 					method:"GET",
 					success: (res) => {
 						if(res.data.code==200){
-							console.log(res);
 					        this.one = res.data.one,
 							this.common = res.data.common;
 							this.other_rooms = res.data.other_rooms;

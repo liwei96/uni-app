@@ -6,7 +6,6 @@
 				在线咨询
 			</view>
 			<view class="talknum" v-if="num!=0">
-				{{num}}
 			</view>
 		</view>
 		<view class="btn btn1" @tap="call">

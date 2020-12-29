@@ -98,6 +98,9 @@
 </script>
 
 <style lang="less">
+	page{
+		background: #FFFFFF;
+	}
 	.about {
 		background-color: #FAFAFA;
 	}

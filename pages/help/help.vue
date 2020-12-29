@@ -523,6 +523,9 @@
 </script>
 
 <style lang="less">
+	page{
+		background:#FFFFFF
+	}
 	.toptitle {
 		color: #FFFFFF;
 		font-size: 29.88rpx;

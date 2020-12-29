@@ -35,9 +35,9 @@
 				<view class="top_name">
 					<view class="name">{{detail.name}}</view>
 					<text class="tese">
-						<text class="one">{{detail.state}}</text>
-						<text class="other">{{detail.type}}</text>
-						<text class="other">{{detail.railway}}</text>
+						<text class="one" v-if="detail.state">{{detail.state}}</text>
+						<text class="other" v-if="detail.type">{{detail.type}}</text>
+						<text class="other" v-if="detail.railway">{{detail.railway}}</text>
 						<text class="other" v-for="(item,index) in detail.features" :key="index">{{item}}</text>
 					</text>
 				</view>
@@ -405,28 +405,28 @@
 
 			<view class="address" @tap="goweb">
 				<view class="map">
-					<cover-view class="nav_nav">
-						<cover-view class="nav_list active">
-							<cover-image src="../../static/content/near_bus.png"></cover-image>
+					<view class="nav_nav">
+						<view class="nav_list active">
+							<image src="../../static/content/near_bus.png"></image>
 							公交
-						</cover-view>
-						<cover-view class="nav_list">
-							<cover-image src="../../static/content/near_edu.png"></cover-image>
+						</view>
+						<view class="nav_list">
+							<image src="../../static/content/near_edu.png"></image>
 							教育
-						</cover-view>
-						<cover-view class="nav_list">
-							<cover-image src="../../static/content/near_yi.png"></cover-image>
+						</view>
+						<view class="nav_list">
+							<image src="../../static/content/near_yi.png"></image>
 							医院
-						</cover-view>
-						<cover-view class="nav_list">
-							<cover-image src="../../static/content/near_gou.png"></cover-image>
+						</view>
+						<view class="nav_list">
+							<image src="../../static/content/near_gou.png"></image>
 							购物
-						</cover-view>
-						<cover-view class="nav_list">
-							<cover-image src="../../static/content/near_shi.png"></cover-image>
+						</view>
+						<view class="nav_list">
+							<image src="../../static/content/near_shi.png"></image>
 							美食
-						</cover-view>
-					</cover-view>
+						</view>
+					</view>
 				    <image :src="map_image" v-if="map_image!==''"></image>
 					<!-- <map id="my_map" style="width:690rpx; height:120px;" :latitude="latitude" :longitude="longitude" :markers="covers"></map> -->
 				</view>
@@ -1054,7 +1054,7 @@
 													let tel = res.data.mobile
 													uni.setStorageSync('phone', tel)
 													let openid = uni.getStorageSync('openid')
-													that.$refs.sign.tel = tel
+												//	that.$refs.sign.tel = tel
 													that.baoMing(pid, remark, point, title,1)
 												}
 											})
@@ -1130,6 +1130,12 @@
 				} else {
 					this.$refs.msg.show();
 					this.msg = "请先登录"
+					let url = "/pages/content/content?id=" + this.detail.id;
+					uni.setStorageSync("backurl", url)
+					uni.navigateTo({
+						url: "/pages/login/login"
+					})
+					
 				}
 			},
 			deletePing(id) {
@@ -1162,6 +1168,11 @@
 				} else {
 					this.$refs.msg.show();
 					this.msg = "请先登录"
+					let url = "/pages/content/content?id=" + this.detail.id;
+					uni.setStorageSync("backurl", url)
+					uni.navigateTo({
+						url: "/pages/login/login"
+					})
 				}
 			},
 			getdata(id) {
@@ -1357,8 +1368,13 @@
 
 					})
 				} else {
+					let url = "/pages/content/content?id=" + this.detail.id;
 					this.$refs.msg.show();
 					this.msg = "请先登录"
+					uni.setStorageSync("backurl", url)
+					uni.navigateTo({
+						url: "/pages/login/login"
+					})
 				}
 
 
@@ -1373,8 +1389,13 @@
 						url: "../tiwen/tiwen?id=" + id
 					})
 				} else {
+					let url = "/pages/content/content?id=" + this.detail.id;
 					this.msg = "请先登录";
 					this.$refs.msg.show();
+					uni.setStorageSync("backurl", url)
+					uni.navigateTo({
+						url: "/pages/login/login"
+					})
 				}
 
 			},
@@ -1388,8 +1409,13 @@
 						url: "../senddian/senddian?id=" + id
 					})
 				} else {
+					let url = "/pages/content/content?id=" + this.detail.id;
 					this.msg = "请先登录";
 					this.$refs.msg.show();
+					uni.setStorageSync("backurl", url)
+					uni.navigateTo({
+						url: "/pages/login/login"
+					})
 				}
 
 			},
@@ -1781,6 +1807,8 @@
 							margin-right: 12rpx;
 							border-radius: 6rpx;
 							height: 36rpx;
+							padding-top:3rpx;
+							padding-bottom: 3rpx;
 						}
 					}
 				}
@@ -2969,7 +2997,7 @@
 							display: flex;
 							align-items: center;
 
-							cover-image {
+							image {
 								width: 32rpx;
 								height: 32rpx;
 							}
@@ -3326,7 +3354,7 @@
 			padding-right: 30rpx;
 			width: 100%;
 			box-sizing: border-box;
-			padding-bottom: 60rpx;
+			padding-bottom: 75rpx;
 
 			.tit {
 				font-size: 34rpx;
