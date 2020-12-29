@@ -380,7 +380,8 @@
 							.right_name {
 								width: 610rpx;
 								height: 160rpx;
-								float: left;
+								
+							//	float: left;
 								.name {
 									font-size: 30rpx;
 									font-weight: 800;
@@ -401,7 +402,7 @@
 									color: #646566;
 									line-height: 24rpx;
 									margin-bottom: 12rpx;
-									width: 450rpx;
+									width: 360rpx;
 									height: 24rpx;
 									overflow: hidden;
 									.ge {

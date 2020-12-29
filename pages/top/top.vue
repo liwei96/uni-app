@@ -269,7 +269,7 @@
 		background: url(../../static/feature/feature-top.jpg);
 		background-size: 100%;
 		position: relative;
-		margin-top: 88rpx;
+		margin-top: 87rpx;
 
 		.city {
 			position: absolute;

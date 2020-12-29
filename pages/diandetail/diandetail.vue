@@ -206,6 +206,11 @@
 				} else {
 					this.$refs.msg.show();
 					this.msg = "请先登录"
+					let url="/pages/diandetail/diandetail?id="+pid;
+					uni.setStorageSync("backurl",url)
+					uni.navigateTo({
+						url:"/pages/login/login"
+					})
 				}
 			},
 			getLike(id) {
@@ -233,6 +238,11 @@
 				} else {
 					this.$refs.msg.show();
 					this.msg = "请先登录"
+					let url="/pages/diandetail/diandetail?id="+pid;
+					uni.setStorageSync("backurl",url)
+					uni.navigateTo({
+						url:"/pages/login/login"
+					})
 				}
 			},
 			async getPhoneNumber(e,pid,remark,point,title,type,ping_id) {
@@ -429,11 +439,23 @@
 					})
 			},
 			goHuifu(id){
-				let basurl = "/pages/diandetail/diandetail?id="+this.project_id;
-				uni.setStorageSync("backurl",basurl)
-				uni.navigateTo({
-					url:"../huifu/huifu?id="+id+"&pid="+this.building.id
-				})
+				let token = uni.getStorageSync("token");
+				if(token){
+					let basurl = "/pages/diandetail/diandetail?id="+this.project_id;
+					uni.setStorageSync("backurl",basurl)
+					uni.navigateTo({
+						url:"../huifu/huifu?id="+id+"&pid="+this.building.id
+					})
+				}else{
+					this.$refs.msg.show();
+					this.msg = "请先登录"
+					let url="/pages/diandetail/diandetail?id="+pid;
+					uni.setStorageSync("backurl",url)
+					uni.navigateTo({
+						url:"/pages/login/login"
+					})
+				}
+				
 			},
 			baoMing(pid,remark,point,title,n){
 				this.isok = n;

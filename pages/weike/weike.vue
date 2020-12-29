@@ -297,6 +297,9 @@
 </script>
 
 <style lang="less">
+	page{
+		background:#fff;
+	}
 	.weike {
 		display: flex;
 		flex-direction: column;

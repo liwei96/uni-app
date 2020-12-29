@@ -178,35 +178,54 @@
 			},
 			//没有回答的，跳问答回答页
 			gowenda(id) {
-				let url = '/pages/wendadetail/wendadetail?id=' + this.data.id;
-				uni.setStorageSync('backurl', url)
-				uni.navigateTo({
-					url: "/pages/wenhui/wenhui?id=" + id
-				})
+				let token = uni.getStorageSync("token")
+				if(token){
+					let url = '/pages/wendadetail/wendadetail?id=' + this.data.id;
+					uni.setStorageSync('backurl', url)
+					uni.navigateTo({
+						url: "/pages/wenhui/wenhui?id=" + id
+					})
+				}else{
+					let url = "/pages/wendadetail/wendadetail?id=" + this.data.bid;
+					uni.setStorageSync("backurl", url)
+					uni.navigateTo({
+						url: "/pages/login/login"
+					})
+				}
+				
 			},
 			wenDian(id) {
 				let token = uni.getStorageSync("token")
-				uni.request({
-					url: this.apiserve + "/jy/question/like",
-					data: {
-						token: token,
-						id: id
-					},
-					header: {
-						'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-					},
-					method: "POST",
-					success: (res) => {
-						if (res.data.code == 200) {
-							console.log(res,'res');
-							this.$refs.msg.show();
-							this.msg = res.data.message;
-							this.getdata(this.data.id)
-						} else {
-							console.log(res)
+				if(token){
+					uni.request({
+						url: this.apiserve + "/jy/question/like",
+						data: {
+							token: token,
+							id: id
+						},
+						header: {
+							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+						},
+						method: "POST",
+						success: (res) => {
+							if (res.data.code == 200) {
+								console.log(res,'res');
+								this.$refs.msg.show();
+								this.msg = res.data.message;
+								this.getdata(this.data.id)
+							} else {
+								console.log(res)
+							}
 						}
-					}
-				})
+					})
+				}else{
+					let url = "/pages/wendadetail/wendadetail?id=" + this.data.bid;
+					uni.setStorageSync("backurl", url)
+					uni.navigateTo({
+						url: "/pages/login/login"
+					})
+				}
+				
 			},
 			async getPhoneNumber(e, pid, remark, point, title, type, wen_id) {
 				let that = this

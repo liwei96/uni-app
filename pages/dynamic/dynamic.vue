@@ -34,11 +34,14 @@
 					<view class="time">
 						{{item.time}}
 					</view>
-					<button open-type="getPhoneNumber" @tap="bid = item.id" @getphonenumber="getPhoneNumber">
+					<button open-type="getPhoneNumber" @tap="bid = item.id" @getphonenumber="getPhoneNumber" v-if="!pass">
 					<view class="btn">
 						订阅此楼盘动态
 					</view>
 					</button>
+					<view class="btn" v-if='pass' @tap="show(item.id,'动态页+订阅楼盘动态',1)">
+						订阅此楼盘动态
+					</view>
 				</view>
 			</view>
 		</view>
@@ -64,6 +67,9 @@
 			that = this
 			this.getdata()
 		},
+		onLoad(){
+			this.pass = uni.getStorageSync('pass')
+		},
 		data() {
 			return {
 				page: 1,
@@ -74,7 +80,8 @@
 				title: '',
 				position: 0,
 				isok: 0,
-				bid: 0
+				bid: 0,
+				pass:false,
 			}
 		},
 		onReachBottom() {
@@ -174,9 +181,11 @@
 				let that = this
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
-					that.show(that.bid,'动态页+订阅楼盘动态')
+					that.show(that.bid,'动态页+订阅楼盘动态',0)
 					
 				} else {
+					this.pass = true
+					uni.setStorageSync('pass',true)
 					let session = uni.getStorageSync('session')
 					if(session){
 						uni.request({
@@ -193,7 +202,7 @@
 								uni.setStorageSync('phone',tel)
 								let openid = uni.getStorageSync('openid')
 								that.tel = tel
-								that.show(that.bid,'动态页+订阅楼盘动态')
+								that.show(that.bid,'动态页+订阅楼盘动态',1)
 							}
 						})
 					}else {
@@ -224,7 +233,7 @@
 											uni.setStorageSync('phone',tel)
 											let openid = uni.getStorageSync('openid')
 											that.tel = tel
-											that.show(that.bid,'动态页+订阅楼盘动态')
+											that.show(that.bid,'动态页+订阅楼盘动态',1)
 										}
 									})
 									
@@ -242,6 +251,9 @@
 </script>
 
 <style lang="less">
+	page{
+		background: #FFFFFF;
+	}
 	.toptitle {
 		color: #17181A;
 		font-size: 29.88rpx;

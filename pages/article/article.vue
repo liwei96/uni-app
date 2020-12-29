@@ -272,6 +272,9 @@
 </script>
 
 <style lang="less">
+	page{
+		background: #FFFFFF;
+	}
 	.article {
 		background-color: #FFFFFF;
 	}

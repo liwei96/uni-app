@@ -429,6 +429,9 @@
 </script>
 
 <style lang="less">
+	page{
+		background: #fff;
+	}
 	.toptitle {
 		.status_bar {
 			height: var(--status-bar-height);
@@ -471,7 +474,7 @@
 		height: 278.88rpx;
 		margin-bottom: 47.8rpx;
 		margin-top: var(--status-bar-height);
-		padding-top: 88rpx;
+		padding-top: 87rpx;
 	}
 
 	.limit-time {
@@ -762,6 +765,7 @@
 						margin-left: -73.7rpx;
 						margin-top: 19.92rpx;
 						color: #FFFFFF;
+						font-size:26rpx;
 					}
 
 					text {
