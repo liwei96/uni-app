@@ -205,7 +205,7 @@
 				咨询特价房
 			</view>
 		</view>
-		<view class="bg_hui"></view>
+		<view class="bg_hui" v-if="tejia.length>0"></view>
 		<!-- 主力户型 -->
 		<view class="huxing">
 			<view class="tit huxing_tit">
@@ -1807,8 +1807,8 @@
 							margin-right: 12rpx;
 							border-radius: 6rpx;
 							height: 36rpx;
-							padding-top:3rpx;
-							padding-bottom: 3rpx;
+							padding-top:4rpx;
+							padding-bottom: 4rpx;
 						}
 					}
 				}

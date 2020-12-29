@@ -190,6 +190,9 @@
 </script>
 
 <style lang="less">
+	page{
+		background: #FFFFFF;
+	}
 	button {
 		padding: 0;
 		margin: 0;
