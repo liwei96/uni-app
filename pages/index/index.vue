@@ -245,7 +245,9 @@
 						<view class="right">
 							<view class="right-name">
 								<text class="name">{{item.name}}</text>
-								<text class="status">{{item.state}}</text>
+								<text class="status" v-if="item.state=='在售'">{{item.state}}</text>
+								<text class="status_dai" v-if="item.state=='待售'">{{item.state}}</text>
+								<text class="status_kong" v-if="item.state =='售空'">{{item.state}}</text>
 							</view>
 							<text class="price">{{item.price}}</text>
 							<text class="psam">元/m²</text>
@@ -253,9 +255,9 @@
 								<text class="right-msg">{{item.type}} | {{item.city}}-{{item.country}} | {{item.area}}m²</text>
 							</view>
 							<view class="right-icons">
-								<text class="jing">没有</text>
-								<text>{{item.railway}}</text>
-								<text>{{item.feature}}</text>
+								<text class="jing" v-if="item.decorate">{{item.decorate}}</text>
+								<text v-if="item.railway">{{item.railway}}</text>
+								<text v-if="item.feature">{{item.feature}}</text>
 							</view>
 						</view>
 
@@ -1119,6 +1121,31 @@
 						float: right;
 						display: block;
 					}
+					.status_dai{
+						color: #FA941B;
+						font-size: 21.91rpx;
+						background-color: #FCF6E8;
+						width: 67.72rpx;
+						height: 35.85rpx;
+						border-radius: 5.97rpx;
+						text-align: center;
+						line-height: 35.85rpx;
+						float: right;
+						display: block;
+					}
+					.status_kong{
+						color:  #FFFFFF;
+						font-size: 21.91rpx;
+						background-color: #D9D9D9;
+						width: 67.72rpx;
+						height: 35.85rpx;
+						border-radius: 5.97rpx;
+						text-align: center;
+						line-height: 35.85rpx;
+						float: right;
+						display: block;
+					}
+					
 
 					.price {
 						color: #FF6040;

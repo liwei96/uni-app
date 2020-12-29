@@ -29,24 +29,37 @@
 							<button class="shan" v-if="item.mine==1" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,1)" @tap="did = item.id">删除</button>
 						</view>
 						<view class="zan">
-							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id">
+							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id" v-if="!pass">
 								<view class="zan_box_no" v-if="item.my_like==0">
 									<image src="../../static/content/no_zan.png" mode=""></image>
 									{{item.like_num}}
 								</view>
 							</button>
-							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id">
+							    <view class="zan_box_no" v-if="item.my_like==0 && pass" @tap="getLike(item.id)">
+									<image src="../../static/content/no_zan.png" mode=""></image>
+									{{item.like_num}}
+								</view>
+								
+							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id" v-if="!pass">
 								<view class="zan_box_zan" v-if="item.my_like==1">
 									<image src="../../static/content/zan.png" mode=""></image>
 									{{item.like_num}}
 								</view>
 							</button>
-							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,3)" @tap="did = item.id">
+							    <view class="zan_box_zan" v-if="item.my_like==1 && pass" @tap="getLike(item.id)">
+									<image src="../../static/content/zan.png" mode=""></image>
+									{{item.like_num}}
+								</view>
+							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,3)" @tap="did = item.id" v-if="!pass">
 								<view class="dianping" >
 									<image src="../../static/liu.png" mode=""></image>
 									{{item.children.length}}
 								</view>
 							</button>
+							<view class="dianping" @tap="goHuifu(item.id)" v-if="pass">
+								<image src="../../static/liu.png" mode=""></image>
+								{{item.children.length}}
+							</view>
 						</view>
 					</view>
 				</view>
@@ -60,11 +73,14 @@
 		</view>
 	    <!-- 传入项目id 先判断是否登录-->
 		<button open-type="getPhoneNumber" hover-class="none"
-		@getphonenumber="getPhoneNumber($event,4)">
+		@getphonenumber="getPhoneNumber($event,4)" v-if="!pass">
 			<view class="white_ping" >
 				<image src="../../static/other/white.png" mode=""></image>
 			</view>
 		</button>
+		<view class="white_ping" v-if="pass" @tap="godian">
+			<image src="../../static/other/white.png" mode=""></image>
+		</view>
 
 		<bottom :remark="'项目楼盘点评页+预约看房'" :point="103" :title="'预约看房'" :pid="parseInt(project_id)" :telphone="telphone"></bottom>
 		<mytoast :txt="msg" ref="msg"></mytoast>
@@ -86,7 +102,8 @@
 				page: 1,
 				hua: true,
 				did: 0,
-				msg: ''
+				msg: '',
+				pass:false
 			};
 		},
 		components: {
@@ -98,6 +115,7 @@
 			this.project_id = option.id;
 			let page = this.page;
 			this.getdata(option.id, page);
+			this.pass = uni.getStorageSync('pass')
 		},
 		onReachBottom() {
 			let id = this.project_id;
@@ -136,6 +154,8 @@
 						})
 					}
 				} else {
+					  this.pass = true
+					  uni.setStorageSync('pass',true)
 					let session = uni.getStorageSync('token')
 					if (session) {
 						if(type==1){ //删除

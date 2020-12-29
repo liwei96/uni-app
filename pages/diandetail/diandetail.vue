@@ -27,28 +27,41 @@
 						<text class="time">{{comment.time}}</text>
 					</view>
 					<view class="zan">
-						<button open-type="getPhoneNumber" v-if="comment.my_like==1"
-						@getphonenumber="getPhoneNumber($event,project_id,'项目点评详情页+点赞',104,'点赞',1,comment.id)" 
+						<button open-type="getPhoneNumber" 
+						@getphonenumber="getPhoneNumber($event,project_id,'项目点评详情页+点赞',104,'点赞',1,comment.id)" v-if="!pass"
 						>
-							<view class="zan_box" >
+							<view class="zan_box" v-if="comment.my_like==1">
 								<image src="../../static/content/zan.png" mode=""></image>
 								{{comment.like_num}}
 							</view>
 						</button>
-						<button open-type="getPhoneNumber" v-if="comment.my_like==0"
+						<view class="zan_box" v-if="comment.my_like==1 && pass" @tap="getLike(comment.id)">
+							<image src="../../static/content/zan.png" mode=""></image>
+							{{comment.like_num}}
+						</view>
+						
+						<button open-type="getPhoneNumber" v-if="!pass"
 						@getphonenumber="getPhoneNumber($event,project_id,'项目详情页+点赞',104,'点赞',1,comment.id)" >
-							<view class="zan_box_no" >
+							<view class="zan_box_no" v-if="comment.my_like==0">
 								<image src="../../static/content/no_zan.png" mode=""></image>
 								{{comment.like_num}}
 							</view>
 						</button>
+						<view class="zan_box_no" v-if="comment.my_like==0 && pass" @tap="getLike(comment.id)">
+							<image src="../../static/content/no_zan.png" mode=""></image>
+							{{comment.like_num}}
+						</view>
 						
-						<button class="dianping"  open-type="getPhoneNumber" hover-class="none"
+						<button class="dianping"  open-type="getPhoneNumber" hover-class="none" v-if="!pass"
 						@getphonenumber="getPhoneNumber($event,project_id,'项目详情页+回复',104,'回复',2,comment.id)"
 						>
 							<image src="../../static/liu.png" mode=""></image>
 							{{hui_num}}
 						</button>
+						<view class="dianping" v-if="pass" @tap="goHuifu(comment.id)">
+							<image src="../../static/liu.png" mode=""></image>
+							{{hui_num}}
+						</view>
 					</view>
 				</view>
 			<!-- 	回复框 -->
@@ -57,9 +70,12 @@
 					<text class="con">{{ite.content}}</text>
 					<view class="time_box">
 						<text class="time"> {{ite.time}}</text>
-						<button class='shan' v-if="ite.mine==1" open-type="getPhoneNumber" hover-class="none"
+						<button class='shan' v-if="ite.mine==1 && !pass" open-type="getPhoneNumber" hover-class="none"
 						@getphonenumber="getPhoneNumber($event,project_id,'项目详情页+删除',104,'删除',3,ite.id)"
 						>删除</button>
+						<text class="shan" v-if="ite.mine==1 && pass" @tap="deletePing(ite.id)" >
+							删除
+						</text>
 					</view>
 				</view>
 			</view>
@@ -90,10 +106,13 @@
 							为客户提供专业的购房建议
 						</view>
 					</view>
-					<button class="btn" open-type="getPhoneNumber" hover-class="none"
+					<button class="btn" open-type="getPhoneNumber" hover-class="none" v-if="!pass"
 					@getphonenumber="getPhoneNumber($event,project_id,'项目点评详情页+免费咨询',104,'免费咨询')">
 						免费咨询
 					</button>
+					<view class="btn" v-if="pass" @tap="baoMing(project_id,'项目点评详情页+免费咨询',104,'免费咨询',1)">
+						免费咨询
+					</view>
 				</view>
 		    </view>
 		</view>
@@ -137,7 +156,8 @@
 				position_n:0,
 				telphone:'',
 				isok:0,
-				msg:""
+				msg:"",
+				pass:false
 				
 			};
 		},
@@ -153,8 +173,12 @@
 			console.log(option.id);
 			this.getdata(option.id);
 			this.project_id = option.id;
+			this.pass = uni.getStorageSync('pass')
 		},
 		methods:{
+			setpop(){
+				this.$refs.popup.hide();
+			},
 			deletePing(id) { //删除回复
 				let token = uni.getStorageSync("token");
 				if (token) {
@@ -234,9 +258,11 @@
 						
 					}else{
 						this.isok = 0
-						that.baoMing(pid,remark,point,title)
+						that.baoMing(pid,remark,point,title,0)
 					}
 				} else {
+					 this.pass = true
+					 uni.setStorageSync('pass',true)
 					if(type){
 					   	let session = uni.getStorageSync('session')
 					   	if(session){
@@ -324,8 +350,7 @@
 														
 													}
 												})
-					   							// that.$refs.sign.tel = tel
-					   							// that.baoMing(pid,remark,point,title)
+					   						
 					   						}
 					   					})
 					   					
@@ -352,7 +377,7 @@
 									uni.setStorageSync('phone',tel)
 									let openid = uni.getStorageSync('openid')
 									that.tel = tel;
-									that.baoMing(pid,remark,point,title)
+									that.baoMing(pid,remark,point,title,1)
 								}
 							})
 						}else {
@@ -384,7 +409,7 @@
 											uni.setStorageSync('phone',tel)
 											let openid = uni.getStorageSync('openid')
 											that.$refs.sign.tel = tel
-											that.baoMing(pid,remark,point,title)
+											that.baoMing(pid,remark,point,title,1)
 										}
 									})
 									
@@ -410,7 +435,8 @@
 					url:"../huifu/huifu?id="+id+"&pid="+this.building.id
 				})
 			},
-			baoMing(pid,remark,point,title){
+			baoMing(pid,remark,point,title,n){
+				this.isok = n;
 				this.$refs.popup.show();
 				this.title_e = title;
 				this.pid_d = pid;

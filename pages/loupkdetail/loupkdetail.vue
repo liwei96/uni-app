@@ -155,9 +155,10 @@
 			<view class="pro_sale" v-for="item in data" :key="item.id">
 				<view class="danjia_box">
 					<view class="price">约{{item.price}}元/m²</view>
-					<button class="btn" open-type="getPhoneNumber" hover-class="none"
+					<button class="btn" open-type="getPhoneNumber" hover-class="none" v-if="!pass"
 					    @getphonenumber="getPhoneNumber($event,item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价')"
 					>咨询底价</button>
+					<view class="btn" v-if="pass" @tap="baoMing(item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价',1)">咨询底价</view>
 				</view>
 				<view class="zongjia">
 					{{item.total_price}}
@@ -247,10 +248,13 @@
 
 		</view>
 
-		<button class="button" open-type="getPhoneNumber" hover-class="none"
+		<button class="button" open-type="getPhoneNumber" hover-class="none" v-if="!pass"
 		@getphonenumber="getPhoneNumber($event,0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息')">
 			咨询详细楼盘信息
 		</button>
+		<view class="button" v-if="pass" @tap="baoMing(0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息',1)">
+			咨询详细楼盘信息
+		</view>
 		<twosee :title="title" :project="recommends"></twosee>
 		<bottom :remark="'楼盘pk详情页+预约看房'" :point="103" :title="'预约看房'" :pid="pid" :telphone="telphone"></bottom>
 		
@@ -289,12 +293,14 @@
 				pid:"0",
 				
 				tel:'4009669995',
-				isok:0
+				isok:0,
+				pass:false
 			};
 		},
 		onLoad(option) {
 			console.log(option);
 			this.getdata(option.id);
+			this.pass = uni.getStorageSync('pass')
 		},
 		onPageScroll(e){
 			if(e.scrollTop>=50){
@@ -313,15 +319,20 @@
 			sign
 		},
 		methods: {
+			setpop(){
+				this.$refs.popup.hide()
+			},
 			async getPhoneNumber(e,pid,remark,point,title,type) {
 				let that = this
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
-					that.baoMing(pid,remark,point,title)
+					that.baoMing(pid,remark,point,title,0)
 					if(type) {
 						
 					}
 				} else {
+					this.pass = true
+					uni.setStorageSync('pass',true)
 					let session = uni.getStorageSync('session')
 					if(session){
 						uni.request({
@@ -338,7 +349,7 @@
 								uni.setStorageSync('phone',tel)
 								let openid = uni.getStorageSync('openid')
 							    that.tel = tel;
-								that.baoMing(pid,remark,point,title)
+								that.baoMing(pid,remark,point,title,1)
 							}
 						})
 					}else {
@@ -370,7 +381,7 @@
 											uni.setStorageSync('phone',tel)
 											let openid = uni.getStorageSync('openid')
 											that.$refs.sign.tel = tel
-											that.baoMing(pid,remark,point,title)
+											that.baoMing(pid,remark,point,title,1)
 										}
 									})
 									
@@ -382,7 +393,8 @@
 					this.isok = 1
 				}
 			},
-			baoMing(pid,msg,point,title){
+			baoMing(pid,msg,point,title,n){
+				this.isok = n;
 				this.pid_d = pid;
 				this.position_n = point,
 				this.title_e = title;

@@ -14,7 +14,7 @@
 				效果图({{effect_leng }}）
 			</view>
 			 <view class="pic_list"> 
-			   <image :src="item.big" v-for="(item,index) in effect" :key="index"></image>
+			   <image :src="item.big" v-for="(item,index) in effect" :key="index" @tap="showImg(item.big)" ></image>
 			</view>
 		</view>
 		<view class="real">
@@ -22,7 +22,7 @@
 				实景图({{ real_leng }}）
 			</view>
 			<view class="pic_list">
-			   <image :src="item.big" v-for="(item,index) in real" :key="index"></image>
+			   <image :src="item.big" v-for="(item,index) in real" :key="index" @tap="showImg(item.big)"></image>
 			</view>
 		</view>
 		<view class="template">
@@ -30,7 +30,7 @@
 				样板房({{example_leng}}）
 			</view>
 			<view class="pic_list">
-			   <image :src="item.big" v-for="(item,index) in example" :key="index"></image>
+			   <image :src="item.big" v-for="(item,index) in example" :key="index" @tap="showImg(item.big)"></image>
 			</view>
 		</view>
 		<view class="peitao">
@@ -38,7 +38,7 @@
 				配套({{matching_leng}}）
 			</view>
 			<view class="pic_list">
-			   <image :src="item.big" v-for="(item,index) in matching" :key="index"></image>
+			   <image :src="item.big" v-for="(item,index) in matching" :key="index" @tap="showImg(item.big)"></image>
 			</view>
 		</view>
 		<view class="traffic">
@@ -46,7 +46,7 @@
 				交通图({{traffic_leng}}）
 			</view>
 			<view class="pic_list">
-			   <image :src="item.big" v-for="(item,index) in traffic" :key="index"></image>
+			   <image :src="item.big" v-for="(item,index) in traffic" :key="index" @tap="showImg(item.big)"></image>
 			</view>
 		</view>
 		<view class="huxing">
@@ -54,7 +54,7 @@
 				户型图({{departments_leng}}）
 			</view>
 			<view class="pic_list">
-				<view class="img_box" v-for="(item,index) in departments" :key="index">
+				<view class="img_box" v-for="(item,index) in departments" :key="index" @tap="showImg(item.big)">
 					<image :src="item.big" ></image>
 				</view>
 			</view>
@@ -67,12 +67,15 @@
 		
 		
 		
-		
+		<wyb-popup ref="popup1" type="center" height="1000" width="700" radius="0" :showCloseIcon="false" @hide="setiscode">
+			<image :src="url" mode="" class="bigimg" @tap="hideimg"></image>
+		</wyb-popup>
 		
 	</view>
 </template>
 
 <script>
+	import wybPopup from "@/components/wyb-popup/wyb-popup.vue"
 	import bottom from '../../components/mine/bottom.vue'
 	export default {
 		data() {
@@ -91,20 +94,40 @@
 				matching_leng:'',
 				traffic_leng:'',
 				departments_leng:'',
-				telphone:""
-				
+				telphone:"",
+				url:''
 				
 				
 			};
 		},
 		components:{
-			bottom
+			bottom,
+			wybPopup
 		},
 		onLoad(option){
 			this.getdata(option.id);
 			this.project_id = option.id;
 		},
 		methods:{
+			showImg(image){
+				var imgArr = [];
+				imgArr.push(image);
+				//预览图片
+				uni.previewImage({
+					urls: imgArr,
+					current: imgArr[0]
+				});
+			},
+			hideimg() {
+				this.$refs.popup1.hide()
+			},
+			showbig(url) {
+				this.url = url
+				this.$refs.popup1.show()
+			},
+			setiscode(){
+				this.codenum = 0
+			},
 			getdata(id){
 				uni.showLoading({
 				    title: '加载中'

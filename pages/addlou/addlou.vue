@@ -9,8 +9,8 @@
 				<text>楼盘对比</text>
 			</navigator>
 		</view>
+		<checkbox-group @change="getChecked" >
 		<view class="pro_list">
-			<checkbox-group @change="getChecked" >
 			<view class="sel_pro" v-for="item in data" :key="item.id">
 					<label class="left_checkbox">
 						<checkbox :value="item.id" :checked="checked" />
@@ -31,34 +31,36 @@
 						</view>
 					</view>
 			</view>
-			</checkbox-group>
+			
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 浏览足迹 -->
-		<view class="liu_zu">
+		<view class="liu_zu" v-if="foots.length>0">
 			<view class="tit">浏览足迹</view>
-			<view class="sel_pro">
-				<checkbox-group class="left_checkbox">
+			<view class="sel_pro" v-for="item in foots" :key="item.id">
 					<label class="left_checkbox">
-						<checkbox value="cb" :checked="checked" />
+						<checkbox :value="item.id" :checked="checked" />
 					</label>
-				</checkbox-group>
-				<view class="pro_one">
-					<image src="http://api.jy1980.com/uploads/20200614/thumb_800_nwj7f7nr.jpg" mode=""></image>
+				<view class="pro_one" >
+					<image :src="item.img" mode=""></image>
 					<view class="right_name">
-						<view class="name">锦云澜天里</view>
-						<view class="price">17000元/m²</view>
-						<view class="type">住宅<text class="ge">|</text>杭州-江干<text class="ge">|</text>80-140m²</view>
+						<view class="name">{{item.name}}</view>
+						<view class="price">{{item.price}}元/m²</view>
+						<view class="type">{{item.type}}<text class="ge">|</text>{{item.city}}-{{item.country}}<text class="ge">|</text>{{item.area}}m²</view>
 						<view class="tese">
-							<text class="zhuang">精装</text>
-							<text class="other">住宅</text>
-							<text class="other">地铁楼盘</text>
+							<text class="zhuang" v-if="item.decorate!==null && item.decorate!=='null'">{{item.decorate}}</text>
+							<text class="other" v-if="item.type!=='' && item.type!==null && item.type!=='null'">{{item.type}}</text>
+							<text class="other"  v-for="ite in item.features" >
+								<text v-if="ite!==null && ite!=='' && ite!=='null'&& ite!==undefined">
+						     	  {{ite}}
+							    </text>
+							</text>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		
+		</checkbox-group>
 	    <!-- 添加楼盘按钮 -->
 	     <view class="add_btn_box">
 	     	<view :class="{active:active}"  @tap="addLou">
@@ -79,6 +81,7 @@
 				checkValue:[],
 				
 				project_id:[],
+				foots:[]
 			};
 		},
 		onLoad(option){
@@ -112,7 +115,7 @@
 				let city_id  = uni.getStorageSync("city");
 				let token  = uni.getStorageSync("token");
 				uni.request({
-					url:this.apiserve+'/jy/compare/some',
+					url:this.apiserve+'/applets/compare/recommend',
 					method:"GET",
 					data:{
 						city:city_id,
@@ -122,7 +125,12 @@
 					   if(res.data.code==200){
 						   console.log(res);
 						 //  this.common = res.data.common;
-						   this.data = res.data.data;
+						   this.data = res.data.recommends;
+						   let arr = res.data.foots;
+						   arr.map(p=>{
+							  p.features =  p.features.filter(n => n)
+						   })
+						  this.foots = arr;
 					   }
 					}
 				})

@@ -30,9 +30,12 @@
 				</view>
 			</view>
 			<!-- 没回复-->
-			<button class="huifu_btn" v-if="data.answer==''" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+免费咨询',104,'免费咨询',2,data.id)">
+			<button class="huifu_btn" v-if="data.answer=='' && !pass" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+免费咨询',104,'免费咨询',2,data.id)">
 				我来回答
 			</button>
+			<view class="huifu_btn" v-if="pass" @tap="gowenda(data.id)">
+				我来回答
+			</view>
 			<!-- 免费咨询 -->
 			<view class="da" v-show="data.answer!==''">
 				<view class="top">
@@ -48,9 +51,12 @@
 							</view>
 						</view>
 					</view>
-					<button class="right_btn" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+免费咨询',104,'免费咨询')">
+					<button class="right_btn" v-if="!pass" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+免费咨询',104,'免费咨询')">
 						免费咨询
 					</button>
+					<view class="right_btn" v-if="pass" @tap="baoMing(data.bid,'项目问答详情页+免费咨询',104,'免费咨询',1)">
+						免费咨询
+					</view>
 				</view>
 				<!-- 允家房友-->
 				<!-- <view class="top">
@@ -74,18 +80,27 @@
 					<view class="time">
 						{{data.time}}
 					</view>
-					<button open-type="getPhoneNumber" v-if="data.my_like==1" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+点赞',104,'点赞',1,data.id)">
+					<button open-type="getPhoneNumber" v-if="data.my_like==1 && !pass" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+点赞',104,'点赞',1,data.id)">
 						<view class="zan">
 							<image src="../../static/content/zan.png" mode=""></image>
 							有用({{data.like_num}})
 						</view>
 					</button>
-					<button open-type="getPhoneNumber" v-if="data.my_like==0" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+点赞',104,'点赞',1,data.id)">
+					<view class="zan" v-if="data.my_like==1 && pass" @tap="wenDian(data.id)">
+						<image src="../../static/content/zan.png" mode=""></image>
+						有用({{data.like_num}})
+					</view>
+					
+					<button open-type="getPhoneNumber" v-if="data.my_like==0 &&!pass" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+点赞',104,'点赞',1,data.id)">
 						<view class="nozan">
 							<image src="../../static/content/no_zan.png" mode=""></image>
 							有用({{data.like_num}})
 						</view>
 					</button>
+					<view class="nozan" v-if="data.my_like==0 &&pass" @tap="wenDian(data.id)">
+						<image src="../../static/content/no_zan.png" mode=""></image>
+						有用({{data.like_num}})
+					</view>
 				</view>
 			</view>
 		</view>
@@ -140,7 +155,8 @@
 				position_n: 0,
 				telphone: '',
 				isok: 0,
-				msg:''
+				msg:'',
+				pass:false,
 			};
 		},
 		components: {
@@ -154,8 +170,12 @@
 		onLoad(option) {
 			console.log(option);
 			this.getdata(option.id)
+			this.pass = uni.getStorageSync('pass')
 		},
 		methods: {
+			setpop(){
+				this.$refs.popup.hide()
+			},
 			//没有回答的，跳问答回答页
 			gowenda(id) {
 				let url = '/pages/wendadetail/wendadetail?id=' + this.data.id;
@@ -209,9 +229,11 @@
 
 					} else {
 						this.isok = 0
-						that.baoMing(pid, remark, point, title)
+						that.baoMing(pid, remark, point, title,0)
 					}
 				} else {
+					this.pass = true
+					uni.setStorageSync('pass',true)
 					if (type) {
 						let session = uni.getStorageSync('session')
 						if (session) {
@@ -320,7 +342,7 @@
 									uni.setStorageSync('phone', tel)
 									let openid = uni.getStorageSync('openid')
 									that.tel = tel;
-									that.baoMing(pid, remark, point, title)
+									that.baoMing(pid, remark, point, title,1)
 								}
 							})
 						} else {
@@ -352,7 +374,7 @@
 													uni.setStorageSync('phone', tel)
 													let openid = uni.getStorageSync('openid')
 													that.$refs.sign.tel = tel
-													that.baoMing(pid, remark, point, title)
+													that.baoMing(pid, remark, point, title,1)
 												}
 											})
 
@@ -366,7 +388,8 @@
 					}
 				}
 			},
-			baoMing(pid, remark, point, title) {
+			baoMing(pid, remark, point, title,n) {
+				this.isok = n;
 				this.$refs.popup.show();
 				this.title_e = title;
 				this.pid_d = pid;
