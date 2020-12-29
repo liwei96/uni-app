@@ -83,7 +83,7 @@
 				} else if (data.action == 301) {
 					if (String(data.fromUserName).length < 10) {
 						if (uni.setStorageSync(String(data.fromUserName))) {
-							uni.setStorageSync(String(data.fromUserName), parseInt(uni.setStorageSync(String(data.fromUserName))) + 1)
+							uni.setStorageSync(String(data.fromUserName), parseInt(uni.getStorageSync(String(data.fromUserName))) + 1)
 						} else {
 							uni.setStorageSync(String(data.fromUserName), 1)
 						}
@@ -100,13 +100,14 @@
 		},
 		methods: {
 			gotalk() {
-				let id = this.sid
+				let id = String(this.sid)
 				if (uni.getStorageSync(id)) {
-					let num = uni.getStorageSync(sid)
+					let num = uni.getStorageSync(id)
 					let total = uni.getStorageSync('total')
 					total = total - num
+					this.num = total
 					uni.setStorageSync('total', total)
-					uni.removeStorageSync(sid)
+					uni.removeStorageSync(id)
 				}
 				let pid = this.pid
 				uni.navigateTo({

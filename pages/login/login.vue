@@ -97,7 +97,7 @@
 			  						time--;
 			  						if (time > 0) {
 			  							that.istime = true
-			  							that.timetxt = `重新发送${time}s`
+			  							that.timetxt = `重发${time}s`
 			  						} else {
 			  							that.istime = false
 			  							clearInterval(interval);

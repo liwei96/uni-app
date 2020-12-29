@@ -10,7 +10,7 @@
 			let name = uni.getStorageSync('cityname')
 			let id = options.id
 			let city = uni.getStorageSync('city')
-			let pro = options.bid
+			let pro = options.bid || 0
 			let uuid = uni.getStorageSync('uuid')
 			let staffid = options.id
 			let url = `http://m.jy1980.com/chengdu/cxtalk/${uuid}/${staffid}/${pro},${city}?uuid=${uuid}`

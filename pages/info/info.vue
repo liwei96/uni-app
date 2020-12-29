@@ -21,7 +21,7 @@
 				</text>
 				{{info.description}}
 			</view>
-			<view class="" v-html="info.content">
+			<view class="wenbox" v-html="info.content">
 			</view>
 			<view class="label">
 				<text class="label-tit">标签：</text>
@@ -35,7 +35,7 @@
 					<view class="right">
 						<view class="right-tit">
 							{{build.name}}
-							<view class="status">
+							<view class="status" v-if="build.state != null">
 								{{build.state}}
 							</view>
 						</view>
@@ -44,16 +44,21 @@
 							<text>元/m²</text>
 						</view>
 						<view class="right-infos">
-							{{build.type}} | {{build.city}}-{{build.country}} | {{build.area}}m²
+							{{build.type}} | {{build.city}}-{{build.country}} <text v-if="build.area">| {{build.area}}m²</text>
 						</view>
 						<view class="right-icons">
-							<text class="zhuang">{{build.decorate}}</text>
+							<text class="zhuang" v-if="build.decorate">{{build.decorate}}</text>
 							<text v-for="(item,key) in build.features">{{item}}</text>
 						</view>
 					</view>
 				</view>
 				<view class="bom">
-					<view class="btn" @tap="show(build.id,'文章详情页+在线问')">
+					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,build.id,'文章详情页+在线问')" v-if="!pass">
+					<view class="btn">
+						在线问
+					</view>
+					</button>
+					<view class="btn" @tap="show(build.id,'文章详情页+在线问',1)" v-if="pass">
 						在线问
 					</view>
 					<view class="tel" @tap="call">
@@ -66,7 +71,7 @@
 				<text>楼盘导购</text>
 			</view>
 			<view class="agree">
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass">
 					<view class="agree-box">
 						<image src="../../static/other/article-agree.png" mode=""></image>
 						<view class="agree-num">
@@ -74,6 +79,12 @@
 						</view>
 					</view>
 				</button>
+				<view class="agree-box" v-if="pass" @tap="agree">
+					<image src="../../static/other/article-agree.png" mode=""></image>
+					<view class="agree-num">
+						{{info.like_num}}
+					</view>
+				</view>
 			</view>
 			<view class="statement">
 				<text>
@@ -103,7 +114,7 @@
 			</view>
 		</view>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="'咨询服务'" :pid="pid" :remark="remark" :position="position"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="'咨询服务'" :pid="pid" :remark="remark" :position="position" :isok="isok"></sign>
 		</wyb-popup>
 	</view>
 </template>
@@ -117,6 +128,7 @@
 			that = this
 			this.id = options.id
 			this.getinfo()
+			this.pass = uni.getStorageSync('pass')
 		},
 		data() {
 			return {
@@ -126,7 +138,10 @@
 				others: [],
 				build: {},
 				pid: 0,
-				codenum: 1
+				codenum: 1,
+				pass: false,
+				position: 104,
+				isok: 0
 			}
 		},
 		components: {
@@ -134,6 +149,9 @@
 			wybPopup
 		},
 		methods: {
+			setpop() {
+				this.$refs.popup.hide()
+			},
 			back() {
 				uni.navigateBack({
 					data: 1
@@ -157,6 +175,7 @@
 						that.others = res.data.others
 						that.build = res.data.project_info
 						that.tel = res.data.common.phone
+						that.info.content = that.info.content.replace(/\<img/gi, '<img style="max-width:100%;height:auto" ');
 						//#ifdef MP-BAIDU
 						let header = res.data.common.header
 						swan.setPageInfo({
@@ -181,17 +200,19 @@
 					url: "/pages/article/article?id=" + id
 				})
 			},
+			
 			gobuild(id) {
 				uni.redirectTo({
 					url: "/pages/content/content?id=" + id
 				})
 			},
-			show(id, txt) {
+			show(id, txt,n) {
 				this.pid = id
 				this.remark = txt
 				this.position = 104
 				console.log(this.pid)
 				this.$refs.popup.show()
+				this.isok = n
 			},
 			setiscode() {
 				this.codenum = 0
@@ -234,22 +255,28 @@
 					}
 				})
 			},
-			async getPhoneNumber(e) {
+			async getPhoneNumber(e,bid,txt) {
 				console.log(e)
 				let that = this
 				let token = uni.getStorageSync('token')
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					if(!token) {
-						let url = '/pages/info/info?id=' + this.id
-						uni.setStorageSync('backurl', url)
-						uni.navigateTo({
-							url:'/pages/login/login'
-						})
-					} else {
-						that.agree()
+					if(bid){
+						that.show(bid,txt,0)
+					}else{
+						if(!token) {
+							let url = '/pages/info/info?id=' + this.id
+							uni.setStorageSync('backurl', url)
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+						} else {
+							that.agree()
+						}
 					}
 				} else {
-					if(token) {
+					this.pass = true
+					uni.setStorageSync('pass',true)
+					if(token && !bid) {
 						that.agree()
 						return
 					}
@@ -277,7 +304,11 @@
 									},
 									success: (res) => {
 										uni.setStorageSync('token',res.data.token)
-										that.agree()
+										if(bid){
+											that.show(bid,txt,1)
+										}else{
+											that.agree()
+										}
 									}
 								})
 							}
@@ -318,7 +349,11 @@
 													},
 													success: (res) => {
 														uni.setStorageSync('token',res.data.token)
-														that.agree()
+														if(bid){
+															that.show(bid,txt,1)
+														}else{
+															that.agree()
+														}
 													}
 												})
 											}
@@ -368,6 +403,11 @@
 	}
 	button:after {
 		border: none;
+	}
+	.wenbox {
+		image {
+			width: 100%;
+		}
 	}
 	.box {
 		padding: 0 30rpx;

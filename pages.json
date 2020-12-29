@@ -338,6 +338,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/talklist/talklist",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

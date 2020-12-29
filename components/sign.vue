@@ -189,6 +189,9 @@
 								
 							}
 						})
+						if(that.isok == 1 && that.ok) {
+							return
+						}
 						uni.request({
 							url: that.apiserve + '/send',
 							method: "POST",
@@ -229,7 +232,7 @@
 					success: (res) => {
 						console.log(res)
 						if(res.data.code === 500) {
-							that.toasttxt = res.data.message;
+							that.toasttxt = '验证码不正确';
 							that.$refs.toast.show()
 						} else {
 							that.toasttxt = "订阅成功";

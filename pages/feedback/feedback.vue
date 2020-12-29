@@ -146,6 +146,7 @@
 					})
 				}
 				let ip = ''
+				let uuid = uni.getStorageSync('uuid')
 				uni.request({
 					url: that.putserve+'/getIp.php',
 					method: 'GET',
@@ -167,12 +168,16 @@
 								position: 107,
 								remark: that.txt,
 								ip: ip,
-								staff_id: 1,
+								staff_id: 152,
+								uuid: uuid
 							  },
 							 success: (res) => {
 							 	console.log(res)
 								if(res.data.code == 200) {
 									that.toasttxt = '已为您成功提交'
+									that.$refs.toast.show()
+								}else {
+									that.toasttxt = '您已经提交过意见'
 									that.$refs.toast.show()
 								}
 							 }

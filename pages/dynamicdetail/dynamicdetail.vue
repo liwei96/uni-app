@@ -10,12 +10,12 @@
 			<view class="dynamic-tit">{{info.title}}</view>
 			<text class="txt">{{info.content}}</text>
 			<view class="time">{{info.time}}</view>
-			<button open-type="getPhoneNumber" @tap="type = 0" @getphonenumber="getPhoneNumber" v-if="!pass">
+			<button open-type="getPhoneNumber" @tap="type = 0" @getphonenumber="getPhoneNumber($event,98)" v-if="!pass">
 				<view class="btn">
 					订阅最新动态
 				</view>
 			</button>
-			<view class="btn" v-if="pass" @tap="show(build.id,'订阅实时动态','动态详情页+订阅楼盘动态',1)">
+			<view class="btn" v-if="pass" @tap="show(build.id,'订阅实时动态','动态详情页+订阅楼盘动态',1,98)">
 				订阅最新动态
 			</view>
 			<view class="build" @tap="gobuild(build.id)">
@@ -53,12 +53,12 @@
 						为客户提供专业的购房建议
 					</view>
 				</view>
-				<button open-type="getPhoneNumber" @tap="type = 1" @getphonenumber="getPhoneNumber" v-if="!pass">
+				<button open-type="getPhoneNumber" @tap="type = 1" @getphonenumber="getPhoneNumber($event,87)" v-if="!pass">
 					<view class="staffbtn">
 						免费咨询
 					</view>
 				</button>
-				<view class="staffbtn" v-if="pass" @tap="show(build.id,'免费咨询','动态详情页+免费咨询',1)">
+				<view class="staffbtn" v-if="pass" @tap="show(build.id,'免费咨询','动态详情页+免费咨询',1,87)">
 					免费咨询
 				</view>
 			</view>
@@ -197,7 +197,7 @@
 					url: "/pages/content/content?id=" + id
 				})
 			},
-			async getPhoneNumber(e) {
+			async getPhoneNumber(e,p) {
 				console.log(e, this.isok)
 				let title = ''
 				let message = ''
@@ -212,7 +212,7 @@
 				let that = this
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
-					that.show(that.build.id, title, message, 0)
+					that.show(that.build.id, title, message, 0,p)
 				} else {
 					this.pass = true
 					uni.setStorageSync('pass',true)
@@ -232,7 +232,7 @@
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
 								that.tel = tel
-								that.show(that.build.id, title, message, 1)
+								that.show(that.build.id, title, message, 1,p)
 							}
 						})
 					} else {
@@ -263,7 +263,7 @@
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel
-												that.show(that.build.id, title, message, 1)
+												that.show(that.build.id, title, message, 1,p)
 
 											}
 										})
@@ -276,10 +276,11 @@
 				}
 
 			},
-			show(id, title, txt, isok) {
+			show(id, title, txt, isok,position) {
 				this.pid = id
 				this.remark = txt
-				this.position = 98
+				// this.position = 98
+				this.position = position
 				this.title = title
 				this.isok = isok
 				this.$refs.popup.show()

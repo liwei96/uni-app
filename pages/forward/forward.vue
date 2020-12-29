@@ -42,11 +42,14 @@
 			<view v-html="name"></view>
 			<image src="../../static/other/help-go.png" mode=""></image>
 		</view>
-		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass">
 			<view class="btn">
 				确定
 			</view>
 		</button>
+		<view class="btn" v-if="pass" @tap="show(1)">
+			确定
+		</view>
 		<popup ref="popup" type="center" height="438" width="578" radius="12" closeIconPos="top-right" :showCloseIcon="true"
 		 closeIconSize="32" @hide="setback">
 			<view class="popup-content">
@@ -114,11 +117,14 @@
 				timetxt: '',
 				time: 0,
 				date: '',
-				isok: 0
+				isok: 0,
+				pass: false
 			}
 		},
 		onLoad() {
 			that = this
+			this.pass = uni.getStorageSync('pass')
+			this.tel = uni.getStorageSync('phone')
 			let name = uni.getStorageSync('searchname')
 			if(name) {
 				this.name = name
@@ -138,6 +144,10 @@
 			//#endif
 		},
 		methods: {
+			show(n) {
+				this.isok = n
+				this.$refs.popup.show()
+			},
 			setnull() {
 				this.isok = 0
 				this.tel = ''
@@ -148,6 +158,8 @@
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
 				} else {
+					this.pass = true
+					uni.setStorageSync('pass',true)
 					this.isok = 1
 					let session = uni.getStorageSync('session')
 					if (session) {
@@ -339,6 +351,7 @@
 					return;
 				}
 				var phone = this.tel;
+				let code = this.code
 				uni.request({
 					url: that.apiserve + '/sure',
 					method: "POST",
@@ -353,16 +366,16 @@
 					success: (res) => {
 						console.log(res)
 						if(res.data.code === 500) {
-							that.toasttxt = res.data.msg;
+							that.toasttxt = '验证码不正确';
 							that.$refs.toast.show()
 						} else {
 							that.toasttxt = "订阅成功";
 							that.$refs.toast.show()
 							that.iscode = false
-							this.$refs.popup1.hide()
+							this.$refs.popup.hide()
 							if(!uni.getStorageSync('token')) {
 								uni.setStorageSync('token',res.data.token)
-								uni.setStorageSync('usertel',that.tel)
+								uni.setStorageSync('phone',that.tel)
 							}
 						}
 					}

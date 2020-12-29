@@ -32,7 +32,7 @@
 				<text>{{info.keywords}}</text>
 			</view>
 			<view class="agree">
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass">
 					<view class="agree-box">
 						<image src="../../static/other/article-agree.png" mode=""></image>
 						<view class="agree-num">
@@ -40,6 +40,12 @@
 						</view>
 					</view>
 				</button>
+				<view class="agree-box" v-if="pass" @tap="agree">
+					<image src="../../static/other/article-agree.png" mode=""></image>
+					<view class="agree-num">
+						{{info.like_num}}
+					</view>
+				</view>
 			</view>
 			<view class="statement">
 				<text>
@@ -79,6 +85,7 @@
 			that = this
 			this.id = options.id
 			this.getinfo()
+			this.pass = uni.getStorageSync('pass')
 		},
 		data() {
 			return {
@@ -86,7 +93,8 @@
 				id: 0,
 				info: {},
 				others: [],
-				content:""
+				content:"",
+				pass: false
 			}
 		},
 		methods: {
@@ -175,6 +183,8 @@
 						that.agree()
 					}
 				} else {
+					this.pass = true
+					uni.setStorageSync('pass',true)
 					if(token) {
 						that.agree()
 						return

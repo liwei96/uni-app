@@ -4,10 +4,8 @@
 			<view class="status_bar">
 			          <!-- 这里是状态栏 -->
 			      </view>
-		   <navigator url="../index/index" class="nav_top" open-type="switchTab">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>我的卡券</text>
-		   </navigator>
 		</view>
 		
 		
@@ -20,8 +18,8 @@
 					</text>
 				</text>
 				<view class="right">
-					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+领取优惠',94,'领取优惠')">
-						领取优惠
+					<view class="ling_btn">
+						已领取
 					</view>
 					<text>{{receive_num_5000}}人已领取</text>
 				</view>
@@ -34,8 +32,8 @@
 					</text>
 				</text>
 				<view class="right">
-					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+免费领取',95,'免费领取')">
-						免费领取
+					<view class="ling_btn">
+						已领取
 					</view>
 					<text>{{receive_num_car}}人已领取</text>
 				</view>

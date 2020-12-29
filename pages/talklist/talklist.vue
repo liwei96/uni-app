@@ -1,6 +1,7 @@
 <template>
 	<view class="meaasage">
-		<view class="toptitle">
+		<view class="toptitle" @tap="back">
+			<image src="../../static/all-back.png" mode=""></image>
 			<text>我的消息</text>
 		</view>
 		<view v-if="list.length == 0">
@@ -71,6 +72,11 @@
 			//#endif
 		},
 		methods: {
+			back() {
+				uni.navigateBack({
+					data:1
+				})
+			},
 			gotalk(id,bid,cid) {
 				uni.navigateTo({
 					url: '/pages/talk/talk?id=' + id+'&bid='+bid+'&cid='+cid
@@ -88,14 +94,9 @@
 				// uni.onSocketOpen(function (res) {
 				// 	console.log(22)
 				// });
-				try{
-					uni.sendSocketMessage({
-						data: JSON.stringify(pp)
-					});
-				}catch(e){
-					alert(e)
-				}
-				
+				uni.sendSocketMessage({
+					data: JSON.stringify(pp)
+				});
 				
 				// setTimeout(()=>{
 				// 	that.getlist()
@@ -182,6 +183,12 @@
 		z-index: 9999;
 		background-color: #FFFFFF;
 		border-bottom: 1rpx solid #F7F7F7;
+		image {
+			width: 32rpx;
+			height: 32rpx;
+			margin-right: 14rpx;
+			margin-bottom: -4rpx;
+		}
 	}
 
 	.content {

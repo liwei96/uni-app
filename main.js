@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 
 Vue.config.productionTip = false
-
+import websocket from './socket/index.js'
 App.mpType = 'app'
 Vue.prototype.apiserve = 'https://api.edefang.net'
 Vue.prototype.putserve = 'https://ll.edefang.net/'
