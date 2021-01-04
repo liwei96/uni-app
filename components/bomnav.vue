@@ -50,6 +50,9 @@
 			this.pass = uni.getStorageSync('pass')
 			// this.num = uni.getStorageSync('total')
 			uni.onSocketMessage(function(res) {
+				if(res.data.indexOf('{') ===-1){
+					return
+				}
 				let data = JSON.parse(res.data)
 				console.log(data)
 				if(data.action == 302) {
@@ -122,6 +125,7 @@
 			},
 			getPhoneNumber(e) {
 				console.log(e)
+				// #ifdef  MP-BAIDU
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.$emit('show', {
 						position: 103,
@@ -137,6 +141,24 @@
 						isok: 1
 					})
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if(e.detail.errMsg != 'getPhoneNumber:ok') {
+					this.$emit('show', {
+						position: 103,
+						title: '预约看房',
+						isok: 0
+					})
+				}else{
+					uni.setStorageSync('pass',true)
+					this.pass = true
+					this.$emit('show', {
+						position: 103,
+						title: '预约看房',
+						isok: 1
+					})
+				}
+				// #endif
 			},
 			okput() {
 				this.$emit('show', {

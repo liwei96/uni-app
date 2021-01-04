@@ -1,9 +1,9 @@
 <template>
 	<view class="wenhui">
 		<view class="toptitle">
-			 <view class="status_bar">
-			          <!-- 这里是状态栏 -->
-			  </view>
+			<view class="status_bar">
+				<!-- 这里是状态栏 -->
+			</view>
 			<navigator open-type="navigateBack" delta="1" class="nav_top">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>我要提问</text>
@@ -20,10 +20,10 @@
 			</view>
 		</view>
 		<!-- <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"> -->
-			<view class="tijiao_btn" @tap="SendTiwen">
-				发布提问
-			</view>
-	<!-- 	</button> -->
+		<view class="tijiao_btn" @tap="SendTiwen">
+			发布提问
+		</view>
+		<!-- 	</button> -->
 		<mytoast :txt="msg" ref="msg"></mytoast>
 	</view>
 </template>
@@ -47,6 +47,7 @@
 		methods: {
 			getPhoneNumber(e) {
 				let that = this
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
 					let url = '/pages/tiwen/tiwen?id=' + this.project_id
@@ -107,6 +108,69 @@
 					}
 					this.isok = 1
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg == 'getPhoneNumber:ok') {
+					this.isok = 0
+					let url = '/pages/tiwen/tiwen?id=' + this.project_id
+					uni.setStorageSync('backurl', url)
+					console.log(url)
+				} else {
+					let session = uni.getStorageSync('token')
+					if (session) {
+						that.SendTiwen()
+					} else {
+						uni.login({
+							provider: 'weixin',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://ll.edefang.net/api/weichat/jscode2session',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://ll.edefang.net/api/weichat/decryptData",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.tel = tel
+												uni.request({
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														uni.setStorageSync('token', res.data.token)
+														that.SendTiwen()
+													}
+												})
+
+											}
+										})
+
+									}
+								})
+							}
+						});
+					}
+					this.isok = 1
+				}
+				// #endif
 
 			},
 			SendTiwen() {
@@ -128,9 +192,9 @@
 								this.$refs.msg.show();
 								let baseurl = uni.getStorageSync('backurl');
 								uni.navigateTo({
-									url:baseurl
+									url: baseurl
 								})
-							}else{
+							} else {
 								console.log(res)
 							}
 						}
@@ -165,10 +229,12 @@
 			font-size: 29.88rpx;
 			line-height: 87.64rpx;
 			background-color: #FFF;
+
 			.status_bar {
-			      height: var(--status-bar-height);
-			      width: 100%;
-			  }
+				height: var(--status-bar-height);
+				width: 100%;
+			}
+
 			.nav_top {
 				image {
 					width: 31.87rpx;
@@ -217,6 +283,7 @@
 				bottom: 17rpx;
 			}
 		}
+
 		// button{
 		// 	padding-left: 0rpx;
 		// 	padding-right: 0rpx;
@@ -231,8 +298,9 @@
 			color: #40A2F4;
 			text-align: center;
 			margin-top: 70rpx;
-			
+
 		}
+
 		// }
 
 	}

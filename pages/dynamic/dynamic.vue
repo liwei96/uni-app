@@ -2,13 +2,13 @@
 	<view class="dynamic">
 		<view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
-			      </view>
+				<!-- 这里是状态栏 -->
+			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>楼盘动态</text>
 		</view>
 		<view class="topbb">
-			
+
 		</view>
 		<image src="../../static/dynamic/dynamic-top.jpg" mode="" class="topimg"></image>
 		<view class="box">
@@ -35,9 +35,9 @@
 						{{item.time}}
 					</view>
 					<button open-type="getPhoneNumber" @tap="bid = item.id" @getphonenumber="getPhoneNumber" v-if="!pass">
-					<view class="btn">
-						订阅此楼盘动态
-					</view>
+						<view class="btn">
+							订阅此楼盘动态
+						</view>
 					</button>
 					<view class="btn" v-if='pass' @tap="show(item.id,'动态页+订阅楼盘动态',1)">
 						订阅此楼盘动态
@@ -58,8 +58,8 @@
 	import sign from '@/components/sign.vue'
 	var that
 	export default {
-		components:{
-			"bom-nav":bomnav,
+		components: {
+			"bom-nav": bomnav,
 			sign,
 			wybPopup
 		},
@@ -67,11 +67,14 @@
 			that = this
 			this.getdata()
 		},
-		onLoad(){
+		onLoad(options) {
+			this.city = options.city || uni.getStorageSync('city');
+			uni.setStorageSync('city', options.city)
 			this.pass = uni.getStorageSync('pass')
 		},
 		data() {
 			return {
+				city: 1,
 				page: 1,
 				list: [],
 				pid: 0,
@@ -81,30 +84,30 @@
 				position: 0,
 				isok: 0,
 				bid: 0,
-				pass:false,
+				pass: false,
 			}
 		},
 		onReachBottom() {
 			this.getmore()
 		},
-		methods:{
+		methods: {
 			setpop() {
 				this.$refs.popup.hide()
 			},
-			back(){
+			back() {
 				uni.navigateBack({
-					data:1
+					data: 1
 				})
 			},
 			getdata() {
 				uni.showLoading({
-					title:"加载中"
+					title: "加载中"
 				})
-				let city = uni.getStorageSync('city')
+				let city = this.city
 				uni.request({
-					url:that.apiserve+'/applets/dynamic/info',
-					method:'GET',
-					data:{
+					url: that.apiserve + '/applets/dynamic/info',
+					method: 'GET',
+					data: {
 						city: city,
 						page: that.page,
 						limit: 10
@@ -132,14 +135,14 @@
 			},
 			getmore() {
 				uni.showLoading({
-					title:"加载中"
+					title: "加载中"
 				})
-				that.page = that.page+1
+				that.page = that.page + 1
 				let city = uni.getStorageSync('city')
 				uni.request({
-					url:that.apiserve+'/applets/dynamic/info',
-					method:'GET',
-					data:{
+					url: that.apiserve + '/applets/dynamic/info',
+					method: 'GET',
+					data: {
 						city: city,
 						page: that.page,
 						limit: 10
@@ -150,7 +153,7 @@
 					}
 				})
 			},
-			show(id,txt, isok) {
+			show(id, txt, isok) {
 				this.pid = id
 				this.remark = txt
 				this.position = 98
@@ -164,7 +167,7 @@
 			},
 			go(id) {
 				uni.redirectTo({
-					url:"/pages/dynamicdetail/dynamicdetail?id="+id
+					url: "/pages/dynamicdetail/dynamicdetail?id=" + id
 				})
 			},
 			nav(e) {
@@ -179,19 +182,20 @@
 			async getPhoneNumber(e) {
 				console.log(e)
 				let that = this
-				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+				// #ifdef  MP-BAIDU
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
-					that.show(that.bid,'动态页+订阅楼盘动态',0)
-					
+					that.show(that.bid, '动态页+订阅楼盘动态', 0)
+
 				} else {
 					this.pass = true
-					uni.setStorageSync('pass',true)
+					uni.setStorageSync('pass', true)
 					let session = uni.getStorageSync('session')
-					if(session){
+					if (session) {
 						uni.request({
 							url: 'https://api.edefang.net/applets/baidu/decrypt',
-							method:'get',
-							data:{
+							method: 'get',
+							data: {
 								iv: e.detail.iv,
 								data: e.detail.encryptedData,
 								session_key: session
@@ -199,61 +203,109 @@
 							success: (res) => {
 								console.log(res)
 								let tel = res.data.mobile
-								uni.setStorageSync('phone',tel)
+								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
 								that.tel = tel
-								that.show(that.bid,'动态页+订阅楼盘动态',1)
+								that.show(that.bid, '动态页+订阅楼盘动态', 1)
 							}
 						})
-					}else {
+					} else {
 						uni.login({
-						  provider: 'baidu',
-						  success: function (res) {
-						    console.log(res.code);
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.tel = tel
+												that.show(that.bid, '动态页+订阅楼盘动态', 1)
+											}
+										})
+
+									}
+								})
+							}
+						});
+					}
+					this.isok = 1
+				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+					this.isok = 0
+					that.show(that.bid, '动态页+订阅楼盘动态', 0)
+
+				} else {
+					this.pass = true
+					uni.setStorageSync('pass', true)
+					uni.login({
+						provider: 'weixin',
+						success: function(res) {
+							console.log(res.code);
 							uni.request({
-								url: 'https://api.edefang.net/applets/baidu/get_session_key',
-								method:'get',
-								data:{
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method: 'get',
+								data: {
 									code: res.code
 								},
 								success: (res) => {
 									console.log(res)
-									uni.setStorageSync('openid',res.data.openid)
-									uni.setStorageSync('session',res.data.session_key)
+									uni.setStorageSync('openid', res.data.openid)
+									uni.setStorageSync('session', res.data.session_key)
 									uni.request({
-										url:"https://api.edefang.net/applets/baidu/decrypt",
-										data:{
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										data: {
 											data: e.detail.encryptedData,
-											iv:e.detail.iv,
-											session_key:res.data.session_key
+											iv: e.detail.iv,
+											session_key: res.data.session_key
 										},
 										success: (res) => {
 											console.log(res)
 											let tel = res.data.mobile
-											uni.setStorageSync('phone',tel)
+											uni.setStorageSync('phone', tel)
 											let openid = uni.getStorageSync('openid')
 											that.tel = tel
-											that.show(that.bid,'动态页+订阅楼盘动态',1)
+											that.show(that.bid, '动态页+订阅楼盘动态', 1)
 										}
 									})
-									
+
 								}
 							})
-						  }
-						});
 						}
+					});
 					this.isok = 1
 				}
-				
+				// #endif
+
 			}
 		}
 	}
 </script>
 
 <style lang="less">
-	page{
+	page {
 		background: #FFFFFF;
 	}
+
 	.toptitle {
 		color: #17181A;
 		font-size: 29.88rpx;
@@ -264,10 +316,12 @@
 		top: 0;
 		z-index: 9999;
 		background-color: #FFFFFF;
+
 		.status_bar {
-		      height: var(--status-bar-height);
-		      width: 100%;
-		  }
+			height: var(--status-bar-height);
+			width: 100%;
+		}
+
 		image {
 			width: 31.87rpx;
 			height: 31.87rpx;
@@ -275,19 +329,23 @@
 			margin-bottom: -3.98rpx;
 		}
 	}
+
 	.topbb {
 		height: var(--status-bar-height);
 		width: 100%;
 	}
+
 	.topimg {
 		width: 100%;
 		height: 199.2rpx;
 		margin-top: 88rpx;
 	}
+
 	.box {
 		padding: 0 49.8rpx;
 		padding-bottom: 119.52rpx;
 		padding-top: 42rpx;
+
 		.item {
 			background: #FFFFFF;
 			box-shadow: 0px 0px 18.92rpx 0.99rpx rgba(0, 0, 0, 0.04);
@@ -295,14 +353,17 @@
 			overflow: hidden;
 			padding-bottom: 39.84rpx;
 			margin-bottom: 49.8rpx;
+
 			.top {
 				position: relative;
 				margin-bottom: 23.9rpx;
+
 				image {
 					width: 647.41rpx;
 					height: 239.04rpx;
 					border-radius: 15.93rpx 15.93rpx 0 0;
 				}
+
 				.zhao {
 					width: 100%;
 					height: 239.04rpx;
@@ -312,6 +373,7 @@
 					background: linear-gradient(0deg, #000000);
 					opacity: 0.4;
 				}
+
 				.topicon {
 					position: absolute;
 					width: 79.68rpx;
@@ -325,6 +387,7 @@
 					left: 0;
 					top: 0;
 				}
+
 				.name {
 					color: #FFFFFF;
 					font-size: 33.86rpx;
@@ -333,41 +396,52 @@
 					left: 27.88rpx;
 					bottom: 79.68rpx;
 				}
+
 				.msg {
 					position: absolute;
 					bottom: 27.88rpx;
 					left: 27.88rpx;
 					font-size: 25.89rpx;
 					color: #FFFFFF;
+
 					text {
-						margin-right:35.85rpx;
+						margin-right: 35.85rpx;
 					}
 				}
 			}
+
 			.bom {
 				padding: 0 29.88rpx;
+
 				button {
 					padding: 0;
 				}
-				button::after{ border: none;}
+
+				button::after {
+					border: none;
+				}
+
 				.name {
 					color: #17181A;
 					font-size: 31.87rpx;
 					font-weight: bold;
 					margin-bottom: 9.96rpx;
 				}
+
 				.txt {
 					color: #4B4C4D;
 					font-size: 25.89rpx;
 					line-height: 37.84rpx;
-					
+
 				}
+
 				.time {
 					margin-top: 15.93rpx;
 					color: #969799;
 					font-size: 23.9rpx;
 					margin-bottom: 29.88rpx;
 				}
+
 				.btn {
 					position: relative;
 					color: #40A2F4;

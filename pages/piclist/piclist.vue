@@ -218,6 +218,9 @@
 	page{
 		   background:#000000;
 	}
+	button {
+		padding: 0;
+	}
 .piclist{
 	.toptitle{
 		color: #D4D7D9;

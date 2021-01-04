@@ -30,7 +30,8 @@
 				</view>
 			</view>
 			<!-- 没回复-->
-			<button class="huifu_btn" v-if="data.answer=='' && !pass" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+免费咨询',104,'免费咨询',2,data.id)">
+			<button class="huifu_btn" v-if="data.answer=='' && !pass" open-type="getPhoneNumber" hover-class="none"
+			 @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+免费咨询',104,'免费咨询',2,data.id)">
 				我来回答
 			</button>
 			<view class="huifu_btn" v-if="pass" @tap="gowenda(data.id)">
@@ -90,7 +91,7 @@
 						<image src="../../static/content/zan.png" mode=""></image>
 						有用({{data.like_num}})
 					</view>
-					
+
 					<button open-type="getPhoneNumber" v-if="data.my_like==0 &&!pass" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+点赞',104,'点赞',1,data.id)">
 						<view class="nozan">
 							<image src="../../static/content/no_zan.png" mode=""></image>
@@ -155,8 +156,8 @@
 				position_n: 0,
 				telphone: '',
 				isok: 0,
-				msg:'',
-				pass:false,
+				msg: '',
+				pass: false,
 			};
 		},
 		components: {
@@ -173,30 +174,30 @@
 			this.pass = uni.getStorageSync('pass')
 		},
 		methods: {
-			setpop(){
+			setpop() {
 				this.$refs.popup.hide()
 			},
 			//没有回答的，跳问答回答页
 			gowenda(id) {
 				let token = uni.getStorageSync("token")
-				if(token){
+				if (token) {
 					let url = '/pages/wendadetail/wendadetail?id=' + this.data.id;
 					uni.setStorageSync('backurl', url)
 					uni.navigateTo({
 						url: "/pages/wenhui/wenhui?id=" + id
 					})
-				}else{
+				} else {
 					let url = "/pages/wendadetail/wendadetail?id=" + this.data.bid;
 					uni.setStorageSync("backurl", url)
 					uni.navigateTo({
 						url: "/pages/login/login"
 					})
 				}
-				
+
 			},
 			wenDian(id) {
 				let token = uni.getStorageSync("token")
-				if(token){
+				if (token) {
 					uni.request({
 						url: this.apiserve + "/jy/question/like",
 						data: {
@@ -209,7 +210,7 @@
 						method: "POST",
 						success: (res) => {
 							if (res.data.code == 200) {
-								console.log(res,'res');
+								console.log(res, 'res');
 								this.$refs.msg.show();
 								this.msg = res.data.message;
 								this.getdata(this.data.id)
@@ -218,17 +219,18 @@
 							}
 						}
 					})
-				}else{
+				} else {
 					let url = "/pages/wendadetail/wendadetail?id=" + this.data.bid;
 					uni.setStorageSync("backurl", url)
 					uni.navigateTo({
 						url: "/pages/login/login"
 					})
 				}
-				
+
 			},
 			async getPhoneNumber(e, pid, remark, point, title, type, wen_id) {
 				let that = this
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					if (type) {
 						let token = uni.getStorageSync("token");
@@ -248,11 +250,11 @@
 
 					} else {
 						this.isok = 0
-						that.baoMing(pid, remark, point, title,0)
+						that.baoMing(pid, remark, point, title, 0)
 					}
 				} else {
 					this.pass = true
-					uni.setStorageSync('pass',true)
+					uni.setStorageSync('pass', true)
 					if (type) {
 						let session = uni.getStorageSync('session')
 						if (session) {
@@ -361,7 +363,7 @@
 									uni.setStorageSync('phone', tel)
 									let openid = uni.getStorageSync('openid')
 									that.tel = tel;
-									that.baoMing(pid, remark, point, title,1)
+									that.baoMing(pid, remark, point, title, 1)
 								}
 							})
 						} else {
@@ -393,7 +395,7 @@
 													uni.setStorageSync('phone', tel)
 													let openid = uni.getStorageSync('openid')
 													that.$refs.sign.tel = tel
-													that.baoMing(pid, remark, point, title,1)
+													that.baoMing(pid, remark, point, title, 1)
 												}
 											})
 
@@ -406,8 +408,127 @@
 
 					}
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					if (type) {
+						let token = uni.getStorageSync("token");
+						if (token) {
+							if (type == 1) { //点赞
+								this.wenDian(wen_id)
+							} else if (type == 2) { //跳回答
+								this.gowenda(wen_id)
+							}
+						} else {
+							let url = "/pages/wendadetail/wendadetail?id=" + pid;
+							uni.setStorageSync("backurl", url)
+							uni.navigateTo({
+								url: "/pages/login/login"
+							})
+						}
+
+					} else {
+						this.isok = 0
+						that.baoMing(pid, remark, point, title, 0)
+					}
+				} else {
+					this.pass = true
+					uni.setStorageSync('pass', true)
+					if (type) {
+						uni.login({
+							provider: 'weixin',
+							success: function(res) {
+								// console.log(res.code);
+								uni.request({
+									url: 'https://ll.edefang.net/api/weichat/jscode2session',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://ll.edefang.net/api/weichat/decryptData",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												uni.request({
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.token)
+														if (type == 1) { //点赞
+															that.wenDian(wen_id)
+														} else if (type == 2) { //跳没回答的问答
+															that.gowenda(wen_id)
+														}
+
+													}
+												})
+												// that.$refs.sign.tel = tel
+												// that.baoMing(pid,remark,point,title)
+											}
+										})
+
+									}
+								})
+							}
+						});
+					} else {
+						uni.login({
+							provider: 'weixin',
+							success: function(res) {
+								uni.request({
+									url: 'https://ll.edefang.net/api/weichat/jscode2session',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://ll.edefang.net/api/weichat/decryptData",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.$refs.sign.tel = tel
+												that.baoMing(pid, remark, point, title, 1)
+											}
+										})
+
+									}
+								})
+							}
+						});
+						this.isok = 1
+					}
+				}
+				// #endif
 			},
-			baoMing(pid, remark, point, title,n) {
+			baoMing(pid, remark, point, title, n) {
 				this.isok = n;
 				this.$refs.popup.show();
 				this.title_e = title;
@@ -420,7 +541,7 @@
 			},
 			getdata(id) {
 				uni.showLoading({
-				    title: '加载中'
+					title: '加载中'
 				});
 				let other = uni.getStorageSync('other');
 				let token = uni.getStorageSync('token');

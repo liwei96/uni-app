@@ -321,22 +321,27 @@
 			</view>
 		</view>
 		<toast ref="toast" :txt="toasttxt"></toast>
+		<tabbar :type="1"></tabbar>
 	</view>
 </template>
 
 <script>
 	import toast from '@/components/mytoast/mytoast.vue'
+	import tabbar from '../../components/tabbar/tabbar.vue'
 	import jiuaicheckbox from '@/components/jiuai-checkbox/jiuai-checkbox.vue'
 	var that
 	export default {
-		onShow(options) {
+		onLoad(options) {
 			that = this
 			console.log(options)
+			this.city = options.city || uni.getStorageSync('city')
+			uni.setStorageSync('city',options.city)
 			this.getinfo()
 			this.cityname = uni.getStorageSync('cityname')
 		},
 		data() {
 			return {
+				city: 1,
 				cityname: '',
 				toasttxt: '为您找到233个楼盘',
 				typenum: 0,
@@ -404,7 +409,8 @@
 		},
 		components: {
 			"toast": toast,
-			"jiuaicheckbox": jiuaicheckbox
+			"jiuaicheckbox": jiuaicheckbox,
+			tabbar
 		},
 		methods: {
 			gomap(){
@@ -606,7 +612,7 @@
 				this.hutype = true
 			},
 			getinfo() {
-				let city = uni.getStorageSync('city')
+				let city = this.city
 				let token = uni.getStorageSync('token')
 				if(this.once) {
 					this.once = false
@@ -632,6 +638,7 @@
 							that.areas = res.data.conditions.areas
 							that.types1 = res.data.conditions.types
 							that.features = res.data.conditions.features
+							that.cityname = res.data.common.city_info.current.short
 							for(let item of that.features) {
 								that.$set(item,'checked',false)
 							}
@@ -729,6 +736,7 @@
 <style lang="less">
 	page{
 		background: #FFFFFF;
+		padding-bottom: 100rpx;
 	}
 	.toptitle {
 		color: #17181A;

@@ -73,8 +73,10 @@
 	import sign from '@/components/sign.vue'
 	var that
 	export default {
-		onLoad() {
+		onLoad(options) {
 			that = this
+			this.cityid = options.city || uni.getStorageSync('city');
+			uni.setStorageSync('city',options.city)
 			this.getlist()
 			this.city = uni.getStorageSync('cityname')
 			this.pass = uni.getStorageSync('pass')
@@ -93,7 +95,8 @@
 				isok: 0,
 				city: '杭州',
 				pass: false,
-				position: 34
+				position: 34,
+				cityid: 1
 			}
 		},
 		methods: {
@@ -102,6 +105,7 @@
 			},
 			getPhoneNumber(e,bid) {
 				console.log(e)
+				// #ifdef  MP-BAIDU
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.show(bid,'榜单页+查低价',0)
 				}else{
@@ -161,6 +165,49 @@
 						});
 					}
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if(e.detail.errMsg != 'getPhoneNumber:ok') {
+					this.show(bid,'榜单页+查低价',0)
+				}else{
+					this.pass = true
+					uni.setStorageSync('pass',true)
+					let session = uni.getStorageSync('session')
+						uni.login({
+							provider: 'weixin',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://ll.edefang.net/api/weichat/jscode2session',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://ll.edefang.net/api/weichat/decryptData",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.show(bid,'榜单页+查低价',1)
+											}
+										})
+									}
+								})
+							}
+						});
+				}
+				// #endif
 			},
 			back() {
 				uni.navigateBack({
@@ -182,7 +229,7 @@
 				this.getlist()
 			},
 			getlist() {
-				let city = uni.getStorageSync('city')
+				let city = this.cityid
 				let token = uni.getStorageSync('token')
 				uni.showLoading({
 					title: '加载中'

@@ -64,6 +64,8 @@
 	export default {
 		onLoad(options) {
 			that = this
+			this.city = options.city || uni.getStorageSync('city')
+			uni.setStorageSync('city',options.city)
 			this.gettop()
 			if(options.infos) {
 				this.navnum = options.infos
@@ -72,6 +74,7 @@
 		},
 		data() {
 			return {
+				city: 1,
 				isok: true,
 				currentnum: 0,
 				tops: [
@@ -167,7 +170,7 @@
 					title: '加载中'
 				})
 				let token = uni.getStorageSync('token')
-				let city = uni.getStorageSync('city')
+				let city = this.city
 				uni.request({
 					url: that.apiserve + '/applets/article/info',
 					method: 'GET',

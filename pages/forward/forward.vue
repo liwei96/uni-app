@@ -2,12 +2,12 @@
 	<view>
 		<view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
-			      </view>
+				<!-- 这里是状态栏 -->
+			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 		</view>
 		<view class="topbb">
-			
+
 		</view>
 		<image class="topimg" src="../../static/other/forward-top.jpg" mode=""></image>
 		<view class="txt">
@@ -58,7 +58,7 @@
 				</view>
 				<view class="one" v-if="!iscode">
 					<view class="input-box">
-						<input type="text" value="" placeholder="请输入手机号" placeholder-class="txt" maxlength="11" v-model="tel" :disabled="isok == 1"/>
+						<input type="text" value="" placeholder="请输入手机号" placeholder-class="txt" maxlength="11" v-model="tel" :disabled="isok == 1" />
 						<view class="close" v-if="isok ==1" @tap="setnull">
 							x
 						</view>
@@ -73,10 +73,10 @@
 				</view>
 				<view class="two" v-if="iscode">
 					<view class="codemsg">
-						验证码已发送到{{teltxt}}  请注意查看
+						验证码已发送到{{teltxt}} 请注意查看
 					</view>
 					<view class="input-box">
-						<input type="text" value="" placeholder="请输入验证码" placeholder-class="txt" maxlength="11" v-model="code"/>
+						<input type="text" value="" placeholder="请输入验证码" placeholder-class="txt" maxlength="11" v-model="code" />
 						<text @tap="sendmsg">{{timetxt}}</text>
 					</view>
 					<view class="yes" @tap="sure">
@@ -126,7 +126,7 @@
 			this.pass = uni.getStorageSync('pass')
 			this.tel = uni.getStorageSync('phone')
 			let name = uni.getStorageSync('searchname')
-			if(name) {
+			if (name) {
 				this.name = name
 			}
 			//#ifdef MP-BAIDU
@@ -155,11 +155,12 @@
 			async getPhoneNumber(e) {
 				console.log(e)
 				let that = this
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
 				} else {
 					this.pass = true
-					uni.setStorageSync('pass',true)
+					uni.setStorageSync('pass', true)
 					this.isok = 1
 					let session = uni.getStorageSync('session')
 					if (session) {
@@ -209,23 +210,67 @@
 												that.tel = tel
 											}
 										})
-			
+
 									}
 								})
 							}
 						});
 					}
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					this.isok = 0
+				} else {
+					this.pass = true
+					uni.setStorageSync('pass', true)
+					this.isok = 1
+					uni.login({
+						provider: 'weixin',
+						success: function(res) {
+							console.log(res.code);
+							uni.request({
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method: 'get',
+								data: {
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid', res.data.openid)
+									uni.setStorageSync('session', res.data.session_key)
+									uni.request({
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										data: {
+											data: e.detail.encryptedData,
+											iv: e.detail.iv,
+											session_key: res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone', tel)
+											let openid = uni.getStorageSync('openid')
+											that.tel = tel
+										}
+									})
+
+								}
+							})
+						}
+					});
+				}
+				// #endif
 				this.$refs.popup.show()
 			},
 			back() {
 				uni.navigateBack({
-					data:1
+					data: 1
 				})
 			},
 			send() {
 				console.log(this.checked)
-				if(!this.checked) {
+				if (!this.checked) {
 					that.toasttxt = '请选择用户协议'
 					that.$refs.toast.show()
 					return
@@ -247,14 +292,14 @@
 				let city = uni.getStorageSync('city') || 1
 				let txt = `客户预约看房时间为${that.date}`;
 				let sex = ''
-				if(that.sex == 0) {
+				if (that.sex == 0) {
 					sex = '先生'
-				}else{
+				} else {
 					sex = '女士'
 				}
 				let id = uni.getStorageSync('searchid') || 0
 				uni.request({
-					url: that.putserve+'/getIp.php',
+					url: that.putserve + '/getIp.php',
 					method: 'GET',
 					success: (res) => {
 						ip = res.data
@@ -278,7 +323,7 @@
 							},
 							method: "GET",
 							success: (res) => {
-								if(res.data.code == 500) {
+								if (res.data.code == 500) {
 									that.toasttxt = '请不要重复报名';
 									that.$refs.toast.show()
 								} else {
@@ -298,32 +343,32 @@
 									};
 									fn();
 									var interval = setInterval(fn, 1000);
-									
-									if(that.isok == 1) {
+
+									if (that.isok == 1) {
 										that.toasttxt = "订阅成功";
 										that.$refs.toast.show()
 										that.iscode = false
 										that.$refs.popup.hide()
-										if(!uni.getStorageSync('token')) {
+										if (!uni.getStorageSync('token')) {
 											let openid = uni.getStorageSync('openid')
 											uni.request({
-												url:"https://api.edefang.net/applets/login",
-												method:'GET',
-												data:{
+												url: "https://api.edefang.net/applets/login",
+												method: 'GET',
+												data: {
 													phone: phone,
 													openid: openid
 												},
 												success: (res) => {
 													console.log(res)
-													uni.setStorageSync('token',res.data.token)
+													uni.setStorageSync('token', res.data.token)
 												}
 											})
 										}
-									}else {
+									} else {
 										that.iscode = true
 									}
 								}
-								
+
 							}
 						})
 						uni.request({
@@ -365,7 +410,7 @@
 					},
 					success: (res) => {
 						console.log(res)
-						if(res.data.code === 500) {
+						if (res.data.code === 500) {
 							that.toasttxt = '验证码不正确';
 							that.$refs.toast.show()
 						} else {
@@ -373,9 +418,9 @@
 							that.$refs.toast.show()
 							that.iscode = false
 							this.$refs.popup.hide()
-							if(!uni.getStorageSync('token')) {
-								uni.setStorageSync('token',res.data.token)
-								uni.setStorageSync('phone',that.tel)
+							if (!uni.getStorageSync('token')) {
+								uni.setStorageSync('token', res.data.token)
+								uni.setStorageSync('phone', that.tel)
 							}
 						}
 					}
@@ -392,13 +437,13 @@
 			put() {
 				this.$refs.popup.show()
 			},
-			setback(){
+			setback() {
 				this.iscode = false
 			},
-			gosearch(){
+			gosearch() {
 				uni.setStorageSync('search', 1)
 				uni.navigateTo({
-					url:'/pages/searchname/searchname'
+					url: '/pages/searchname/searchname'
 				})
 			}
 		},
@@ -413,18 +458,21 @@
 </script>
 
 <style lang="less">
-	page{
+	page {
 		background: #FFFFFF;
 	}
+
 	.toptitle {
 		color: #17181A;
 		font-size: 32rpx;
 		padding: 0 29.88rpx;
 		line-height: 87.64rpx;
+
 		.status_bar {
-		      height: var(--status-bar-height);
-		      width: 100%;
-		  }
+			height: var(--status-bar-height);
+			width: 100%;
+		}
+
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -432,13 +480,16 @@
 			margin-bottom: -4rpx;
 		}
 	}
+
 	button {
 		padding: 0;
 		margin: 0;
 	}
+
 	button:after {
 		border: none;
 	}
+
 	.topimg {
 		width: 100%;
 		height: 200rpx;
@@ -551,12 +602,14 @@
 			display: flex;
 			align-items: center;
 			position: relative;
+
 			.close {
 				position: absolute;
 				right: 30rpx;
 				top: 28rpx;
 				font-size: 30rpx;
 			}
+
 			.txt {
 				color: #969799;
 				font-size: 32rpx;
@@ -566,32 +619,38 @@
 				font-size: 32rpx;
 				margin-left: 24rpx;
 			}
+
 			text {
 				color: #7495BD;
 				font-size: 32rpx;
 			}
 		}
+
 		.two {
 			.input-box {
 				margin-bottom: 40rpx;
 			}
 		}
+
 		.msg {
 			margin-bottom: 48rpx;
 			margin-left: 40rpx;
 			display: flex;
 			align-items: center;
+
 			.kk {
 				color: #7A7A7A;
 				font-size: 24rpx;
 				margin-left: 8rpx;
 				position: relative;
 				top: 6rpx;
+
 				text {
 					color: #7495BD;
 				}
 			}
 		}
+
 		.yes {
 			width: 498rpx;
 			height: 80rpx;
@@ -604,6 +663,7 @@
 			font-weight: bold;
 			margin-left: 40rpx;
 		}
+
 		.codemsg {
 			color: #999999;
 			font-size: 22rpx;

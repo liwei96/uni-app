@@ -66,11 +66,14 @@
 				list: [],
 				name: '',
 				other: [],
-				num: 0
+				num: 0,
+				city: 1
 			}
 		},
-		onLoad() {
+		onLoad(options) {
 			that = this
+			this.city = options.city || uni.getStorageSync('city');
+			uni.setStorageSync('city',options.city)
 			this.getinfo()
 		},
 		methods: {
@@ -100,7 +103,6 @@
 					that.other = []
 					that.num = 0
 				}
-
 			},
 			go(id) {
 				uni.navigateTo({
@@ -128,7 +130,7 @@
 			},
 			getinfo() {
 				let token = uni.getStorageSync('token')
-				let city = uni.getStorageSync('city')
+				let city = this.city
 				uni.request({
 					url: that.apiserve + '/jy/article/recommends',
 					method: 'GET',

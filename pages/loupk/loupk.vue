@@ -48,7 +48,7 @@
 			</checkbox-group>
 	     <!-- #endif -->
 			<!-- #ifdef MP-WEIXIN -->
-			<van-checkbox-group class="left_checkbox_box" @change="checkChangeWei" :max="2" v-model="result">
+			<!-- <van-checkbox-group class="left_checkbox_box" @change="checkChangeWei" :max="2" v-model="result">
 				<movable-area v-show="true" v-for="(item,index) in data" :key="item.id">
 					<movable-view direction="horizontal">
 						<view class="sel_pro">
@@ -63,7 +63,6 @@
 									<view class="type">{{item.type}}<text class="ge">|</text>{{item.city}}-{{item.country}}<text class="ge">|</text>{{item.area}}m²</view>
 									<view class="tese">
 										<text class="zhuang">{{item.decorate}}</text>
-										<!-- <text class="other">{{item.type}}</text> -->
 										<text class="other" v-for="(ite,index) in item.features" :key="index">{{ite}}</text>
 									</view>
 								</view>
@@ -74,7 +73,7 @@
 						</view>
 					</movable-view>
 				</movable-area>
-			 </van-checkbox-group>
+			 </van-checkbox-group> -->
 			<!-- #endif -->
 
 			<view class="image_wu" v-show='tootip'>
@@ -94,9 +93,6 @@
 		<view :class="style_num==0?'bottom_btn':'active'" @tap="duibi">
 			开始对比
 		</view>
-
-
-
 	</view>
 </template>
 

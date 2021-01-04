@@ -21,7 +21,7 @@
 		<image src="../../static/index/index-banner.jpg" mode="" class="banner"></image>
 		<view class="nav">
 			<view class="nav-li">
-				<navigator url="../building/building" open-type="switchTab">
+				<navigator url="../building/building" open-type="navigate">
 					<image src="../../static/index/index-new.png" mode=""></image>
 					<text>新房</text>
 				</navigator>
@@ -156,7 +156,7 @@
 					</text>
 				</view>
 				<view class="more" @tap="gotop">
-					<navigator url="/pages/top/top" open-type="switchTab" class="my_nav">
+					<navigator url="/pages/top/top" open-type="navigate" class="my_nav">
 						<text>更多楼盘</text>
 						<image src="../../static/content/right.png" mode=""></image>
 					</navigator>
@@ -195,8 +195,8 @@
 
 				</view>
 				<view class="dynamic-con">
-					<view class="con1">
-						<navigator :url="`../dynamicdetail/dynamicdetail?/id=${dynamics[0].id}`">
+					<view class="con1" @tap="godynamicdetail">
+						<!-- <navigator :url="`../dynamicdetail/dynamicdetail?/id=${dynamics[0].id}`"> -->
 							<view class="con1-top">
 								<image :src="dynamics[0].img" mode=""></image>
 								<text class="title">{{dynamics[0].name}}</text>
@@ -204,7 +204,7 @@
 							<view class="con1-bom">
 								<text class="txt">{{dynamics[0].introduce}}</text>
 							</view>
-						</navigator>
+						<!-- </navigator> -->
 					</view>
 					<view class="right">
 						<view class="con2">
@@ -267,10 +267,12 @@
 
 			</view>
 		</view>
+		<tabbar :type="0"></tabbar>
 	</view>
 </template>
 
 <script>
+	import tabbar from '../../components/tabbar/tabbar.vue'
 	export default {
 		data() {
 			return {
@@ -296,9 +298,14 @@
 				cityname: '杭州'
 			}
 		},
-		onShow() {
+		components:{
+			tabbar
+		},
+		onLoad(options) {
+			
+			console.log(options)
 			this.cityname = uni.getStorageSync('cityname') || '杭州'
-			let city = uni.getStorageSync('city');
+			let city = options.city || uni.getStorageSync('city');
 			let token = uni.getStorageSync("token");
 			uni.request({
 				url: this.apiserve + '/applets/first',
@@ -321,6 +328,7 @@
 						this.deals = res.data.data.deals;
 						this.dynamics = res.data.data.dynamics;
 						this.recommends = res.data.data.recommends;
+						this.cityname = res.data.data.city_info.current.short
 						// #ifdef MP-BAIDU
 						let header = res.data.data.common.header;
 						swan.setPageInfo({
@@ -351,6 +359,13 @@
 			}).exec();
 		},
 		methods: {
+			godynamicdetail() {
+				let id = this.dynamics[0].id
+				console.log(id)
+				uni.navigateTo({
+					url:'/pages/dynamicdetail/dynamicdetail?id='+id
+				})
+			},
 			gotop() {
 				uni.navigateTo({
 					url: '/pages/top/top'
@@ -407,6 +422,7 @@
 <style lang="less">
 	page {
 		background: #fff;
+		padding-bottom: 100rpx;
 	}
 
 	.toptitle {
@@ -546,6 +562,7 @@
 
 			.swiper {
 				height: 87.64rpx;
+				flex: 1;
 
 				.swiper-item {
 					line-height: 87.64rpx;
@@ -682,7 +699,7 @@
 			white-space: nowrap;
 
 			.scroll-item {
-				position: relative;
+				// position: relative;
 				margin-right: 19.92rpx;
 				display: inline-block;
 				width: 280rpx;
@@ -722,7 +739,7 @@
 				}
 
 				.bombox {
-					position: absolute;
+					// position: absolute;
 					width: 280rpx;
 					height: 80rpx;
 
@@ -804,9 +821,9 @@
 
 	.toplist-swiper {
 		margin-bottom: 56rpx;
-
+		width: 100%;
 		.scroll-view {
-			width: 100%;
+			width: auto;
 			white-space: nowrap;
 			padding-bottom: 10rpx;
 

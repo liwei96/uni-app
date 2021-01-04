@@ -77,6 +77,8 @@
 	export default {
 		onLoad(options) {
 			that = this
+			this.city = options.city || uni.getStorageSync('city')
+			uni.setStorageSync('city',options.city)
 			if (options.num) {
 				uni.showLoading({
 					title: '加载中'
@@ -97,6 +99,7 @@
 		data() {
 			return {
 				num: 0,
+				city: 1,
 				list: [{
 						name: "买房资格",
 						id: 56,
@@ -207,7 +210,7 @@
 					title: '加载中'
 				})
 				let token = uni.getStorageSync('token')
-				let city = uni.getStorageSync('city')
+				let city = this.city
 				uni.request({
 					url: that.apiserve + '/applets/article/info',
 					method: 'GET',

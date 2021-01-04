@@ -62,7 +62,6 @@
 		onLoad() {
 			that = this
 			this.getinfo()
-			
 			this.name = uni.getStorageSync('cityname')
 			//#ifdef MP-BAIDU
 			swan.setPageInfo({
@@ -141,8 +140,8 @@
 			setcity(id, name) {
 				uni.setStorageSync('city', id)
 				uni.setStorageSync('cityname', name)
-				uni.switchTab({
-					url: "/pages/index/index"
+				uni.navigateTo({
+					url: "/pages/index/index?city="+id
 				})
 			},
 			gocity(id, name,k) {

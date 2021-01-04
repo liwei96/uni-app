@@ -47,21 +47,21 @@
 		</view>
 		<!-- 加推时间 -->
 		<view class="push_time" v-show='push_time_show'>
-			<view class="time_one">
+			<view class="time_one" v-if="pull_time!==''">
 				<text class="yuan"></text>
 				加推时间：{{pull_time}}
 			</view>
 		</view>
 		<!-- 交房时间 -->
 		<view class="jiao_time" v-show="jiao_time_show">
-			<view class="time_one">
+			<view class="time_one" v-if="jiao_time !== ''">
 				<text class="yuan"></text>
 				交房时间：{{jiao_time}}
 			</view>
 		</view>
 		<!-- 五证信息 -->
 		<view class="wu_zheng" v-show="wu_zheng_show">
-			<view class="time_one">
+			<view class="time_one" v-if="zheng!==''">
 				<text class="yuan"></text>
 				{{zheng}}
 			</view>

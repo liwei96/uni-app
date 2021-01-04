@@ -2,13 +2,13 @@
 	<view class="help">
 		<view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
-			      </view>
+				<!-- 这里是状态栏 -->
+			</view>
 			<image src="../../static/all-back1.png" mode=""></image>
 			<text>帮我找房</text>
 		</view>
 		<view class="topbb">
-			
+
 		</view>
 		<image src="../../static/other/help-top.jpg" mode="" class="topimg"></image>
 		<view class="box">
@@ -185,6 +185,7 @@
 			async getPhoneNumber(e) {
 				console.log(e)
 				let that = this
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
 				} else {
@@ -239,13 +240,57 @@
 												that.tel = tel
 											}
 										})
-			
+							
 									}
 								})
 							}
 						});
 					}
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					this.isok = 0
+				} else {
+					this.isok = 1
+					this.pass = true
+					uni.setStorageSync('pass',true)
+						uni.login({
+							provider: 'weixin',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://ll.edefang.net/api/weichat/jscode2session',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://ll.edefang.net/api/weichat/decryptData",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.tel = tel
+											}
+										})
+							
+									}
+								})
+							}
+						});
+				}
+				// #endif
 				this.$refs.popup1.show()
 			},
 			send() {

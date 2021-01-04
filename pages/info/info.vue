@@ -54,9 +54,9 @@
 				</view>
 				<view class="bom">
 					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,build.id,'文章详情页+在线问')" v-if="!pass">
-					<view class="btn">
-						在线问
-					</view>
+						<view class="btn">
+							在线问
+						</view>
 					</button>
 					<view class="btn" @tap="show(build.id,'文章详情页+在线问',1)" v-if="pass">
 						在线问
@@ -200,13 +200,13 @@
 					url: "/pages/article/article?id=" + id
 				})
 			},
-			
+
 			gobuild(id) {
 				uni.redirectTo({
 					url: "/pages/content/content?id=" + id
 				})
 			},
-			show(id, txt,n) {
+			show(id, txt, n) {
 				this.pid = id
 				this.remark = txt
 				this.position = 104
@@ -240,8 +240,8 @@
 						id: that.info.id,
 						token: token
 					},
-					header:{
-						'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
 					},
 					success: (res) => {
 						console.log(res)
@@ -255,19 +255,20 @@
 					}
 				})
 			},
-			async getPhoneNumber(e,bid,txt) {
+			async getPhoneNumber(e, bid, txt) {
 				console.log(e)
 				let that = this
 				let token = uni.getStorageSync('token')
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					if(bid){
-						that.show(bid,txt,0)
-					}else{
-						if(!token) {
+					if (bid) {
+						that.show(bid, txt, 0)
+					} else {
+						if (!token) {
 							let url = '/pages/info/info?id=' + this.id
 							uni.setStorageSync('backurl', url)
 							uni.navigateTo({
-								url:'/pages/login/login'
+								url: '/pages/login/login'
 							})
 						} else {
 							that.agree()
@@ -275,8 +276,8 @@
 					}
 				} else {
 					this.pass = true
-					uni.setStorageSync('pass',true)
-					if(token && !bid) {
+					uni.setStorageSync('pass', true)
+					if (token && !bid) {
 						that.agree()
 						return
 					}
@@ -296,18 +297,18 @@
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
 								uni.request({
-									url:"https://api.edefang.net/applets/login",
-									method:'GET',
-									data:{
+									url: "https://api.edefang.net/applets/login",
+									method: 'GET',
+									data: {
 										phone: tel,
 										openid: openid
 									},
 									success: (res) => {
-										uni.setStorageSync('token',res.data.token)
-										uni.setStorageSync('phone',tel)
-										if(bid){
-											that.show(bid,txt,1)
-										}else{
+										uni.setStorageSync('token', res.data.token)
+										uni.setStorageSync('phone', tel)
+										if (bid) {
+											that.show(bid, txt, 1)
+										} else {
 											that.agree()
 										}
 									}
@@ -342,18 +343,18 @@
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												uni.request({
-													url:"https://api.edefang.net/applets/login",
-													method:'GET',
-													data:{
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
 														phone: tel,
 														openid: openid
 													},
 													success: (res) => {
-														uni.setStorageSync('token',res.data.token)
-														uni.setStorageSync('phone',tel)
-														if(bid){
-															that.show(bid,txt,1)
-														}else{
+														uni.setStorageSync('token', res.data.token)
+														uni.setStorageSync('phone', tel)
+														if (bid) {
+															that.show(bid, txt, 1)
+														} else {
 															that.agree()
 														}
 													}
@@ -366,6 +367,80 @@
 						});
 					}
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					if (bid) {
+						that.show(bid, txt, 0)
+					} else {
+						if (!token) {
+							let url = '/pages/info/info?id=' + this.id
+							uni.setStorageSync('backurl', url)
+							uni.navigateTo({
+								url: '/pages/login/login'
+							})
+						} else {
+							that.agree()
+						}
+					}
+				} else {
+					this.pass = true
+					uni.setStorageSync('pass', true)
+					if (token && !bid) {
+						that.agree()
+						return
+					}
+					uni.login({
+						provider: 'weixin',
+						success: function(res) {
+							console.log(res.code);
+							uni.request({
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method: 'get',
+								data: {
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid', res.data.openid)
+									uni.setStorageSync('session', res.data.session_key)
+									uni.request({
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										data: {
+											data: e.detail.encryptedData,
+											iv: e.detail.iv,
+											session_key: res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone', tel)
+											let openid = uni.getStorageSync('openid')
+											uni.request({
+												url: "https://api.edefang.net/applets/login",
+												method: 'GET',
+												data: {
+													phone: tel,
+													openid: openid
+												},
+												success: (res) => {
+													uni.setStorageSync('token', res.data.token)
+													uni.setStorageSync('phone', tel)
+													if (bid) {
+														that.show(bid, txt, 1)
+													} else {
+														that.agree()
+													}
+												}
+											})
+										}
+									})
+								}
+							})
+						}
+					});
+				}
+				// #endif
 
 			}
 		}
@@ -376,6 +451,7 @@
 	.article {
 		background-color: #FFFFFF;
 	}
+
 	.toptitle {
 		color: #17181A;
 		font-size: 29.88rpx;
@@ -399,18 +475,22 @@
 			margin-bottom: -4rpx;
 		}
 	}
+
 	button {
 		padding: 0;
 		margin: 0;
 	}
+
 	button:after {
 		border: none;
 	}
+
 	.wenbox {
 		image {
 			width: 100%;
 		}
 	}
+
 	.box {
 		padding: 0 30rpx;
 		margin-top: 88rpx;

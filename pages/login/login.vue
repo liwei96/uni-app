@@ -194,7 +194,7 @@
 							uni.setStorageSync('pass',true)
 							if(basurl){
 								if(basurl == '/pages/home/home') {
-									uni.switchTab({
+									uni.navigateTo({
 										url:basurl
 									})
 								}else{

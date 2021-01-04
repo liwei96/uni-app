@@ -82,11 +82,14 @@
 				name: '',
 				other: [],
 				num: 0,
-				page: 1
+				page: 1,
+				city: 1
 			}
 		},
-		onLoad() {
+		onLoad(options) {
 			that = this
+			this.city = options.city || uni.getStorageSync('city');
+			uni.setStorageSync('city',options.city)
 			this.getinfo()
 		},
 		methods: {
@@ -143,7 +146,7 @@
 			},
 			getinfo() {
 				let token = uni.getStorageSync('token')
-				let city = uni.getStorageSync('city')
+				let city = this.city
 				uni.request({
 					url: that.apiserve + '/jy/article/recommends',
 					method: 'GET',
