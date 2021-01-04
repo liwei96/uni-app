@@ -13,6 +13,7 @@
 			<view class="add_tan" @tap="goTianPro">
 				添加楼盘
 			</view>
+			<!-- #ifdef MP-BAIDU -->
 			<checkbox-group class="left_checkbox_box" @change="checkChange">
 				<movable-area v-show="true" v-for="(item,index) in data" :key="item.id">
 					<movable-view direction="horizontal">
@@ -45,8 +46,36 @@
 					</movable-view>
 				</movable-area>
 			</checkbox-group>
-
-
+	     <!-- #endif -->
+			<!-- #ifdef MP-WEIXIN -->
+			<van-checkbox-group class="left_checkbox_box" @change="checkChangeWei" :max="2" v-model="result">
+				<movable-area v-show="true" v-for="(item,index) in data" :key="item.id">
+					<movable-view direction="horizontal">
+						<view class="sel_pro">
+							<view class="left_checkbox_w">
+							  <van-checkbox :name="item.id"></van-checkbox>
+							</view>
+							<view class="pro_one">
+								<image :src="item.img" mode=""></image>
+								<view class="right_name">
+									<view class="name">{{item.name}}</view>
+									<view class="price">{{item.price}}元/m²</view>
+									<view class="type">{{item.type}}<text class="ge">|</text>{{item.city}}-{{item.country}}<text class="ge">|</text>{{item.area}}m²</view>
+									<view class="tese">
+										<text class="zhuang">{{item.decorate}}</text>
+										<!-- <text class="other">{{item.type}}</text> -->
+										<text class="other" v-for="(ite,index) in item.features" :key="index">{{ite}}</text>
+									</view>
+								</view>
+							</view>
+							<view class="delete" @tap="deletePro(item.id,index)">
+								删除
+							</view>
+						</view>
+					</movable-view>
+				</movable-area>
+			 </van-checkbox-group>
+			<!-- #endif -->
 
 			<view class="image_wu" v-show='tootip'>
 				<image src="../../static/other/no_pk.png" mode=""></image>
@@ -57,7 +86,6 @@
 					请点击添加
 				</view>
 			</view>
-
 			<view class="tootip" v-show="duibi_tootip">
 				已加入对比
 			</view>
@@ -104,7 +132,8 @@
 					message: '成功消息',
 					duration: 2000
 				},
-				style_num:0
+				style_num:0,
+				result:[]
 				
 				
 			};
@@ -154,6 +183,16 @@
 			}
 		},
 		methods: {
+		    onChange(event) {
+			  this.result = event.detail;
+		    },
+			checkChangeWei(e){
+				this.result = e.detail;
+				if(this.result.length==2){
+					 this.duibi_tootip = true;
+					 this.style_num = 1;
+				}
+			},
 			//多选提示
 			checkboxhint() {
 				if (
@@ -200,14 +239,21 @@
 			
 			
 			duibi(){
+				// #ifdef MP-BAIDU
 				let  arr = this.selBox;
-				
 				let id_arr = [];
 				arr.map(p=>{
 					id_arr.push(p.id)
 				})
 				
-			    let checkbox = id_arr.join(',');
+				let checkbox = id_arr.join(',');
+				// #endif
+				// #ifdef MP-WEIXIN
+				   let arr = this.result
+				   let checkbox = arr.join(',');
+				// #endif
+				
+				
 				uni.navigateTo({
 					 url:'../loupkdetail/loupkdetail?id='+checkbox
 				})
@@ -364,6 +410,11 @@
 							float: left;
 							margin-top: 40rpx;
 							margin-right: 30rpx;
+						}
+						.left_checkbox_w{
+							float: left;
+							margin-top: 40rpx;
+							margin-right: 40rpx;
 						}
 
 						.pro_one {
