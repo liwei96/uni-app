@@ -17,7 +17,7 @@
 				<text class="other" v-if="building.type">{{building.type}}</text>
 				<text class="other" v-if="building.railway">{{building.railway}}</text>
 				<template v-if="building.features">
-				   <text class="other" v-for="(item,index) in building.features" :key="item.id" v-if="index<=3">{{item}}</text>
+					<text class="other" v-for="(item,index) in building.features" :key="item.id" v-if="index<=3">{{item}}</text>
 				</template>
 			</view>
 		</view>
@@ -40,30 +40,31 @@
 					{{building.total_price}}
 					<text class="dan">万起</text>
 				</text>
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,building.id,'项目详情页+查低价',105,'查低价')" hover-class="none" v-if="!pass">
-				   <text class="cha" >查底价</text>
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,building.id,'项目详情页+查低价',105,'查低价')"
+				 hover-class="none" v-if="!pass">
+					<text class="cha">查底价</text>
 				</button>
 				<button @tap="baoMing(building.id,'项目详情页+查低价',105,'查低价',1)" v-if="pass">
-				   <text class="cha" >查底价</text>
+					<text class="cha">查底价</text>
 				</button>
 			</view>
 			<view class="type">
-				<text class="left">类       型：</text>
-				  {{building.type}}
+				<text class="left">类 型：</text>
+				{{building.type}}
 			</view>
 			<view class="huxing">
-				 <text class="left">户       型：</text>
-				 <text class="con">{{building.room_types}}</text>
-				 <view class="more" @tap="goHuxing(building.id)">
-					 更多户型
-				     <image src="../../static/content/right.png" mode=""></image>
-				 </view>
+				<text class="left">户 型：</text>
+				<text class="con">{{building.room_types}}</text>
+				<view class="more" @tap="goHuxing(building.id)">
+					更多户型
+					<image src="../../static/content/right.png" mode=""></image>
+				</view>
 			</view>
 			<view class="address">
-				 <text class="left">楼盘地址：</text>
-				 <text class="add">{{building.address}}</text>
+				<text class="left">楼盘地址：</text>
+				<text class="add">{{building.address}}</text>
 			</view>
-			
+
 		</view>
 		<view class="bg_hui"></view>
 		<!-- 销售信息 -->
@@ -76,11 +77,12 @@
 				<text class="time">
 					{{building.open_time}}
 				</text>
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,building.id,'项目详情页+开盘通知',92,'开盘提醒我')" v-if="!pass">
-				    <text class="kai_btn" >开盘通知</text>
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,building.id,'项目详情页+开盘通知',92,'开盘提醒我')"
+				 v-if="!pass">
+					<text class="kai_btn">开盘通知</text>
 				</button>
-				<button  @tap="baoMing(building.id,'项目详情页+开盘通知',92,'开盘提醒我',1)" v-if="pass">
-				    <text class="kai_btn" >开盘通知</text>
+				<button @tap="baoMing(building.id,'项目详情页+开盘通知',92,'开盘提醒我',1)" v-if="pass">
+					<text class="kai_btn">开盘通知</text>
 				</button>
 			</view>
 			<view class="push_time">
@@ -96,7 +98,7 @@
 				</text>
 			</view>
 			<view class="yu_zheng">
-				<text class="left">预  售  证：</text>
+				<text class="left">预 售 证：</text>
 				<text class="zheng">
 					{{building.license}}
 				</text>
@@ -108,7 +110,7 @@
 				</text>
 			</view>
 			<view class="kai_shang">
-				<text class="left">开  发  商：</text>
+				<text class="left">开 发 商：</text>
 				<text class="shang">
 					{{building.developer}}
 				</text>
@@ -185,21 +187,20 @@
 		<!-- 项目介绍  -->
 		<view class="jieshao">
 			<view class="tit">
-				项目介绍 
+				项目介绍
 			</view>
 			<view class="content">
 				<text class="text">{{text}}</text>
 				<text class="zhan" v-show="zhan" v-if="building.introduce.length>=82" @click="showHide">[展开]</text>
 			</view>
 		</view>
-		<bottom :remark="'楼盘详情页+预约看房'"
-		:point="103" :title="'预约看房'"
-		:pid="building.id" :telphone="telphone"></bottom>
-		
+		<bottom :remark="'楼盘详情页+预约看房'" :point="103" :title="'预约看房'" :pid="building.id" :telphone="telphone"></bottom>
+
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n" :isok="isok"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"
+			 :isok="isok"></sign>
 		</wyb-popup>
-		
+
 	</view>
 </template>
 
@@ -210,110 +211,159 @@
 	export default {
 		data() {
 			return {
-				pass:false,
-				text:'',
-				building:{},
-				text_all:'',
-				zhan:true,
-				
-				codenum:1,
-				title_e:'',
-				pid_d:'',
-				remark_k:'',
-				position_n:0,
-				telphone:'',
-				isok:0,
+				pass: false,
+				text: '',
+				building: {},
+				text_all: '',
+				zhan: true,
+
+				codenum: 1,
+				title_e: '',
+				pid_d: '',
+				remark_k: '',
+				position_n: 0,
+				telphone: '',
+				isok: 0,
 			};
 		},
-		components:{
-			 bottom,
-			 wybPopup,
-			 sign,
+		components: {
+			bottom,
+			wybPopup,
+			sign,
 		},
-		onLoad(option){
+		onLoad(option) {
 			console.log(option);
 			this.getData(option.id);
 			this.pass = uni.getStorageSync('pass')
 			// this.text=this.text.substring(0,82);
 		},
-		methods:{
-			setpop(){
+		methods: {
+			setpop() {
 				this.$refs.popup.hide()
 			},
-			async getPhoneNumber(e,pid,remark,point,title,type) {
+			async getPhoneNumber(e, pid, remark, point, title, type) {
 				let that = this
-				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+				// #ifdef  MP-BAIDU
+				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
-					that.baoMing(pid,remark,point,title,0)
-					if(type) {
-						
+					that.baoMing(pid, remark, point, title, 0)
+					if (type) {
+
 					}
 				} else {
-					this.pass  = true;
-					uni.setStorageSync('pass',true)
-					
+					this.pass = true;
+					uni.setStorageSync('pass', true)
+
 					let session = uni.getStorageSync('session')
-					if(session){
+					if (session) {
 						uni.request({
 							url: 'https://api.edefang.net/applets/baidu/decrypt',
-							method:'get',
-							data:{
+							method: 'get',
+							data: {
 								iv: e.detail.iv,
 								data: e.detail.encryptedData,
 								session_key: session
 							},
 							success: (res) => {
-								console.log(res,'session')
+								console.log(res, 'session')
 								let tel = res.data.mobile
-								uni.setStorageSync('phone',tel)
+								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
-							    that.tel = tel;
-								that.baoMing(pid,remark,point,title,1)
+								that.tel = tel;
+								that.baoMing(pid, remark, point, title, 1)
 							}
 						})
-					}else {
-						console.log(session,"没保存session")
+					} else {
+						console.log(session, "没保存session")
 						uni.login({
-						  provider: 'baidu',
-						  success: function (res) {
-						    console.log(res.code);
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.$refs.sign.tel = tel
+												that.baoMing(pid, remark, point, title, 1)
+											}
+										})
+
+									}
+								})
+							}
+						});
+					}
+					this.isok = 1
+				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					this.isok = 0
+					that.baoMing(pid, remark, point, title, 0)
+					if (type) {
+
+					}
+				} else {
+					this.pass = true;
+					uni.setStorageSync('pass', true)
+					uni.login({
+						provider: 'weixin',
+						success: function(res) {
 							uni.request({
-								url: 'https://api.edefang.net/applets/baidu/get_session_key',
-								method:'get',
-								data:{
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method: 'get',
+								data: {
 									code: res.code
 								},
 								success: (res) => {
 									console.log(res)
-									uni.setStorageSync('openid',res.data.openid)
-									uni.setStorageSync('session',res.data.session_key)
+									uni.setStorageSync('openid', res.data.openid)
+									uni.setStorageSync('session', res.data.session_key)
 									uni.request({
-										url:"https://api.edefang.net/applets/baidu/decrypt",
-										data:{
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										data: {
 											data: e.detail.encryptedData,
-											iv:e.detail.iv,
-											session_key:res.data.session_key
+											iv: e.detail.iv,
+											session_key: res.data.session_key
 										},
 										success: (res) => {
 											console.log(res)
 											let tel = res.data.mobile
-											uni.setStorageSync('phone',tel)
+											uni.setStorageSync('phone', tel)
 											let openid = uni.getStorageSync('openid')
 											that.$refs.sign.tel = tel
-											that.baoMing(pid,remark,point,title,1)
+											that.baoMing(pid, remark, point, title, 1)
 										}
 									})
-									
+
 								}
 							})
-						  }
-						});
 						}
+					});
 					this.isok = 1
 				}
+				// #endif
 			},
-			baoMing(pid,remark,point,title,n){
-				this.isok = n 
+			baoMing(pid, remark, point, title, n) {
+				this.isok = n
 				this.title_e = title;
 				this.pid_d = pid;
 				this.remark_k = remark;
@@ -321,67 +371,67 @@
 				console.log(pid);
 				this.$refs.popup.show();
 			},
-			setiscode(){
+			setiscode() {
 				this.codenum = 0
 			},
-			getData(id){
+			getData(id) {
 				uni.showLoading({
-				    title: '加载中'
+					title: '加载中'
 				});
-				
+
 				let that = this;
-				let  other = uni.getStorageSync("other");
-				let  token =  uni.getStorageSync("token");
+				let other = uni.getStorageSync("other");
+				let token = uni.getStorageSync("token");
 				uni.request({
-					url:this.apiserve+"/applets/building/base",
-					data:{
-						id:id,
-						other:other,
-						token:token
+					url: this.apiserve + "/applets/building/base",
+					data: {
+						id: id,
+						other: other,
+						token: token
 					},
-					method:"GET",
+					method: "GET",
 					success: (res) => {
-						if(res.data.code==200){
-							 console.log(res);
-						    this.building = res.data.building; 
+						if (res.data.code == 200) {
+							console.log(res);
+							this.building = res.data.building;
 							this.text_all = res.data.building.introduce;
-							this.text = res.data.building.introduce.substring(0,82);
+							this.text = res.data.building.introduce.substring(0, 82);
 							this.telphone = res.data.common.phone;
 							// #ifdef MP-BAIDU
-							      let header = res.data.common.header;
-								 swan.setPageInfo({
-										  title:header.title,
-										  keywords:header.keywords,
-										  description:header.description,
-										  image:[that.building.img],
-										  success : res =>{
-											  console.log('setPageInfo success', res);
-										  },
-										  fail: err =>{
-											  console.log('setPageInfo fail', err);
-										  }
-								 })
+							let header = res.data.common.header;
+							swan.setPageInfo({
+								title: header.title,
+								keywords: header.keywords,
+								description: header.description,
+								image: [that.building.img],
+								success: res => {
+									console.log('setPageInfo success', res);
+								},
+								fail: err => {
+									console.log('setPageInfo fail', err);
+								}
+							})
 							// #endif
-							
+
 						}
 					},
 					fail: (error) => {
 						console.log(error);
 					}
 				})
-				
-				 uni.hideLoading();
+
+				uni.hideLoading();
 			},
-			showHide(){
+			showHide() {
 				this.text = this.text_all;
 				this.zhan = false;
 			},
-			goHuxing(id){
+			goHuxing(id) {
 				// uni.navigateBack({
 				// 	delta:1
 				// })
 				uni.navigateTo({
-					url:"../prohuxing/prohuxing?id="+id
+					url: "../prohuxing/prohuxing?id=" + id
 				})
 			}
 		}
@@ -389,398 +439,464 @@
 </script>
 
 <style lang="less">
-button::after{ border: none;}
-.prodetail{
-	.toptitle{
-		color: #17181A;
-		font-size: 29.88rpx;
-		padding: 0 29.88rpx;
-		line-height: 87.64rpx;
-		background-color: #fff;
-		position: fixed;
-		top: 0;
-		width: 100%;
-		z-index: 30000;
-		.status_bar{
-			height: var(--status-bar-height);
+	button::after {
+		border: none;
+	}
+
+	.prodetail {
+		.toptitle {
+			color: #17181A;
+			font-size: 29.88rpx;
+			padding: 0 29.88rpx;
+			line-height: 87.64rpx;
+			background-color: #fff;
+			position: fixed;
+			top: 0;
 			width: 100%;
-		}
-		.nav_top{
-			image{
-				 width: 31.87rpx;
-				 height: 31.87rpx;
-				 margin-right: 11.95rpx;
-				 margin-bottom: -3.98rpx;
+			z-index: 30000;
+
+			.status_bar {
+				height: var(--status-bar-height);
+				width: 100%;
 			}
-			text{
-						  width: 221rpx;
-						  font-size: 32rpx;
-						  font-weight: 500;
-						  color: #17181A;
-			}
-		}
-	}
-	.pro_top{
-		background:#fff;
-		padding-left: 30rpx;
-		padding-right: 30rpx;
-		padding-top: 40rpx;
-		padding-bottom: 32rpx;
-		margin-top: 120rpx;
-		.name{
-			font-size: 40rpx;
-			font-weight: 800;
-			color: #121212;
-			line-height: 40rpx;
-			margin-bottom: 19rpx;
-		}
-		.tese_line{
-			.tese{
-				width: 68rpx;
-				height: 36rpx;
-				background: #E6FAF0;
-				border-radius: 6rpx;
-				font-size: 22rpx;
-				font-weight: 500;
-				color: #2AC66D;
-				text-align: center;
-				line-height: 36rpx;
-				display: inline-block;
-				margin-right:12rpx ;
-			}
-			.other{
-			  	font-size: 22rpx;
-			  	font-weight: 500;
-			  	color: #7D7D80;
-				padding:8rpx 12rpx;
-				background:#F5F5F5;
-				margin-right:12rpx ;
+
+			.nav_top {
+				image {
+					width: 31.87rpx;
+					height: 31.87rpx;
+					margin-right: 11.95rpx;
+					margin-bottom: -3.98rpx;
+				}
+
+				text {
+					width: 221rpx;
+					font-size: 32rpx;
+					font-weight: 500;
+					color: #17181A;
+				}
 			}
 		}
-	}
-	.bg_hui{
-		width: 100%;
-		height: 20rpx;
-		background-color:#F7F7F7;
-	}
-	.xinxi{
-		height: 587rpx;
-		width: 100%;
-		padding-left:30rpx;
-		padding-right: 30rpx;
-		box-sizing: border-box;
-		background-color: #fff;
-		.tit{
-			font-size: 32rpx;
-			font-weight: bold;
-			color: #303233;
-			line-height: 114rpx;
-		}
-		.dan_price{
-			height: 94rpx;
-			border-bottom: 1rpx solid #F2F2F2;
-			.left{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #808080;
-				line-height: 94rpx;
+
+		.pro_top {
+			background: #fff;
+			padding-left: 30rpx;
+			padding-right: 30rpx;
+			padding-top: 40rpx;
+			padding-bottom: 32rpx;
+			margin-top: 120rpx;
+
+			.name {
+				font-size: 40rpx;
+				font-weight: 800;
+				color: #121212;
+				line-height: 40rpx;
+				margin-bottom: 19rpx;
 			}
-			.jia_right{
+
+			.tese_line {
+				.tese {
+					width: 68rpx;
+					height: 36rpx;
+					background: #E6FAF0;
+					border-radius: 6rpx;
+					font-size: 22rpx;
+					font-weight: 500;
+					color: #2AC66D;
+					text-align: center;
+					line-height: 36rpx;
+					display: inline-block;
+					margin-right: 12rpx;
+				}
+
+				.other {
+					font-size: 22rpx;
+					font-weight: 500;
+					color: #7D7D80;
+					padding: 8rpx 12rpx;
+					background: #F5F5F5;
+					margin-right: 12rpx;
+				}
+			}
+		}
+
+		.bg_hui {
+			width: 100%;
+			height: 20rpx;
+			background-color: #F7F7F7;
+		}
+
+		.xinxi {
+			height: 587rpx;
+			width: 100%;
+			padding-left: 30rpx;
+			padding-right: 30rpx;
+			box-sizing: border-box;
+			background-color: #fff;
+
+			.tit {
 				font-size: 32rpx;
 				font-weight: bold;
-				color: #FE582F;
-				line-height: 94rpx;
-				.dan{
-					font-size: 18rpx;
-					font-weight: 400;
+				color: #303233;
+				line-height: 114rpx;
+			}
+
+			.dan_price {
+				height: 94rpx;
+				border-bottom: 1rpx solid #F2F2F2;
+
+				.left {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #808080;
+					line-height: 94rpx;
+				}
+
+				.jia_right {
+					font-size: 32rpx;
+					font-weight: bold;
 					color: #FE582F;
+					line-height: 94rpx;
+
+					.dan {
+						font-size: 18rpx;
+						font-weight: 400;
+						color: #FE582F;
+						line-height: 94rpx;
+					}
+				}
+
+			}
+
+			.zong_price {
+				height: 94rpx;
+				border-bottom: 1rpx solid #F2F2F2;
+
+				.left {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #808080;
+					line-height: 94rpx;
+				}
+
+				.jia_right {
+					font-size: 32rpx;
+					font-weight: bold;
+					color: #FE582F;
+					line-height: 94rpx;
+
+					.dan {
+						font-size: 18rpx;
+						font-weight: 400;
+						color: #FE582F;
+						line-height: 94rpx;
+					}
+				}
+
+				.cha {
+					width: 148rpx;
+					height: 56rpx;
+					background: #F2F9FC;
+					border-radius: 12rpx;
+					background-color: #F2F9FC;
+					display: inline-block;
+					font-size: 26rpx;
+					font-weight: 500;
+					color: #3EACF0;
+					text-align: center;
+					line-height: 56rpx;
+					float: right;
+					margin-top: 20rpx;
+				}
+			}
+
+			.type {
+				height: 94rpx;
+				border-bottom: 1rpx solid #F2F2F2;
+
+				.left {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #808080;
+					line-height: 94rpx;
+				}
+
+				font-size: 28rpx;
+				font-weight: 500;
+				color: #323233;
+				line-height: 94rpx;
+			}
+
+			.huxing {
+				height: 94rpx;
+				border-bottom: 1rpx solid #F2F2F2;
+
+				.left {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #808080;
+					float: left;
+					line-height: 94rpx;
+				}
+
+				.con {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #323233;
+					float: left;
+					line-height: 94rpx;
+				}
+
+				.more {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #5F7891;
+					float: right;
+					line-height: 94rpx;
+
+					image {
+						width: 24rpx;
+						height: 24rpx;
+					}
+				}
+			}
+
+			.address {
+				height: 94rpx;
+				width: 100%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+
+				.left {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #808080;
+					line-height: 94rpx;
+				}
+
+				.add {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #323233;
+					line-height: 94rpx;
+
+				}
+			}
+		}
+
+		//销售信息
+		.sales {
+			width: 100%;
+			padding-left: 30rpx;
+			padding-right: 30rpx;
+			box-sizing: border-box;
+			background-color: #fff;
+			height: 683rpx;
+
+			.tit {
+				font-size: 32rpx;
+				font-weight: bold;
+				color: #2F3133;
+				line-height: 114rpx;
+			}
+
+			.open_time {
+				height: 94rpx;
+				border-bottom: 1rpx solid #F2F2F2;
+
+				.left {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #808080;
+					line-height: 94rpx;
+				}
+
+				.time {
+					font-size: 28rpx;
+					color: #323233;
+					line-height: 94rpx;
+				}
+
+				.kai_btn {
+					width: 148rpx;
+					height: 56rpx;
+					background: #F2F9FC;
+					border-radius: 12rpx;
+					background-color: #F2F9FC;
+					display: inline-block;
+					font-size: 26rpx;
+					font-weight: 500;
+					color: #3EACF0;
+					text-align: center;
+					line-height: 56rpx;
+					float: right;
+					margin-top: 20rpx;
+				}
+			}
+
+			.push_time {
+				height: 94rpx;
+				border-bottom: 1rpx solid #F2F2F2;
+
+				.left {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #808080;
+					line-height: 94rpx;
+				}
+
+				.time {
+					font-size: 28rpx;
+					color: #323233;
 					line-height: 94rpx;
 				}
 			}
-			
-		}
-		.zong_price{
-			height: 94rpx;
-			border-bottom: 1rpx solid #F2F2F2;
-			.left{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #808080;
-				line-height: 94rpx;
-			}
-			.jia_right{
-				font-size: 32rpx;
-				font-weight: bold;
-				color: #FE582F;
-				line-height: 94rpx;
-				.dan{
-					font-size: 18rpx;
-					font-weight: 400;
-					color: #FE582F;
+
+			.jiao_time {
+				height: 94rpx;
+				border-bottom: 1rpx solid #F2F2F2;
+
+				.left {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #808080;
+					line-height: 94rpx;
+				}
+
+				.time {
+					font-size: 28rpx;
+					color: #323233;
 					line-height: 94rpx;
 				}
 			}
-			.cha{
-				width: 148rpx;
-				height: 56rpx;
-				background: #F2F9FC;
-				border-radius: 12rpx;
-				background-color:#F2F9FC;
-				display: inline-block;
-				font-size: 26rpx;
-				font-weight: 500;
-				color: #3EACF0;
-				text-align: center;
-			    line-height: 56rpx;
-				float: right;
-				margin-top: 20rpx;
+
+			.yu_zheng {
+				height: 94rpx;
+				border-bottom: 1rpx solid #F2F2F2;
+
+				.left {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #808080;
+					line-height: 94rpx;
+				}
+
+				.zheng {
+					font-size: 28rpx;
+					color: #323233;
+					line-height: 94rpx;
+				}
 			}
-		}
-		.type{
-			height: 94rpx;
-			border-bottom: 1rpx solid #F2F2F2;
-			.left{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #808080;
-				line-height: 94rpx;
+
+			.chan_nian {
+				height: 94rpx;
+				border-bottom: 1rpx solid #F2F2F2;
+
+				.left {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #808080;
+					line-height: 94rpx;
+				}
+
+				.year {
+					font-size: 28rpx;
+					color: #323233;
+					line-height: 94rpx;
+				}
 			}
-			font-size: 28rpx;
-			font-weight: 500;
-			color: #323233;
-			line-height: 94rpx;
-		}
-		.huxing{
-			height: 94rpx;
-			border-bottom: 1rpx solid #F2F2F2;
-			.left{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #808080;
-				float: left;
-			    line-height: 94rpx;
-			}
-			.con{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #323233;
-				float: left;
-				line-height: 94rpx;
-			}
-			.more{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #5F7891;
-				float: right;
-				line-height: 94rpx;
-				image{
-					width: 24rpx;
-					height: 24rpx;
+
+			.kai_shang {
+				height: 94rpx;
+				border-bottom: 1rpx solid #F2F2F2;
+
+				.left {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #808080;
+					line-height: 94rpx;
+				}
+
+				.shang {
+					font-size: 28rpx;
+					color: #323233;
+					line-height: 94rpx;
 				}
 			}
 		}
-		.address{
-			height: 94rpx;
+
+		//建筑信息
+		.jianzhu {
 			width: 100%;
-			overflow: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-			.left{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #808080;
-				line-height: 94rpx;
+			padding-left: 30rpx;
+			padding-right: 30rpx;
+			box-sizing: border-box;
+			background-color: #fff;
+			height: 1062rpx;
+
+			.tit {
+				font-size: 32rpx;
+				font-weight: bold;
+				color: #2F3133;
+				line-height: 114rpx;
 			}
-			.add{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #323233;
-				line-height: 94rpx;
-				
-			}
-		}
-	}
-	//销售信息
-	.sales{
-		width: 100%;
-		padding-left:30rpx;
-		padding-right: 30rpx;
-		box-sizing: border-box;
-		background-color: #fff;
-        height: 683rpx;
-		.tit{
-			font-size: 32rpx;
-			font-weight: bold;
-			color: #2F3133;
-			line-height: 114rpx;
-		}
-		.open_time{
-			height: 94rpx;
-			border-bottom: 1rpx solid #F2F2F2;
-			.left{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #808080;
-				line-height: 94rpx;
-			}
-			.time{
-				font-size: 28rpx;
-				color: #323233;
-				line-height: 94rpx;
-			}
-			.kai_btn{
-				width: 148rpx;
-				height: 56rpx;
-				background: #F2F9FC;
-				border-radius: 12rpx;
-				background-color:#F2F9FC;
-				display: inline-block;
-				font-size: 26rpx;
-				font-weight: 500;
-				color: #3EACF0;
-				text-align: center;
-				line-height: 56rpx;
-				float: right;
-				margin-top: 20rpx;
+
+			.common {
+				height: 94rpx;
+				border-bottom: 1rpx solid #F2F2F2;
+				width: 100%;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+
+				.left {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #808080;
+					line-height: 94rpx;
+				}
+
+				.right {
+					font-size: 28rpx;
+					color: #323233;
+					line-height: 94rpx;
+				}
 			}
 		}
-		.push_time{
-			height: 94rpx;
-			border-bottom: 1rpx solid #F2F2F2;
-			.left{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #808080;
-				line-height: 94rpx;
-			}
-			.time{
-				font-size: 28rpx;
-				color: #323233;
-				line-height: 94rpx;
-			}
-		}
-		.jiao_time{
-			height: 94rpx;
-			border-bottom: 1rpx solid #F2F2F2;
-			.left{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #808080;
-				line-height: 94rpx;
-			}
-			.time{
-				font-size: 28rpx;
-				color: #323233;
-				line-height: 94rpx;
-			}
-		}
-		.yu_zheng{
-			height: 94rpx;
-			border-bottom: 1rpx solid #F2F2F2;
-			.left{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #808080;
-				line-height: 94rpx;
-			}
-			.zheng{
-				font-size: 28rpx;
-				color: #323233;
-				line-height: 94rpx;
-			}
-		}
-		.chan_nian{
-			height: 94rpx;
-			border-bottom: 1rpx solid #F2F2F2;
-			.left{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #808080;
-				line-height: 94rpx;
-			}
-			.year{
-				font-size: 28rpx;
-				color: #323233;
-				line-height: 94rpx;
-			}
-		}
-		.kai_shang{
-			height: 94rpx;
-			border-bottom: 1rpx solid #F2F2F2;
-			.left{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #808080;
-				line-height: 94rpx;
-			}
-			.shang{
-				font-size: 28rpx;
-				color: #323233;
-				line-height: 94rpx;
-			}
-		}
-	}
-	
-	//建筑信息
-	.jianzhu{
-		width: 100%;		padding-left:30rpx;		padding-right: 30rpx;		box-sizing: border-box;		background-color: #fff;		height: 1062rpx;
-		.tit{
-			font-size: 32rpx;
-			font-weight: bold;
-			color: #2F3133;
-			line-height: 114rpx;
-		}
-		.common{
-			height: 94rpx;
-			border-bottom: 1rpx solid #F2F2F2;
+
+		//项目介绍
+		.jieshao {
 			width: 100%;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			.left{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #808080;
-				line-height: 94rpx;
+			padding-left: 30rpx;
+			padding-right: 30rpx;
+			box-sizing: border-box;
+			background-color: #fff;
+			height: auto;
+			margin-bottom: 120rpx;
+
+			.tit {
+				font-size: 32rpx;
+				font-weight: bold;
+				color: #2F3133;
+				line-height: 114rpx;
 			}
-			.right{
-				font-size: 28rpx;
-				color: #323233;
-				line-height: 94rpx;
+
+			.content {
+				.text {
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #646566;
+					line-height: 53rpx;
+				}
+
+				.zhan {
+					font-size: 30rpx;
+					font-weight: 500;
+					color: #5F7891;
+					line-height: 53rpx;
+				}
 			}
 		}
+
 	}
-	
-	//项目介绍
-	.jieshao{
-		width: 100%;
-		padding-left:30rpx;
-		padding-right: 30rpx;
-		box-sizing: border-box;
-		background-color: #fff;
-		height:auto;
-		margin-bottom: 120rpx;
-		.tit{
-			font-size: 32rpx;
-			font-weight: bold;
-			color: #2F3133;
-			line-height: 114rpx;
-		}
-		.content{
-			.text{
-				font-size: 28rpx;
-				font-weight: 500;
-				color: #646566;
-				line-height: 53rpx;
-			}
-			.zhan{
-				font-size: 30rpx;
-				font-weight: 500;
-				color: #5F7891;
-				line-height: 53rpx;
-			}
-		}
-	}
-	
-}
 </style>

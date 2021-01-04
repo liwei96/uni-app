@@ -3,7 +3,7 @@
 		<view class="toptitle">
 			<view class="status_bar">
 			</view>
-			<navigator url="../index/index" class="nav_top" open-type="switchTab">
+			<navigator url="../index/index" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>{{detail.name}}</text>
 			</navigator>
@@ -46,7 +46,8 @@
 						<image src="../../static/content/duibi.png"></image>
 						<text>对比</text>
 					</view>
-					<button open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+收藏',101,'收藏',2)" class="shou" v-if="!pass">
+					<button open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+收藏',101,'收藏',2)"
+					 class="shou" v-if="!pass">
 						<image :src="shou_old" v-if="collect==0"></image>
 						<image :src="has_shou" v-if="collect==1"></image>
 						<text>收藏</text>
@@ -84,17 +85,19 @@
 				</view>
 				<view class="baoming_btn">
 					<view class="btn_box">
-						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价')" hover-class="none" v-if="!pass">
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价')"
+						 hover-class="none" v-if="!pass">
 							<image src="../../static/content/dijia.png"></image>查询最底价
 						</button>
 						<view class="btn01" @tap="baoMing(detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价', 1)" v-if="pass">
-						<image src="../../static/content/dijia.png"></image>查询最底价
+							<image src="../../static/content/dijia.png"></image>查询最底价
 						</view>
-						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+变价通知我',91,'变价通知我')" hover-class="none" v-if="!pass">
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+变价通知我',91,'变价通知我')"
+						 hover-class="none" v-if="!pass">
 							<image src="../../static/content/bianjia.png"></image>变价通知我
 						</button>
 						<view @tap="baoMing(detail.id,'项目落地页+变价通知我',91,'变价通知我',1)" v-if="pass">
-						<image src="../../static/content/bianjia.png"></image>变价通知我
+							<image src="../../static/content/bianjia.png"></image>变价通知我
 						</view>
 					</view>
 					<view class="tel_box">
@@ -130,9 +133,9 @@
 					</text>
 				</text>
 				<view class="right">
-					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取优惠',94,'领取优惠')"
+					<button class="ling_btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取优惠',94,'领取优惠')"
 					 hover-class="none" v-if="!pass">
-						<view class="ling_btn">
+						<view>
 							领取优惠
 						</view>
 					</button>
@@ -150,9 +153,9 @@
 					</text>
 				</text>
 				<view class="right">
-					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+免费领取',95,'免费领取')"
+					<button class="ling_btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+免费领取',95,'免费领取')"
 					 hover-class="none" v-if="!pass">
-						<view class="ling_btn">
+						<view>
 							免费领取
 						</view>
 					</button>
@@ -265,7 +268,8 @@
 						<image :src="item.img" mode=""></image>
 					</navigator>
 				</view>
-				<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态')" v-if="!pass">
+				<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态')"
+				 v-if="!pass">
 					订阅最新动态
 				</button>
 				<view class="button" @tap="baoMing(detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态',1)" v-if="pass">
@@ -305,7 +309,8 @@
 				</view>
 			</view>
 
-			<button open-type="getPhoneNumber" class="get_di_price" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价')" v-if="!pass">
+			<button open-type="getPhoneNumber" class="get_di_price" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价')"
+			 v-if="!pass">
 				获取最新成交价
 			</button>
 			<view class="get_di_price" @tap="baoMing(detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价',1)" v-if="pass">
@@ -330,7 +335,8 @@
 					2、{{fenxi_data[1].content}}
 				</view>
 			</view>
-			<button class="btn" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取分析资料',99,'领取分析资料')" v-if="!pass">
+			<button class="btn" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取分析资料',99,'领取分析资料')"
+			 v-if="!pass">
 				领取分析资料
 			</button>
 			<view class="btn" @tap="baoMing(detail.id,'项目落地页+领取分析资料',99,'领取分析资料',1)" v-if="pass">
@@ -391,7 +397,8 @@
 				<text class="left">位置:</text>
 				<text class="rig">{{detail.address}}</text>
 			</view>
-			<button open-type="getPhoneNumber" class="pei" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')" v-if="!pass">
+			<button open-type="getPhoneNumber" class="pei" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')"
+			 v-if="!pass">
 				<text>配套:</text>
 				咨询具体位置和周边设施情况
 				<image src="../../static/content/biao.png" mode=""></image>
@@ -427,11 +434,12 @@
 							美食
 						</view>
 					</view> -->
-				    <image :src="map_image" v-if="map_image!==''"></image>
+					<image :src="map_image" v-if="map_image!==''"></image>
 					<!-- <map id="my_map" style="width:690rpx; height:120px;" :latitude="latitude" :longitude="longitude" :markers="covers"></map> -->
 				</view>
 			</view>
-			<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')" v-if="!pass">
+			<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')"
+			 v-if="!pass">
 				获取周边5公里详细配套
 			</button>
 			<view class="button" @tap="baoMing(detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1)" v-if="pass">
@@ -481,7 +489,7 @@
 										赞({{item.like_num}})
 									</view>
 								</button>
-								<view class="zan" v-if="item.my_like ==1 && pass"  @tap="getLike(item.id)">
+								<view class="zan" v-if="item.my_like ==1 && pass" @tap="getLike(item.id)">
 									<image src="../../static/content/zan.png" mode=""></image>
 									赞({{item.like_num}})
 								</view>
@@ -495,8 +503,9 @@
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
 									<text class="time">{{item.time}}</text>
 								</navigator>
-								<text class="delete"  @tap="deletePing(item.id)" v-if="item.mine == true && pass">删除</text>
-								<button class="delete" open-type="getPhoneNumber" hover-class="none" v-if="item.mine==true && !pass" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+删除',102,'删除',3,item.id)">删除</button>
+								<text class="delete" @tap="deletePing(item.id)" v-if="item.mine == true && pass">删除</text>
+								<button class="delete" open-type="getPhoneNumber" hover-class="none" v-if="item.mine==true && !pass"
+								 @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+删除',102,'删除',3,item.id)">删除</button>
 							</view>
 						</view>
 
@@ -510,7 +519,8 @@
 				</template>
 
 			</view>
-			<button class="dian_btn" hover-class="none" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'跳点评',12,'跳点评',4,detail.id)" v-if="!pass">
+			<button class="dian_btn" hover-class="none" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'跳点评',12,'跳点评',4,detail.id)"
+			 v-if="!pass">
 				我要点评
 			</button>
 			<view class="dian_btn" @tap="goDianPing(detail.id)" v-if="pass">
@@ -553,10 +563,11 @@
 					</view>
 				</template>
 
-				<button class="ti_btn" hover-class="none" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'跳提问',13,'跳提问',5,)" v-if="!pass">
+				<button class="ti_btn" hover-class="none" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'跳提问',13,'跳提问',5,)"
+				 v-if="!pass">
 					我要提问
 				</button>
-				<view class="ti_btn" @tap="quTiwen(detail.id)"  v-if="pass">
+				<view class="ti_btn" @tap="quTiwen(detail.id)" v-if="pass">
 					我要提问
 				</view>
 			</view>
@@ -760,12 +771,12 @@
 				seefang_sheng: "",
 				seefang_ling: "",
 				pid: 0,
-				isok:0,
-				header:{},
-				collect:0,
-				shou_old:require("../../static/content/shou.png"),
-				has_shou:require("../../static/content/has_shou.png"),
-				map_image:""
+				isok: 0,
+				header: {},
+				collect: 0,
+				shou_old: require("../../static/content/shou.png"),
+				has_shou: require("../../static/content/has_shou.png"),
+				map_image: ""
 
 			};
 		},
@@ -775,6 +786,7 @@
 			this.cHeight = uni.upx2px(500);
 			let id = option.id;
 			this.pid = id
+			uni.setStorageSync('bid', id)
 			this.getdata(id);
 			this.pass = uni.getStorageSync('pass')
 		},
@@ -786,7 +798,7 @@
 			}
 		},
 		methods: {
-			setpop(){
+			setpop() {
 				this.$refs.popup.hide()
 			},
 			gocon(id) {
@@ -860,6 +872,7 @@
 			},
 			async getPhoneNumber(e, pid, remark, point, title, type, ping_id) {
 				let that = this
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					if (type) {
 						let token = uni.getStorageSync('token');
@@ -884,11 +897,11 @@
 							})
 						}
 					} else {
-						that.baoMing(pid, remark, point, title,0)
+						that.baoMing(pid, remark, point, title, 0)
 					}
 				} else {
-					 uni.setStorageSync("pass",true);
-					 this.pass = true;
+					uni.setStorageSync("pass", true);
+					this.pass = true;
 					if (type) {
 						let token = uni.getStorageSync("token");
 						if (token) {
@@ -996,7 +1009,7 @@
 
 															}
 														})
-														
+
 													}
 												})
 
@@ -1023,7 +1036,7 @@
 									uni.setStorageSync('phone', tel)
 									let openid = uni.getStorageSync('openid')
 									that.tel = tel;
-									that.baoMing(pid, remark, point, title,1)
+									that.baoMing(pid, remark, point, title, 1)
 								}
 							})
 						} else {
@@ -1054,8 +1067,8 @@
 													let tel = res.data.mobile
 													uni.setStorageSync('phone', tel)
 													let openid = uni.getStorageSync('openid')
-												//	that.$refs.sign.tel = tel
-													that.baoMing(pid, remark, point, title,1)
+													//	that.$refs.sign.tel = tel
+													that.baoMing(pid, remark, point, title, 1)
 												}
 											})
 										}
@@ -1065,6 +1078,150 @@
 						}
 					}
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					if (type) {
+						let token = uni.getStorageSync('token');
+						if (token) {
+							if (type == 1) { //点赞
+								this.getLike(ping_id)
+							} else if (type == 2) { //收藏
+								this.goShou();
+							} else if (type == 3) {
+								this.deletePing(ping_id);
+							} else if (type == 4) { //我要点评
+								this.goDianPing(pid)
+							} else if (type == 5) { //我要提问
+								this.quTiwen(pid)
+							}
+						} else {
+							let url = "/pages/content/content?id=" + this.detail.id;
+							console.log(url);
+							uni.setStorageSync("backurl", url)
+							uni.navigateTo({
+								url: "/pages/login/login"
+							})
+						}
+					} else {
+						that.baoMing(pid, remark, point, title, 0)
+					}
+				} else {
+					uni.setStorageSync("pass", true);
+					this.pass = true;
+					if (type) {
+						let token = uni.getStorageSync("token");
+						if (token) {
+							if (type == 1) { //点赞
+								this.getLike(ping_id)
+							} else if (type == 2) { //收藏
+								this.goShou();
+							} else if (type == 3) { //删除
+								this.deletePing(ping_id)
+							} else if (type == 4) { //我要点评
+								this.goDianPing(pid)
+							} else if (type == 5) { //我要提问
+								this.quTiwen(pid)
+							}
+						} else {
+							let session = uni.getStorageSync('session')
+							uni.login({
+								provider: 'weixin',
+								success: function(res) {
+									// console.log(res.code);
+									uni.request({
+										url: 'https://ll.edefang.net/api/weichat/jscode2session',
+										method: 'get',
+										data: {
+											code: res.code
+										},
+										success: (res) => {
+											console.log(res)
+											uni.setStorageSync('openid', res.data.openid)
+											uni.setStorageSync('session', res.data.session_key)
+											uni.request({
+												url: "https://ll.edefang.net/api/weichat/decryptData",
+												data: {
+													data: e.detail.encryptedData,
+													iv: e.detail.iv,
+													session_key: res.data.session_key
+												},
+												success: (res) => {
+													console.log(res)
+													let tel = res.data.mobile
+													uni.setStorageSync('phone', tel)
+													let openid = uni.getStorageSync('openid')
+													uni.request({
+														url: "https://api.edefang.net/applets/login",
+														method: 'GET',
+														data: {
+															phone: tel,
+															openid: openid
+														},
+														success: (res) => {
+															console.log(res)
+															uni.setStorageSync('token', res.data.token)
+															if (type == 1) { //点赞
+																that.getLike(ping_id)
+															} else if (type == 2) { //收藏
+																that.goShou();
+															} else if (type == 3) {
+																that.deletePing(ping_id);
+															} else if (type == 4) { //我要点评
+																that.goDianPing(pid);
+															} else if (type == 5) { //我要提问
+																that.quTiwen(pid)
+															}
+
+														}
+													})
+
+												}
+											})
+
+										}
+									})
+								}
+							});
+						}
+					} else {
+						let session = uni.getStorageSync('session')
+						uni.login({
+							provider: 'weixin',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://ll.edefang.net/api/weichat/jscode2session',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://ll.edefang.net/api/weichat/decryptData",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.baoMing(pid, remark, point, title, 1)
+											}
+										})
+									}
+								})
+							}
+						});
+					}
+				}
+				// #endif
 			},
 			to(item, num) {
 				uni.createSelectorQuery().select(".detail").boundingClientRect(data => { //目标节点
@@ -1135,7 +1292,7 @@
 					uni.navigateTo({
 						url: "/pages/login/login"
 					})
-					
+
 				}
 			},
 			deletePing(id) {
@@ -1232,7 +1389,8 @@
 									let name = data.abstract.name;
 									console.log(name);
 									let img_map = require('../../static/content/map_icon.png');
-									this.map_image =`http://api.map.baidu.com/staticimage/v2?ak=Tz47quqSiGkQi7RyS3QKaFZxMy3GbH5o&center=${lng},${lat}&width=512&height=200&zoom=17&markers=${lng},${lat}&labels`;
+									this.map_image =
+										`http://api.map.baidu.com/staticimage/v2?ak=Tz47quqSiGkQi7RyS3QKaFZxMy3GbH5o&center=${lng},${lat}&width=512&height=200&zoom=17&markers=${lng},${lat}&labels`;
 
 									this.suijiData();
 
@@ -1417,7 +1575,6 @@
 						url: "/pages/login/login"
 					})
 				}
-
 			},
 			goDuibi(id) {
 				uni.navigateTo({
@@ -1435,7 +1592,7 @@
 					} //仅为示例
 				});
 			},
-			baoMing(pid, msg, point, title,n) {
+			baoMing(pid, msg, point, title, n) {
 				this.isok = n
 				console.log(pid, msg, point);
 				this.pid_d = pid;
@@ -1565,6 +1722,10 @@
 </script>
 
 <style lang="less">
+	button {
+		padding: 0;
+	}
+
 	button::after {
 		border: none;
 	}
@@ -1602,10 +1763,6 @@
 				z-index: 100;
 			}
 		}
-	}
-
-	button::after {
-		border: none;
 	}
 
 	.detail {
@@ -1807,7 +1964,7 @@
 							margin-right: 12rpx;
 							border-radius: 6rpx;
 							height: 36rpx;
-							padding-top:4rpx;
+							padding-top: 4rpx;
 							padding-bottom: 4rpx;
 						}
 					}
@@ -2012,6 +2169,7 @@
 								margin-right: 7rpx;
 							}
 						}
+
 						view {
 							width: 334rpx;
 							height: 80rpx;
@@ -2025,13 +2183,14 @@
 							display: flex;
 							justify-content: center;
 							align-items: center;
-						
+
 							image {
 								width: 36rpx;
 								height: 36rpx;
 								margin-right: 7rpx;
 							}
 						}
+
 						.btn01 {
 							margin-right: 22rpx;
 						}
@@ -2340,7 +2499,8 @@
 				margin-left: 30rpx;
 				margin-top: 30rpx;
 			}
-			.button{
+
+			.button {
 				width: 690rpx;
 				height: 80rpx;
 				background: #F2F9FC;
@@ -2352,7 +2512,7 @@
 				margin-left: 30rpx;
 				margin-top: 30rpx;
 			}
-			
+
 		}
 
 		//  主力户型 
@@ -2898,6 +3058,7 @@
 			background-color: #fff;
 			height: auto;
 			padding-bottom: 40rpx;
+
 			.zhou {
 				font-size: 34rpx;
 				font-weight: 800;
@@ -2980,6 +3141,7 @@
 					padding-right: 30rpx;
 					box-sizing: border-box;
 					position: relative;
+
 					.nav_nav {
 						width: 596rpx;
 						height: 90rpx;
@@ -3008,7 +3170,8 @@
 						}
 
 					}
-					image{
+
+					image {
 						width: 690rpx;
 						height: 360rpx;
 					}
@@ -3156,6 +3319,7 @@
 									height: 32rpx;
 								}
 							}
+
 							.no_zan {
 								font-size: 24rpx;
 								font-weight: 400;
@@ -3164,7 +3328,7 @@
 								display: flex;
 								align-items: center;
 								margin-bottom: 20rpx;
-							
+
 								image {
 									width: 32rpx;
 									height: 32rpx;

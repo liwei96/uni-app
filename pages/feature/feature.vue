@@ -2,13 +2,13 @@
 	<view class="feature">
 		<view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
-			      </view>
+				<!-- 这里是状态栏 -->
+			</view>
 			<image src="../../static/all-back1.png" mode=""></image>
 			<text>特色好房</text>
 		</view>
 		<view class="topbb">
-			
+
 		</view>
 		<view class="top-nav" @tap="gocity">
 			<view class="city">
@@ -22,15 +22,15 @@
 					刚需楼盘
 					<text></text>
 				</view>
-				<view :class="num == 5 ? 'nav active' : 'nav'"  @click="setnum(5,'投资')">
+				<view :class="num == 5 ? 'nav active' : 'nav'" @click="setnum(5,'投资')">
 					投资地产
 					<text></text>
 				</view>
-				<view :class="num == 2 ? 'nav active' : 'nav'"  @click="setnum(2,'改善')">
+				<view :class="num == 2 ? 'nav active' : 'nav'" @click="setnum(2,'改善')">
 					改善地产
 					<text></text>
 				</view>
-				<view :class="num == 8 ? 'nav active' : 'nav'"  @click="setnum(8,'现房')">
+				<view :class="num == 8 ? 'nav active' : 'nav'" @click="setnum(8,'现房')">
 					现房
 					<text></text>
 				</view>
@@ -59,7 +59,7 @@
 						<image src="../../static/feature/feature-card.png" mode=""></image>
 						<text class="nummsg">{{tit}}榜第{{key+1}}名</text>
 						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,item.id)" @tap="bid = item.id" v-if="!pass">
-						<text class="btn">查底价</text>
+							<text class="btn">查底价</text>
 						</button>
 						<text class="btn" v-if="pass" @tap="show(item.id,'特色房源页+查底价',1)">查底价</text>
 					</view>
@@ -101,18 +101,20 @@
 	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
 	import sign from '@/components/sign.vue'
 	export default {
-		components:{
+		components: {
 			sign,
 			wybPopup
 		},
 		onLoad(option) {
 			that = this
-			this.setnum(option.num,option.txt);
+			this.cityid = option.city || uni.getStorageSync('city')
+			uni.setStorageSync('city', option.city)
+			this.setnum(option.num, option.txt);
 			this.city = uni.getStorageSync('cityname')
 			this.pass = uni.getStorageSync('pass')
 			// this.getdata()
 		},
-		data(){
+		data() {
 			return {
 				num: 3,
 				features: [],
@@ -125,33 +127,34 @@
 				city: '杭州',
 				bid: 0,
 				isok: 0,
-				pass: false
+				pass: false,
+				cityid: 1
 			}
 		},
-		methods:{
+		methods: {
 			setpop() {
 				this.$refs.popup.hide()
 			},
-			gocity () {
+			gocity() {
 				uni.navigateTo({
-					url:'/pages/path/path'
+					url: '/pages/path/path'
 				})
 			},
-			setnum(num,txt) {
+			setnum(num, txt) {
 				this.num = num
 				this.tit = txt
 				this.getdata()
 			},
 			getdata() {
 				uni.showLoading({
-					title:"加载中"
+					title: "加载中"
 				})
 				let token = uni.getStorageSync('token')
-				let city = uni.getStorageSync('city')
+				let city = this.cityid
 				uni.request({
-					url:that.apiserve+"/applets/tops/feature",
-					method:'GET',
-					data:{
+					url: that.apiserve + "/applets/tops/feature",
+					method: 'GET',
+					data: {
 						token: token,
 						city: city,
 						type: that.num
@@ -160,6 +163,7 @@
 						console.log(res)
 						that.features = res.data.data.features
 						that.other = res.data.data.recommends
+						that.city = res.data.data.city_info.current.short
 						//#ifdef MP-BAIDU
 						swan.setPageInfo({
 							title: '允家新房-特色楼盘',
@@ -177,7 +181,7 @@
 					}
 				})
 			},
-			show(id,txt,n) {
+			show(id, txt, n) {
 				this.isok = n
 				this.pid = id
 				this.remark = txt
@@ -189,11 +193,12 @@
 			setiscode() {
 				this.codenum = 0
 			},
-			async getPhoneNumber(e,bid) {
+			async getPhoneNumber(e, bid) {
 				let that = this
 				let token = uni.getStorageSync('token')
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					that.show(bid,'特色房源页+查底价',0)
+					that.show(bid, '特色房源页+查底价', 0)
 					that.isok = 0
 				} else {
 					that.isok = 1
@@ -212,7 +217,7 @@
 								let tel = res.data.mobile
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
-								that.show(bid,'特色房源页+查底价',1)
+								that.show(bid, '特色房源页+查底价', 1)
 							}
 						})
 					} else {
@@ -242,7 +247,7 @@
 												let tel = res.data.mobile
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
-												that.show(bid,'特色房源页+查底价',1)
+												that.show(bid, '特色房源页+查底价', 1)
 											}
 										})
 									}
@@ -251,11 +256,52 @@
 						});
 					}
 				}
-			
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					that.show(bid, '特色房源页+查底价', 0)
+					that.isok = 0
+				} else {
+					that.isok = 1
+					uni.login({
+						provider: 'weixin',
+						success: function(res) {
+							console.log(res.code);
+							uni.request({
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method: 'get',
+								data: {
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid', res.data.openid)
+									uni.setStorageSync('session', res.data.session_key)
+									uni.request({
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										data: {
+											data: e.detail.encryptedData,
+											iv: e.detail.iv,
+											session_key: res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone', tel)
+											let openid = uni.getStorageSync('openid')
+											that.show(bid, '特色房源页+查底价', 1)
+										}
+									})
+								}
+							})
+						}
+					});
+				}
+				// #endif
 			},
 			go(id) {
 				uni.redirectTo({
-					url: "/pages/content/content?id="+id
+					url: "/pages/content/content?id=" + id
 				})
 			},
 			back() {
@@ -268,9 +314,10 @@
 </script>
 
 <style lang="less">
-	page{
+	page {
 		background: #FFFFFF;
 	}
+
 	.toptitle {
 		color: #FFFFFF;
 		font-size: 29.88rpx;
@@ -281,10 +328,12 @@
 		top: 0;
 		z-index: 9999;
 		background-color: #50B3FD;
+
 		.status_bar {
-		      height: var(--status-bar-height);
-		      width: 100%;
-		  }
+			height: var(--status-bar-height);
+			width: 100%;
+		}
+
 		image {
 			width: 31.87rpx;
 			height: 31.87rpx;
@@ -292,18 +341,22 @@
 			margin-bottom: -3.98rpx;
 		}
 	}
+
 	button {
 		padding: 0;
 		margin: 0;
 		margin-left: auto;
 	}
+
 	button:after {
 		border: none;
 	}
+
 	.topbb {
 		height: var(--status-bar-height);
 		width: 100%;
 	}
+
 	.top-nav {
 		height: 199.2rpx;
 		background: url(../../static/feature/feature-top.jpg);
@@ -377,7 +430,7 @@
 				border-radius: 23.9rpx;
 				margin-bottom: 29.88rpx;
 
-				
+
 
 				.top-num {
 					display: flex;
@@ -408,31 +461,32 @@
 				}
 			}
 		}
+
 		.build {
 			display: flex;
 			margin-bottom: 31.87rpx;
-		
+
 			.img {
 				width: 219.12rpx;
 				height: 159.36rpx;
 				border-radius: 11.95rpx;
 				margin-right: 23.9rpx;
 			}
-		
+
 			.build-msg {
 				flex: 1;
 				position: relative;
 				top: -3.98rpx;
-		
+
 				.build-name {
 					position: relative;
-		
+
 					.name {
 						color: #303233;
 						font-size: 31.87rpx;
 						font-weight: bold;
 					}
-		
+
 					.status {
 						color: #20C657;
 						background-color: #E6FAF0;
@@ -442,26 +496,26 @@
 						float: right;
 					}
 				}
-		
+
 				.price {
 					color: #FF6040;
 					font-size: 31.87rpx;
 					font-weight: bold;
 				}
-		
+
 				.psam {
 					color: #FF6040;
 					font-size: 25.89rpx;
 					font-weight: bold;
 				}
-		
+
 				.infos {
 					margin-top: 7.96rpx;
 					color: #646566;
 					font-size: 25.89rpx;
 					margin-bottom: 5.97rpx;
 				}
-		
+
 				.icons {
 					text {
 						color: #7D7D80;
@@ -471,7 +525,7 @@
 						border-radius: 5.97rpx;
 						margin-right: 11.95rpx;
 					}
-		
+
 					.zhuang {
 						color: #3EACF0;
 						background-color: #EBF8FF;
@@ -479,15 +533,17 @@
 				}
 			}
 		}
+
 		.guess {
 			padding-top: 35.85rpx;
+
 			.title {
 				color: #19191A;
 				font-size: 33.86rpx;
 				margin-bottom: 35.85rpx;
 				font-weight: bold;
 			}
-			
+
 		}
 	}
 

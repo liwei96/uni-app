@@ -9,7 +9,7 @@
 			</navigator>
 		</view>
 		<view class="dian_list">
-			<template  v-if="data.length>0">
+			<template v-if="data.length>0">
 				<view class="dian_one" v-for="item in data" :key="item.id">
 					<navigator :url="`../diandetail/diandetail/?id=${item.id}`">
 						<view class="top">
@@ -26,7 +26,8 @@
 					<view class="gong">
 						<view class="left">
 							<text class="time">{{item.time}}</text>
-							<button class="shan" v-if="item.mine==1" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,1)" @tap="did = item.id">删除</button>
+							<button class="shan" v-if="item.mine==1" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,1)"
+							 @tap="did = item.id">删除</button>
 						</view>
 						<view class="zan">
 							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id" v-if="!pass">
@@ -35,23 +36,23 @@
 									{{item.like_num}}
 								</view>
 							</button>
-							    <view class="zan_box_no" v-if="item.my_like==0 && pass" @tap="getLike(item.id)">
-									<image src="../../static/content/no_zan.png" mode=""></image>
-									{{item.like_num}}
-								</view>
-								
+							<view class="zan_box_no" v-if="item.my_like==0 && pass" @tap="getLike(item.id)">
+								<image src="../../static/content/no_zan.png" mode=""></image>
+								{{item.like_num}}
+							</view>
+
 							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id" v-if="!pass">
 								<view class="zan_box_zan" v-if="item.my_like==1">
 									<image src="../../static/content/zan.png" mode=""></image>
 									{{item.like_num}}
 								</view>
 							</button>
-							    <view class="zan_box_zan" v-if="item.my_like==1 && pass" @tap="getLike(item.id)">
-									<image src="../../static/content/zan.png" mode=""></image>
-									{{item.like_num}}
-								</view>
+							<view class="zan_box_zan" v-if="item.my_like==1 && pass" @tap="getLike(item.id)">
+								<image src="../../static/content/zan.png" mode=""></image>
+								{{item.like_num}}
+							</view>
 							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,3)" @tap="did = item.id" v-if="!pass">
-								<view class="dianping" >
+								<view class="dianping">
 									<image src="../../static/liu.png" mode=""></image>
 									{{item.children.length}}
 								</view>
@@ -66,15 +67,14 @@
 			</template>
 			<template v-else>
 				<view class="zanwu">
-				 暂无评论，快来评论吧
-				 </view>
-		    </template>
+					暂无评论，快来评论吧
+				</view>
+			</template>
 
 		</view>
-	    <!-- 传入项目id 先判断是否登录-->
-		<button open-type="getPhoneNumber" hover-class="none"
-		@getphonenumber="getPhoneNumber($event,4)" v-if="!pass">
-			<view class="white_ping" >
+		<!-- 传入项目id 先判断是否登录-->
+		<button open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,4)" v-if="!pass">
+			<view class="white_ping">
 				<image src="../../static/other/white.png" mode=""></image>
 			</view>
 		</button>
@@ -103,7 +103,7 @@
 				hua: true,
 				did: 0,
 				msg: '',
-				pass:false
+				pass: false
 			};
 		},
 		components: {
@@ -124,59 +124,59 @@
 			}
 		},
 		methods: {
-			goHuifu(id){
+			goHuifu(id) {
 				//pid 项目id id 评价id
 				let token = uni.getStorageSync("token");
-				if(token){
+				if (token) {
 					uni.navigateTo({
-						url:"/pages/huifu/huifu?id="+id+"&pid="+this.project_id
+						url: "/pages/huifu/huifu?id=" + id + "&pid=" + this.project_id
 					})
-				}else{
+				} else {
 					this.$refs.msg.show();
 					this.msg = "请先登录"
 					let url = '/pages/loudian/loudian?id=' + this.project_id
 					uni.setStorageSync('backurl', url)
 					uni.navigateTo({
-						url:'/pages/login/login'
+						url: '/pages/login/login'
 					})
 				}
-				
+
 			},
-			getPhoneNumber(e,type) {
+			getPhoneNumber(e, type) {
 				let that = this
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					
 					let token = uni.getStorageSync('token')
 					if (token) {
-						if(type==1){ //删除
+						if (type == 1) { //删除
 							that.deletePing(that.did)
-						}else if(type ==2){ //点赞
+						} else if (type == 2) { //点赞
 							that.getLike(that.did)
-						}else if(type == 3){ //跳回复
+						} else if (type == 3) { //跳回复
 							that.goHuifu(that.did)
-						}else if( type == 4){ //右下角跳写点评
+						} else if (type == 4) { //右下角跳写点评
 							that.godian()
 						}
-					} else{
+					} else {
 						this.isok = 0
 						let url = '/pages/loudian/loudian?id=' + this.project_id
 						uni.setStorageSync('backurl', url)
 						uni.navigateTo({
-							url:'/pages/login/login'
+							url: '/pages/login/login'
 						})
 					}
 				} else {
-					  this.pass = true
-					  uni.setStorageSync('pass',true)
+					this.pass = true
+					uni.setStorageSync('pass', true)
 					let session = uni.getStorageSync('token')
 					if (session) {
-						if(type==1){ //删除
+						if (type == 1) { //删除
 							that.deletePing(that.did)
-						}else if(type ==2){ //点赞
+						} else if (type == 2) { //点赞
 							that.getLike(that.did)
-						}else if(type == 3){ //跳回复
+						} else if (type == 3) { //跳回复
 							that.goHuifu(that.did)
-						}else if( type == 4){ //右下角跳写点评
+						} else if (type == 4) { //右下角跳写点评
 							that.godian()
 						}
 					} else {
@@ -216,16 +216,16 @@
 													},
 													success: (res) => {
 														uni.setStorageSync('token', res.data.token)
-														if(type ==1){ //删除 
+														if (type == 1) { //删除 
 															that.deletePing(that.did)
-														}else if(type ==2){ //点赞
+														} else if (type == 2) { //点赞
 															that.getLike(that.did)
-														}else if(type == 3){ //跳回复
-														    that.goHuifu(that.did)					
-														}else if( type == 4){ //右下角跳写点评
+														} else if (type == 3) { //跳回复
+															that.goHuifu(that.did)
+														} else if (type == 4) { //右下角跳写点评
 															that.godian()
 														}
-													
+
 													}
 												})
 
@@ -239,6 +239,103 @@
 					}
 					this.isok = 1
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					let token = uni.getStorageSync('token')
+					if (token) {
+						if (type == 1) { //删除
+							that.deletePing(that.did)
+						} else if (type == 2) { //点赞
+							that.getLike(that.did)
+						} else if (type == 3) { //跳回复
+							that.goHuifu(that.did)
+						} else if (type == 4) { //右下角跳写点评
+							that.godian()
+						}
+					} else {
+						this.isok = 0
+						let url = '/pages/loudian/loudian?id=' + this.project_id
+						uni.setStorageSync('backurl', url)
+						uni.navigateTo({
+							url: '/pages/login/login'
+						})
+					}
+				} else {
+					this.pass = true
+					uni.setStorageSync('pass', true)
+					let session = uni.getStorageSync('token')
+					if (session) {
+						if (type == 1) { //删除
+							that.deletePing(that.did)
+						} else if (type == 2) { //点赞
+							that.getLike(that.did)
+						} else if (type == 3) { //跳回复
+							that.goHuifu(that.did)
+						} else if (type == 4) { //右下角跳写点评
+							that.godian()
+						}
+					} else {
+						uni.login({
+							provider: 'weixin',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://ll.edefang.net/api/weichat/jscode2session',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://ll.edefang.net/api/weichat/decryptData",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.tel = tel
+												uni.request({
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														uni.setStorageSync('token', res.data.token)
+														if (type == 1) { //删除 
+															that.deletePing(that.did)
+														} else if (type == 2) { //点赞
+															that.getLike(that.did)
+														} else if (type == 3) { //跳回复
+															that.goHuifu(that.did)
+														} else if (type == 4) { //右下角跳写点评
+															that.godian()
+														}
+
+													}
+												})
+
+											}
+										})
+
+									}
+								})
+							}
+						});
+					}
+					this.isok = 1
+				}
+				// #endif
 			},
 			deletePing(id) {
 				let token = uni.getStorageSync("token");
@@ -250,20 +347,20 @@
 							token: token,
 							id: id,
 						},
-						header:{
-							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+						header: {
+							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
 						},
 						success: (res) => {
 							if (res.data.code == 200) {
 								this.$refs.msg.show();
 								this.msg = res.data.message;
 								let page = this.page;
-								this.getdata(this.project_id,page)
-							}else {
+								this.getdata(this.project_id, page)
+							} else {
 								console.log(res)
 							}
 						}
-			
+
 					})
 				} else {
 					this.$refs.msg.show();
@@ -271,9 +368,9 @@
 					let url = '/pages/loudian/loudian?id=' + this.project_id
 					uni.setStorageSync('backurl', url)
 					uni.navigateTo({
-						url:'/pages/login/login'
+						url: '/pages/login/login'
 					})
-					
+
 				}
 			},
 			getLike(id) {
@@ -285,8 +382,8 @@
 							token: token,
 							id: id,
 						},
-						header:{
-							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+						header: {
+							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
 						},
 						method: "POST",
 						success: (res) => {
@@ -294,7 +391,7 @@
 								this.$refs.msg.show();
 								this.msg = res.data.message;
 								let page = this.page;
-								this.getdata(this.project_id,page)
+								this.getdata(this.project_id, page)
 							}
 						}
 
@@ -305,33 +402,33 @@
 					let url = '/pages/loudian/loudian?id=' + this.project_id
 					uni.setStorageSync('backurl', url)
 					uni.navigateTo({
-						url:'/pages/login/login'
+						url: '/pages/login/login'
 					})
 				}
 			},
 			godian() {
 				let token = uni.getStorageSync('token');
-				if(token){
+				if (token) {
 					let url = '/pages/loudian/loudian?id=' + this.project_id
 					uni.setStorageSync('backurl', url)
 					let id = this.project_id;
 					uni.navigateTo({
 						url: '/pages/senddian/senddian?id=' + id
 					})
-				}else{
+				} else {
 					this.$refs.msg.show();
 					this.msg = "请先登录"
 					let url = '/pages/loudian/loudian?id=' + this.project_id
 					uni.setStorageSync('backurl', url)
 					uni.navigateTo({
-						url:'/pages/login/login'
+						url: '/pages/login/login'
 					})
 				}
-				
+
 			},
 			getdata(id, page) {
 				uni.showLoading({
-				    title: '加载中'
+					title: '加载中'
 				});
 				let token = uni.getStorageSync('token');
 				let other = uni.getStorageSync('other');
@@ -429,10 +526,12 @@
 			top: 0;
 			width: 100%;
 			z-index: 30000;
-			.status_bar{
+
+			.status_bar {
 				height: var(--status-bar-height);
 				width: 100%;
 			}
+
 			.nav_top {
 				image {
 					width: 31.87rpx;
@@ -457,6 +556,7 @@
 			background: #fff;
 			padding-bottom: 130rpx;
 			margin-top: 140rpx;
+
 			.zanwu {
 				font-size: 26rpx;
 				color: #000;
@@ -465,6 +565,7 @@
 				text-align: center;
 				margin-bottom: 20rpx;
 			}
+
 			.dian_one {
 				margin-top: 30rpx;
 
@@ -523,6 +624,7 @@
 					.left {
 						float: left;
 						display: flex;
+
 						.time {
 							font-size: 26rpx;
 							font-weight: 400;
@@ -613,8 +715,3 @@
 		}
 	}
 </style>
-
-
-
-
-

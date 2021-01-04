@@ -53,15 +53,13 @@
 						<text class="msg">我的卡券</text>
 					</view>
 				</view>
-				<button type="default">
-					<view class="nav" @tap="gotalk">
-						<text class="num">{{talknum}}</text>
-						<!-- <text class="abo">1</text> -->
-						<view>
-							<text class="msg">我的联系</text>
-						</view>
+				<view class="nav" @tap="gotalk">
+					<text class="num">{{talknum}}</text>
+					<!-- <text class="abo">1</text> -->
+					<view>
+						<text class="msg">我的联系</text>
 					</view>
-				</button>
+				</view>
 			</view>
 			<view class="bom">
 				<view class="nav" @tap="gohelp">
@@ -144,15 +142,18 @@
 				</view>
 			</view>
 		</popup>
+		<tabbar :type="3"></tabbar>
 	</view>
 </template>
 
 <script>
 	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
+	import tabbar from '../../components/tabbar/tabbar.vue'
 	var that
 	export default {
 		components: {
-			"popup": wybPopup
+			"popup": wybPopup,
+			tabbar
 		},
 		data() {
 			return {
@@ -263,7 +264,7 @@
 				})
 			},
 			gotalk() {
-				uni.switchTab({
+				uni.navigateTo({
 					url: '/pages/message/message'
 				})
 			},
@@ -319,7 +320,8 @@
 			},
 			getPhoneNumber(e) {
 				let that = this
-				console.log(uni.getStorageSync('token'))
+				console.log(e)
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					let url = ''
 					switch (that.type) {
@@ -504,6 +506,94 @@
 
 					}
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				console.log(e)
+				if (e.detail.errMsg == "getPhoneNumber:ok") {
+					uni.login({
+						provider: 'weixin',
+						success: function(res) {
+							console.log(res)
+							uni.request({
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method: 'get',
+								data: {
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid', res.data.openid)
+									uni.setStorageSync('session', res.data.session_key)
+									uni.request({
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										data: {
+											data: e.detail.encryptedData,
+											iv: e.detail.iv
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone', tel)
+											let openid = uni.getStorageSync('openid')
+											that.tel = tel.substr(0, 3) + '****' + tel.substr(7)
+											let token = uni.getStorageSync('token')
+											if (token) {
+												switch (that.type) {
+													case 1:
+														uni.navigateTo({
+															url: '/pages/footprint/footprint'
+														})
+														break;
+													case 2:
+														uni.navigateTo({
+															url: '/pages/collect/collect'
+														})
+														break;
+													case 3:
+														uni.navigateTo({
+															url: '/pages/cards/cards'
+														})
+														break;
+												}
+											} else {
+												uni.request({
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.token)
+														switch (that.type) {
+															case 1:
+																uni.navigateTo({
+																	url: '/pages/footprint/footprint'
+																})
+																break;
+															case 2:
+																uni.navigateTo({
+																	url: '/pages/collect/collect'
+																})
+																break;
+															case 3:
+																uni.navigateTo({
+																	url: '/pages/cards/cards'
+																})
+																break;
+														}
+													}
+												})
+											}
+										}
+									})
+								}
+							})
+						}
+					})
+				}
+				// #endif
 			}
 		},
 		mounted() {
@@ -516,6 +606,7 @@
 	.home {
 		background-color: #F5F5F5;
 		min-height: 100vh;
+		padding-bottom: 100rpx;
 	}
 
 	.toptitle {
@@ -531,6 +622,7 @@
 		padding: 0;
 		margin: 0;
 		background: rgba(0, 0, 0, 0);
+		background-color: rgba(0, 0, 0, 0);
 		line-height: 1.3;
 	}
 
@@ -607,6 +699,10 @@
 					color: #1A5071;
 					font-size: 19.92rpx;
 				}
+			}
+
+			.nav:nth-of-type(4) {
+				line-height: 1.4;
 			}
 		}
 

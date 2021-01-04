@@ -53,15 +53,18 @@
 <script>
 	var that
 	export default {
-		onShow() {
+		onLoad(options) {
 			that = this
+			this.city = options.city || uni.getStorageSync('city');
+			uni.setStorageSync('city',options.city)
 			this.getinfo()
 		},
 		data() {
 			return {
 				name: '',
 				hots: [],
-				lists:[]
+				lists:[],
+				city: 1
 			}
 		},
 		methods: {
@@ -72,7 +75,7 @@
 			},
 			getinfo() {
 				let token = uni.getStorageSync('token')
-				let city = uni.getStorageSync('city')
+				let city = this.city
 				uni.request({
 					url: that.apiserve + '/jy/us/search',
 					method: 'GET',

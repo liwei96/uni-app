@@ -135,7 +135,7 @@
 				})
 			},
 			gosearch(){
-				uni.switchTab({
+				uni.navigateTo({
 					url:"/pages/building/building"
 				})
 			}

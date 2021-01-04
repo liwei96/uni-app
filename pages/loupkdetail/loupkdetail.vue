@@ -155,9 +155,7 @@
 			<view class="pro_sale" v-for="item in data" :key="item.id">
 				<view class="danjia_box">
 					<view class="price">约{{item.price}}元/m²</view>
-					<button class="btn" open-type="getPhoneNumber" hover-class="none" v-if="!pass"
-					    @getphonenumber="getPhoneNumber($event,item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价')"
-					>咨询底价</button>
+					<button class="btn" open-type="getPhoneNumber" hover-class="none" v-if="!pass" @getphonenumber="getPhoneNumber($event,item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价')">咨询底价</button>
 					<view class="btn" v-if="pass" @tap="baoMing(item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价',1)">咨询底价</view>
 				</view>
 				<view class="zongjia">
@@ -248,8 +246,7 @@
 
 		</view>
 
-		<button class="button" open-type="getPhoneNumber" hover-class="none" v-if="!pass"
-		@getphonenumber="getPhoneNumber($event,0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息')">
+		<button class="button" open-type="getPhoneNumber" hover-class="none" v-if="!pass" @getphonenumber="getPhoneNumber($event,0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息')">
 			咨询详细楼盘信息
 		</button>
 		<view class="button" v-if="pass" @tap="baoMing(0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息',1)">
@@ -281,21 +278,21 @@
 				text: '',
 				lastX: 0,
 				lastY: 0,
-				data:[],
-				recommends:[],
-				common:{},
-				
-				codenum:1,
-				title_e:'',
-				pid_d:0,
-				remark_k:'',
-				position_n:0,
-				telphone:'',
-				pid:"0",
-				
-				tel:'4009669995',
-				isok:0,
-				pass:false
+				data: [],
+				recommends: [],
+				common: {},
+
+				codenum: 1,
+				title_e: '',
+				pid_d: 0,
+				remark_k: '',
+				position_n: 0,
+				telphone: '',
+				pid: "0",
+
+				tel: '4009669995',
+				isok: 0,
+				pass: false
 			};
 		},
 		onLoad(option) {
@@ -320,20 +317,21 @@
 			sign
 		},
 		methods: {
-			setpop(){
+			setpop() {
 				this.$refs.popup.hide()
 			},
-			async getPhoneNumber(e,pid,remark,point,title,type) {
+			async getPhoneNumber(e, pid, remark, point, title, type) {
 				let that = this
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
-					that.baoMing(pid,remark,point,title,0)
-					if(type) {
-						
+					that.baoMing(pid, remark, point, title, 0)
+					if (type) {
+
 					}
 				} else {
 					this.pass = true
-					uni.setStorageSync('pass',true)
+					uni.setStorageSync('pass', true)
 					let session = uni.getStorageSync('session')
 					if (session) {
 						uni.request({
@@ -349,52 +347,100 @@
 								let tel = res.data.mobile
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
-							    that.tel = tel;
-								that.baoMing(pid,remark,point,title,1)
+								that.tel = tel;
+								that.baoMing(pid, remark, point, title, 1)
 							}
 						})
 					} else {
 						console.log(session, "没保存session")
 						uni.login({
-						  provider: 'baidu',
-						  success: function (res) {
-						    console.log(res.code);
-							uni.request({
-								url: 'https://api.edefang.net/applets/baidu/get_session_key',
-								method:'get',
-								data:{
-									code: res.code
-								},
-								success: (res) => {
-									console.log(res)
-									uni.setStorageSync('openid',res.data.openid)
-									uni.setStorageSync('session',res.data.session_key)
-									uni.request({
-										url:"https://api.edefang.net/applets/baidu/decrypt",
-										data:{
-											data: e.detail.encryptedData,
-											iv:e.detail.iv,
-											session_key:res.data.session_key
-										},
-										success: (res) => {
-											console.log(res)
-											let tel = res.data.mobile
-											uni.setStorageSync('phone',tel)
-											let openid = uni.getStorageSync('openid')
-											that.$refs.sign.tel = tel
-											that.baoMing(pid,remark,point,title,1)
-										}
-									})
-									
-								}
-							})
-						  }
+							provider: 'baidu',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://api.edefang.net/applets/baidu/get_session_key',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://api.edefang.net/applets/baidu/decrypt",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.$refs.sign.tel = tel
+												that.baoMing(pid, remark, point, title, 1)
+											}
+										})
+
+									}
+								})
+							}
 						});
 					}
 					this.isok = 1
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					this.isok = 0
+					that.baoMing(pid, remark, point, title, 0)
+					if (type) {
+
+					}
+				} else {
+					this.pass = true
+					uni.setStorageSync('pass', true)
+					uni.login({
+						provider: 'weixin',
+						success: function(res) {
+							uni.request({
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method: 'get',
+								data: {
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid', res.data.openid)
+									uni.setStorageSync('session', res.data.session_key)
+									uni.request({
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										data: {
+											data: e.detail.encryptedData,
+											iv: e.detail.iv,
+											session_key: res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone', tel)
+											let openid = uni.getStorageSync('openid')
+											that.$refs.sign.tel = tel
+											that.baoMing(pid, remark, point, title, 1)
+										}
+									})
+
+								}
+							})
+						}
+					});
+					this.isok = 1
+				}
+				// #endif
 			},
-			baoMing(pid,msg,point,title,n){
+			baoMing(pid, msg, point, title, n) {
 				this.isok = n;
 				this.pid_d = pid;
 				this.position_n = point,

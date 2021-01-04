@@ -216,7 +216,7 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle": "dark",
-				"onReachBottomDistance": "50"
+				"onReachBottomDistance": 50
 			}
 
 		}, {
@@ -313,12 +313,6 @@
 				"enablePullDownRefresh": false
 			}
 
-		}, {
-			"path": "pages/talk/talk",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
 		}
 	    ,{
             "path" : "pages/login/login",
@@ -355,40 +349,39 @@
 		"backgroundColor": "#F8F8F8",
 		"navigationStyle": "custom"
 	},
-	"tabBar": {
-		"custom": true,
-		"color": "#646466",
-		"selectedColor": "#5EBAFF",
-		"backgroundColor": "#FFFFFF",
-		"borderStyle": "#F7F7F7",
-		"iconWidth": "46rpx",
-		"height": "100px",
-		"list": [{
-				"text": "首页",
-				"pagePath": "pages/index/index",
-				"iconPath": "static/tabs/index.png",
-				"selectedIconPath": "static/tabs/index-active.png"
-			},
-			{
-				"text": "楼盘",
-				"pagePath": "pages/building/building",
-				"iconPath": "static/tabs/building.png",
-				"selectedIconPath": "static/tabs/building-active.png"
-			},
-			{
-				"text": "消息",
-				"pagePath": "pages/message/message",
-				"iconPath": "static/tabs/message.png",
-				"selectedIconPath": "static/tabs/message-active.png"
-			},
-			{
-				"text": "我的",
-				"pagePath": "pages/home/home",
-				"iconPath": "static/tabs/home.png",
-				"selectedIconPath": "static/tabs/home-active.png"
-			}
-		]
-	},
+	// "tabBar": {
+	// 	// "custom": true,
+	// 	"color": "#646466",
+	// 	"selectedColor": "#5EBAFF",
+	// 	"backgroundColor": "#FFFFFF",
+	// 	"borderStyle": "black",
+	// 	// "iconWidth": "46rpx",
+	// 	"list": [{
+	// 			"text": "首页",
+	// 			"pagePath": "pages/index/index",
+	// 			"iconPath": "static/tabs/index.png",
+	// 			"selectedIconPath": "static/tabs/index-active.png"
+	// 		},
+	// 		{
+	// 			"text": "楼盘",
+	// 			"pagePath": "pages/building/building",
+	// 			"iconPath": "static/tabs/building.png",
+	// 			"selectedIconPath": "static/tabs/building-active.png"
+	// 		},
+	// 		{
+	// 			"text": "消息",
+	// 			"pagePath": "pages/message/message",
+	// 			"iconPath": "static/tabs/message.png",
+	// 			"selectedIconPath": "static/tabs/message-active.png"
+	// 		},
+	// 		{
+	// 			"text": "我的",
+	// 			"pagePath": "pages/home/home",
+	// 			"iconPath": "static/tabs/home.png",
+	// 			"selectedIconPath": "static/tabs/home-active.png"
+	// 		}
+	// 	]
+	// },
 	"condition": {
 		"current": 0, //当前激活的模式（list 的索引项）
 		"list": [{

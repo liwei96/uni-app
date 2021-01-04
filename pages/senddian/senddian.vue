@@ -83,6 +83,7 @@
 		methods:{
 			getPhoneNumber(e) {
 				let that = this
+				// #ifdef  MP-BAIDU
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
 					let url = '/pages/senddian/senddian?id='+this.building.id
@@ -143,6 +144,68 @@
 						}
 					this.isok = 1
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if(e.detail.errMsg != 'getPhoneNumber:ok') {
+					this.isok = 0
+					let url = '/pages/senddian/senddian?id='+this.building.id
+					uni.setStorageSync('backurl',url)
+					console.log(url)
+				} else {
+					let session = uni.getStorageSync('token')
+					if(session){
+						that.submitDian(that.building.id)
+					}else {
+						uni.login({
+						  provider: 'weixin',
+						  success: function (res) {
+							uni.request({
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method:'get',
+								data:{
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid',res.data.openid)
+									uni.setStorageSync('session',res.data.session_key)
+									uni.request({
+										url:"https://ll.edefang.net/api/weichat/decryptData",
+										data:{
+											data: e.detail.encryptedData,
+											iv:e.detail.iv,
+											session_key:res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone',tel)
+											let openid = uni.getStorageSync('openid')
+											that.tel = tel
+											uni.request({
+												url:"https://api.edefang.net/applets/login",
+												method:'GET',
+												data:{
+													phone: tel,
+													openid: openid
+												},
+												success: (res) => {
+													uni.setStorageSync('token',res.data.token)
+													that.submitDian(that.building.id)
+												}
+											})
+											
+										}
+									})
+									
+								}
+							})
+						  }
+						});
+						}
+					this.isok = 1
+				}
+				// #endif
 				
 			},
 			selTiao(num){

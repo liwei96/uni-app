@@ -72,8 +72,12 @@
 		},
 		methods: {
 			back() {
-				uni.navigateBack({
-					data:1
+				// uni.navigateBack({
+				// 	data:1
+				// })
+				let id = uni.getStorageSync('bid')
+				uni.navigateTo({
+					url:"/pages/content/content?id="+id
 				})
 			},
 			gotalk(id,bid,cid) {
@@ -167,6 +171,9 @@
 			});
 		},
 		onHide() {
+			clearInterval(this.timer)
+		},
+		onUnload() {
 			clearInterval(this.timer)
 		}
 	}

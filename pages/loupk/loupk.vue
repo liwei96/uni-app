@@ -66,9 +66,6 @@
 		<view :class="style_num==0?'bottom_btn':'active'" @tap="duibi">
 			开始对比
 		</view>
-
-
-
 	</view>
 </template>
 
@@ -105,8 +102,6 @@
 					duration: 2000
 				},
 				style_num:0
-				
-				
 			};
 		},
 		onLoad(option) {
@@ -201,7 +196,7 @@
 			
 			duibi(){
 				let  arr = this.selBox;
-				
+				console.log(arr)
 				let id_arr = [];
 				arr.map(p=>{
 					id_arr.push(p.id)

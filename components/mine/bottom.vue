@@ -75,7 +75,12 @@
 			this.pass = uni.getStorageSync('pass')
 			// this.num = uni.getStorageSync('total')
 			uni.onSocketMessage(function(res) {
+				if (res.data.indexOf('{') === -1) {
+					return
+				}
 				let data = JSON.parse(res.data)
+				console.log(res.data)
+
 				console.log(data)
 				if (data.action == 302) {
 					that.sid = data.sid
@@ -99,7 +104,7 @@
 			})
 		},
 		methods: {
-			setpop(){
+			setpop() {
 				this.$refs.popup.hide()
 			},
 			gotalk() {
@@ -114,7 +119,7 @@
 				this.num = 0
 				let pid = this.pid
 				uni.navigateTo({
-					url: '/pages/talk/talk?id=' + id+'&bid='+pid
+					url: '/pages/talk/talk?id=' + id + '&bid=' + pid
 				})
 			},
 			register() {
@@ -152,9 +157,9 @@
 					} //仅为示例
 				});
 			},
-			baoMing(remark, point, title, pid,n) {
+			baoMing(remark, point, title, pid, n) {
 				this.isok = n
-				console.log(remark, point, title, pid,n);
+				console.log(remark, point, title, pid, n);
 				this.pid_d = pid;
 				this.position_n = point;
 				this.title_e = title;
@@ -164,11 +169,12 @@
 			async getPhoneNumber(e) {
 				console.log(e)
 				let that = this
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					that.baoMing(that.remark, that.point, that.title, that.pid,0)
+					that.baoMing(that.remark, that.point, that.title, that.pid, 0)
 				} else {
 					this.pass = true
-					uni.setStorageSync('pass',true)
+					uni.setStorageSync('pass', true)
 					let session = uni.getStorageSync('session')
 					if (session) {
 						uni.request({
@@ -185,7 +191,7 @@
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
 								that.tel = tel
-								that.baoMing(that.remark, that.point, that.title, that.pid,1)
+								that.baoMing(that.remark, that.point, that.title, that.pid, 1)
 							}
 						})
 					} else {
@@ -216,7 +222,7 @@
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel
-												that.baoMing(that.remark, that.point, that.title, that.pid,1)
+												that.baoMing(that.remark, that.point, that.title, that.pid, 1)
 											}
 										})
 
@@ -226,6 +232,50 @@
 						});
 					}
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					that.baoMing(that.remark, that.point, that.title, that.pid, 0)
+				} else {
+					this.pass = true
+					uni.setStorageSync('pass', true)
+					let session = uni.getStorageSync('session')
+					uni.login({
+						provider: 'weixin',
+						success: function(res) {
+							console.log(res.code);
+							uni.request({
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method: 'get',
+								data: {
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid', res.data.openid)
+									uni.setStorageSync('session', res.data.session_key)
+									uni.request({
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										data: {
+											data: e.detail.encryptedData,
+											iv: e.detail.iv
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone', tel)
+											let openid = uni.getStorageSync('openid')
+											that.tel = tel
+											that.baoMing(that.remark, that.point, that.title, that.pid, 1)
+										}
+									})
+
+								}
+							})
+						}
+					});
+				}
+				// #endif
 			}
 		},
 		watch: {
@@ -239,7 +289,12 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+	button {
+		width: 256rpx;
+		padding: 0;
+	}
+
 	.bottom_fixed {
 		width: 94%;
 		height: 109rpx;

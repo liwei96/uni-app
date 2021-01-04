@@ -199,11 +199,13 @@
 				type: 0,
 				isok: 0,
 				bid:0,
-				pass: false
+				pass: false,
+				city: 1
 			}
 		},
-		onShow() {
+		onLoad(options) {
 			that = this
+			this.city = options.city || uni.getStorageSync('city');
 			this.pass = uni.getStorageSync('pass')
 			this.getdata()
 		},
@@ -226,6 +228,7 @@
 			async getPhoneNumber(e,bid,txt) {
 				console.log(e)
 				let that = this
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					that.show(bid,txt, 0)
 				} else {
@@ -280,20 +283,64 @@
 												that.show(bid,txt, 1)
 											}
 										})
-
+				
 									}
 								})
 							}
 						});
 					}
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					that.show(bid,txt, 0)
+				} else {
+					uni.setStorageSync('pass', true)
+					let session = uni.getStorageSync('session')
+						uni.login({
+							provider: 'weixin',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://ll.edefang.net/api/weichat/jscode2session',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.openid)
+										uni.setStorageSync('session', res.data.session_key)
+										uni.request({
+											url: "https://ll.edefang.net/api/weichat/decryptData",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												session_key: res.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let tel = res.data.mobile
+												uni.setStorageSync('phone', tel)
+												let openid = uni.getStorageSync('openid')
+												that.tel = tel
+												that.show(bid,txt, 1)
+											}
+										})
+				
+									}
+								})
+							}
+						});
+				}
+				// #endif
 			},
 			getdata() {
 				uni.showLoading({
 					title: '加载中',
 					mask: true
 				});
-				let city = uni.getStorageSync('city')
+				let city = this.city
 				uni.request({
 					url: that.apiserve + '/applets/discounts',
 					method: "GET",
@@ -382,7 +429,7 @@
 				})
 			},
 			gosearch() {
-				uni.switchTab({
+				uni.navigateTo({
 					url: "/pages/building/building"
 				})
 			},

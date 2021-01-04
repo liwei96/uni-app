@@ -39,16 +39,21 @@
 				</view>
 			</view>
 		</view>
+		<tabbar :type="2"></tabbar>
 	</view>
 </template>
 
 <script>
+	import tabbar from '../../components/tabbar/tabbar.vue'
 	export default {
 		data() {
 			return {
 				list: [],
 				timer: ''
 			}
+		},
+		components:{
+			tabbar
 		},
 		onShow() {
 			this.getlist()
@@ -180,6 +185,7 @@
 <style lang="less">
 	page{
 		background: #FFFFFF;
+		padding-bottom: 100rpx;
 	}
 	.toptitle {
 		color: #17181A;

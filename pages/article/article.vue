@@ -2,8 +2,8 @@
 	<view class="article">
 		<view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
-			      </view>
+				<!-- 这里是状态栏 -->
+			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>买房资格</text>
 		</view>
@@ -93,14 +93,14 @@
 				id: 0,
 				info: {},
 				others: [],
-				content:"",
+				content: "",
 				pass: false
 			}
 		},
 		methods: {
-			back(){
+			back() {
 				uni.navigateBack({
-					data:1
+					data: 1
 				})
 			},
 			getinfo() {
@@ -108,8 +108,8 @@
 				let other = uni.getStorageSync('other')
 				let token = uni.getStorageSync('token')
 				uni.request({
-					url: that.apiserve+"/applets/article/detail",
-					method:"GET",
+					url: that.apiserve + "/applets/article/detail",
+					method: "GET",
 					data: {
 						id: that.id,
 						city: city,
@@ -141,7 +141,7 @@
 			},
 			go(id) {
 				uni.redirectTo({
-					url: "/pages/article/article?id="+id
+					url: "/pages/article/article?id=" + id
 				})
 			},
 			agree() {
@@ -153,8 +153,8 @@
 						id: that.info.id,
 						token: token
 					},
-					header:{
-						'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
 					},
 					success: (res) => {
 						console.log(res)
@@ -172,20 +172,21 @@
 				console.log(e)
 				let that = this
 				let token = uni.getStorageSync('token')
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
-					if(!token) {
+					if (!token) {
 						let url = '/pages/info/info?id=' + this.id
 						uni.setStorageSync('backurl', url)
 						uni.navigateTo({
-							url:'/pages/login/login'
+							url: '/pages/login/login'
 						})
 					} else {
 						that.agree()
 					}
 				} else {
 					this.pass = true
-					uni.setStorageSync('pass',true)
-					if(token) {
+					uni.setStorageSync('pass', true)
+					if (token) {
 						that.agree()
 						return
 					}
@@ -205,15 +206,15 @@
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
 								uni.request({
-									url:"https://api.edefang.net/applets/login",
-									method:'GET',
-									data:{
+									url: "https://api.edefang.net/applets/login",
+									method: 'GET',
+									data: {
 										phone: tel,
 										openid: openid
 									},
 									success: (res) => {
-										uni.setStorageSync('phone',tel)
-										uni.setStorageSync('token',res.data.token)
+										uni.setStorageSync('phone', tel)
+										uni.setStorageSync('token', res.data.token)
 										that.agree()
 									}
 								})
@@ -247,15 +248,15 @@
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												uni.request({
-													url:"https://api.edefang.net/applets/login",
-													method:'GET',
-													data:{
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
 														phone: tel,
 														openid: openid
 													},
 													success: (res) => {
-														uni.setStorageSync('token',res.data.token)
-														uni.setStorageSync('phone',tel)
+														uni.setStorageSync('token', res.data.token)
+														uni.setStorageSync('phone', tel)
 														that.agree()
 													}
 												})
@@ -267,19 +268,86 @@
 						});
 					}
 				}
-			
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					if (!token) {
+						let url = '/pages/info/info?id=' + this.id
+						uni.setStorageSync('backurl', url)
+						uni.navigateTo({
+							url: '/pages/login/login'
+						})
+					} else {
+						that.agree()
+					}
+				} else {
+					this.pass = true
+					uni.setStorageSync('pass', true)
+					if (token) {
+						that.agree()
+						return
+					}
+					uni.login({
+						provider: 'weixin',
+						success: function(res) {
+							uni.request({
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method: 'get',
+								data: {
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid', res.data.openid)
+									uni.setStorageSync('session', res.data.session_key)
+									uni.request({
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										data: {
+											data: e.detail.encryptedData,
+											iv: e.detail.iv,
+											session_key: res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone', tel)
+											let openid = uni.getStorageSync('openid')
+											uni.request({
+												url: "https://api.edefang.net/applets/login",
+												method: 'GET',
+												data: {
+													phone: tel,
+													openid: openid
+												},
+												success: (res) => {
+													uni.setStorageSync('token', res.data.token)
+													uni.setStorageSync('phone', tel)
+													that.agree()
+												}
+											})
+										}
+									})
+								}
+							})
+						}
+					});
+				}
+				// #endif
+
 			}
 		}
 	}
 </script>
 
 <style lang="less">
-	page{
+	page {
 		background: #FFFFFF;
 	}
+
 	.article {
 		background-color: #FFFFFF;
 	}
+
 	.toptitle {
 		color: #17181A;
 		font-size: 29.88rpx;
@@ -290,10 +358,12 @@
 		top: 0;
 		z-index: 9999;
 		background-color: #FFFFFF;
+
 		.status_bar {
-		      height: var(--status-bar-height);
-		      width: 100%;
-		  }
+			height: var(--status-bar-height);
+			width: 100%;
+		}
+
 		image {
 			width: 32rpx;
 			height: 32rpx;
@@ -301,13 +371,16 @@
 			margin-bottom: -4rpx;
 		}
 	}
-	button{
+
+	button {
 		padding: 0;
 		margin: 0
 	}
-	button:after{
+
+	button:after {
 		border: none;
 	}
+
 	.box {
 		padding: 0 30rpx;
 		padding-top: 88rpx;
@@ -399,6 +472,7 @@
 					font-size: 24rpx;
 				}
 			}
+
 			.active {
 				background-color: #F7F7F7;
 			}
@@ -412,22 +486,27 @@
 			font-size: 24rpx;
 			line-height: 40rpx;
 			margin-bottom: 56rpx;
+
 			text {
 				color: #323333;
 			}
 		}
+
 		.other-tit {
 			color: #17191A;
 			font-size: 32rpx;
 			font-weight: bold;
 			margin-bottom: 48rpx;
 		}
+
 		.other {
 			.other-li {
 				display: flex;
 				margin-bottom: 18rpx;
+
 				.left {
 					flex: 1;
+
 					.li-tit {
 						color: #303233;
 						font-size: 28rpx;
@@ -438,6 +517,7 @@
 						overflow: hidden;
 						margin-bottom: 20rpx;
 					}
+
 					.li-icons {
 						text {
 							color: #626466;
@@ -449,9 +529,11 @@
 						}
 					}
 				}
+
 				.right {
 					width: 200rpx;
 					margin-left: 42rpx;
+
 					image {
 						width: 100%;
 						height: 140rpx;

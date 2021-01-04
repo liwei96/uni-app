@@ -37,7 +37,7 @@
 					<view class="icons">
 						<text class="zhuang" v-if="build.decorate">{{build.decorate}}</text>
 						<template v-if="build.features">
-						   <text v-for="(item,key) in build.features">{{item}}</text>
+							<text v-for="(item,key) in build.features">{{item}}</text>
 						</template>
 					</view>
 				</view>
@@ -100,7 +100,7 @@
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="title" :pid="pid" :remark="remark" :position="position" :isok="isok"></sign>
 		</wyb-popup>
-		
+
 	</view>
 </template>
 
@@ -153,7 +153,7 @@
 			},
 			getinfo() {
 				uni.showLoading({
-				    title: '加载中'
+					title: '加载中'
 				});
 				let other = uni.getStorageSync('other')
 				let token = uni.getStorageSync('token')
@@ -175,20 +175,20 @@
 						that.tel = res.data.common.phone
 						that.staff = res.data.common.staffs
 						// #ifdef MP-BAIDU
-						  let header = res.data.common.header;
-						  swan.setPageInfo({
-							  title:header.title,
-							  keywords:header.keywords,
-							  description:header.description,
-							  success : res =>{
-								  console.log('setPageInfo success', res);
-							  },
-							  fail: err =>{
-								  console.log('setPageInfo fail', err);
-							  }
-						  })
+						let header = res.data.common.header;
+						swan.setPageInfo({
+							title: header.title,
+							keywords: header.keywords,
+							description: header.description,
+							success: res => {
+								console.log('setPageInfo success', res);
+							},
+							fail: err => {
+								console.log('setPageInfo fail', err);
+							}
+						})
 						// #endif
-						 uni.hideLoading();
+						uni.hideLoading();
 					}
 				})
 			},
@@ -197,7 +197,7 @@
 					url: "/pages/content/content?id=" + id
 				})
 			},
-			async getPhoneNumber(e,p) {
+			async getPhoneNumber(e, p) {
 				console.log(e, this.isok)
 				let title = ''
 				let message = ''
@@ -210,12 +210,13 @@
 					message = '动态详情页+订阅楼盘动态'
 				}
 				let that = this
+				// #ifdef  MP-BAIDU
 				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.isok = 0
-					that.show(that.build.id, title, message, 0,p)
+					that.show(that.build.id, title, message, 0, p)
 				} else {
 					this.pass = true
-					uni.setStorageSync('pass',true)
+					uni.setStorageSync('pass', true)
 					let session = uni.getStorageSync('session')
 					if (session) {
 						uni.request({
@@ -232,7 +233,7 @@
 								uni.setStorageSync('phone', tel)
 								let openid = uni.getStorageSync('openid')
 								that.tel = tel
-								that.show(that.build.id, title, message, 1,p)
+								that.show(that.build.id, title, message, 1, p)
 							}
 						})
 					} else {
@@ -263,7 +264,7 @@
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel
-												that.show(that.build.id, title, message, 1,p)
+												that.show(that.build.id, title, message, 1, p)
 
 											}
 										})
@@ -274,9 +275,55 @@
 						});
 					}
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
+					this.isok = 0
+					that.show(that.build.id, title, message, 0, p)
+				} else {
+					this.pass = true
+					uni.setStorageSync('pass', true)
+					uni.login({
+						provider: 'weixin',
+						success: function(res) {
+							console.log(res.code);
+							uni.request({
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method: 'get',
+								data: {
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid', res.data.openid)
+									uni.setStorageSync('session', res.data.session_key)
+									uni.request({
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										data: {
+											data: e.detail.encryptedData,
+											iv: e.detail.iv,
+											session_key: res.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let tel = res.data.mobile
+											uni.setStorageSync('phone', tel)
+											let openid = uni.getStorageSync('openid')
+											that.tel = tel
+											that.show(that.build.id, title, message, 1, p)
+
+										}
+									})
+
+								}
+							})
+						}
+					});
+				}
+				// #endif
 
 			},
-			show(id, title, txt, isok,position) {
+			show(id, title, txt, isok, position) {
 				this.pid = id
 				this.remark = txt
 				// this.position = 98
@@ -312,9 +359,10 @@
 </script>
 
 <style lang="less">
-	page{
+	page {
 		background: #fff;
 	}
+
 	.toptitle {
 		color: #17181A;
 		font-size: 29.88rpx;
@@ -327,9 +375,10 @@
 		background-color: #FFFFFF;
 
 		.status_bar {
-		      height: var(--status-bar-height);
-		      width: 100%;
-		  }
+			height: var(--status-bar-height);
+			width: 100%;
+		}
+
 		image {
 			width: 31.87rpx;
 			height: 31.87rpx;
@@ -349,6 +398,7 @@
 		padding: 0 29.88rpx;
 		padding-top: 88rpx;
 		margin-top: var(--status-bar-height);
+
 		.dynamic-tit {
 			color: #17181A;
 			font-size: 31.87rpx;
@@ -624,10 +674,12 @@
 			}
 		}
 	}
+
 	.box_2 {
 		padding: 0 29.88rpx;
 		// padding-top: 88rpx;
 		margin-top: var(--status-bar-height);
+
 		.dynamic-tit {
 			color: #17181A;
 			font-size: 31.87rpx;
@@ -635,30 +687,30 @@
 			margin-bottom: 31.87rpx;
 			margin-top: 27.88rpx
 		}
-	
+
 		button {
 			padding: 0;
 			margin-left: 0;
 			border: 0;
 		}
-	
+
 		button:after {
 			border: 0;
 		}
-	
+
 		.txt {
 			color: #4B4C4D;
 			font-size: 27.88rpx;
 			line-height: 41.83rpx;
 		}
-	
+
 		.time {
 			margin-top: 23.9rpx;
 			color: #969799;
 			font-size: 23.9rpx;
 			margin-bottom: 39.84rpx;
 		}
-	
+
 		.btn {
 			width: 100%;
 			height: 79.68rpx;
@@ -670,7 +722,7 @@
 			font-size: 29.88rpx;
 			font-weight: bold;
 		}
-	
+
 		.build {
 			padding: 23.9rpx 29.88rpx;
 			margin-top: 49.8rpx;
@@ -679,31 +731,31 @@
 			box-shadow: 0px 0px 18.92rpx 0.99rpx rgba(0, 0, 0, 0.03);
 			border-radius: 23.9rpx;
 			margin-bottom: 35.85rpx;
-	
+
 			.left {
 				margin-right: 27.88rpx;
-	
+
 				image {
 					width: 219.12rpx;
 					height: 159.36rpx;
 					border-radius: 11.95rpx;
 				}
 			}
-	
+
 			.right {
 				flex: 1;
 				position: relative;
 				top: -3.98rpx;
-	
+
 				.right-tit {
 					margin-bottom: 3.98rpx;
-	
+
 					.name {
 						color: #303233;
 						font-size: 29.88rpx;
 						font-weight: 800;
 					}
-	
+
 					.status {
 						width: 67.72rpx;
 						height: 35.85rpx;
@@ -716,24 +768,24 @@
 						float: right;
 					}
 				}
-	
+
 				.big {
 					color: #FF6040;
 					font-size: 31.87rpx;
 					font-weight: bold;
 				}
-	
+
 				.small {
 					color: #FF6040;
 					font-size: 25.89rpx;
 				}
-	
+
 				.build-msg {
 					color: #7D7E80;
 					font-size: 25.89rpx;
 					margin: 3.98rpx 0;
 				}
-	
+
 				.icons {
 					text {
 						padding: 5.97rpx 11.95rpx;
@@ -743,7 +795,7 @@
 						border-radius: 3.98rpx;
 						margin-right: 11.95rpx;
 					}
-	
+
 					.zhuang {
 						color: #49ABF1;
 						background-color: #F0F5F9;
@@ -751,12 +803,12 @@
 				}
 			}
 		}
-	
+
 		.staff {
 			display: flex;
 			align-items: center;
 			margin-bottom: 39.84rpx;
-	
+
 			.left {
 				width: 64rpx;
 				height: 64rpx;
@@ -764,29 +816,29 @@
 				overflow: hidden;
 				margin-right: 15.93rpx;
 			}
-	
+
 			image {
 				width: 63.74rpx;
 			}
-	
+
 			button {
 				padding: 0;
 				margin-left: auto;
 				margin-right: 0;
 				border: 0;
 			}
-	
+
 			button:after {
 				border: 0;
 			}
-	
+
 			.staffmsg {
 				.name {
 					color: #303233;
 					font-size: 31.87rpx;
 					font-weight: bold;
 				}
-	
+
 				.rate {
 					color: #FFFFFF;
 					font-size: 19.92rpx;
@@ -795,14 +847,14 @@
 					border-radius: 5.97rpx;
 					margin-left: 4.98rpx;
 				}
-	
+
 				.stafftxt {
 					color: #969799;
 					font-size: 23.9rpx;
 					margin-top: 7.96rpx;
 				}
 			}
-	
+
 			.staffbtn {
 				background: linear-gradient(-45deg, #38A7EA, #63D5FF);
 				border-radius: 27.88rpx;
@@ -815,10 +867,10 @@
 				font-size: 23.9rpx;
 			}
 		}
-	
+
 		.other {
 			padding-bottom: 99.6rpx;
-	
+
 			.tit {
 				color: #17181A;
 				font-size: 33.86rpx;
@@ -826,14 +878,14 @@
 				margin-top: 35.85rpx;
 				margin-bottom: 43.82rpx;
 			}
-	
+
 			.other-item {
 				display: flex;
 				height: 159.36rpx;
 				padding-bottom: 27.88rpx;
 				border-bottom: 0.99rpx solid #F2F2F2;
 				margin-bottom: 29.88rpx;
-	
+
 				.left {
 					width: 219.12rpx;
 					height: 159.36rpx;
@@ -841,27 +893,27 @@
 					text-align: center;
 					border-radius: 11.95rpx;
 					margin-right: 25.89rpx;
-	
+
 					image {
 						height: 159.36rpx;
 						width: 119.52rpx;
 					}
 				}
-	
+
 				.right {
 					flex: 1;
 					position: relative;
 					top: -7.96rpx;
-	
+
 					.right-tit {
 						margin-bottom: 7.96rpx;
-	
+
 						.name {
 							color: #323233;
 							font-size: 31.87rpx;
 							font-weight: bold;
 						}
-	
+
 						.status {
 							width: 67.72rpx;
 							height: 35.85rpx;
@@ -874,25 +926,25 @@
 							float: right;
 						}
 					}
-	
+
 					.list {
 						.type {
 							color: #7D7E80;
 							font-size: 23.9rpx;
 						}
-	
+
 						.key {
 							color: #323233;
 							font-size: 25.89rpx;
 						}
 					}
-	
+
 					.list:nth-of-type(4) {
 						.key {
 							color: #FF6040;
 							font-size: 19.92rpx;
 						}
-	
+
 						.big {
 							color: #FF6040;
 							font-size: 31.87rpx;
