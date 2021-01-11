@@ -442,7 +442,9 @@
 	button::after {
 		border: none;
 	}
-
+	button {
+		float: right;
+	}
 	.prodetail {
 		.toptitle {
 			color: #17181A;

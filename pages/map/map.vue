@@ -15,6 +15,7 @@
 			let name = uni.getStorageSync('cityname')
 			let city = uni.getStorageSync('city')
 			let url = `http://m.jy1980.com/hangzhou/map/${name}/${city}?uuid=kWNznYTEzB3s1608096182000`
+			console.log(url)
 			this.url = url
 			//#ifdef MP-BAIDU
 			swan.setPageInfo({

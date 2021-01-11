@@ -2,8 +2,8 @@
 	<view class="loupk">
 		<view class="toptitle">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
-			 </view>
+				<!-- 这里是状态栏 -->
+			</view>
 			<navigator open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>楼盘对比</text>
@@ -13,23 +13,21 @@
 			<view class="add_tan" @tap="goTianPro">
 				添加楼盘
 			</view>
-			<!-- #ifdef MP-BAIDU -->
 			<checkbox-group class="left_checkbox_box" @change="checkChange">
 				<movable-area v-show="true" v-for="(item,index) in data" :key="item.id">
 					<movable-view direction="horizontal">
 						<view class="sel_pro">
 
 							<label class="left_checkbox" v-if="(Obj.question.maxSelect > 0 &&Obj.question.maxSelect ==Object.keys(subtow).length)">
-								<checkbox :value="item.id" @click="checkboxhint()"  :disabled="item.id|selectD"/>
+								<checkbox :value="item.id" @click="checkboxhint()" :disabled="ismax&&selBox.indexOf(String(item.id))==-1"/>
 							</label>
 							<label class="left_checkbox" v-else>
-								<checkbox :value="item.id" />
+								<checkbox :value="item.id"  :disabled="ismax&&selBox.indexOf(String(item.id))==-1"/>
 							</label>
-
 							<view class="pro_one">
 								<image :src="item.img" mode=""></image>
 								<view class="right_name">
-									<view class="name">{{item.name}}</view>
+									<view class="name">{{item.name}}{{item.id}}</view>
 									<view class="price">{{item.price}}元/m²</view>
 									<view class="type">{{item.type}}<text class="ge">|</text>{{item.city}}-{{item.country}}<text class="ge">|</text>{{item.area}}m²</view>
 									<view class="tese">
@@ -46,35 +44,8 @@
 					</movable-view>
 				</movable-area>
 			</checkbox-group>
-	     <!-- #endif -->
-			<!-- #ifdef MP-WEIXIN -->
-			<!-- <van-checkbox-group class="left_checkbox_box" @change="checkChangeWei" :max="2" v-model="result">
-				<movable-area v-show="true" v-for="(item,index) in data" :key="item.id">
-					<movable-view direction="horizontal">
-						<view class="sel_pro">
-							<view class="left_checkbox_w">
-							  <van-checkbox :name="item.id"></van-checkbox>
-							</view>
-							<view class="pro_one">
-								<image :src="item.img" mode=""></image>
-								<view class="right_name">
-									<view class="name">{{item.name}}</view>
-									<view class="price">{{item.price}}元/m²</view>
-									<view class="type">{{item.type}}<text class="ge">|</text>{{item.city}}-{{item.country}}<text class="ge">|</text>{{item.area}}m²</view>
-									<view class="tese">
-										<text class="zhuang">{{item.decorate}}</text>
-										<text class="other" v-for="(ite,index) in item.features" :key="index">{{ite}}</text>
-									</view>
-								</view>
-							</view>
-							<view class="delete" @tap="deletePro(item.id,index)">
-								删除
-							</view>
-						</view>
-					</movable-view>
-				</movable-area>
-			 </van-checkbox-group> -->
-			<!-- #endif -->
+
+
 
 			<view class="image_wu" v-show='tootip'>
 				<image src="../../static/other/no_pk.png" mode=""></image>
@@ -85,6 +56,7 @@
 					请点击添加
 				</view>
 			</view>
+
 			<view class="tootip" v-show="duibi_tootip">
 				已加入对比
 			</view>
@@ -93,6 +65,7 @@
 		<view :class="style_num==0?'bottom_btn':'active'" @tap="duibi">
 			开始对比
 		</view>
+
 	</view>
 </template>
 
@@ -107,31 +80,29 @@
 				project_id: '',
 				tootip: false,
 				duibi_tootip: false,
-				count:0,
-				checkbox:[],
-				
+				count: 0,
+				checkbox: [],
+
 				maleLike: [],
 				currentArr: [], // 当前用户想要的选项，最大为5
 				oldArr: [], // 上一次的返回值
 				hasPass: false, // 用户之前是否选择过，是为true
-				
 				Obj: {
-						question: {
-							id: 999,
-							name: "下面哪个是唐朝诗人？",
-							maxSelect: 3,
-						},
+					question: {
+						id: 999,
+						name: "下面哪个是唐朝诗人？",
+						maxSelect: 3,
 					},
+				},
 				subtow: {},
 				reminder: {
 					type: 'success',
 					message: '成功消息',
 					duration: 2000
 				},
-				style_num:0,
-				result:[]
-				
-				
+				style_num: 0,
+				ismax: false,
+				selBox: []
 			};
 		},
 		onLoad(option) {
@@ -141,13 +112,13 @@
 		},
 		beforeCreate: function() {
 			thatOne = this;
-		
+
 		},
 		filters: {
 			//设置最大可选
 			selectD(idU) {
 				if (thatOne.Obj.question.maxSelect > 0 &&
-					thatOne.Obj.question.maxSelect ==Object.keys(thatOne.subtow).length ) {
+					thatOne.Obj.question.maxSelect == Object.keys(thatOne.subtow).length) {
 					for (var t in thatOne.subtow) {
 						if (t == idU) {
 							return false
@@ -156,60 +127,73 @@
 					console.log(thatOne.subtow);
 					return true
 				} else {
-					
 					thatOne.reminder = Object.assign({}, thatOne.reminder, {
 						type: 'error',
 						message: "最多可选" + thatOne.Obj.question.maxSelect + "项",
 						duration: 2000
 					})
 					console.log(thatOne.reminder);
-				//	thatOne.$refs.popup.open()
+					//	thatOne.$refs.popup.open()
 				}
 				return false
 			},
 		},
-		watch:{
-			duibi_tootip(newval){
+		watch: {
+			duibi_tootip(newval) {
 				let _this = this;
-				if(newval==true){
-					setTimeout(function(){
-					  _this.duibi_tootip = false;
-					},2000)
+				if (newval == true) {
+					setTimeout(function() {
+						_this.duibi_tootip = false;
+					}, 2000)
 				}
 			}
 		},
 		methods: {
-		    onChange(event) {
-			  this.result = event.detail;
-		    },
-			checkChangeWei(e){
-				this.result = e.detail;
-				if(this.result.length==2){
-					 this.duibi_tootip = true;
-					 this.style_num = 1;
+			checklength() {
+				if (thatOne.Obj.question.maxSelect > 0 &&
+					thatOne.Obj.question.maxSelect == Object.keys(thatOne.subtow).length) {
+					for (var t in thatOne.subtow) {
+						if (t == idU) {
+							return false
+						}
+					}
+					console.log(thatOne.subtow);
+					return true
+				} else {
+
+					thatOne.reminder = Object.assign({}, thatOne.reminder, {
+						type: 'error',
+						message: "最多可选" + thatOne.Obj.question.maxSelect + "项",
+						duration: 2000
+					})
+					console.log(thatOne.reminder);
+					//	thatOne.$refs.popup.open()
 				}
+				return false
 			},
 			//多选提示
 			checkboxhint() {
 				if (
-					thatOne.Obj.question.maxSelect == Object.keys(thatOne.subtow).length ) {
+					thatOne.Obj.question.maxSelect == Object.keys(thatOne.subtow).length) {
 					thatOne.reminder = Object.assign({}, thatOne.reminder, {
 						type: 'error',
 						message: "最多可选" + thatOne.Obj.question.maxSelect + "项",
 						duration: 1000
 					})
-			
-				 //  	thatOne.$refs.popup.open()
-			
+
+					//  	thatOne.$refs.popup.open()
+
 				}
 			},
-			deletePro(id,ind){
-				this.data.splice(ind,1);
+			deletePro(id, ind) {
+				this.data.splice(ind, 1);
 			},
-			
-			checkChange(evt){
+
+			checkChange(evt) {
+				console.log(evt)
+				// #ifdef  MP-BAIDU
 				var that = this;
-				var a={}
+				var a = {}
 				for (let i = 0; i < that.data.length; i++) {
 					for (let j = 0; j < evt.target.value.length; j++) {
 						if (that.data[i].id === evt.target.value[j]) {
@@ -219,58 +203,69 @@
 						}
 					}
 				}
-					that.subtow = a;
-					let arr= [];
-					for(let i in a){
-						arr.push(a[i])
-					}
-					if(arr.length==2){
-						 this.selBox = arr;
-						 this.duibi_tootip = true;
-						 this.style_num = 1;
-					}
-					
+				that.subtow = a;
+				let arr = [];
+				for (let i in a) {
+					arr.push(a[i])
+				}
+				if (arr.length == 2) {
+					this.selBox = arr;
+					this.duibi_tootip = true;
+					this.style_num = 1;
+				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if(evt.detail.value.length>=2) {
+					this.ismax = true
+					this.style_num = 1
+				}else{
+					this.ismax = false
+					this.style_num = 0
+				}
+				this.selBox = []
+				for(let item of evt.detail.value) {
+					this.selBox.push(item)
+				}
+				// this.selBox = evt.detail.value
+				// #endif
+				
 			},
-			
-			
-			
-			duibi(){
-				// #ifdef MP-BAIDU
-				let  arr = this.selBox;
+
+
+
+			duibi() {
+				if(this.selBox.length<2){
+					return
+				}
+				let arr = this.selBox;
+				console.log(arr)
 				let id_arr = [];
-				arr.map(p=>{
-					id_arr.push(p.id)
+				arr.map(p => {
+					id_arr.push(p)
 				})
-				
+
 				let checkbox = id_arr.join(',');
-				// #endif
-				// #ifdef MP-WEIXIN
-				   let arr = this.result
-				   let checkbox = arr.join(',');
-				// #endif
-				
-				
 				uni.navigateTo({
-					 url:'../loupkdetail/loupkdetail?id='+checkbox
+					url: '../loupkdetail/loupkdetail?id=' + checkbox
 				})
 			},
-			checkboxChange(e){
+			checkboxChange(e) {
 				var items = this.data;
-				var	values = e.detail.value;
+				var values = e.detail.value;
 				this.checkbox = values;
-				console.log(values,'values');
-				
-				this.count=0;
+				console.log(values, 'values');
+
+				this.count = 0;
 				for (var i = 0, lenI = items.length; i < lenI; ++i) {
-						const item = items[i];
-						if(values.includes(item.id)){
-							 console.log('123',item.id,values);
-					      	this.$set(item,'disabled',true)
-						    this.count++;
-							console.log(item);
-						}else{
-						   this.$set(item,'disabled',false)
-						}
+					const item = items[i];
+					if (values.includes(item.id)) {
+						console.log('123', item.id, values);
+						this.$set(item, 'disabled', true)
+						this.count++;
+						console.log(item);
+					} else {
+						this.$set(item, 'disabled', false)
+					}
 				}
 			},
 			getcards(ids) {
@@ -287,23 +282,23 @@
 					success: (res) => {
 						if (res.data.code == 200) {
 							this.data = res.data.data;
-							if(this.data.length==2){
-								this.data.map(n=>{
+							if (this.data.length == 2) {
+								this.data.map(n => {
 									n.checked = true;
-								//	n.disabled = false;
+									//	n.disabled = false;
 								})
-								this.checkbox = [this.data[0].id,this.data[1].id];
-							}else{
-								 this.data.map((ind,n)=>{
-								 	if(n==0){
+								this.checkbox = [this.data[0].id, this.data[1].id];
+							} else {
+								this.data.map((ind, n) => {
+									if (n == 0) {
 										ind.checked = true;
-									}else if(n==1){
+									} else if (n == 1) {
 										ind.checked = true;
-									}else {
+									} else {
 										ind.checked = false;
-									//	ind.disabled = true;
+										//	ind.disabled = true;
 									}
-								 })
+								})
 							}
 							this.common = res.data.common;
 						}
@@ -336,10 +331,12 @@
 			top: 0;
 			width: 100%;
 			z-index: 30000;
-			 .status_bar {
-			      height: var(--status-bar-height);
-			      width: 100%;
-			  }
+
+			.status_bar {
+				height: var(--status-bar-height);
+				width: 100%;
+			}
+
 			image {
 				width: 31.87rpx;
 				height: 31.87rpx;
@@ -363,6 +360,7 @@
 			position: relative;
 			margin-bottom: 140rpx;
 			margin-top: 150rpx;
+
 			.add_tan {
 				width: 100%;
 				height: 94rpx;
@@ -386,128 +384,126 @@
 				content: '';
 				display: block;
 			}
-			.left_checkbox_box{
-			movable-area {
-				height: 160rpx;
-				width: 100%;
-				background-color: #FFF;
-				overflow: hidden;
-				margin-top: 59rpx;
 
-				movable-view {
-					width: 810rpx;
-					height: auto;
+			.left_checkbox_box {
+				movable-area {
+					height: 160rpx;
+					width: 100%;
+					background-color: #FFF;
+					overflow: hidden;
+					margin-top: 59rpx;
 
-					.sel_pro {
-						width: 120%;
+					movable-view {
+						width: 810rpx;
 						height: auto;
 
-						.left_checkbox {
-							float: left;
-							margin-top: 40rpx;
-							margin-right: 30rpx;
-						}
-						.left_checkbox_w{
-							float: left;
-							margin-top: 40rpx;
-							margin-right: 40rpx;
-						}
+						.sel_pro {
+							width: 120%;
+							height: auto;
 
-						.pro_one {
-							float: left;
-
-							image {
-								width: 220rpx;
-								height: 160rpx;
-								border-radius: 12rpx;
+							.left_checkbox {
 								float: left;
+								margin-top: 40rpx;
 								margin-right: 30rpx;
 							}
 
-							.right_name {
-								width: 610rpx;
-								height: 160rpx;
-								
-							//	float: left;
-								.name {
-									font-size: 30rpx;
-									font-weight: 800;
-									color: #303233;
-									line-height: 30rpx;
+							.pro_one {
+								float: left;
+
+								image {
+									width: 220rpx;
+									height: 160rpx;
+									border-radius: 12rpx;
+									float: left;
+									margin-right: 30rpx;
 								}
 
-								.price {
-									font-size: 32rpx;
-									font-weight: bold;
-									color: #FF6040;
-									line-height: 54rpx;
-								}
+								.right_name {
+									width: 610rpx;
+									height: 160rpx;
 
-								.type {
-									font-size: 24rpx;
-									font-weight: 500;
-									color: #646566;
-									line-height: 24rpx;
-									margin-bottom: 12rpx;
-									width: 360rpx;
-									height: 24rpx;
-									overflow: hidden;
-									.ge {
-										padding-left: 14rpx;
-										padding-right: 14rpx;
-									}
-								}
-
-								.tese {
-									.zhuang {
-										width: 68rpx;
-										height: 36rpx;
-										background: #F0F5F9;
-										border-radius: 4rpx;
-										font-size: 24rpx;
-										font-weight: 500;
-										color: #40A2F4;
-										line-height: 36rpx;
-										text-align: center;
-										display: inline-block;
-										margin-right: 12rpx;
+									//	float: left;
+									.name {
+										font-size: 30rpx;
+										font-weight: 800;
+										color: #303233;
+										line-height: 30rpx;
 									}
 
-									.other {
+									.price {
+										font-size: 32rpx;
+										font-weight: bold;
+										color: #FF6040;
+										line-height: 54rpx;
+									}
+
+									.type {
 										font-size: 24rpx;
 										font-weight: 500;
-										color: #7D7E80;
-										padding: 4rpx 12rpx;
-										background: #F5F5F5;
-										margin-right: 12rpx;
-										border-radius: 4rpx;
+										color: #646566;
+										line-height: 24rpx;
+										margin-bottom: 12rpx;
+										width: 360rpx;
+										height: 24rpx;
+										overflow: hidden;
+
+										.ge {
+											padding-left: 14rpx;
+											padding-right: 14rpx;
+										}
+									}
+
+									.tese {
+										.zhuang {
+											width: 68rpx;
+											height: 36rpx;
+											background: #F0F5F9;
+											border-radius: 4rpx;
+											font-size: 24rpx;
+											font-weight: 500;
+											color: #40A2F4;
+											line-height: 36rpx;
+											text-align: center;
+											display: inline-block;
+											margin-right: 12rpx;
+										}
+
+										.other {
+											font-size: 24rpx;
+											font-weight: 500;
+											color: #7D7E80;
+											padding: 4rpx 12rpx;
+											background: #F5F5F5;
+											margin-right: 12rpx;
+											border-radius: 4rpx;
+										}
 									}
 								}
 							}
+
+							.delete {
+								width: 120rpx;
+								height: 160rpx;
+								background: #FF4040;
+								font-size: 28rpx;
+								font-weight: 400;
+								color: #FFFFFF;
+								line-height: 160rpx;
+								text-align: center;
+								float: left;
+							}
+
+
 						}
 
-						.delete {
-							width: 120rpx;
-							height: 160rpx;
-							background: #FF4040;
-							font-size: 28rpx;
-							font-weight: 400;
-							color: #FFFFFF;
-							line-height: 160rpx;
-							text-align: center;
-							float: left;
-						}
+
 
 
 					}
 
-
-
-
 				}
-
 			}
-				}
+
 			.image_wu {
 				width: 400rpx;
 				position: absolute;
@@ -550,7 +546,7 @@
 				position: absolute;
 				transform: translate(-50%, -50%);
 				left: 50%;
-				top:50%;
+				top: 50%;
 			}
 
 
@@ -572,7 +568,8 @@
 			position: fixed;
 			bottom: 30rpx;
 		}
-		.active{
+
+		.active {
 			width: 690rpx;
 			height: 80rpx;
 			margin-left: 30rpx;

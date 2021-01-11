@@ -273,10 +273,6 @@
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
-				// "usingComponents":{
-				// 	"van-checkbox-group":"/wxcomponents/vant/dist/checkbox-group/index",
-				// 	"van-checkbox":"/wxcomponents/vant/dist/checkbox/index"
-				// }
 			}
 
 		}, {
@@ -334,6 +330,15 @@
             }
             
         }
+		,{
+		    "path" : "pages/talk/talk",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
         ,{
             "path" : "pages/talklist/talklist",
             "style" :                                                                                    

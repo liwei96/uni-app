@@ -335,7 +335,7 @@
 			that = this
 			console.log(options)
 			this.city = options.city || uni.getStorageSync('city')
-			uni.setStorageSync('city',options.city)
+			// uni.setStorageSync('city',options.city)
 			this.getinfo()
 			this.cityname = uni.getStorageSync('cityname')
 		},

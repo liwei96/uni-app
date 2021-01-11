@@ -85,7 +85,7 @@
 						item.num = 0
 					}
 				}
-				uni.navigateTo({
+				uni.redirectTo({
 					url: '/pages/talk/talk?id=' + id+'&bid='+bid+'&cid='+cid
 				})
 			},
@@ -98,9 +98,6 @@
 						uuid: uuid
 					}
 				};
-				// uni.onSocketOpen(function (res) {
-				// 	console.log(22)
-				// });
 				try{
 					uni.sendSocketMessage({
 						data: JSON.stringify(pp)
@@ -109,10 +106,6 @@
 					alert(e)
 				}
 				
-				
-				// setTimeout(()=>{
-				// 	that.getlist()
-				// },2000)
 			}
 		},
 		mounted() {
