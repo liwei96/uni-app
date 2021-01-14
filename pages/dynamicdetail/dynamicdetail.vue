@@ -198,7 +198,7 @@
 			},
 			gobuild(id) {
 				uni.redirectTo({
-					url: "/pages/content/content?id=" + id
+					url: "/pageA/content/content?id=" + id
 				})
 			},
 			async getPhoneNumber(e, p) {
@@ -884,7 +884,6 @@
 
 			.other-item {
 				display: flex;
-				height: 159.36rpx;
 				padding-bottom: 27.88rpx;
 				border-bottom: 0.99rpx solid #F2F2F2;
 				margin-bottom: 29.88rpx;

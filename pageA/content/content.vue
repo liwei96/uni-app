@@ -262,7 +262,7 @@
 
 			<view class="dong_list">
 				<view class="dong_one" v-for="item in dongtai" :key="item.id">
-					<navigator :url="`../dynamicdetail/dynamicdetail?id=${item.id}`">
+					<navigator :url="`/pages/dynamicdetail/dynamicdetail?id=${item.id}`">
 						<view class="dong">{{item.introduce}}</view>
 						<view class="time">{{item.time}}</view>
 						<image :src="item.img" mode=""></image>
