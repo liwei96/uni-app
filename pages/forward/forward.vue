@@ -42,12 +42,12 @@
 			<view v-html="name"></view>
 			<image src="../../static/other/help-go.png" mode=""></image>
 		</view>
-		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass">
+		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass&&!weixin">
 			<view class="btn">
 				确定
 			</view>
 		</button>
-		<view class="btn" v-if="pass" @tap="show(1)">
+		<view class="btn" v-if="pass||weixin" @tap="show(1)">
 			确定
 		</view>
 		<popup ref="popup" type="center" height="438" width="578" radius="12" closeIconPos="top-right" :showCloseIcon="true"
@@ -118,11 +118,15 @@
 				time: 0,
 				date: '',
 				isok: 0,
-				pass: false
+				pass: false,
+				weixin: false
 			}
 		},
 		onLoad() {
 			that = this
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 			this.pass = uni.getStorageSync('pass')
 			this.tel = uni.getStorageSync('phone')
 			let name = uni.getStorageSync('searchname')
@@ -146,6 +150,9 @@
 		methods: {
 			show(n) {
 				this.isok = n
+				// #ifdef  MP-WEIXIN
+				this.isok = 0
+				// #endif
 				this.$refs.popup.show()
 			},
 			setnull() {

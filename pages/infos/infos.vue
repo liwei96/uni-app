@@ -65,7 +65,6 @@
 		onLoad(options) {
 			that = this
 			this.city = options.city || uni.getStorageSync('city')
-			uni.setStorageSync('city',options.city)
 			this.gettop()
 			if(options.infos) {
 				this.navnum = options.infos

@@ -3,7 +3,7 @@
 		<view class="toptitle">
 			<view class="status_bar">
 			</view>
-			<navigator :url="`../content/content?id=${building.id}`" class="nav_top" open-type="navigate">
+			<navigator :url="`/pageA/content/content?id=${building.id}`" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>{{building.name}}</text>
 			</navigator>
@@ -41,10 +41,10 @@
 					<text class="dan">万起</text>
 				</text>
 				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,building.id,'项目详情页+查低价',105,'查低价')"
-				 hover-class="none" v-if="!pass">
+				 hover-class="none" v-if="!pass&&!weixin">
 					<text class="cha">查底价</text>
 				</button>
-				<button @tap="baoMing(building.id,'项目详情页+查低价',105,'查低价',1)" v-if="pass">
+				<button @tap="baoMing(building.id,'项目详情页+查低价',105,'查低价',1)" v-if="pass||weixin">
 					<text class="cha">查底价</text>
 				</button>
 			</view>
@@ -78,10 +78,10 @@
 					{{building.open_time}}
 				</text>
 				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,building.id,'项目详情页+开盘通知',92,'开盘提醒我')"
-				 v-if="!pass">
+				 v-if="!pass&&!weixin">
 					<text class="kai_btn">开盘通知</text>
 				</button>
-				<button @tap="baoMing(building.id,'项目详情页+开盘通知',92,'开盘提醒我',1)" v-if="pass">
+				<button @tap="baoMing(building.id,'项目详情页+开盘通知',92,'开盘提醒我',1)" v-if="pass||weixin">
 					<text class="kai_btn">开盘通知</text>
 				</button>
 			</view>
@@ -224,6 +224,7 @@
 				position_n: 0,
 				telphone: '',
 				isok: 0,
+				weixin: false
 			};
 		},
 		components: {
@@ -235,6 +236,9 @@
 			console.log(option);
 			this.getData(option.id);
 			this.pass = uni.getStorageSync('pass')
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 			// this.text=this.text.substring(0,82);
 		},
 		methods: {
@@ -364,6 +368,9 @@
 			},
 			baoMing(pid, remark, point, title, n) {
 				this.isok = n
+				// #ifdef  MP-WEIXIN
+				this.isok = 0
+				// #endif
 				this.title_e = title;
 				this.pid_d = pid;
 				this.remark_k = remark;
@@ -444,6 +451,7 @@
 	}
 	button {
 		float: right;
+		background-color: #fff;
 	}
 	.prodetail {
 		.toptitle {

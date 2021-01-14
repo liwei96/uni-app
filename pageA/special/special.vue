@@ -8,7 +8,7 @@
 			<image v-if="type == 1" src="../../static/all-back.png" mode=""></image>
 			<text>特价房源</text>
 		</view>
-		<image src="../../static/special/special-top.jpg" mode="" class="topimg"></image>
+		<image src="../static/special/special-top.jpg" mode="" class="topimg"></image>
 		<view class="limit-time" v-if="limits.length>0">
 			<view class="limit-tit">
 				<text class="title">限时特价房</text>
@@ -30,7 +30,7 @@
 					<view class="center">
 						<view class="top" @tap="gobuild(item.id)">
 							<view class="name">{{item.name}}</view>
-							<image src="../../static/special/spcial-round.png" mode=""></image>
+							<image src="../static/special/spcial-round.png" mode=""></image>
 						</view>
 						<text class="path">{{item.address}}</text>
 					</view>
@@ -55,10 +55,10 @@
 		<view class="discount">
 			<view class="discount-tit">
 				<text class="name">优惠好盘</text>
-				<image src="../../static/special/special-msg.png" mode="" class="img" @tap="showRules"></image>
+				<image src="../static/special/special-msg.png" mode="" class="img" @tap="showRules"></image>
 				<view class="right" @tap="gosearch">
 					更多楼盘
-					<image src="../../static/special/special-back.png" mode=""></image>
+					<image src="../static/special/special-back.png" mode=""></image>
 				</view>
 			</view>
 			<scroll-view class="scroll-view" scroll-x="true">
@@ -877,7 +877,7 @@
 						float: right;
 						width: 107.56rpx;
 						height: 35.85rpx;
-						background: url(../../static/special/special-box.png);
+						background: url(../static/special/special-box.png);
 						background-size: 100%;
 						text-align: center;
 						line-height: 35.85rpx;

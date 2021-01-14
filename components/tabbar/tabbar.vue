@@ -1,6 +1,6 @@
 <template>
 	<view class="tabbar">
-		<view class="li" v-for="(item,key) in list" @tap="go(item.pagePath)" :key="key">
+		<view class="li" v-for="(item,key) in list" @tap="go(item.pagePath,key)" :key="key">
 			<image v-if="key != type" :src="item.iconPath" mode=""></image>
 			<image v-if="key == type" :src="item.selectedIconPath" mode=""></image>
 			<view :class="key==type?'txt active' : 'txt'">
@@ -47,7 +47,11 @@
 			}
 		},
 		methods:{
-			go(url) {
+			go(url,key) {
+				if(this.type === key) {
+					return
+				}
+				console.log(789,url)
 				uni.navigateTo({
 					url: url
 				})

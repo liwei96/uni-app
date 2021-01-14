@@ -19,7 +19,7 @@
 			<swiper class="swiper" :autoplay="true">
 				<swiper-item v-for="(item,key) in pro_img" :key="key">
 					<view class="swiper-item uni-bg-red">
-						<navigator :url="`../piclist/piclist?id=${detail.id}`">
+						<navigator :url="`/pages/piclist/piclist?id=${detail.id}`">
 							<image :src="item.small" mode=""></image>
 						</navigator>
 					</view>
@@ -86,17 +86,17 @@
 				<view class="baoming_btn">
 					<view class="btn_box">
 						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价')"
-						 hover-class="none" v-if="!pass">
+						 hover-class="none" v-if="!pass&&!weixin">
 							<image src="../../static/content/dijia.png"></image>查询最底价
 						</button>
-						<view class="btn01" @tap="baoMing(detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价', 1)" v-if="pass">
+						<view class="btn01" @tap="baoMing(detail.id,'项目落地页+查询最底价',105,'咨询楼盘底价', 1)" v-if="pass||weixin">
 							<image src="../../static/content/dijia.png"></image>查询最底价
 						</view>
 						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+变价通知我',91,'变价通知我')"
-						 hover-class="none" v-if="!pass">
+						 hover-class="none" v-if="!pass&&!weixin">
 							<image src="../../static/content/bianjia.png"></image>变价通知我
 						</button>
-						<view @tap="baoMing(detail.id,'项目落地页+变价通知我',91,'变价通知我',1)" v-if="pass">
+						<view @tap="baoMing(detail.id,'项目落地页+变价通知我',91,'变价通知我',1)" v-if="pass||weixin">
 							<image src="../../static/content/bianjia.png"></image>变价通知我
 						</view>
 					</view>
@@ -134,12 +134,12 @@
 				</text>
 				<view class="right">
 					<button class="ling_btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取优惠',94,'领取优惠')"
-					 hover-class="none" v-if="!pass">
+					 hover-class="none" v-if="!pass&&!weixin">
 						<view>
 							领取优惠
 						</view>
 					</button>
-					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+领取优惠',94,'领取优惠',1)" v-if="pass">
+					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+领取优惠',94,'领取优惠',1)" v-if="pass||weixin">
 						领取优惠
 					</view>
 					<text>{{goufang_ling}}人已领取</text>
@@ -154,12 +154,12 @@
 				</text>
 				<view class="right">
 					<button class="ling_btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+免费领取',95,'免费领取')"
-					 hover-class="none" v-if="!pass">
+					 hover-class="none" v-if="!pass||!weixin">
 						<view>
 							免费领取
 						</view>
 					</button>
-					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+免费领取',95,'免费领取',1)" v-if="pass">
+					<view class="ling_btn" @tap="baoMing(detail.id,'项目落地页+免费领取',95,'免费领取',1)" v-if="pass||weixin">
 						免费领取
 					</view>
 					<text>{{seefang_ling}}人已领取</text>
@@ -201,10 +201,10 @@
 				 color="#646466" :speed="50" v-if="specials.dynamic" :single="true"></uni-notice-bar>
 			</view>
 			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+咨询特价房',93,'咨询特价房')"
-			 hover-class="none" v-if="!pass">
+			 hover-class="none" v-if="!pass||!weixin">
 				咨询特价房
 			</button>
-			<view @tap="baoMing(detail.id,'项目落地页+咨询特价房',93,'咨询特价房',1)" class="button" v-if="pass">
+			<view @tap="baoMing(detail.id,'项目落地页+咨询特价房',93,'咨询特价房',1)" class="button" v-if="pass||weixin">
 				咨询特价房
 			</view>
 		</view>
@@ -242,10 +242,10 @@
 				</view>
 			</scroll-view>
 			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取全部户型资料',97,'领取全部户型资料')"
-			 class="hu_zi" hover-class="none" v-if="!pass">
+			 class="hu_zi" hover-class="none" v-if="!pass&&!weixin">
 				领取全部户型资料
 			</button>
-			<view class="hu_zi" @tap="baoMing(detail.id,'项目落地页+领取全部户型资料',97,'领取全部户型资料',1)" v-if="pass">
+			<view class="hu_zi" @tap="baoMing(detail.id,'项目落地页+领取全部户型资料',97,'领取全部户型资料',1)" v-if="pass||weixin">
 				领取全部户型资料
 			</view>
 		</view>
@@ -269,10 +269,10 @@
 					</navigator>
 				</view>
 				<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态')"
-				 v-if="!pass">
+				 v-if="!pass&&!weixin">
 					订阅最新动态
 				</button>
-				<view class="button" @tap="baoMing(detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态',1)" v-if="pass">
+				<view class="button" @tap="baoMing(detail.id,'项目落地页+订阅最新动态',98,'订阅实时动态',1)" v-if="pass||weixin">
 					订阅最新动态
 				</view>
 			</view>
@@ -310,10 +310,10 @@
 			</view>
 
 			<button open-type="getPhoneNumber" class="get_di_price" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价')"
-			 v-if="!pass">
+			 v-if="!pass&&!weixin">
 				获取最新成交价
 			</button>
-			<view class="get_di_price" @tap="baoMing(detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价',1)" v-if="pass">
+			<view class="get_di_price" @tap="baoMing(detail.id,'项目落地页+获取最新成交价',101,'获取最新成交价',1)" v-if="pass||weixin">
 				获取最新成交价
 			</view>
 		</view>
@@ -336,10 +336,10 @@
 				</view>
 			</view>
 			<button class="btn" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+领取分析资料',99,'领取分析资料')"
-			 v-if="!pass">
+			 v-if="!pass&&!weixin">
 				领取分析资料
 			</button>
-			<view class="btn" @tap="baoMing(detail.id,'项目落地页+领取分析资料',99,'领取分析资料',1)" v-if="pass">
+			<view class="btn" @tap="baoMing(detail.id,'项目落地页+领取分析资料',99,'领取分析资料',1)" v-if="pass||weixin">
 				领取分析资料
 			</view>
 		</view>
@@ -377,10 +377,10 @@
 				</view>
 				<view class="bo_tel">
 					<button open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+咨询服务',104,'咨询服务')"
-					 class="bo_zi" v-if="!pass">
+					 class="bo_zi" v-if="!pass&&!weixin">
 						<image src="../../static/content/zixun.png" mode=""></image>
 					</button>
-					<view class="bo_zi" @tap="baoMing(detail.id,'项目落地页+咨询服务',104,'咨询服务',1)" v-if="pass">
+					<view class="bo_zi" @tap="baoMing(detail.id,'项目落地页+咨询服务',104,'咨询服务',1)" v-if="pass||weixin">
 						<image src="../../static/content/zixun.png" mode=""></image>
 					</view>
 					<image src="../../static/content/tel.png" mode="" @tap="boTel(old_telphone)"></image>
@@ -398,12 +398,12 @@
 				<text class="rig">{{detail.address}}</text>
 			</view>
 			<button open-type="getPhoneNumber" class="pei" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')"
-			 v-if="!pass">
+			 v-if="!pass&&!weixin">
 				<text>配套:</text>
 				咨询具体位置和周边设施情况
 				<image src="../../static/content/biao.png" mode=""></image>
 			</button>
-			<view class="pei" @tap="baoMing(detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1)" v-if="pass">
+			<view class="pei" @tap="baoMing(detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1)" v-if="pass||weixin">
 				<text>配套:</text>
 				咨询具体位置和周边设施情况
 				<image src="../../static/content/biao.png" mode=""></image>
@@ -439,10 +439,10 @@
 				</view>
 			</view>
 			<button class="button" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套')"
-			 v-if="!pass">
+			 v-if="!pass&&!weixin">
 				获取周边5公里详细配套
 			</button>
-			<view class="button" @tap="baoMing(detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1)" v-if="pass">
+			<view class="button" @tap="baoMing(detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1)" v-if="pass||weixin">
 				获取周边5公里详细配套
 			</view>
 		</view>
@@ -472,24 +472,24 @@
 									<text class="tel">{{item.mobile}}</text>
 								</navigator>
 								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1,item.id)"
-								 @tap="did = item.id" v-if="!pass">
+								 @tap="did = item.id" v-if="!pass&&!weixin">
 									<view class="no_zan" v-if="item.my_like == 0">
 										<image src="../../static/content/no_zan.png" mode=""></image>
 										赞({{item.like_num}})
 									</view>
 								</button>
-								<view class="no_zan" v-if="item.my_like == 0 && pass" @tap="getLike(item.id)">
+								<view class="no_zan" v-if="item.my_like == 0 && (pass||weixin)" @tap="getLike(item.id)">
 									<image src="../../static/content/no_zan.png" mode=""></image>
 									赞({{item.like_num}})
 								</view>
 								<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+获取周边5公里详细配套',102,'获取详细周边配套',1,item.id)"
-								 @tap="did = item.id" v-if="!pass">
+								 @tap="did = item.id" v-if="!pass&&!weixin">
 									<view class="zan" v-if="item.my_like ==1">
 										<image src="../../static/content/zan.png" mode=""></image>
 										赞({{item.like_num}})
 									</view>
 								</button>
-								<view class="zan" v-if="item.my_like ==1 && pass" @tap="getLike(item.id)">
+								<view class="zan" v-if="item.my_like ==1 && (pass||weixin)" @tap="getLike(item.id)">
 									<image src="../../static/content/zan.png" mode=""></image>
 									赞({{item.like_num}})
 								</view>
@@ -503,8 +503,8 @@
 								<navigator :url="`../diandetail/diandetail?id=${item.id}`">
 									<text class="time">{{item.time}}</text>
 								</navigator>
-								<text class="delete" @tap="deletePing(item.id)" v-if="item.mine == true && pass">删除</text>
-								<button class="delete" open-type="getPhoneNumber" hover-class="none" v-if="item.mine==true && !pass"
+								<text class="delete" @tap="deletePing(item.id)" v-if="item.mine == true && (pass||weixin)">删除</text>
+								<button class="delete" open-type="getPhoneNumber" hover-class="none" v-if="item.mine==true && !pass&&!weixin"
 								 @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+删除',102,'删除',3,item.id)">删除</button>
 							</view>
 						</view>
@@ -520,10 +520,10 @@
 
 			</view>
 			<button class="dian_btn" hover-class="none" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'跳点评',12,'跳点评',4,detail.id)"
-			 v-if="!pass">
+			 v-if="!pass&&!weixin">
 				我要点评
 			</button>
-			<view class="dian_btn" @tap="goDianPing(detail.id)" v-if="pass">
+			<view class="dian_btn" @tap="goDianPing(detail.id)" v-if="pass||weixin">
 				我要点评
 			</view>
 		</view>
@@ -564,10 +564,10 @@
 				</template>
 
 				<button class="ti_btn" hover-class="none" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'跳提问',13,'跳提问',5,)"
-				 v-if="!pass">
+				 v-if="!pass&&!weixin">
 					我要提问
 				</button>
-				<view class="ti_btn" @tap="quTiwen(detail.id)" v-if="pass">
+				<view class="ti_btn" @tap="quTiwen(detail.id)" v-if="pass||weixin">
 					我要提问
 				</view>
 			</view>
@@ -681,7 +681,7 @@
 				num2: 3,
 				table_show: true,
 				table_show2: true,
-
+				weixin: false,
 
 				cWidth: '',
 				cHeight: '',
@@ -781,6 +781,9 @@
 			};
 		},
 		onLoad(option) {
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 			_self = this;
 			this.cWidth = uni.upx2px(750);
 			this.cHeight = uni.upx2px(500);
@@ -1526,7 +1529,7 @@
 
 					})
 				} else {
-					let url = "/pages/content/content?id=" + this.detail.id;
+					let url = "/pageA/content/content?id=" + this.detail.id;
 					this.$refs.msg.show();
 					this.msg = "请先登录"
 					uni.setStorageSync("backurl", url)
@@ -1594,6 +1597,9 @@
 			},
 			baoMing(pid, msg, point, title, n) {
 				this.isok = n
+				// #ifdef  MP-WEIXIN
+				this.isok = 0
+				// #endif
 				console.log(pid, msg, point);
 				this.pid_d = pid;
 				this.position_n = point,
@@ -1687,28 +1693,29 @@
 			},
 			goDetail() {
 				let id = this.detail.id;
+				console.log(id)
 				uni.navigateTo({
-					url: "../prodetail/prodetail?id=" + id
+					url: "/pages/prodetail/prodetail?id=" + id
 				})
 			},
 			moreHuxing(id) {
 				uni.navigateTo({
-					url: "../prohuxing/prohuxing?id=" + id
+					url: "/pages/prohuxing/prohuxing?id=" + id
 				})
 			},
 			allDong(id) {
 				uni.navigateTo({
-					url: "../loudong/loudong?id=" + id
+					url: "/pages/loudong/loudong?id=" + id
 				})
 			},
 			allDian(id) {
 				uni.navigateTo({
-					url: "../loudian/loudian?id=" + id
+					url: "/pages/loudian/loudian?id=" + id
 				})
 			},
 			louwen(id) {
 				uni.navigateTo({
-					url: "../allwenda/allwenda?id=" + id
+					url: "/pages/allwenda/allwenda?id=" + id
 				})
 			},
 			goweb() {

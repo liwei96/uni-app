@@ -34,12 +34,12 @@
 					<view class="time">
 						{{item.time}}
 					</view>
-					<button open-type="getPhoneNumber" @tap="bid = item.id" @getphonenumber="getPhoneNumber" v-if="!pass">
+					<button open-type="getPhoneNumber" @tap="bid = item.bid" @getphonenumber="getPhoneNumber" v-if="!pass&&!weixin">
 						<view class="btn">
 							订阅此楼盘动态
 						</view>
 					</button>
-					<view class="btn" v-if='pass' @tap="show(item.id,'动态页+订阅楼盘动态',1)">
+					<view class="btn" v-if='pass||weixin' @tap="show(item.bid,'动态页+订阅楼盘动态',1)">
 						订阅此楼盘动态
 					</view>
 				</view>
@@ -71,6 +71,9 @@
 			this.city = options.city || uni.getStorageSync('city');
 			uni.setStorageSync('city', options.city)
 			this.pass = uni.getStorageSync('pass')
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 		},
 		data() {
 			return {
@@ -85,6 +88,7 @@
 				isok: 0,
 				bid: 0,
 				pass: false,
+				weixin: false
 			}
 		},
 		onReachBottom() {

@@ -4,7 +4,7 @@
 			 <view class="status_bar">
 			          <!-- 这里是状态栏 -->
 			  </view>
-			<navigator :url="`../content/content?id=${project_id}`" class="nav_top" open-type="navigate">
+			<navigator :url="`/pageA/content/content?id=${project_id}`" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back1.png" mode=""></image>
 				<text>楼盘相册</text>
 			</navigator>
@@ -355,7 +355,8 @@
 	 }
 	
 	.bottom_fixed{
-		background: #000;
+		// background: rgba(0,0,0,0);
+		background-color: #000000!important;
 	}
 	
 }

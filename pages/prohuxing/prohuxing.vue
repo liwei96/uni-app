@@ -3,7 +3,7 @@
 		<view class="toptitle">
 			<view class="status_bar">
 			</view>
-			<navigator :url="`../content/content?id=${project_id}`" class="nav_top" open-type="navigate">
+			<navigator :url="`/pageA/content/content?id=${project_id}`" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>主力户型</text>
 			</navigator>

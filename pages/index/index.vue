@@ -27,7 +27,7 @@
 				</navigator>
 			</view>
 			<view class="nav-li">
-				<navigator url="../special/special" open-type="navigate">
+				<navigator url="/pageA/special/special" open-type="navigate">
 					<image src="../../static/index/index-luck.png" mode=""></image>
 					<text>特价房</text>
 					<!-- <text class="youhui">优惠</text> -->
@@ -115,7 +115,7 @@
 						<image :src="rigid_demand[1].img" mode=""></image>
 					</view>
 					<view class="bombox">
-						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
+						<text class="feature-msg">刚需必备，结婚自住的理想房源</text>
 					</view>
 				</view>
 				<view class="scroll-item" @tap="ganglou(5,'投资')">
@@ -125,19 +125,29 @@
 						<image :src="investment[1].img" mode=""></image>
 					</view>
 					<view class="bombox">
-						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
+						<text class="feature-msg">低投入高回报，一份投入一份回报</text>
 					</view>
 				</view>
 				<view class="scroll-item" @tap="ganglou(2,'改善')">
 					<text class="feature-txt">改善住宅</text>
 					<view class="feature-imgbox">
-
 						<image :src="improvement[0].img" mode=""></image>
 
 						<image :src="improvement[1].img" mode=""></image>
 					</view>
 					<view class="bombox">
-						<text class="feature-msg">经济适宜便利，生活范围 内唯一好房</text>
+						<text class="feature-msg">品质楼盘提高生活质量，交通便利</text>
+					</view>
+				</view>
+				<view class="scroll-item" @tap="ganglou(8,'现房')">
+					<text class="feature-txt">现房住宅</text>
+					<view class="feature-imgbox">
+						<image :src="completed_houses[0].img" mode=""></image>
+				
+						<image :src="completed_houses[1].img" mode=""></image>
+					</view>
+					<view class="bombox">
+						<text class="feature-msg">即买即住，购房后不需要在等待</text>
 					</view>
 				</view>
 			</scroll-view>
@@ -155,7 +165,7 @@
 						成交榜
 					</text>
 				</view>
-				<view class="more" @tap="gotop">
+				<view class="more">
 					<navigator url="/pages/top/top" open-type="navigate" class="my_nav">
 						<text>更多楼盘</text>
 						<image src="../../static/content/right.png" mode=""></image>
@@ -166,7 +176,7 @@
 		<view class="toplist-swiper">
 			<scroll-view class="scroll-view" scroll-x="true">
 				<view class="scroll-item" v-for="(item,index) in common" :key="item.id">
-					<navigator :url="`../content/content?id=${item.id}`">
+					<navigator :url="`/pageA/content/content?id=${item.id}`">
 						<view class="top">
 							<image :src="item.img" mode=""></image>
 							<text>TOP{{index+1}}</text>
@@ -237,7 +247,7 @@
 			<text class="tit">为你推荐</text>
 			<view class="recommend-box">
 				<view class="item" v-for="item in recommends" :key="item.id">
-					<navigator :url="`../content/content?id=${item.id}`" class="nav_to">
+					<navigator :url="`/pageA/content/content?id=${item.id}`" class="nav_to">
 
 						<view class="left">
 							<image :src="item.img" mode=""></image>
@@ -322,7 +332,7 @@
 						this.investment = res.data.data.investment;
 						this.improvement = res.data.data.improvement;
 						this.hot_searches = res.data.data.hot_searches;
-
+						this.completed_houses = res.data.data.completed_houses;
 						this.common = this.hot_searches;
 						this.popularity = res.data.data.popularity;
 						this.deals = res.data.data.deals;

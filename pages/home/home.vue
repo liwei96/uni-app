@@ -6,12 +6,13 @@
 		<view class="top-nav">
 			<view class="login">
 				<image src="../../static/home/home-peo.png" mode=""></image>
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=4" v-if="!tel"><text>登录/注册</text>
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=4" v-if="!tel&&!weixin"><text>登录/注册</text>
 				</button>
+				<text v-if="weixin&&!tel" @click="gologin">登录/注册</text>
 				<text v-if="tel">{{tel}}</text>
 			</view>
 			<view class="navs">
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=1" v-if="!pass">
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=1" v-if="!pass&&!weixin">
 					<view class="nav">
 						<text class="num">{{footnum}}</text>
 						<view>
@@ -19,13 +20,13 @@
 						</view>
 					</view>
 				</button>
-				<view class="nav" v-if="pass" @tap="gofoot">
+				<view class="nav" v-if="pass || weixin" @tap="gofoot">
 					<text class="num">{{footnum}}</text>
 					<view>
 						<text class="msg">浏览足迹</text>
 					</view>
 				</view>
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=2" v-if="!pass">
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=2" v-if="!pass&&!weixin">
 					<view class="nav">
 						<text class="num">{{collectnum}}</text>
 						<view>
@@ -33,13 +34,13 @@
 						</view>
 					</view>
 				</button>
-				<view class="nav" v-if="pass" @tap="gofork">
+				<view class="nav" v-if="pass || weixin" @tap="gofork">
 					<text class="num">{{collectnum}}</text>
 					<view>
 						<text class="msg">我的收藏</text>
 					</view>
 				</view>
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=3" v-if="!pass">
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=3" v-if="!pass&&!weixin">
 					<view class="nav">
 						<text class="num">{{cardnum}}</text>
 						<view>
@@ -47,7 +48,7 @@
 						</view>
 					</view>
 				</button>
-				<view class="nav" v-if="pass" @tap="gocards">
+				<view class="nav" v-if="pass || weixin" @tap="gocards">
 					<text class="num">{{cardnum}}</text>
 					<view>
 						<text class="msg">我的卡券</text>
@@ -162,7 +163,8 @@
 				cardnum: 0,
 				talknum: 0,
 				tel: '',
-				pass: false
+				pass: false,
+				weixin: false
 			}
 		},
 		onShow() {
@@ -173,6 +175,9 @@
 				let tel = uni.getStorageSync('phone')
 				this.tel = tel.substr(0, 3) + '****' + tel.substr(7)
 			}
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 			//#ifdef MP-BAIDU
 			swan.setPageInfo({
 				title: '允家新房-我的主页',
@@ -188,6 +193,11 @@
 			//#endif
 		},
 		methods: {
+			gologin() {
+				uni.navigateTo({
+					url:"/pages/login/login"
+				})
+			},
 			call() {
 				uni.makePhoneCall({
 					phoneNumber: '400-718-6686' //仅为示例
@@ -249,16 +259,49 @@
 				this.$refs.popup.hide()
 			},
 			gofoot() {
+				// #ifdef  MP-WEIXIN
+				let token = uni.getStorageSync('token')
+				if(!token) {
+					let url = '/pages/footprint/footprint'
+					uni.setStorageSync('backurl', url)
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
+					return
+				}
+				// #endif
 				uni.navigateTo({
 					url: '/pages/footprint/footprint'
 				})
 			},
 			gofork() {
+				// #ifdef  MP-WEIXIN
+				let token = uni.getStorageSync('token')
+				if(!token) {
+					let url = '/pages/collect/collect'
+					uni.setStorageSync('backurl', url)
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
+					return
+				}
+				// #endif
 				uni.navigateTo({
 					url: '/pages/collect/collect'
 				})
 			},
 			gocards() {
+				// #ifdef  MP-WEIXIN
+				let token = uni.getStorageSync('token')
+				if(!token) {
+					let url = '/pages/cards/cards'
+					uni.setStorageSync('backurl', url)
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
+					return
+				}
+				// #endif
 				uni.navigateTo({
 					url: '/pages/cards/cards'
 				})

@@ -12,13 +12,13 @@
 			<image src="../static/components/component-tel.png" mode=""></image>
 			<text>电话咨询</text>
 		</view>
-		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass">
+		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass&&!weixin">
 			<view class="btn btn2">
 				<image src="../static/components/component-yue.png" mode=""></image>
 				<text>预约看房</text>
 			</view>
 		</button>
-		<view class="btn btn2" v-if="pass" @tap="okput">
+		<view class="btn btn2" v-if="pass||weixin" @tap="okput">
 			<image src="../static/components/component-yue.png" mode=""></image>
 			<text>预约看房</text>
 		</view>
@@ -39,10 +39,14 @@
 			return {
 				sid: 0,
 				num: 0,
-				pass: false
+				pass: false,
+				weixin: false
 			}
 		},
 		mounted(){
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 			if(this.projectid !== 0 || this.projectid == '') {
 				this.register()
 			}

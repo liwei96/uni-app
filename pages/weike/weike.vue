@@ -78,7 +78,6 @@
 		onLoad(options) {
 			that = this
 			this.city = options.city || uni.getStorageSync('city')
-			uni.setStorageSync('city',options.city)
 			if (options.num) {
 				uni.showLoading({
 					title: '加载中'

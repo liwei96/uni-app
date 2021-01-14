@@ -54,10 +54,10 @@
 					<view class="top-num">
 						<image src="../../static/feature/feature-card.png" mode=""></image>
 						<text class="nummsg">{{num == 0 ? '热搜榜' : num == 1 ? '人气榜' : '成交榜'}}第{{key+1}}名</text>
-						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,item.id)" @tap="bid = item.id" v-if="!pass">
+						<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,item.id)" @tap="bid = item.id" v-if="!pass&&!weixin">
 						<text class="btn">查底价</text>
 						</button>
-						<text class="btn" v-if="pass" @tap="show(item.id,'榜单页+查低价',1)">查底价</text>
+						<text class="btn" v-if="pass||weixin" @tap="show(item.id,'榜单页+查低价',1)">查底价</text>
 					</view>
 				</view>
 			</view>
@@ -80,6 +80,9 @@
 			this.getlist()
 			this.city = uni.getStorageSync('cityname')
 			this.pass = uni.getStorageSync('pass')
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 		},
 		components: {
 			sign,
@@ -96,7 +99,8 @@
 				city: '杭州',
 				pass: false,
 				position: 34,
-				cityid: 1
+				cityid: 1,
+				weixin: false
 			}
 		},
 		methods: {
@@ -221,7 +225,7 @@
 			},
 			go(id) {
 				uni.redirectTo({
-					url:"/pages/content/content?id="+id
+					url:"/pageA/content/content?id="+id
 				})
 			},
 			setnum(num) {

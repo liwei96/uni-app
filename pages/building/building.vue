@@ -335,7 +335,6 @@
 			that = this
 			console.log(options)
 			this.city = options.city || uni.getStorageSync('city')
-			// uni.setStorageSync('city',options.city)
 			this.getinfo()
 			this.cityname = uni.getStorageSync('cityname')
 		},
@@ -425,7 +424,7 @@
 			},
 			go(id) {
 				uni.redirectTo({
-					url:"/pages/content/content?id="+id
+					url:"/pageA/content/content?id="+id
 				})
 			},
 			clearall() {
@@ -1357,7 +1356,7 @@
 						width: 104rpx;
 						height: 34rpx;
 						float: right;
-						background: url(../../static/special/special-box.png);
+						background: url(../../static/special-box.png);
 						background-size: 100%;
 						color: #FF6040;
 						font-size: 20rpx;

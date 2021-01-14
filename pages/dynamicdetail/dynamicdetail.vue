@@ -10,12 +10,12 @@
 			<view class="dynamic-tit">{{info.title}}</view>
 			<text class="txt">{{info.content}}</text>
 			<view class="time">{{info.time}}</view>
-			<button open-type="getPhoneNumber" @tap="type = 0" @getphonenumber="getPhoneNumber($event,98)" v-if="!pass">
+			<button open-type="getPhoneNumber" @tap="type = 0" @getphonenumber="getPhoneNumber($event,98)" v-if="!pass&&!weixin">
 				<view class="btn">
 					订阅最新动态
 				</view>
 			</button>
-			<view class="btn" v-if="pass" @tap="show(build.id,'订阅实时动态','动态详情页+订阅楼盘动态',1,98)">
+			<view class="btn" v-if="pass||weixin" @tap="show(build.id,'订阅实时动态','动态详情页+订阅楼盘动态',1,98)">
 				订阅最新动态
 			</view>
 			<view class="build" @tap="gobuild(build.id)">
@@ -53,12 +53,12 @@
 						为客户提供专业的购房建议
 					</view>
 				</view>
-				<button open-type="getPhoneNumber" @tap="type = 1" @getphonenumber="getPhoneNumber($event,87)" v-if="!pass">
+				<button open-type="getPhoneNumber" @tap="type = 1" @getphonenumber="getPhoneNumber($event,87)" v-if="!pass&&!weixin">
 					<view class="staffbtn">
 						免费咨询
 					</view>
 				</button>
-				<view class="staffbtn" v-if="pass" @tap="show(build.id,'免费咨询','动态详情页+免费咨询',1,87)">
+				<view class="staffbtn" v-if="pass||weixin" @tap="show(build.id,'免费咨询','动态详情页+免费咨询',1,87)">
 					免费咨询
 				</view>
 			</view>
@@ -114,6 +114,9 @@
 			this.id = options.id
 			that = this
 			this.getinfo()
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 		},
 		components: {
 			"bom-nav": bomnav,
@@ -136,7 +139,8 @@
 				isok: 0,
 				type: 0,
 				bid: 0,
-				pass: false
+				pass: false,
+				weixin: false
 			}
 		},
 		mounted() {
@@ -337,7 +341,7 @@
 			},
 			nav(e) {
 				console.log(e)
-				this.pid = 0
+				this.pid = this.bid
 				this.position = 103
 				this.remark = '动态详情页+预约看房'
 				this.title = e.title
@@ -600,7 +604,6 @@
 
 			.other-item {
 				display: flex;
-				height: 159.36rpx;
 				padding-bottom: 27.88rpx;
 				border-bottom: 0.99rpx solid #F2F2F2;
 				margin-bottom: 29.88rpx;

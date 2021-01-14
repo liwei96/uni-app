@@ -31,17 +31,17 @@
 			</view>
 			<view class="bot">
 				<button open-type="getPhoneNumber" class="zixun" hover-class="none" @getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+咨询详细户型',97,'咨询户型底价')"
-				 v-if="!pass">
+				 v-if="!pass&&!weixin">
 					咨询详细户型
 				</button>
-				<view class="zixun" @tap="baoMing(one.bid,'楼盘户型详情页+咨询详细户型',97,'咨询户型底价',1)" v-if="pass">
+				<view class="zixun" @tap="baoMing(one.bid,'楼盘户型详情页+咨询详细户型',97,'咨询户型底价',1)" v-if="pass||weixin">
 					咨询详细户型
 				</view>
 				<button open-type="getPhoneNumber" hover-class="none" class="dijia" @getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+咨询楼盘底价',105,'咨询楼盘底价')"
-				 v-if="!pass">
+				 v-if="!pass&&!weixin">
 					咨询楼盘底价
 				</button>
-				<view class="dijia" @tap="baoMing(one.bid,'楼盘户型详情页+咨询楼盘底价',105,'咨询楼盘底价',1)" v-if="pass">
+				<view class="dijia" @tap="baoMing(one.bid,'楼盘户型详情页+咨询楼盘底价',105,'咨询楼盘底价',1)" v-if="pass||weixin">
 					咨询楼盘底价
 				</view>
 			</view>
@@ -77,10 +77,10 @@
 				</view>
 				<view class="bo_tel">
 					<button open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+咨询服务',104,'咨询服务')"
-					 class="bo_zi" v-if="!pass">
+					 class="bo_zi" v-if="!pass&&!weixin">
 						<image src="../../static/content/zixun.png" mode=""></image>
 					</button>
-					<image src="../../static/content/zixun.png" mode="" v-if="pass" class="bo_zi" @tap="baoMing(one.bid,'楼盘户型详情页+咨询服务',104,'咨询服务',1)"></image>
+					<image src="../../static/content/zixun.png" mode="" v-if="pass||weixin" class="bo_zi" @tap="baoMing(one.bid,'楼盘户型详情页+咨询服务',104,'咨询服务',1)"></image>
 					<image src="../../static/content/tel.png" mode="" @tap="boTel(telphone)"></image>
 				</view>
 			</view>
@@ -111,10 +111,10 @@
 				</text>
 				<view class="right">
 					<button open-type="getPhoneNumber" class="ling_btn" hover-class="none" @getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+领取优惠',94,'领取优惠')"
-					 v-if='!pass'>
+					 v-if='!pass&&!weixin'>
 						领取优惠
 					</button>
-					<view class="ling_btn" v-if="pass" @tap="baoMing(one.bid,'楼盘户型详情页+领取优惠',94,'领取优惠',1)">
+					<view class="ling_btn" v-if="pass||weixin" @tap="baoMing(one.bid,'楼盘户型详情页+领取优惠',94,'领取优惠',1)">
 						领取优惠
 					</view>
 					<text>{{num.receive_num}}人已领取</text>
@@ -129,10 +129,10 @@
 				</text>
 				<view class="right">
 					<button class="ling_btn" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,one.bid,'楼盘户型详情页+免费领取',95,'免费领取')"
-					 v-if="!pass">
+					 v-if="!pass&&!weixin">
 						免费领取
 					</button>
-					<view class="ling_btn" v-if="pass" @tap="baoMing(one.bid,'楼盘户型详情页+免费领取',95,'免费领取',1)">
+					<view class="ling_btn" v-if="pass||weixin" @tap="baoMing(one.bid,'楼盘户型详情页+免费领取',95,'免费领取',1)">
 						免费领取
 					</view>
 					<text>{{num.remain_num}}人已领取</text>
@@ -230,12 +230,16 @@
 				telphone: '',
 				isok: 0,
 				shengnum: "123",
-				pass: false
+				pass: false,
+				weixin: false
 			};
 		},
 		onLoad(option) {
 			this.getdata(option.id);
 			this.pass = uni.getStorageSync('pass')
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 		},
 		methods: {
 			setpop() {
@@ -385,6 +389,9 @@
 			},
 			baoMing(pid, remark, point, title, n) {
 				this.isok = n;
+				// #ifdef  MP-WEIXIN
+				this.isok = 0
+				// #endif
 				this.title_e = title;
 				this.pid_d = pid;
 				this.remark_k = remark;

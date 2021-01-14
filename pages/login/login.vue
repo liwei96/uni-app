@@ -193,6 +193,7 @@
 							uni.setStorageSync('token',res.data.token)
 							uni.setStorageSync('pass',true)
 							if(basurl){
+								uni.removeStorageSync('backurl')
 								if(basurl == '/pages/home/home') {
 									uni.navigateTo({
 										url:basurl
@@ -203,6 +204,10 @@
 									})
 								}
 								
+							} else {
+								uni.navigateTo({
+									url:'/pages/home/home'
+								})
 							}
 						}
 					}
@@ -274,6 +279,7 @@
 			   line-height: 53rpx;
 			   padding-left: 5rpx;
 			   padding-right: 5rpx;
+			   margin-left: auto;
 		   }
 		}
 		.yan{

@@ -73,7 +73,8 @@
 				timetxt: '',
 				istime: false,
 				text: '',
-				ok: true
+				ok: true,
+				weixin: false
 			}
 		},
 		components: {
@@ -255,12 +256,15 @@
 			console.log(type)
 		},
 		mounted() {
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 			if(this.isok == 1) {
 				this.ok = true
 			}else {
 				this.ok = false
 			}
-			if(this.isok == 1) {
+			if(this.isok == 1 || this.weixin) {
 				this.tel = uni.getStorageSync('phone')
 			}else {
 				this.tel = ''

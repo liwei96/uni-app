@@ -18,9 +18,9 @@
 		{
 			"path": "pages/top/top"
 		},
-		{
-			"path": "pages/special/special"
-		},
+		// {
+		// 	"path": "pages/special/special"
+		// },
 		{
 			"path": "pages/dynamic/dynamic"
 		},
@@ -176,13 +176,14 @@
 				"enablePullDownRefresh": false
 			}
 
-		}, {
-			"path": "pages/content/content",
-			"style": {
-				"enablePullDownRefresh": false
-			}
-
-		}, {
+		},
+		// {
+		// 	"path": "pages/content/content",
+		// 	"style": {
+		// 		"enablePullDownRefresh": false
+		// 	}
+		// },
+		{
 			"path": "pages/prodetail/prodetail",
 			"style": {
 				"navigationBarTitleText": "",
@@ -195,7 +196,6 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-
 		}, {
 			"path": "pages/piclist/piclist",
 			"style": {
@@ -346,9 +346,17 @@
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
-            
         }
     ],
+	"subPackages": [{
+	    "root": "pageA",
+	    "pages": [{
+	        "path": "content/content"
+	    },{
+	        "path": "special/special"
+	    }
+		]
+	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

@@ -3,7 +3,7 @@
 		<view class="toptitle">
 			<view class="status_bar">
 			</view>
-			<navigator :url="`../content/content?id=${project_id}`" class="nav_top" open-type="navigate">
+			<navigator :url="`/pageA/content/content?id=${project_id}`" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>楼盘点评</text>
 			</navigator>
@@ -30,34 +30,34 @@
 							 @tap="did = item.id">删除</button>
 						</view>
 						<view class="zan">
-							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id" v-if="!pass">
+							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id" v-if="!pass&&!weixin">
 								<view class="zan_box_no" v-if="item.my_like==0">
 									<image src="../../static/content/no_zan.png" mode=""></image>
 									{{item.like_num}}
 								</view>
 							</button>
-							<view class="zan_box_no" v-if="item.my_like==0 && pass" @tap="getLike(item.id)">
+							<view class="zan_box_no" v-if="item.my_like==0 && (pass||weixin)" @tap="getLike(item.id)">
 								<image src="../../static/content/no_zan.png" mode=""></image>
 								{{item.like_num}}
 							</view>
 
-							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id" v-if="!pass">
+							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,2)" @tap="did = item.id" v-if="!pass&&!weixin">
 								<view class="zan_box_zan" v-if="item.my_like==1">
 									<image src="../../static/content/zan.png" mode=""></image>
 									{{item.like_num}}
 								</view>
 							</button>
-							<view class="zan_box_zan" v-if="item.my_like==1 && pass" @tap="getLike(item.id)">
+							<view class="zan_box_zan" v-if="item.my_like==1 && (pass||weixin)" @tap="getLike(item.id)">
 								<image src="../../static/content/zan.png" mode=""></image>
 								{{item.like_num}}
 							</view>
-							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,3)" @tap="did = item.id" v-if="!pass">
+							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,3)" @tap="did = item.id" v-if="!pass&&!weixin">
 								<view class="dianping">
 									<image src="../../static/liu.png" mode=""></image>
 									{{item.children.length}}
 								</view>
 							</button>
-							<view class="dianping" @tap="goHuifu(item.id)" v-if="pass">
+							<view class="dianping" @tap="goHuifu(item.id)" v-if="pass||weixin">
 								<image src="../../static/liu.png" mode=""></image>
 								{{item.children.length}}
 							</view>
@@ -73,12 +73,12 @@
 
 		</view>
 		<!-- 传入项目id 先判断是否登录-->
-		<button open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,4)" v-if="!pass">
+		<button open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,4)" v-if="!pass&&!weixin">
 			<view class="white_ping">
 				<image src="../../static/other/white.png" mode=""></image>
 			</view>
 		</button>
-		<view class="white_ping" v-if="pass" @tap="godian">
+		<view class="white_ping" v-if="pass||weixin" @tap="godian">
 			<image src="../../static/other/white.png" mode=""></image>
 		</view>
 
@@ -103,7 +103,8 @@
 				hua: true,
 				did: 0,
 				msg: '',
-				pass: false
+				pass: false,
+				weixin: false
 			};
 		},
 		components: {
@@ -116,6 +117,9 @@
 			let page = this.page;
 			this.getdata(option.id, page);
 			this.pass = uni.getStorageSync('pass')
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 		},
 		onReachBottom() {
 			let id = this.project_id;

@@ -62,8 +62,8 @@
 			 v-model="remark" />
 			</view>
 		<view class="bom">
-			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="btn" v-if="!pass">提交</button>
-			<view class="btn" v-if="pass" @tap="show1(1)">提交</view>
+			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="btn" v-if="!pass&&!weixin">提交</button>
+			<view class="btn" v-if="pass||weixin" @tap="show1(1)">提交</view>
 		</view>
 		<popup ref="popup" type="bottom" height="458" width="500">
 		    <view class="popup-content">
@@ -155,7 +155,8 @@
 				timetxt: '',
 				time: 0,
 				isok: 0,
-				position: 0
+				position: 0,
+				weixin: false
 			}
 		},
 		onShow() {
@@ -163,6 +164,9 @@
 			this.getinfo()
 			this.pass = uni.getStorageSync('pass')
 			this.tel = uni.getStorageSync('phone')
+			// #ifdef  MP-WEIXIN
+						this.weixin = true
+						// #endif
 			//#ifdef MP-BAIDU
 			swan.setPageInfo({
 				title: '允家新房-帮我找房',
@@ -518,6 +522,9 @@
 			},
 			show1(n) {
 				this.isok = n
+				// #ifdef  MP-WEIXIN
+							this.isok = 0
+							// #endif
 				this.$refs.popup1.show()
 			},
 			sliderChange(e) {

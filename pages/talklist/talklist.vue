@@ -77,7 +77,7 @@
 				// })
 				let id = uni.getStorageSync('bid')
 				uni.navigateTo({
-					url:"/pages/content/content?id="+id
+					url:"/pageA/content/content?id="+id
 				})
 			},
 			gotalk(id,bid,cid) {

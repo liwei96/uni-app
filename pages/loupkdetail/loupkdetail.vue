@@ -155,8 +155,8 @@
 			<view class="pro_sale" v-for="item in data" :key="item.id">
 				<view class="danjia_box">
 					<view class="price">约{{item.price}}元/m²</view>
-					<button class="btn" open-type="getPhoneNumber" hover-class="none" v-if="!pass" @getphonenumber="getPhoneNumber($event,item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价')">咨询底价</button>
-					<view class="btn" v-if="pass" @tap="baoMing(item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价',1)">咨询底价</view>
+					<button class="btn" open-type="getPhoneNumber" hover-class="none" v-if="!pass&&!weixin" @getphonenumber="getPhoneNumber($event,item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价')">咨询底价</button>
+					<view class="btn" v-if="pass||weixin" @tap="baoMing(item.id,'楼盘pk详情页+咨询底价',105,'咨询楼盘底价',1)">咨询底价</view>
 				</view>
 				<view class="zongjia">
 					{{item.total_price}}
@@ -246,10 +246,10 @@
 
 		</view>
 
-		<button class="button" open-type="getPhoneNumber" hover-class="none" v-if="!pass" @getphonenumber="getPhoneNumber($event,0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息')">
+		<button class="button" open-type="getPhoneNumber" hover-class="none" v-if="!pass&&!weixin" @getphonenumber="getPhoneNumber($event,0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息')">
 			咨询详细楼盘信息
 		</button>
-		<view class="button" v-if="pass" @tap="baoMing(0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息',1)">
+		<view class="button" v-if="pass||weixin" @tap="baoMing(0,'楼盘pk详情页+咨询详细楼盘信息',90,'咨询详细楼盘信息',1)">
 			咨询详细楼盘信息
 		</view>
 		<twosee :title="title" :project="recommends"></twosee>
@@ -292,13 +292,17 @@
 
 				tel: '4009669995',
 				isok: 0,
-				pass: false
+				pass: false,
+				weixin: false
 			};
 		},
 		onLoad(option) {
 			console.log(option);
 			this.getdata(option.id);
 			this.pass = uni.getStorageSync('pass')
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 		},
 		onPageScroll(e) {
 			if (e.scrollTop >= 50) {
@@ -442,6 +446,9 @@
 			},
 			baoMing(pid, msg, point, title, n) {
 				this.isok = n;
+				// #ifdef  MP-WEIXIN
+				this.isok = 0
+				// #endif
 				this.pid_d = pid;
 				this.position_n = point,
 					this.title_e = title;
@@ -462,6 +469,7 @@
 			},
 
 			getdata(id) {
+				let city = uni.getStorageSync('city')
 				let other = uni.getStorageSync('other');
 				let token = uni.getStorageSync('token');
 				uni.request({
@@ -471,6 +479,7 @@
 						ids: id,
 						other: other,
 						token: token,
+						city: city
 					},
 					success: (res) => {
 						if (res.data.code == 200) {
@@ -748,7 +757,7 @@
 			position: fixed;
 			top: 120rpx;
 			background: #fff;
-			z-index: 15000;
+			z-index: 150;
 
 			.left_tit {
 				width: 180rpx;

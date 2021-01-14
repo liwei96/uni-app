@@ -5,7 +5,7 @@
 		</view>
 		<view class="pro_list">
 			<view class="peo_one" v-for="item in project" :key="item.id">
-				<navigator :url="`../content/content?id=${item.id}`">
+				<navigator :url="`/pageA/content/content?id=${item.id}`">
 					<image :src="item.img" mode=""></image>
 					<view class="right_pro">
 						<view class="pro_name"><text class="name">{{item.name}}</text><text class="status" v-if="item.status">{{item.status}}</text></view>

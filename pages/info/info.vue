@@ -53,12 +53,12 @@
 					</view>
 				</view>
 				<view class="bom">
-					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,build.id,'文章详情页+在线问')" v-if="!pass">
+					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,build.id,'文章详情页+在线问')" v-if="!pass&&!weixin">
 						<view class="btn">
 							在线问
 						</view>
 					</button>
-					<view class="btn" @tap="show(build.id,'文章详情页+在线问',1)" v-if="pass">
+					<view class="btn" @tap="show(build.id,'文章详情页+在线问',1)" v-if="pass||weixin">
 						在线问
 					</view>
 					<view class="tel" @tap="call">
@@ -71,7 +71,7 @@
 				<text>楼盘导购</text>
 			</view>
 			<view class="agree">
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass">
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass&&!weixin">
 					<view :class="info.my_like == 0 ? 'agree-box' : 'agree-box active'">
 						<image src="../../static/other/article-agree.png" mode=""></image>
 						<view class="agree-num">
@@ -79,7 +79,7 @@
 						</view>
 					</view>
 				</button>
-				<view :class="info.my_like == 0 ? 'agree-box' : 'agree-box active'" v-if="pass" @tap="agree">
+				<view :class="info.my_like == 0 ? 'agree-box' : 'agree-box active'" v-if="pass||weixin" @tap="agree">
 					<image src="../../static/other/article-agree.png" mode=""></image>
 					<view class="agree-num">
 						{{info.like_num}}
@@ -129,6 +129,9 @@
 			this.id = options.id
 			this.getinfo()
 			this.pass = uni.getStorageSync('pass')
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 		},
 		data() {
 			return {
@@ -141,7 +144,8 @@
 				codenum: 1,
 				pass: false,
 				position: 104,
-				isok: 0
+				isok: 0,
+				weixin: false
 			}
 		},
 		components: {
@@ -213,6 +217,9 @@
 				console.log(this.pid)
 				this.$refs.popup.show()
 				this.isok = n
+				// #ifdef  MP-WEIXIN
+				this.isok = 0
+				// #endif
 			},
 			setiscode() {
 				this.codenum = 0
@@ -233,6 +240,14 @@
 			},
 			agree() {
 				let token = uni.getStorageSync('token')
+				if(!token) {
+					let url = '/pages/info/info?id=' + this.id
+					uni.setStorageSync('backurl', url)
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
+					return
+				}
 				uni.request({
 					url: that.apiserve + "/jy/article/like",
 					method: 'POST',

@@ -13,7 +13,7 @@
 			let pro = options.bid || 0
 			let uuid = uni.getStorageSync('uuid')
 			let staffid = options.id
-			let url = `http://m.jy1980.com/chengdu/cxtalk/${uuid}/${staffid}/${pro},${city}?uuid=${uuid}`
+			let url = `https://m.jy1980.com/chengdu/cxtalk/${uuid}/${staffid}/${pro},${city}?uuid=${uuid}`
 			this.url = url
 			console.log(url)
 			//#ifdef MP-BAIDU

@@ -30,11 +30,11 @@
 				</view>
 			</view>
 			<!-- 没回复-->
-			<button class="huifu_btn" v-if="data.answer=='' && !pass" open-type="getPhoneNumber" hover-class="none"
+			<button class="huifu_btn" v-if="data.answer=='' && !pass&&!weixin" open-type="getPhoneNumber" hover-class="none"
 			 @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+免费咨询',104,'免费咨询',2,data.id)">
 				我来回答
 			</button>
-			<view class="huifu_btn" v-if="pass" @tap="gowenda(data.id)">
+			<view class="huifu_btn" v-if="pass||weixin" @tap="gowenda(data.id)">
 				我来回答
 			</view>
 			<!-- 免费咨询 -->
@@ -52,10 +52,10 @@
 							</view>
 						</view>
 					</view>
-					<button class="right_btn" v-if="!pass" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+免费咨询',104,'免费咨询')">
+					<button class="right_btn" v-if="!pass&&!weixin" open-type="getPhoneNumber" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+免费咨询',104,'免费咨询')">
 						免费咨询
 					</button>
-					<view class="right_btn" v-if="pass" @tap="baoMing(data.bid,'项目问答详情页+免费咨询',104,'免费咨询',1)">
+					<view class="right_btn" v-if="pass||weixin" @tap="baoMing(data.bid,'项目问答详情页+免费咨询',104,'免费咨询',1)">
 						免费咨询
 					</view>
 				</view>
@@ -81,24 +81,24 @@
 					<view class="time">
 						{{data.time}}
 					</view>
-					<button open-type="getPhoneNumber" v-if="data.my_like==1 && !pass" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+点赞',104,'点赞',1,data.id)">
+					<button open-type="getPhoneNumber" v-if="data.my_like==1 && !pass&&!weixin" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+点赞',104,'点赞',1,data.id)">
 						<view class="zan">
 							<image src="../../static/content/zan.png" mode=""></image>
 							有用({{data.like_num}})
 						</view>
 					</button>
-					<view class="zan" v-if="data.my_like==1 && pass" @tap="wenDian(data.id)">
+					<view class="zan" v-if="data.my_like==1 && (pass||weixin)" @tap="wenDian(data.id)">
 						<image src="../../static/content/zan.png" mode=""></image>
 						有用({{data.like_num}})
 					</view>
 
-					<button open-type="getPhoneNumber" v-if="data.my_like==0 &&!pass" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+点赞',104,'点赞',1,data.id)">
+					<button open-type="getPhoneNumber" v-if="data.my_like==0 &&!pass&&!weixin" hover-class="none" @getphonenumber="getPhoneNumber($event,data.bid,'项目问答详情页+点赞',104,'点赞',1,data.id)">
 						<view class="nozan">
 							<image src="../../static/content/no_zan.png" mode=""></image>
 							有用({{data.like_num}})
 						</view>
 					</button>
-					<view class="nozan" v-if="data.my_like==0 &&pass" @tap="wenDian(data.id)">
+					<view class="nozan" v-if="data.my_like==0 &&(pass||weixin)" @tap="wenDian(data.id)">
 						<image src="../../static/content/no_zan.png" mode=""></image>
 						有用({{data.like_num}})
 					</view>
@@ -158,6 +158,7 @@
 				isok: 0,
 				msg: '',
 				pass: false,
+				weixin: false
 			};
 		},
 		components: {
@@ -169,6 +170,9 @@
 			mytoast
 		},
 		onLoad(option) {
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 			console.log(option);
 			this.getdata(option.id)
 			this.pass = uni.getStorageSync('pass')
@@ -530,6 +534,9 @@
 			},
 			baoMing(pid, remark, point, title, n) {
 				this.isok = n;
+				// #ifdef  MP-WEIXIN
+				this.isok = 0
+				// #endif
 				this.$refs.popup.show();
 				this.title_e = title;
 				this.pid_d = pid;

@@ -12,13 +12,13 @@
 			<image src="../../static/content/tel_bot.png" mode=""></image>
 			电话咨询
 		</view>
-		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass">
+		<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-if="!pass&&!weixin">
 			<view class="yuyue_box">
 				<image src="../../static/content/yuyue.png" mode=""></image>
 				预约看房
 			</view>
 		</button>
-		<view class="yuyue_box" v-if="pass" @tap="baoMing(remark, point, title, pid,1)">
+		<view class="yuyue_box" v-if="pass||weixin" @tap="baoMing(remark, point, title, pid,1)">
 			<image src="../../static/content/yuyue.png" mode=""></image>
 			预约看房
 		</view>
@@ -67,11 +67,15 @@
 				isok: 0,
 				sid: 0,
 				num: 0,
-				pass: false
+				pass: false,
+				weixin: false
 			};
 		},
 		mounted() {
 			let that = this
+			// #ifdef  MP-WEIXIN
+			this.weixin = true
+			// #endif
 			this.pass = uni.getStorageSync('pass')
 			// this.num = uni.getStorageSync('total')
 			uni.onSocketMessage(function(res) {
@@ -159,6 +163,9 @@
 			},
 			baoMing(remark, point, title, pid, n) {
 				this.isok = n
+				// #ifdef  MP-WEIXIN
+				this.isok = 0
+				// #endif
 				console.log(remark, point, title, pid, n);
 				this.pid_d = pid;
 				this.position_n = point;

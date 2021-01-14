@@ -140,7 +140,7 @@
 			setcity(id, name) {
 				uni.setStorageSync('city', id)
 				uni.setStorageSync('cityname', name)
-				uni.navigateTo({
+				uni.reLaunch({
 					url: "/pages/index/index?city="+id
 				})
 			},

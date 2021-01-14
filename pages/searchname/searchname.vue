@@ -5,7 +5,7 @@
 			          <!-- 这里是状态栏 -->
 			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
-			<text>选择城市</text>
+			<text>搜索楼盘</text>
 		</view>
 		<view class="box">
 			<view class="top-input">
@@ -55,8 +55,7 @@
 	export default {
 		onLoad(options) {
 			that = this
-			this.city = options.city || uni.getStorageSync('city');
-			uni.setStorageSync('city',options.city)
+			this.city = uni.getStorageSync('city');
 			this.getinfo()
 		},
 		data() {
@@ -114,7 +113,7 @@
 					return
 				}
 				uni.navigateTo({
-					url: '/pages/content/content?id=' + id
+					url: '/pageA/content/content?id=' + id
 				})
 			},
 			sou() {
@@ -189,6 +188,7 @@
 
 			input {
 				font-size: 28rpx;
+				width: 86%;
 			}
 		}
 

@@ -4,7 +4,7 @@
 			 <view class="status_bar">
 			          <!-- 这里是状态栏 -->
 			  </view>
-			<navigator :url="`../content/content?id=${project_id}`" class="nav_top" open-type="navigate">
+			<navigator :url="`/pageA/content/content?id=${project_id}`" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back1.png" mode=""></image>
 				<text>楼盘问问</text>
 			</navigator>
@@ -43,10 +43,10 @@
 						</view>
 						<view class="da_box" v-else>
 							<button class="da" hover-class="none" open-type="getPhoneNumber" 
-							@getphonenumber ="getPhoneNumber($event,item.id,1)" v-if="!pass">
+							@getphonenumber ="getPhoneNumber($event,item.id,1)" v-if="!pass&&!weixin">
 								我来回答
 							</button>
-							<button class="da" @tap="goTiwen(item.id)" v-if="pass">我来回答</button>
+							<button class="da" @tap="goTiwen(item.id)" v-if="pass||weixin">我来回答</button>
 						</view>
 						
 					
@@ -60,7 +60,7 @@
 					</view>
 					<view class="da">
 						<view class="top">
-							<image src="../../static/content/ping_img.png" mode=""></image>
+							<image src="../../../static/content/ping_img.png" mode=""></image>
 							<view class="rig">
 								<view class="name_box">
 									167****4567
@@ -77,12 +77,12 @@
 <!-- 			</view> -->
 			<!-- 写问答 -->
 			<button open-type="getPhoneNumber" hover-class="none" 
-			@getphonenumber ="getPhoneNumber($event,project_id,2)" v-if="!pass">
+			@getphonenumber ="getPhoneNumber($event,project_id,2)" v-if="!pass&&!weixin">
 				<view class="white_wen" >
 					<image src="../../static/other/loudian.png" mode=""></image>
 				</view>
 			</button>
-			<view class="white_wen" v-if="pass" @tap="goQuestion(project_id)">
+			<view class="white_wen" v-if="pass||weixin" @tap="goQuestion(project_id)">
 				<image src="../../static/other/loudian.png" mode=""></image>
 			</view>
 			
@@ -103,7 +103,8 @@ export default {
 			telphone:'',
 			page:1,
 			hua:true,
-			pass:false
+			pass:false,
+			weixin: false
 		};
 	},
 	components:{
@@ -121,6 +122,9 @@ export default {
 	  this.project_id = option.id;
 	  console.log(this.project_id)
 	  this.pass = uni.getStorageSync('pass')
+	  // #ifdef  MP-WEIXIN
+	  this.weixin = true
+	  // #endif
 	},
 	onReachBottom(){
 		if(this.hua == true){
