@@ -75,8 +75,7 @@
 	export default {
 		onLoad(options) {
 			that = this
-			this.cityid = options.city || uni.getStorageSync('city');
-			uni.setStorageSync('city',options.city)
+			this.cityid =  uni.getStorageSync('city');
 			this.getlist()
 			this.city = uni.getStorageSync('cityname')
 			this.pass = uni.getStorageSync('pass')

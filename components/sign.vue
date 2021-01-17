@@ -74,7 +74,8 @@
 				istime: false,
 				text: '',
 				ok: true,
-				weixin: false
+				weixin: false,
+				interval: {}
 			}
 		},
 		components: {
@@ -147,19 +148,19 @@
 								} else {
 									that.teltxt = phone.substr(0, 3) + "****" + phone.substr(7, 11);
 									let time = 60
-									var fn = function() {
+									let fn = function() {
 										time--;
 										if (time > 0) {
 											that.istime = true
 											that.timetxt = `重新发送${time}s`
 										} else {
 											that.istime = false
-											clearInterval(interval);
+											clearInterval(that.interval);
 											that.timetxt = `获取验证码`
 										}
 									};
 									fn();
-									var interval = setInterval(fn, 1000);
+									that.interval = setInterval(fn, 1000);
 									if(that.isok == 1 && that.ok) {
 										if(!uni.getStorageSync('token')) {
 											let openid = uni.getStorageSync('openid')
@@ -184,10 +185,9 @@
 										},2000)
 									}else {
 										that.iscode = true
+										that.$emit('changetype',1)
 									}
-									
 								}
-								
 							}
 						})
 						if(that.isok == 1 && that.ok) {
@@ -256,9 +256,9 @@
 			console.log(type)
 		},
 		mounted() {
-			// #ifdef  MP-WEIXIN
-			this.weixin = true
-			// #endif
+			if(this.type ==0){
+				this.iscode = false
+			}
 			if(this.isok == 1) {
 				this.ok = true
 			}else {
@@ -318,6 +318,7 @@
 		},
 		watch: {
 			type(val) {
+				console.log(val)
 				if (val == 0) {
 					this.iscode = false
 				}
@@ -370,6 +371,9 @@
 					this.text = "好楼盘户型是关键，咨询户型底价，安安心心买房";
 				}
 			}
+		},
+		beforeDestroy() {
+			clearInterval(this.interval);
 		}
 	}
 </script>
@@ -407,6 +411,7 @@
 		input {
 			margin-left: 32rpx;
 			font-size: 32rpx;
+			width: 92%;
 		}
 		.setnull {
 			position: absolute;

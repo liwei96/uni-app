@@ -136,7 +136,7 @@
 			</view>
 		</view>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="'领取优惠'" :pid="pid" :remark="remark" :position="position" :isok="isok"></sign>
+			<sign :type="codenum" @closethis="setpop" :title="'领取优惠'" :pid="pid" :remark="remark" :position="position" :isok="isok" @changetype="changenum"></sign>
 		</wyb-popup>
 		<wyb-popup ref="rules" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<view class="rules">
@@ -226,6 +226,9 @@
 			wybPopup
 		},
 		methods: {
+			changenum(e) {
+				this.codenum = e
+			},
 			showRules() {
 				this.$refs.rules.show();
 			},
@@ -443,7 +446,9 @@
 				})
 			},
 			setpop(e) {
+				console.log('88888')
 				this.$refs.popup.hide()
+				this.codenum = 0
 			},
 			show(id, txt,n) {
 				this.isok = n
@@ -454,6 +459,7 @@
 				this.$refs.popup.show()
 			},
 			setiscode() {
+				console.log(7897897)
 				this.codenum = 0
 			},
 			back() {

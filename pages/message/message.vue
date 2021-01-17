@@ -112,6 +112,9 @@
 			let that = this
 			
 			uni.onSocketMessage(function(res) {
+				if(res.data =='PONG') {
+					return
+				}
 				let data = JSON.parse(res.data)
 				console.log(data)
 				if (data.action == 105) {
@@ -169,7 +172,7 @@
 				}
 			});
 		},
-		onHide() {
+		beforeDestroy() {
 			clearInterval(this.timer)
 		}
 	}

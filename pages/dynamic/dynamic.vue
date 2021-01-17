@@ -68,8 +68,7 @@
 			this.getdata()
 		},
 		onLoad(options) {
-			this.city = options.city || uni.getStorageSync('city');
-			uni.setStorageSync('city', options.city)
+			this.city =  uni.getStorageSync('city');
 			this.pass = uni.getStorageSync('pass')
 			// #ifdef  MP-WEIXIN
 			this.weixin = true

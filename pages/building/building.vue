@@ -334,7 +334,7 @@
 		onLoad(options) {
 			that = this
 			console.log(options)
-			this.city = options.city || uni.getStorageSync('city')
+			this.city = uni.getStorageSync('city')
 			this.getinfo()
 			this.cityname = uni.getStorageSync('cityname')
 		},

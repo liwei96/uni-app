@@ -169,6 +169,10 @@
 		},
 		onShow() {
 			that = this
+			this.getlist()
+			this.timer = setInterval(()=>{
+				that.getlist()
+			},2000)
 			this.pass = uni.getStorageSync('pass')
 			this.getinfo()
 			if (uni.getStorageSync('phone')) {
@@ -193,6 +197,24 @@
 			//#endif
 		},
 		methods: {
+			getlist() {
+				let uuid = uni.getStorageSync('uuid')
+				let pp = {
+					controller: "Staff",
+					action: "lists",
+					params: {
+						uuid: uuid
+					}
+				};
+				try{
+					uni.sendSocketMessage({
+						data: JSON.stringify(pp)
+					});
+				}catch(e){
+					alert(e)
+				}
+				
+			},
 			gologin() {
 				uni.navigateTo({
 					url:"/pages/login/login"
@@ -640,7 +662,18 @@
 			}
 		},
 		mounted() {
-
+			let that = this
+			
+			uni.onSocketMessage(function(res) {
+				let data = JSON.parse(res.data)
+				console.log(data)
+				if (data.action == 105) {
+					that.talknum = data.data.length
+				}
+			});
+		},
+		beforeDestroy() {
+			clearInterval(this.timer)
 		}
 	}
 </script>

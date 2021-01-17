@@ -25,11 +25,11 @@
 			uni.connectSocket({
 				url: 'wss://ws.edefang.net?uuid=' + uuid
 			});
-			// uni.onSocketOpen(function (res) {
-			// 	console.log('WebSocket连接已打开！');
-			//   that.checkOpenSocket()
-			// });
-			// this.openConnection()
+			uni.onSocketOpen(function (res) {
+				console.log('WebSocket连接已打开！');
+				that.checkOpenSocket()
+			});
+			
 			uni.request({
 				url: 'https://ll.edefang.net/getIp.php',
 				method: 'GET',
@@ -68,9 +68,9 @@
 			// 判断是否已连接
 			checkOpenSocket() {
 				uni.sendSocketMessage({
-					data: 'ping',
+					data: 'PING',
 					success: res => {
-						
+						that.onSocketMessage()
 					},
 					fail: err => {
 						// 未连接打开websocket连接
@@ -96,7 +96,7 @@
 					uni.setStorageSync('uuid', timestamp)
 					uuid = timestamp
 				}
-				that.SocketTask = uni.connectSocket({
+				uni.connectSocket({
 					url: 'wss://ws.edefang.net?uuid=' + uuid,
 					success(res) {
 						console.log('连接成功 connectSocket=', res);
@@ -105,23 +105,17 @@
 						console.log('连接失败 connectSocket=', err);
 					}
 				});
-				console.log(that.SocketTask)
-				// setTimeout(()=>{
-					
-				// },3000)
-				that.SocketTask.onOpen(res=>{
-					that.SocketTask.send({
-						data: 'PING'
-					});
-					that.onSocketMessage();
-				})
+				uni.onSocketOpen(function (res) {
+					console.log('WebSocket连接已打开！');
+					that.checkOpenSocket()
+				});
 			},
 			//	打开成功监听服务器返回的消息
 			onSocketMessage() {
 				// 消息
 				this.timeout = 6000;
 				this.timeoutObj = null;
-				this.SocketTask.onMessage(res => {
+				uni.onSocketMessage(res => {
 					that.getSocketMsg(res.data); // 监听到有新服务器消息
 				});
 			},
@@ -138,7 +132,7 @@
 			// 启动心跳 start
 			start() {
 				this.timeoutObj = setInterval(function() {
-					that.SocketTask.send({
+					uni.sendSocketMessage({
 						data: 'PING',
 						success: res => {
 						},
@@ -150,6 +144,9 @@
 				}, that.timeout);
 			}
 
+		},
+		mounted(){
+			
 		}
 	}
 </script>

@@ -107,8 +107,7 @@
 		},
 		onLoad(option) {
 			that = this
-			this.cityid = option.city || uni.getStorageSync('city')
-			uni.setStorageSync('city', option.city)
+			this.cityid =  uni.getStorageSync('city')
 			this.setnum(option.num, option.txt);
 			this.city = uni.getStorageSync('cityname')
 			this.pass = uni.getStorageSync('pass')

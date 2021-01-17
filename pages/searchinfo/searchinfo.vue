@@ -72,8 +72,7 @@
 		},
 		onLoad(options) {
 			that = this
-			this.city = options.city || uni.getStorageSync('city');
-			uni.setStorageSync('city',options.city)
+			this.city =  uni.getStorageSync('city');
 			this.getinfo()
 		},
 		methods: {

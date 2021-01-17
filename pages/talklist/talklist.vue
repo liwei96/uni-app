@@ -75,6 +75,7 @@
 				// uni.navigateBack({
 				// 	data:1
 				// })
+				clearInterval(this.timer)
 				let id = uni.getStorageSync('bid')
 				uni.navigateTo({
 					url:"/pageA/content/content?id="+id
@@ -113,8 +114,10 @@
 			let that = this
 			
 			uni.onSocketMessage(function(res) {
+				if(res.data =='PONG') {
+					return
+				}
 				let data = JSON.parse(res.data)
-				console.log(data)
 				if (data.action == 105) {
 					let date = new Date();
 					for (let val of data.data) {
@@ -170,10 +173,7 @@
 				}
 			});
 		},
-		onHide() {
-			clearInterval(this.timer)
-		},
-		onUnload() {
+		beforeDestroy() {
 			clearInterval(this.timer)
 		}
 	}
