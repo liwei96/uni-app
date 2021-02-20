@@ -538,6 +538,7 @@
 					font-size: 22rpx;
 					font-weight: 500;
 					color: #7D7D80;
+					border-radius: 6rpx;
 					padding: 8rpx 12rpx;
 					background: #F5F5F5;
 					margin-right: 12rpx;

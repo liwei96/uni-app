@@ -17,7 +17,7 @@
 							<view class="right_tel">
 								<text class="tel">{{item.name}}</text>
 								<view class="rate">
-									<uni-rate v-model="item.score" :margin="7" color="#E8EBED" active-color="#FF7519" :readonly="true" :size="18"></uni-rate>
+									<uni-rate v-model="item.score" :margin="7" color="#E8EBED" active-color="#FF7519" :readonly="true" :size="14"></uni-rate>
 								</view>
 							</view>
 						</view>

@@ -187,8 +187,8 @@
 							<t-td>{{ (item.number).slice(2) }}</t-td>
 							<t-td>{{ parseInt(item.area) }}m²</t-td>
 							<t-td>{{ ((item.original_total)/10000).toFixed(1) }}万</t-td>
-							<t-td>{{ ((item.total)/10000).toFixed(1) }}万</t-td>
-							<t-td>{{ item.diff}}</t-td>
+							<t-td class="te">{{ ((item.total)/10000).toFixed(1) }}万</t-td>
+							<t-td class="te">{{ item.diff}}</t-td>
 						</t-tr>
 					</t-table>
 				</view>
@@ -201,7 +201,7 @@
 				 color="#646466" :speed="50" v-if="specials.dynamic" :single="true"></uni-notice-bar>
 			</view>
 			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber($event,detail.id,'项目落地页+咨询特价房',93,'咨询特价房')"
-			 hover-class="none" v-if="!pass||!weixin">
+			 hover-class="none" v-if="!pass&&!weixin">
 				咨询特价房
 			</button>
 			<view @tap="baoMing(detail.id,'项目落地页+咨询特价房',93,'咨询特价房',1)" class="button" v-if="pass||weixin">
@@ -2463,6 +2463,9 @@
 
 					.te {
 						color: #FF6040;
+						.t-th,.t-td {
+							color: #FF6040!important;
+						}
 					}
 				}
 
@@ -2584,7 +2587,7 @@
 							height: 214rpx;
 							background: #F5F5F5;
 							border: 1rpx solid #EDEDED;
-
+							border-radius: 12rpx 12rpx 0rpx 0rpx;
 							image {
 								width: 164rpx;
 								height: 211rpx;

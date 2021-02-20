@@ -777,18 +777,20 @@
 	}
 
 	.swiper1 {
-		margin-bottom: 96rpx;
+		margin-bottom: 76rpx;
 
 		swiper {
-			height: 360rpx;
+			height: 380rpx;
 		}
-
+		swiper-item {
+			padding: 10rpx 30rpx 10rpx 10rpx;
+		}
 		.swiper-item {
 			width: 500rpx;
 			height: 360rpx;
 			border-radius: 12rpx;
-			box-shadow: 0px 5rpx 30rpx 0px rgba(0, 0, 0, 0.05);
-			margin-right: 30rpx;
+			box-shadow: 0px 5rpx 30rpx 0px rgba(0, 0, 0, 0.08);
+			
 
 			.tit {
 				color: #2A2A2A;
@@ -848,7 +850,9 @@
 		swiper {
 			height: 596rpx;
 		}
-
+		swiper-item {
+			padding-right: 30rpx;
+		}
 		.swiper-item {
 			width: 500rpx;
 			height: 596rpx;
@@ -898,13 +902,14 @@
 		swiper {
 			height: 760rpx;
 		}
-
+		swiper-item {
+			padding-right: 30rpx;
+		}
 		.swiper-item {
 			width: 500rpx;
 			height: 760rpx;
 			box-shadow: 0px 5rpx 30rpx 0px rgba(0, 0, 0, 0.05);
 			border-radius: 12rpx;
-			margin: 0 30rpx;
 
 			.swiper-tit {
 				background: linear-gradient(126deg, #FDBE90 0%, #D18D5D 100%);
