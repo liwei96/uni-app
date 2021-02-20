@@ -162,6 +162,9 @@
 			that = this
 			this.getinfo()
 			this.pass = uni.getStorageSync('pass')
+			if (this.pass) {
+				this.isok = 1
+			}
 			this.tel = uni.getStorageSync('phone')
 			// #ifdef  MP-WEIXIN
 						// this.weixin = true
@@ -358,7 +361,7 @@
 							method: "GET",
 							success: (res) => {
 								if(res.data.code == 500) {
-									that.toasttxt = '请不要重复报名';
+									that.toasttxt = res.data.message;
 									that.$refs.toast.show()
 									setTimeout(()=>{
 										that.$refs.popup1.hide()
@@ -407,21 +410,24 @@
 								
 							}
 						})
-						uni.request({
-							url: that.apiserve + '/send',
-							method: "POST",
-							data: {
-								ip: ip,
-								phone: phone,
-								source: 3
-							},
-							header: {
-								'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-							},
-							success: (res) => {
-								console.log(res)
-							}
-						})
+						console.log(that.isok)
+						if (that.isok !=1) {
+							uni.request({
+								url: that.apiserve + '/send',
+								method: "POST",
+								data: {
+									ip: ip,
+									phone: phone,
+									source: 3
+								},
+								header: {
+									'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+								},
+								success: (res) => {
+									console.log(res)
+								}
+							})
+						}
 					}
 				})
 			},
@@ -521,10 +527,6 @@
 				})
 			},
 			show1(n) {
-				this.isok = n
-				// #ifdef  MP-WEIXIN
-							this.isok = 0
-							// #endif
 				this.$refs.popup1.show()
 			},
 			sliderChange(e) {

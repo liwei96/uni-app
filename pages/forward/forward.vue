@@ -127,6 +127,9 @@
 			// this.weixin = true
 			// #endif
 			this.pass = uni.getStorageSync('pass')
+			if (this.pass) {
+				this.isok = 1
+			}
 			this.tel = uni.getStorageSync('phone')
 			let name = uni.getStorageSync('searchname')
 			if (name) {
@@ -148,7 +151,6 @@
 		},
 		methods: {
 			show(n) {
-				this.isok = n
 				// #ifdef  MP-WEIXIN
 				// this.isok = 0
 				// #endif
@@ -346,8 +348,11 @@
 							method: "GET",
 							success: (res) => {
 								if (res.data.code == 500) {
-									that.toasttxt = '请不要重复报名';
+									that.toasttxt = res.data.message;
 									that.$refs.toast.show()
+									setTimeout(()=>{
+										that.$refs.popup.hide()
+									},1500)
 								} else {
 									that.teltxt = phone.substr(0, 3) + "****" + phone.substr(7, 11);
 									that.iscode = true
@@ -393,21 +398,24 @@
 
 							}
 						})
-						uni.request({
-							url: that.apiserve + '/send',
-							method: "POST",
-							data: {
-								ip: ip,
-								phone: phone,
-								source: 3
-							},
-							header: {
-								'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-							},
-							success: (res) => {
-								console.log(res)
-							}
-						})
+						console.log(that.isok)
+						if (that.isok != 1) {
+							uni.request({
+								url: that.apiserve + '/send',
+								method: "POST",
+								data: {
+									ip: ip,
+									phone: phone,
+									source: 3
+								},
+								header: {
+									'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+								},
+								success: (res) => {
+									console.log(res)
+								}
+							})
+						}
 					}
 				})
 			},
@@ -433,8 +441,9 @@
 					success: (res) => {
 						console.log(res)
 						if (res.data.code === 500) {
-							that.toasttxt = '验证码不正确';
+							that.toasttxt = res.data.message;
 							that.$refs.toast.show()
+							this.$refs.popup.hide()
 						} else {
 							that.toasttxt = "订阅成功";
 							that.$refs.toast.show()
