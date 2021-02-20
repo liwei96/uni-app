@@ -73,9 +73,6 @@
 		},
 		mounted() {
 			let that = this
-			// #ifdef  MP-WEIXIN
-			this.weixin = true
-			// #endif
 			this.pass = uni.getStorageSync('pass')
 			// this.num = uni.getStorageSync('total')
 			uni.onSocketMessage(function(res) {
@@ -163,9 +160,6 @@
 			},
 			baoMing(remark, point, title, pid, n) {
 				this.isok = n
-				// #ifdef  MP-WEIXIN
-				this.isok = 0
-				// #endif
 				console.log(remark, point, title, pid, n);
 				this.pid_d = pid;
 				this.position_n = point;
@@ -259,19 +253,38 @@
 								},
 								success: (res) => {
 									console.log(res)
-									uni.setStorageSync('openid', res.data.openid)
-									uni.setStorageSync('session', res.data.session_key)
+									uni.setStorageSync('openid', res.data.data.openid)
+									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
 										data: {
 											data: e.detail.encryptedData,
-											iv: e.detail.iv
+											iv: e.detail.iv,
+											sessionKey: res.data.data.session_key
 										},
 										success: (res) => {
 											console.log(res)
-											let tel = res.data.mobile
+											let data = JSON.parse(res.data.message)
+											that.pass = true
+											uni.setStorageSync('pass', that.pass)
+											let tel = data.purePhoneNumber
 											uni.setStorageSync('phone', tel)
-											let openid = uni.getStorageSync('openid')
+											let token = uni.getStorageSync('token')
+											if (!token) {
+												let openid = uni.getStorageSync('openid')
+												uni.request({
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.token)
+													}
+												})
+											}
 											that.tel = tel
 											that.baoMing(that.remark, that.point, that.title, that.pid, 1)
 										}

@@ -1,14 +1,13 @@
 <template>
 	<view class="loupk">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<view class="status_bar">
-				<!-- 这里是状态栏 -->
 			</view>
 			<navigator open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>楼盘对比</text>
 			</navigator>
-		</view>
+		</view> -->
 		<view class="pro_list">
 			<view class="add_tan" @tap="goTianPro">
 				添加楼盘
@@ -359,7 +358,6 @@
 			box-sizing: border-box;
 			position: relative;
 			margin-bottom: 140rpx;
-			margin-top: 150rpx;
 
 			.add_tan {
 				width: 100%;

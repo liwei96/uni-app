@@ -1,14 +1,14 @@
 <template>
 	<view class="home">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<text>个人中心</text>
-		</view>
+		</view> -->
 		<view class="top-nav">
 			<view class="login">
 				<image src="../../static/home/home-peo.png" mode=""></image>
-				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=4" v-if="!tel&&!weixin"><text>登录/注册</text>
+				<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @tap="type=4" v-if="!tel"><text>登录/注册</text>
 				</button>
-				<text v-if="weixin&&!tel" @click="gologin">登录/注册</text>
+				<!-- <text v-if="weixin&&!tel" @click="gologin">登录/注册</text> -->
 				<text v-if="tel">{{tel}}</text>
 			</view>
 			<view class="navs">
@@ -170,9 +170,9 @@
 		onShow() {
 			that = this
 			this.getlist()
-			this.timer = setInterval(()=>{
+			this.timer = setInterval(() => {
 				that.getlist()
-			},2000)
+			}, 2000)
 			this.pass = uni.getStorageSync('pass')
 			this.getinfo()
 			if (uni.getStorageSync('phone')) {
@@ -180,7 +180,7 @@
 				this.tel = tel.substr(0, 3) + '****' + tel.substr(7)
 			}
 			// #ifdef  MP-WEIXIN
-			this.weixin = true
+			// this.weixin = true
 			// #endif
 			//#ifdef MP-BAIDU
 			swan.setPageInfo({
@@ -206,18 +206,18 @@
 						uuid: uuid
 					}
 				};
-				try{
+				try {
 					uni.sendSocketMessage({
 						data: JSON.stringify(pp)
 					});
-				}catch(e){
+				} catch (e) {
 					alert(e)
 				}
-				
+
 			},
 			gologin() {
 				uni.navigateTo({
-					url:"/pages/login/login"
+					url: "/pages/login/login"
 				})
 			},
 			call() {
@@ -283,7 +283,7 @@
 			gofoot() {
 				// #ifdef  MP-WEIXIN
 				let token = uni.getStorageSync('token')
-				if(!token) {
+				if (!token) {
 					let url = '/pages/footprint/footprint'
 					uni.setStorageSync('backurl', url)
 					uni.navigateTo({
@@ -299,7 +299,7 @@
 			gofork() {
 				// #ifdef  MP-WEIXIN
 				let token = uni.getStorageSync('token')
-				if(!token) {
+				if (!token) {
 					let url = '/pages/collect/collect'
 					uni.setStorageSync('backurl', url)
 					uni.navigateTo({
@@ -315,7 +315,7 @@
 			gocards() {
 				// #ifdef  MP-WEIXIN
 				let token = uni.getStorageSync('token')
-				if(!token) {
+				if (!token) {
 					let url = '/pages/cards/cards'
 					uni.setStorageSync('backurl', url)
 					uni.navigateTo({
@@ -587,17 +587,18 @@
 								},
 								success: (res) => {
 									console.log(res)
-									uni.setStorageSync('openid', res.data.openid)
-									uni.setStorageSync('session', res.data.session_key)
+									uni.setStorageSync('openid', res.data.data.openid)
+									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
 										data: {
 											data: e.detail.encryptedData,
-											iv: e.detail.iv
+											iv: e.detail.iv,
+											sessionKey: res.data.data.session_key
 										},
 										success: (res) => {
-											console.log(res)
-											let tel = res.data.mobile
+											let data = JSON.parse(res.data.message)
+											let tel = data.purePhoneNumber
 											uni.setStorageSync('phone', tel)
 											let openid = uni.getStorageSync('openid')
 											that.tel = tel.substr(0, 3) + '****' + tel.substr(7)
@@ -657,13 +658,36 @@
 							})
 						}
 					})
+				}else{
+					let url = ''
+					switch (that.type) {
+						case 1:
+							url = '/pages/footprint/footprint'
+							uni.setStorageSync('backurl', url)
+							break;
+						case 2:
+							url = '/pages/collect/collect'
+							uni.setStorageSync('backurl', url)
+							break;
+						case 3:
+							url = '/pages/cards/cards'
+							uni.setStorageSync('backurl', url)
+							break;
+						case 4:
+							url = '/pages/home/home'
+							uni.setStorageSync('backurl', url)
+							break;
+					}
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
 				}
 				// #endif
 			}
 		},
 		mounted() {
 			let that = this
-			
+
 			uni.onSocketMessage(function(res) {
 				let data = JSON.parse(res.data)
 				console.log(data)

@@ -1,8 +1,8 @@
 <template>
 	<view class="meaasage">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<text>我的消息</text>
-		</view>
+		</view> -->
 		<view v-if="list.length == 0">
 			<view class="content">
 				<image src="../../static/message/message-null.png" mode=""></image>
@@ -219,7 +219,6 @@
 
 	.list {
 		padding: 0 30rpx;
-		padding-top: 128rpx;
 
 		.li {
 			display: flex;

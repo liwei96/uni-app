@@ -1,14 +1,13 @@
 <template>
 	<view class="loupkdetail">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<view class="status_bar">
-				<!-- 这里是状态栏 -->
 			</view>
 			<navigator open-type="navigateBack" class="nav_top">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>楼盘对比</text>
 			</navigator>
-		</view>
+		</view> -->
 		<view class="project_two" v-show="hua_old_show">
 			<view class="left_tit">
 				<view class="tit_01">楼盘对比</view>
@@ -301,7 +300,7 @@
 			this.getdata(option.id);
 			this.pass = uni.getStorageSync('pass')
 			// #ifdef  MP-WEIXIN
-			this.weixin = true
+			// this.weixin = true
 			// #endif
 		},
 		onPageScroll(e) {
@@ -417,20 +416,37 @@
 								},
 								success: (res) => {
 									console.log(res)
-									uni.setStorageSync('openid', res.data.openid)
-									uni.setStorageSync('session', res.data.session_key)
+									uni.setStorageSync('openid', res.data.data.openid)
+									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
-											session_key: res.data.session_key
+											sessionKey: res.data.data.session_key
 										},
 										success: (res) => {
 											console.log(res)
-											let tel = res.data.mobile
+											let data = JSON.parse(res.data.message)
+											let tel = data.purePhoneNumber
 											uni.setStorageSync('phone', tel)
 											let openid = uni.getStorageSync('openid')
+											let token = uni.getStorageSync('token')
+											if (!token) {
+												let openid = uni.getStorageSync('openid')
+												uni.request({
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.token)
+													}
+												})
+											}
 											that.$refs.sign.tel = tel
 											that.baoMing(pid, remark, point, title, 1)
 										}
@@ -447,7 +463,7 @@
 			baoMing(pid, msg, point, title, n) {
 				this.isok = n;
 				// #ifdef  MP-WEIXIN
-				this.isok = 0
+				// this.isok = 0
 				// #endif
 				this.pid_d = pid;
 				this.position_n = point,
@@ -638,7 +654,7 @@
 			height: 380rpx;
 			padding-top: 40rpx;
 			position: fixed;
-			top: 100rpx;
+			top: 0rpx;
 			background: #fff;
 
 			.left_tit {
@@ -755,7 +771,7 @@
 			height: 340rpx;
 			padding-top: 40rpx;
 			position: fixed;
-			top: 120rpx;
+			top: 0rpx;
 			background: #fff;
 			z-index: 150;
 
@@ -839,7 +855,7 @@
 			width: 100%;
 			height: 940rpx;
 			display: flex;
-			margin-top: 540rpx;
+			margin-top: 440rpx;
 
 			.left_nav {
 				.address_tit {

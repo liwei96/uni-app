@@ -1,12 +1,11 @@
 <template>
 	<view>
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
 			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>城市加盟</text>
-		</view>
+		</view> -->
 		<view class="top">
 			<image src="../../static/other/alliance-top.jpg" mode=""></image>
 			<view class="top-box">
@@ -654,8 +653,6 @@
 
 	.top {
 		margin-bottom: 18rpx;
-		margin-top: 88rpx;
-		padding-top: var(--status-bar-height);
 
 		image {
 			width: 100%;

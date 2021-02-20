@@ -1,13 +1,13 @@
 <template>
 	<view class="detail">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<view class="status_bar">
 			</view>
 			<navigator url="/pages/index/index" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>{{detail.name}}</text>
 			</navigator>
-		</view>
+		</view> -->
 		<!-- 顶部悬浮 -->
 		<view class="fixed_top" v-if="fixed_show">
 			<view :class="{active:class_fixed.huxing}" @tap="to('huxing_tit',1)">户型</view>
@@ -519,19 +519,19 @@
 
 			<view class="wen_list">
 				<template v-if="questions.length>0">
-					<view class="wen_one" v-for="item in questions" :key="item.id">
-						<navigator :url="`/pages/wendadetail/wendadetail/?id=${item.id}`">
-							<view class="wen_top">
-								<text class="wen">问</text>
-								<text class="wen_t">{{item.question}}</text>
-							</view>
-							<view class="da" v-if="item.answer!==''">
-								共1个回答
-							</view>
-							<view class="da" v-else>
-								共0个回答
-							</view>
-						</navigator>
+					<view class="wen_one" v-for="item in questions" :key="item.id" @tap="gowen(item.id)">
+						<!-- <navigator :url="`/pages/wendadetail/wendadetail/?id=${item.id}`"> -->
+						<view class="wen_top">
+							<text class="wen">问</text>
+							<text class="wen_t">{{item.question}}</text>
+						</view>
+						<view class="da" v-if="item.answer!==''">
+							共1个回答
+						</view>
+						<view class="da" v-else>
+							共0个回答
+						</view>
+						<!-- </navigator> -->
 					</view>
 				</template>
 				<template v-else>
@@ -759,7 +759,7 @@
 		},
 		onLoad(option) {
 			// #ifdef  MP-WEIXIN
-			this.weixin = true
+			// this.weixin = true
 			// #endif
 			_self = this;
 			this.cWidth = uni.upx2px(750);
@@ -778,6 +778,11 @@
 			}
 		},
 		methods: {
+			gowen(id) {
+				uni.navigateTo({
+					url: "/pages/wendadetail/wendadetail?id=" + id
+				})
+			},
 			setpop() {
 				this.$refs.popup.hide()
 			},
@@ -1087,8 +1092,6 @@
 						that.baoMing(pid, remark, point, title, 0)
 					}
 				} else {
-					uni.setStorageSync("pass", true);
-					this.pass = true;
 					if (type) {
 						let token = uni.getStorageSync("token");
 						if (token) {
@@ -1104,7 +1107,6 @@
 								this.quTiwen(pid)
 							}
 						} else {
-							let session = uni.getStorageSync('session')
 							uni.login({
 								provider: 'weixin',
 								success: function(res) {
@@ -1117,55 +1119,62 @@
 										},
 										success: (res) => {
 											console.log(res)
-											uni.setStorageSync('openid', res.data.openid)
-											uni.setStorageSync('session', res.data.session_key)
+											uni.setStorageSync('openid', res.data.data.openid)
+											uni.setStorageSync('session', res.data.data.session_key)
 											uni.request({
 												url: "https://ll.edefang.net/api/weichat/decryptData",
 												data: {
 													data: e.detail.encryptedData,
 													iv: e.detail.iv,
-													session_key: res.data.session_key
+													sessionKey: res.data.data.session_key
 												},
 												success: (res) => {
 													console.log(res)
-													let tel = res.data.mobile
-													uni.setStorageSync('phone', tel)
-													let openid = uni.getStorageSync('openid')
-													uni.request({
-														url: "https://api.edefang.net/applets/login",
-														method: 'GET',
-														data: {
-															phone: tel,
-															openid: openid
-														},
-														success: (res) => {
-															console.log(res)
-															uni.setStorageSync('token', res.data.token)
-															if (type == 1) { //点赞
-																that.getLike(ping_id)
-															} else if (type == 2) { //收藏
-																that.goShou();
-															} else if (type == 3) {
-																that.deletePing(ping_id);
-															} else if (type == 4) { //我要点评
-																that.goDianPing(pid);
-															} else if (type == 5) { //我要提问
-																that.quTiwen(pid)
+													if (res.code != 500) {
+														that.pass = true
+														uni.setStorageSync('pass', that.pass)
+														let data = JSON.parse(res.data.message)
+														let tel = data.purePhoneNumber
+														uni.setStorageSync('phone', tel)
+														let openid = uni.getStorageSync('openid')
+														uni.request({
+															url: "https://api.edefang.net/applets/login",
+															method: 'GET',
+															data: {
+																phone: tel,
+																openid: openid
+															},
+															success: (res) => {
+																console.log(res)
+																uni.setStorageSync('token', res.data.token)
+																if (type == 1) { //点赞
+																	that.getLike(ping_id)
+																} else if (type == 2) { //收藏
+																	that.goShou();
+																} else if (type == 3) {
+																	that.deletePing(ping_id);
+																} else if (type == 4) { //我要点评
+																	that.goDianPing(pid);
+																} else if (type == 5) { //我要提问
+																	that.quTiwen(pid)
+																}
+
 															}
-
-														}
-													})
-
+														})
+													} else {
+														uni.showToast({
+															title: "获取失败请重新报名",
+															icon: "none"
+														})
+													}
 												}
 											})
-
 										}
 									})
 								}
 							});
 						}
 					} else {
-						let session = uni.getStorageSync('session')
 						uni.login({
 							provider: 'weixin',
 							success: function(res) {
@@ -1178,21 +1187,47 @@
 									},
 									success: (res) => {
 										console.log(res)
-										uni.setStorageSync('openid', res.data.openid)
-										uni.setStorageSync('session', res.data.session_key)
+										uni.setStorageSync('openid', res.data.data.openid)
+										uni.setStorageSync('session', res.data.data.session_key)
 										uni.request({
 											url: "https://ll.edefang.net/api/weichat/decryptData",
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												session_key: res.data.session_key
+												sessionKey: res.data.data.session_key
 											},
 											success: (res) => {
 												console.log(res)
-												let tel = res.data.mobile
-												uni.setStorageSync('phone', tel)
-												let openid = uni.getStorageSync('openid')
-												that.baoMing(pid, remark, point, title, 1)
+												if (res.data.code != 500) {
+													that.pass = true
+													uni.setStorageSync('pass', that.pass)
+													let data = JSON.parse(res.data.message)
+													let tel = data.purePhoneNumber
+													let token = uni.getStorageSync('token')
+													if (!token) {
+														let openid = uni.getStorageSync('openid')
+														uni.request({
+															url: "https://api.edefang.net/applets/login",
+															method: 'GET',
+															data: {
+																phone: tel,
+																openid: openid
+															},
+															success: (res) => {
+																console.log(res)
+																uni.setStorageSync('token', res.data.token)
+															}
+														})
+													}
+													uni.setStorageSync('phone', tel)
+													let openid = uni.getStorageSync('openid')
+													that.baoMing(pid, remark, point, title, 1)
+												} else {
+													uni.showToast({
+														title: "获取失败请重新报名",
+														icon: "none"
+													})
+												}
 											}
 										})
 									}
@@ -1574,15 +1609,10 @@
 			},
 			baoMing(pid, msg, point, title, n) {
 				this.isok = n
-				// #ifdef  MP-WEIXIN
-				this.isok = 0
-				// #endif
-				console.log(pid, msg, point);
 				this.pid_d = pid;
 				this.position_n = point,
 					this.title_e = title;
 				this.remark_k = msg;
-				console.log(this.pid_d);
 				this.$refs.popup.show();
 			},
 			showTable() {
@@ -1791,7 +1821,6 @@
 			display: flex;
 			justify-content: space-around;
 			position: fixed;
-			top: 130rpx;
 			z-index: 2000;
 
 			view {
@@ -1811,7 +1840,6 @@
 			width: 100%;
 			height: 420rpx;
 			position: relative;
-			margin-top: 120rpx;
 
 			.swiper {
 				width: 100%;

@@ -1,13 +1,13 @@
 <template>
 	<view class="loudong">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<view class="status_bar">
 			</view>
 			<view class="nav_top" @tap="back">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>最新动态</text>
 			</view>
-		</view>
+		</view> -->
 		<view class="dong_nav">
 			<view :class="{active:dong_show}" @click="dongClick">
 				实时动态
@@ -295,7 +295,6 @@
 			height: 60rpx;
 			padding-bottom: 13rpx;
 			padding-top: 13rpx;
-			margin-top: 120rpx;
 
 			view {
 				font-size: 28rpx;

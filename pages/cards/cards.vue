@@ -1,14 +1,11 @@
 <template>
 	<view>
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
 			      </view>
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>我的卡券</text>
-		</view>
-		
-		
+		</view> -->
 		<view class="youhui_box" v-if="num>0">
 			<view class="youhui_01">
 				<text class="text">

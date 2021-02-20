@@ -84,7 +84,7 @@
 		},
 		methods: {
 			setnull() {
-				this.tel = '',
+				this.tel = ''
 				this.ok = false
 			},
 			changeBox(e) { //选中切换事件(由组件发起)
@@ -256,6 +256,7 @@
 			console.log(type)
 		},
 		mounted() {
+			console.log(this.isok)
 			if(this.type ==0){
 				this.iscode = false
 			}
@@ -321,6 +322,17 @@
 				console.log(val)
 				if (val == 0) {
 					this.iscode = false
+				}
+			},
+			isok(val) {
+				console.log(val)
+				if (val==1) {
+					this.tel = uni.getStorageSync('phone')
+					console.log(this.tel)
+					this.ok = true
+				} else {
+					this.tel = ''
+					this.ok = false
 				}
 			},
 			title(val) {
@@ -418,6 +430,7 @@
 			font-size: 40rpx;
 			right: 20rpx;
 			top: 24rpx;
+			z-index: 100;
 		}
 
 		.place {

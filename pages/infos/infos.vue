@@ -1,12 +1,11 @@
 <template>
 	<view>
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
 			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>买房百科</text>
-		</view>
+		</view> -->
 		<view class="tit" @tap="gosearch">
 			<image src="../../static/other/weike-search.png" mode=""></image>
 			<input type="text" value="" placeholder="搜搜你想要了解的房产知识吧" placeholder-class="txt" disabled/>
@@ -266,8 +265,6 @@
 		align-items: center;
 		margin-top: 12rpx;
 		margin-bottom: 40rpx;
-		margin-top: 88rpx;
-		padding-top: var(--status-bar-height);
 		image {
 			width: 32rpx;
 			height: 32rpx;

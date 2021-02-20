@@ -1,8 +1,8 @@
 <template>
 	<view>
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<text>允家新房</text>
-		</view>
+		</view> -->
 		<view class="input">
 			<view class="left">
 				<text class="city" @tap="gopath">{{cityname}}</text>
@@ -759,7 +759,6 @@
 	.input {
 		display: flex;
 		padding: 8rpx 0;
-		padding-top: 130rpx;
 		.left {
 			margin-left: 30rpx;
 			width: 570rpx;

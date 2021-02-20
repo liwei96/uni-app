@@ -1,13 +1,13 @@
 <template>
 	<view class="prohuxing">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<view class="status_bar">
 			</view>
 			<navigator :url="`/pageA/content/content?id=${project_id}`" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>主力户型</text>
 			</navigator>
-		</view>
+		</view> -->
 		<view class="huxing_list">
 			<view class="huxing_one" v-for="item in other_rooms" :key="item.id">
 			  <navigator :url="`../hudetail/hudetail?id=${item.id}`">
@@ -145,7 +145,6 @@
 		padding-right: 30rpx;
 		box-sizing: border-box;
 		width: 100%;
-		margin-top: 120rpx;
 		.huxing_one{
 			height: 188rpx;
 			border-bottom: 1rpx solid #F2F2F2;

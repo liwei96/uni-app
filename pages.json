@@ -1,167 +1,210 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/index"
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "允家新房",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-			"path": "pages/building/building"
+			"path": "pages/building/building",
+			"style": {
+				"navigationBarTitleText": "允家新房",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-			"path": "pages/home/home"
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#35ACE7",
+				"navigationBarTextStyle": "white"
+			}
 		},
 		{
-			"path": "pages/message/message"
+			"path": "pages/message/message",
+			"style": {
+				"navigationBarTitleText": "我的消息",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-			"path": "pages/feature/feature"
+			"path": "pages/feature/feature",
+			"style": {
+				"navigationBarTitleText": "特色好房",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#50B3FD",
+				"navigationBarTextStyle": "white"
+			}
 		},
 		{
-			"path": "pages/top/top"
+			"path": "pages/top/top",
+			"style": {
+				"navigationBarTitleText": "楼盘榜",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#50B3FD",
+				"navigationBarTextStyle": "white"
+			}
 		},
 		// {
 		// 	"path": "pages/special/special"
 		// },
 		{
-			"path": "pages/dynamic/dynamic"
+			"path": "pages/dynamic/dynamic",
+			"style": {
+				"navigationBarTitleText": "楼盘动态",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-			"path": "pages/dynamicdetail/dynamicdetail"
+			"path": "pages/dynamicdetail/dynamicdetail",
+			"style": {
+				"navigationBarTitleText": "动态详情",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-			"path": "pages/help/help"
+			"path": "pages/help/help",
+			"style": {
+				"navigationBarTitleText": "帮我找房",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#35ACE7",
+				"navigationBarTextStyle": "white"
+			}
 		}, {
 			"path": "pages/path/path",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "选择城市",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/searchname/searchname",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "搜索楼盘",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/article/article",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "买房百科",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/info/info",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "房产资讯",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/weike/weike",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "买房百科",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/searcharticle/searcharticle",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "百科搜索",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/infos/infos",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "房产资讯",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/searchinfo/searchinfo",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "资讯搜索",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/footprint/footprint",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "我的足迹",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/collect/collect",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "我的收藏",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/forward/forward",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "预约看房",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/alliance/alliance",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "城市加盟",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/about/about",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "关于我们",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/statement/statement",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "版权申明",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/protocol/protocol",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "免责协议",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/privacy/privacy",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "隐私保护",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/serve/serve",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "服务协议",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/cards/cards",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "我的卡券",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/feedback/feedback",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "意见反馈",
 				"enablePullDownRefresh": false
 			}
-
 		}, {
 			"path": "pages/map/map",
 			"style": {
@@ -189,31 +232,32 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-
 		}, {
 			"path": "pages/loupic/loupic",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "楼盘相册",
 				"enablePullDownRefresh": false
 			}
 		}, {
 			"path": "pages/piclist/piclist",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "楼盘相册",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#000000",
+				"navigationBarTextStyle": "white"
 			}
 
 		}, {
 			"path": "pages/hudetail/hudetail",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "户型详情",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/loudong/loudong",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "最新动态",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle": "dark",
 				"onReachBottomDistance": 50
@@ -222,70 +266,70 @@
 		}, {
 			"path": "pages/loudian/loudian",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "楼盘点评",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/senddian/senddian",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "楼盘点评",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/diandetail/diandetail",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "点评详情",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/allwenda/allwenda",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "楼盘问问",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/wendadetail/wendadetail",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "问答详情",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/wenhui/wenhui",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "我要回答",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/tiwen/tiwen",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "我要提问",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/loupk/loupk",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "楼盘对比",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/addlou/addlou",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "楼盘对比",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/loupkdetail/loupkdetail",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "楼盘对比",
 				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#FFFFFF"
 			}
@@ -293,7 +337,7 @@
 		}, {
 			"path": "pages/prohuxing/prohuxing",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "主力户型",
 				"enablePullDownRefresh": false
 			}
 
@@ -314,9 +358,8 @@
 		}
 	    ,{
             "path" : "pages/login/login",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
+            "style" :{
+                "navigationBarTitleText": "手机快捷登录",
                 "enablePullDownRefresh": false
             }
             
@@ -325,15 +368,14 @@
             "path" : "pages/huifu/huifu",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "我要回复",
                 "enablePullDownRefresh": false
             }
             
         }
 		,{
 		    "path" : "pages/talk/talk",
-		    "style" :                                                                                    
-		    {
+		    "style" : {
 		        "navigationBarTitleText": "",
 		        "enablePullDownRefresh": false
 		    }
@@ -341,9 +383,8 @@
 		}
         ,{
             "path" : "pages/talklist/talklist",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
+            "style" : {
+                "navigationBarTitleText": "我的消息",
                 "enablePullDownRefresh": false
             }
         }
@@ -351,9 +392,19 @@
 	"subPackages": [{
 	    "root": "pageA",
 	    "pages": [{
-	        "path": "content/content"
+	        "path": "content/content",
+            "style" : {
+                "navigationBarTitleText": "楼盘详情",
+                "enablePullDownRefresh": false
+            }
 	    },{
-	        "path": "special/special"
+	        "path": "special/special",
+            "style" : {
+                "navigationBarTitleText": "特价房源",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#F63352",
+				"navigationBarTextStyle": "white"
+            }
 	    }
 		]
 	}],
@@ -361,8 +412,8 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#FFFFFF",
-		"backgroundColor": "#F8F8F8",
-		"navigationStyle": "custom"
+		"backgroundColor": "#F8F8F8"
+		// "navigationStyle": "custom"
 	},
 	// "tabBar": {
 	// 	// "custom": true,

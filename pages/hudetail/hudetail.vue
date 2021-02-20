@@ -1,13 +1,13 @@
 <template>
 	<view class="hu_detail">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<view class="status_bar">
 			</view>
 			<navigator class="nav_top" open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>户型详情</text>
 			</navigator>
-		</view>
+		</view> -->
 		<view class="top_img">
 			<image :src="one.big" mode="" @tap="showbig(one.big)"></image>
 		</view>
@@ -238,7 +238,7 @@
 			this.getdata(option.id);
 			this.pass = uni.getStorageSync('pass')
 			// #ifdef  MP-WEIXIN
-			this.weixin = true
+			// this.weixin = true
 			// #endif
 		},
 		methods: {
@@ -352,20 +352,37 @@
 								},
 								success: (res) => {
 									console.log(res)
-									uni.setStorageSync('openid', res.data.openid)
-									uni.setStorageSync('session', res.data.session_key)
+									uni.setStorageSync('openid', res.data.data.openid)
+									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
-											session_key: res.data.session_key
+											sessionKey: res.data.data.session_key
 										},
 										success: (res) => {
 											console.log(res)
-											let tel = res.data.mobile
+											let data = JSON.parse(res.data.message)
+											let tel = data.purePhoneNumber
 											uni.setStorageSync('phone', tel)
 											let openid = uni.getStorageSync('openid')
+											let token = uni.getStorageSync('token')
+											if (!token) {
+												let openid = uni.getStorageSync('openid')
+												uni.request({
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.token)
+													}
+												})
+											}
 											that.$refs.sign.tel = tel
 											that.baoMing(pid, remark, point, title, 1)
 										}
@@ -508,7 +525,6 @@
 			height: 400rpx;
 			background: #F5F5F5;
 			position: relative;
-			margin-top: 132rpx;
 
 			image {
 				width: 249rpx;

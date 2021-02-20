@@ -1,15 +1,14 @@
 <template>
 	<view class="feature">
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			<view class="status_bar">
-				<!-- 这里是状态栏 -->
 			</view>
 			<image src="../../static/all-back1.png" mode=""></image>
 			<text>特色好房</text>
 		</view>
 		<view class="topbb">
 
-		</view>
+		</view> -->
 		<view class="top-nav" @tap="gocity">
 			<view class="city">
 				{{city}}
@@ -112,7 +111,7 @@
 			this.city = uni.getStorageSync('cityname')
 			this.pass = uni.getStorageSync('pass')
 			// #ifdef  MP-WEIXIN
-			this.weixin = true
+			// this.weixin = true
 			// #endif
 			// this.getdata()
 		},
@@ -216,6 +215,8 @@
 								session_key: session
 							},
 							success: (res) => {
+								that.pass = true
+								uni.setStorageSync('pass', that.pass)
 								console.log(res)
 								let tel = res.data.mobile
 								uni.setStorageSync('phone', tel)
@@ -246,6 +247,8 @@
 												session_key: res.data.session_key
 											},
 											success: (res) => {
+												that.pass = true
+												uni.setStorageSync('pass', that.pass)
 												console.log(res)
 												let tel = res.data.mobile
 												uni.setStorageSync('phone', tel)
@@ -265,7 +268,6 @@
 					that.show(bid, '特色房源页+查底价', 0)
 					that.isok = 0
 				} else {
-					that.isok = 1
 					uni.login({
 						provider: 'weixin',
 						success: function(res) {
@@ -278,21 +280,47 @@
 								},
 								success: (res) => {
 									console.log(res)
-									uni.setStorageSync('openid', res.data.openid)
-									uni.setStorageSync('session', res.data.session_key)
+									uni.setStorageSync('openid', res.data.data.openid)
+									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
-											session_key: res.data.session_key
+											sessionKey: res.data.data.session_key
 										},
 										success: (res) => {
 											console.log(res)
-											let tel = res.data.mobile
-											uni.setStorageSync('phone', tel)
-											let openid = uni.getStorageSync('openid')
-											that.show(bid, '特色房源页+查底价', 1)
+											if (res.data.code !=500) {
+												that.pass = true
+												uni.setStorageSync('pass', that.pass)
+												let data = JSON.parse(res.data.message)
+												let tel = data.purePhoneNumber
+												let openid = uni.getStorageSync('openid')
+												let token = uni.getStorageSync('token')
+												if (!token) {
+													let openid = uni.getStorageSync('openid')
+													uni.request({
+														url: "https://api.edefang.net/applets/login",
+														method: 'GET',
+														data: {
+															phone: tel,
+															openid: openid
+														},
+														success: (res) => {
+															console.log(res)
+															uni.setStorageSync('token', res.data.token)
+														}
+													})
+												}
+												uni.setStorageSync('phone', tel)
+												that.show(bid, '特色房源页+查底价', 1)
+											}else {
+												uni.showToast({
+													title:"获取失败请重新报名",
+													icon:"none"
+												})
+											}
 										}
 									})
 								}
@@ -365,7 +393,6 @@
 		background: url(../../static/feature/feature-top.jpg);
 		background-size: 100%;
 		position: relative;
-		margin-top: 87rpx;
 
 		.city {
 			position: absolute;

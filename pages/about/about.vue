@@ -1,9 +1,9 @@
 <template>
 	<view class="about">
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>预约看房</text>
-		</view>
+		</view> -->
 		<image src="../../static/other/about-top.jpg" mode="" class="topimg"></image>
 		<view class="con">
 			<view class="tit">
@@ -128,7 +128,6 @@
 	.topimg {
 		width: 100%;
 		height: 220rpx;
-		padding-top: 128rpx;
 	}
 
 	.con {

@@ -1,12 +1,11 @@
 <template>
 	<view class="path">
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			<view class="status_bar">
-				<!-- 这里是状态栏 -->
 			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>选择城市</text>
-		</view>
+		</view> -->
 		<view class="nowcity">
 			<image src="../../static/other/path-name.png" mode=""></image>
 			<text class="now-name">{{name}}</text>
@@ -192,8 +191,8 @@
 		border-bottom: 1rpx solid #F2F3F7;
 		line-height: 98rpx;
 		margin-bottom: 30rpx;
-		padding-top: 88rpx;
-		margin-top: var(--status-bar-height);
+		// // padding-top: 88rpx;
+		// margin-top: var(--status-bar-height);
 
 		image {
 			width: 32rpx;

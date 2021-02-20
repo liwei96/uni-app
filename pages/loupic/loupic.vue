@@ -1,13 +1,13 @@
 <template>
 	<view class="loupic">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<view class="status_bar">
 			</view>
 			<navigator :url="`../piclist/piclist?id=${project_id}`" class="nav_top" open-type="navigate">
 			   <image src="../../static/all-back.png" mode=""></image>
 			   <text>楼盘相册</text>
 			</navigator>
-		</view>
+		</view> -->
 		
 		<view class="effect">
 			<view class="tit">
@@ -239,7 +239,6 @@
 		width: 100%;
 		height: auto;
 		background:#fff;
-		margin-top: 130rpx;
 		.tit{
 			font-size: 32rpx;
 			font-weight: bold;

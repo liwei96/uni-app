@@ -1,14 +1,13 @@
 <template>
 	<view  class="piclist">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			 <view class="status_bar">
-			          <!-- 这里是状态栏 -->
 			  </view>
 			<navigator :url="`/pageA/content/content?id=${project_id}`" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back1.png" mode=""></image>
 				<text>楼盘相册</text>
 			</navigator>
-		</view>
+		</view> -->
 		
 		<view class="swiperMain">
 			<view class="nav_nav">

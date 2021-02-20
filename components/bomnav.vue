@@ -44,9 +44,6 @@
 			}
 		},
 		mounted(){
-			// #ifdef  MP-WEIXIN
-			this.weixin = true
-			// #endif
 			if(this.projectid !== 0 || this.projectid == '') {
 				this.register()
 			}
@@ -129,6 +126,7 @@
 			},
 			getPhoneNumber(e) {
 				console.log(e)
+				let that = this
 				// #ifdef  MP-BAIDU
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					this.$emit('show', {
@@ -154,13 +152,56 @@
 						isok: 0
 					})
 				}else{
+					uni.login({
+						provider: 'weixin',
+						success: function(res) {
+							uni.request({
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method: 'get',
+								data: {
+									code: res.code
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid', res.data.data.openid)
+									uni.setStorageSync('session', res.data.data.session_key)
+									uni.request({
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										data: {
+											data: e.detail.encryptedData,
+											iv: e.detail.iv,
+											sessionKey: res.data.data.session_key
+										},
+										success: (res) => {
+											console.log(res)
+											let data = JSON.parse(res.data.message)
+											let tel = data.purePhoneNumber
+											uni.setStorageSync('phone', tel)
+											let openid = uni.getStorageSync('openid')
+											uni.request({
+												url: "https://api.edefang.net/applets/login",
+												method: 'GET',
+												data: {
+													phone: tel,
+													openid: openid
+												},
+												success: (res) => {
+													uni.setStorageSync('token', res.data.token)
+													uni.setStorageSync('phone', tel)
+													that.$emit('show', {
+														position: 103,
+														title: '预约看房',
+														isok: 1
+													})
+												}
+											})
+										}
+									})
+								}
+							})
+						}
+					});
 					uni.setStorageSync('pass',true)
-					this.pass = true
-					this.$emit('show', {
-						position: 103,
-						title: '预约看房',
-						isok: 1
-					})
 				}
 				// #endif
 			},

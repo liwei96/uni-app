@@ -210,7 +210,7 @@
 			this.pass = uni.getStorageSync('pass')
 			this.getdata()
 			// #ifdef  MP-WEIXIN
-			this.weixin = true
+			// this.weixin = true
 			// #endif
 		},
 		onPageScroll(e) {
@@ -313,22 +313,24 @@
 									},
 									success: (res) => {
 										console.log(res)
-										uni.setStorageSync('openid', res.data.openid)
-										uni.setStorageSync('session', res.data.session_key)
+										uni.setStorageSync('openid', res.data.data.openid)
+										uni.setStorageSync('session', res.data.data.session_key)
 										uni.request({
 											url: "https://ll.edefang.net/api/weichat/decryptData",
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												session_key: res.data.session_key
+												sessionKey: res.data.data.session_key
 											},
 											success: (res) => {
 												console.log(res)
-												let tel = res.data.mobile
+												let data = JSON.parse(res.data.message)
+												let tel = data.purePhoneNumber
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel
 												that.show(bid,txt, 1)
+												that.isok = 1
 											}
 										})
 				

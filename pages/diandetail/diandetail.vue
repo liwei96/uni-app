@@ -1,13 +1,13 @@
 <template>
 	<view class="diandetail">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<view class="status_bar">
 			</view>
 			<navigator class="nav_top" open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>点评详情</text>
 			</navigator>
-		</view>
+		</view> -->
 		<view class="top_box">
 			<view class="dian_one">
 				<view class="top">
@@ -466,14 +466,14 @@
 									},
 									success: (res) => {
 										console.log(res)
-										uni.setStorageSync('openid', res.data.openid)
-										uni.setStorageSync('session', res.data.session_key)
+										uni.setStorageSync('openid', res.data.data.openid)
+										uni.setStorageSync('session', res.data.data.session_key)
 										uni.request({
 											url: "https://ll.edefang.net/api/weichat/decryptData",
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												session_key: res.data.session_key
+												sessionKey: res.data.data.session_key
 											},
 											success: (res) => {
 												console.log(res)
@@ -523,18 +523,19 @@
 									},
 									success: (res) => {
 										console.log(res)
-										uni.setStorageSync('openid', res.data.openid)
-										uni.setStorageSync('session', res.data.session_key)
+										uni.setStorageSync('openid', res.data.data.openid)
+										uni.setStorageSync('session', res.data.data.session_key)
 										uni.request({
 											url: "https://ll.edefang.net/api/weichat/decryptData",
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												session_key: res.data.session_key
+												session_key: res.data.data.session_key
 											},
 											success: (res) => {
 												console.log(res)
-												let tel = res.data.mobile
+												let data = JSON.parse(res.data.message)
+												let tel = data.purePhoneNumber
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.$refs.sign.tel = tel
@@ -694,7 +695,6 @@
 			padding-right: 30rpx;
 			box-sizing: border-box;
 			// margin-top: 13rpx;
-			margin-top: 145rpx;
 
 			.dian_one {
 				margin-top: 30rpx;

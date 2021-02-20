@@ -1,12 +1,11 @@
 <template>
 	<view>
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			<view class="status_bar">
-				<!-- 这里是状态栏 -->
 			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>意见反馈</text>
-		</view>
+		</view> -->
 		<view class="box">
 			<textarea value="" placeholder="输入您的宝贵建议" placeholder-class="test" v-model="txt" />
 			<view class="txt">
@@ -68,6 +67,7 @@
 			getPhoneNumber(e) {
 				console.log(e)
 				let that = this
+				// #ifdef  MP-BAIDU
 				if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 					uni.setStorageSync('txt',this.txt)
 					let url = '/pages/feedback/feedback'
@@ -134,6 +134,94 @@
 						});
 					}
 				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if(e.detail.errMsg != 'getPhoneNumber:ok') {
+					uni.setStorageSync('txt',this.txt)
+					let url = '/pages/feedback/feedback'
+					uni.setStorageSync('backurl',url)
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+				}else{
+					this.pass = true
+					uni.setStorageSync('pass',true)
+					let session = uni.getStorageSync('session')
+					if (session) {
+						uni.request({
+							url: 'https://ll.edefang.net/api/weichat/decryptData',
+							method: 'get',
+							data: {
+								iv: e.detail.iv,
+								data: e.detail.encryptedData,
+								session_key: session
+							},
+							success: (res) => {
+								console.log(res)
+								let data = JSON.parse(res.data.message)
+								let tel = data.purePhoneNumber
+								uni.setStorageSync('phone', tel)
+								let openid = uni.getStorageSync('openid')
+								that.tel = tel
+								that.put
+							}
+						})
+					} else {
+						uni.login({
+							provider: 'weixin',
+							success: function(res) {
+								console.log(res.code);
+								uni.request({
+									url: 'https://ll.edefang.net/api/weichat/jscode2session',
+									method: 'get',
+									data: {
+										code: res.code
+									},
+									success: (res) => {
+										console.log(res)
+										uni.setStorageSync('openid', res.data.data.openid)
+										uni.setStorageSync('session', res.data.data.session_key)
+										uni.request({
+											url: "https://ll.edefang.net/api/weichat/decryptData",
+											data: {
+												data: e.detail.encryptedData,
+												iv: e.detail.iv,
+												sessionKey: res.data.data.session_key
+											},
+											success: (res) => {
+												console.log(res)
+												let data = JSON.parse(res.data.message)
+												let openid = uni.getStorageSync('openid')
+												let tel = data.purePhoneNumber
+												let token = uni.getStorageSync('token')
+												if (!token) {
+													let openid = uni.getStorageSync('openid')
+													uni.request({
+														url: "https://api.edefang.net/applets/login",
+														method: 'GET',
+														data: {
+															phone: tel,
+															openid: openid
+														},
+														success: (res) => {
+															console.log(res)
+															uni.setStorageSync('token', res.data.token)
+														}
+													})
+												}
+												uni.setStorageSync('phone', tel)
+												
+												that.tel = tel
+												that.put()
+											}
+										})
+									}
+								})
+							}
+						});
+					}
+				}
+				// #endif
 			},
 			put(){
 				let tel = uni.getStorageSync('phone')

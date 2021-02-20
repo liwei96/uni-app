@@ -1,9 +1,9 @@
 <template>
 	<view>
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>房产资讯</text>
-		</view>
+		</view> -->
 		<view class="tit">
 			<image src="../../static/other/weike-search.png" mode=""></image>
 			<input type="text" value="" placeholder="搜搜你想要了解的房产知识吧" placeholder-class="txt" v-model="name" @input="sou" />

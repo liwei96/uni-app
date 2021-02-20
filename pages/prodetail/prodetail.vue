@@ -1,13 +1,13 @@
 <template>
 	<view class="prodetail">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<view class="status_bar">
 			</view>
 			<navigator :url="`/pageA/content/content?id=${building.id}`" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>{{building.name}}</text>
 			</navigator>
-		</view>
+		</view> -->
 		<view class="pro_top">
 			<view class="name">
 				{{building.name}}
@@ -237,7 +237,7 @@
 			this.getData(option.id);
 			this.pass = uni.getStorageSync('pass')
 			// #ifdef  MP-WEIXIN
-			this.weixin = true
+			// this.weixin = true
 			// #endif
 			// this.text=this.text.substring(0,82);
 		},
@@ -339,20 +339,37 @@
 								},
 								success: (res) => {
 									console.log(res)
-									uni.setStorageSync('openid', res.data.openid)
-									uni.setStorageSync('session', res.data.session_key)
+									uni.setStorageSync('openid', res.data.data.openid)
+									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
-											session_key: res.data.session_key
+											sessionKey: res.data.data.session_key
 										},
 										success: (res) => {
 											console.log(res)
-											let tel = res.data.mobile
+											let data = JSON.parse(res.data.message)
+											let tel = data.purePhoneNumber
 											uni.setStorageSync('phone', tel)
 											let openid = uni.getStorageSync('openid')
+											let token = uni.getStorageSync('token')
+											if (!token) {
+												let openid = uni.getStorageSync('openid')
+												uni.request({
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.token)
+													}
+												})
+											}
 											that.$refs.sign.tel = tel
 											that.baoMing(pid, remark, point, title, 1)
 										}
@@ -369,7 +386,7 @@
 			baoMing(pid, remark, point, title, n) {
 				this.isok = n
 				// #ifdef  MP-WEIXIN
-				this.isok = 0
+				// this.isok = 0
 				// #endif
 				this.title_e = title;
 				this.pid_d = pid;
@@ -493,7 +510,6 @@
 			padding-right: 30rpx;
 			padding-top: 40rpx;
 			padding-bottom: 32rpx;
-			margin-top: 120rpx;
 
 			.name {
 				font-size: 40rpx;

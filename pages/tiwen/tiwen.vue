@@ -1,14 +1,13 @@
 <template>
 	<view class="wenhui">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<view class="status_bar">
-				<!-- 这里是状态栏 -->
 			</view>
 			<navigator open-type="navigateBack" delta="1" class="nav_top">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>我要提问</text>
 			</navigator>
-		</view>
+		</view> -->
 		<view class="tit">
 			允家在线咨询师帮您解答
 		</view>
@@ -110,7 +109,7 @@
 				}
 				// #endif
 				// #ifdef  MP-WEIXIN
-				if (e.detail.errMsg == 'getPhoneNumber:ok') {
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
 					this.isok = 0
 					let url = '/pages/tiwen/tiwen?id=' + this.project_id
 					uni.setStorageSync('backurl', url)
@@ -132,18 +131,19 @@
 									},
 									success: (res) => {
 										console.log(res)
-										uni.setStorageSync('openid', res.data.openid)
-										uni.setStorageSync('session', res.data.session_key)
+										uni.setStorageSync('openid', res.data.data.openid)
+										uni.setStorageSync('session', res.data.data.session_key)
 										uni.request({
 											url: "https://ll.edefang.net/api/weichat/decryptData",
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												session_key: res.data.session_key
+												sessionKey: res.data.data.session_key
 											},
 											success: (res) => {
 												console.log(res)
-												let tel = res.data.mobile
+												let data = JSON.parse(res.data.message)
+												let tel = data.purePhoneNumber
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel

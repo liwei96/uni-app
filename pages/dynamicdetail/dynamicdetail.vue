@@ -1,11 +1,11 @@
 <template>
 	<view class="dynamicdetail">
-		<view class="toptitle" @tap="goback">
+		<!-- <view class="toptitle" @tap="goback">
 			<view class="status_bar">
 			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>动态详情</text>
-		</view>
+		</view> -->
 		<view class="box_1">
 			<view class="dynamic-tit">{{info.title}}</view>
 			<text class="txt">{{info.content}}</text>
@@ -115,7 +115,7 @@
 			that = this
 			this.getinfo()
 			// #ifdef  MP-WEIXIN
-			this.weixin = true
+			// this.weixin = true
 			// #endif
 		},
 		components: {
@@ -299,18 +299,35 @@
 								},
 								success: (res) => {
 									console.log(res)
-									uni.setStorageSync('openid', res.data.openid)
-									uni.setStorageSync('session', res.data.session_key)
+									uni.setStorageSync('openid', res.data.data.openid)
+									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
-											session_key: res.data.session_key
+											sessionKey: res.data.data.session_key
 										},
 										success: (res) => {
 											console.log(res)
-											let tel = res.data.mobile
+											let data = JSON.parse(res.data.message)
+											let tel = data.purePhoneNumber
+											let token = uni.getStorageSync('token')
+											if (!token) {
+												let openid = uni.getStorageSync('openid')
+												uni.request({
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.token)
+													}
+												})
+											}
 											uni.setStorageSync('phone', tel)
 											let openid = uni.getStorageSync('openid')
 											that.tel = tel
@@ -400,8 +417,7 @@
 
 	.box_1 {
 		padding: 0 29.88rpx;
-		padding-top: 88rpx;
-		margin-top: var(--status-bar-height);
+		// padding-top: 88rpx;
 
 		.dynamic-tit {
 			color: #17181A;
@@ -680,7 +696,7 @@
 
 	.box_2 {
 		padding: 0 29.88rpx;
-		// padding-top: 88rpx;
+		// // padding-top: 88rpx;
 		margin-top: var(--status-bar-height);
 
 		.dynamic-tit {

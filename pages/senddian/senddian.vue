@@ -1,14 +1,13 @@
 <template>
 	<view class="senddian">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			 <view class="status_bar">
-			          <!-- 这里是状态栏 -->
 			 </view>
 			<navigator open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>楼盘点评</text>
 			</navigator>
-		</view>
+		</view> -->
 		<view class="pro">
 			<view class="pro_one">
 				<image :src="building.img" mode=""></image>
@@ -167,18 +166,19 @@
 								},
 								success: (res) => {
 									console.log(res)
-									uni.setStorageSync('openid',res.data.openid)
-									uni.setStorageSync('session',res.data.session_key)
+									uni.setStorageSync('openid', res.data.data.openid)
+									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
-										url:"https://ll.edefang.net/api/weichat/decryptData",
-										data:{
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										data: {
 											data: e.detail.encryptedData,
-											iv:e.detail.iv,
-											session_key:res.data.session_key
+											iv: e.detail.iv,
+											sessionKey: res.data.data.session_key
 										},
 										success: (res) => {
 											console.log(res)
-											let tel = res.data.mobile
+											let data = JSON.parse(res.data.message)
+											let tel = data.purePhoneNumber
 											uni.setStorageSync('phone',tel)
 											let openid = uni.getStorageSync('openid')
 											that.tel = tel

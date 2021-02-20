@@ -1,12 +1,11 @@
 <template>
 	<view class="searchname">
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
 			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>搜索楼盘</text>
-		</view>
+		</view> -->
 		<view class="box">
 			<view class="top-input">
 				<image src="../../static/other/searchname-icon.png" mode=""></image>

@@ -782,7 +782,7 @@
 		},
 		onLoad(option) {
 			// #ifdef  MP-WEIXIN
-			this.weixin = true
+			// this.weixin = true
 			// #endif
 			_self = this;
 			this.cWidth = uni.upx2px(750);
@@ -1151,7 +1151,8 @@
 												},
 												success: (res) => {
 													console.log(res)
-													let tel = res.data.mobile
+													let data = JSON.parse(res.data.message)
+													let tel = data.purePhoneNumber
 													uni.setStorageSync('phone', tel)
 													let openid = uni.getStorageSync('openid')
 													uni.request({

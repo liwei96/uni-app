@@ -1,12 +1,11 @@
 <template>
 	<view>
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
 			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>版权申明</text>
-		</view>
+		</view> -->
 		<view class="box">
 			<view class="tit">
 				允家新房版权声明
@@ -139,7 +138,6 @@
 
 	.box {
 		padding: 0 30rpx;
-		padding-top: 128rpx;
 	}
 
 	.tit {

@@ -1,12 +1,11 @@
 <template>
 	<view>
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			 <view class="status_bar">
-			          <!-- 这里是状态栏 -->
 			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>我的足迹</text>
-		</view>
+		</view> -->
 		<view class="recommend" v-if="!isnull">
 			<view class="recommend-box">
 				<view class="item" v-for="item in list" :key="item.id" @tap="go(item.id)">
@@ -168,8 +167,7 @@
 	}
 	.recommend {
 		padding: 0 30rpx;
-		padding-top: 88rpx;
-		margin-top: var(--status-bar-height);
+		// padding-top: 88rpx;
 	
 		.tit {
 			color: #17181A;

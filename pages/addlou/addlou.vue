@@ -1,14 +1,13 @@
 <template>
 	<view class="addlou">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			 <view class="status_bar">
-			          <!-- 这里是状态栏 -->
 			  </view>
 			<navigator open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>楼盘对比</text>
 			</navigator>
-		</view>
+		</view> -->
 		<checkbox-group @change="getChecked" >
 		<view class="pro_list">
 			<view class="sel_pro" v-for="item in data" :key="item.id">
@@ -179,7 +178,6 @@
 	.pro_list {
 			width: 100%;
 			position: relative;
-			margin-top: 165rpx;
 			//列表部分
 		.sel_pro:after {
 			height: 0;

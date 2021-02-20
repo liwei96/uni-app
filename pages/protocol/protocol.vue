@@ -1,12 +1,11 @@
 <template>
 	<view>
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
 			      </view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>免责协议</text>
-		</view>
+		</view> -->
 		<view class="box">
 			<view class="tit">
 				允家新房免责协议
@@ -95,8 +94,7 @@
 	}
 	.box {
 		padding: 0 30rpx;
-		padding-top: 88rpx;
-		margin-top: var(--status-bar-height);
+		// padding-top: 88rpx;
 	}
 	.tit {
 		margin-top: 34rpx;

@@ -1,14 +1,13 @@
 <template>
 	<view class="allwenda">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			 <view class="status_bar">
-			          <!-- 这里是状态栏 -->
 			  </view>
 			<navigator :url="`/pageA/content/content?id=${project_id}`" class="nav_top" open-type="navigate">
 				<image src="../../static/all-back1.png" mode=""></image>
 				<text>楼盘问问</text>
 			</navigator>
-		</view>
+		</view> -->
 		<view class="img_box">
 			<image src="../../static/other/all_wen_top.jpg" mode=""></image>
 		</view>
@@ -123,7 +122,7 @@ export default {
 	  console.log(this.project_id)
 	  this.pass = uni.getStorageSync('pass')
 	  // #ifdef  MP-WEIXIN
-	  this.weixin = true
+	  // this.weixin = true
 	  // #endif
 	},
 	onReachBottom(){
@@ -168,6 +167,7 @@ export default {
 		},
 		getPhoneNumber(e,hui_id,type) {
 			let that = this
+			// #ifdef  MP-BAIDU
 			if(e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
 				let token = uni.getStorageSync('token')
 				if(token){
@@ -251,7 +251,93 @@ export default {
 					}
 				this.isok = 1
 			}
-			
+			// #endif
+			// #ifdef  MP-WEIXIN
+			if(e.detail.errMsg != 'getPhoneNumber:ok') {
+				let token = uni.getStorageSync('token')
+				if(token){
+					if(type==1){
+						that.goTiwen(hui_id)
+					}else if(type==2){
+						that.goQuestion(hui_id)
+					}
+				}else{
+					this.isok = 0
+					let url = '/pages/allwenda/allwenda?id='+this.project_id
+					uni.setStorageSync('backurl',url)
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+				}
+			} else {
+				this.pass = true
+				uni.setStorageSync('pass',true)
+				let session = uni.getStorageSync('token')
+				if(session){
+					if(type==1){
+						that.goTiwen(hui_id)
+					}else if(type==2){
+						that.goQuestion(hui_id)
+					}
+					
+				}else {
+					uni.login({
+					  provider: 'weixin',
+					  success: function (res) {
+					    console.log(res.code);
+						uni.request({
+							url: 'https://ll.edefang.net/api/weichat/jscode2session',
+							method:'get',
+							data:{
+								code: res.code
+							},
+							success: (res) => {
+								console.log(res)
+								uni.setStorageSync('openid', res.data.data.openid)
+								uni.setStorageSync('session', res.data.data.session_key)
+								uni.request({
+									url: "https://ll.edefang.net/api/weichat/decryptData",
+									data: {
+										data: e.detail.encryptedData,
+										iv: e.detail.iv,
+										sessionKey: res.data.data.session_key
+									},
+									success: (res) => {
+										console.log(res)
+										let data = JSON.parse(res.data.message)
+										let tel = data.purePhoneNumber
+										uni.setStorageSync('phone',tel)
+										let openid = uni.getStorageSync('openid')
+										that.tel = tel
+										uni.request({
+											url:"https://api.edefang.net/applets/login",
+											method:'GET',
+											data:{
+												phone: tel,
+												openid: openid
+											},
+											success: (res) => {
+												uni.setStorageSync('token',res.data.token)
+												if(type==1){
+													that.goTiwen(hui_id)
+												}else if(type==2){
+													that.goQuestion(hui_id)
+												}
+												
+											}
+										})
+										
+									}
+								})
+								
+							}
+						})
+					  }
+					});
+					}
+				this.isok = 1
+			}
+			// #endif
 		},
 		getdata(id){
 			uni.showLoading({
@@ -375,7 +461,6 @@ export default {
 		}
 	}
 	.img_box{
-		margin-top: 128rpx;
 		image{
 		   width: 100%;
 		   height: 200rpx;

@@ -1,15 +1,14 @@
 <template>
 	<view class="top-view">
-		<view class="toptitle"  @tap="back">
+		<!-- <view class="toptitle"  @tap="back">
 			<view class="status_bar">
-			          <!-- 这里是状态栏 -->
 			      </view>
 			<image src="../../static/all-back1.png" mode=""></image>
 			<text>楼盘榜</text>
 		</view>
 		<view class="topbb">
 			
-		</view>
+		</view> -->
 		<view class="top-nav" @tap="gocity">
 			<view class="city">
 				{{city}}
@@ -188,20 +187,37 @@
 									},
 									success: (res) => {
 										console.log(res)
-										uni.setStorageSync('openid', res.data.openid)
-										uni.setStorageSync('session', res.data.session_key)
+										uni.setStorageSync('openid', res.data.data.openid)
+										uni.setStorageSync('session', res.data.data.session_key)
 										uni.request({
 											url: "https://ll.edefang.net/api/weichat/decryptData",
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												session_key: res.data.session_key
+												sessionKey: res.data.data.session_key
 											},
 											success: (res) => {
 												console.log(res)
-												let tel = res.data.mobile
+												let data = JSON.parse(res.data.message)
+												let tel = data.purePhoneNumber
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
+												let token = uni.getStorageSync('token')
+												if (!token) {
+													let openid = uni.getStorageSync('openid')
+													uni.request({
+														url: "https://api.edefang.net/applets/login",
+														method: 'GET',
+														data: {
+															phone: tel,
+															openid: openid
+														},
+														success: (res) => {
+															console.log(res)
+															uni.setStorageSync('token', res.data.token)
+														}
+													})
+												}
 												that.show(bid,'榜单页+查低价',1)
 											}
 										})
@@ -319,7 +335,6 @@
 		background: url(../../static/feature/feature-top.jpg);
 		background-size: 100%;
 		position: relative;
-		margin-top: 87rpx;
 
 		.city {
 			position: absolute;

@@ -1,14 +1,13 @@
 <template>
 	<view class="wenhui">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<view class="status_bar">
-				<!-- 这里是状态栏 -->
 			</view>
 			<navigator open-type="navigateBack" delta="1" class="nav_top">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>我要回答</text>
 			</navigator>
-		</view>
+		</view> -->
 		<view class="tit">
 			<text class="wen">问</text>
 			{{data.question}}

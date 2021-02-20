@@ -1,15 +1,14 @@
 <template>
 	<view class="dynamic">
-		<view class="toptitle" @tap="back">
+		<!-- <view class="toptitle" @tap="back">
 			<view class="status_bar">
-				<!-- 这里是状态栏 -->
 			</view>
 			<image src="../../static/all-back.png" mode=""></image>
 			<text>楼盘动态</text>
 		</view>
 		<view class="topbb">
 
-		</view>
+		</view> -->
 		<image src="../../static/dynamic/dynamic-top.jpg" mode="" class="topimg"></image>
 		<view class="box">
 			<view class="item" v-for="item in list" :key="item.id">
@@ -71,7 +70,7 @@
 			this.city =  uni.getStorageSync('city');
 			this.pass = uni.getStorageSync('pass')
 			// #ifdef  MP-WEIXIN
-			this.weixin = true
+			// this.weixin = true
 			// #endif
 		},
 		data() {
@@ -253,7 +252,7 @@
 				}
 				// #endif
 				// #ifdef  MP-WEIXIN
-				if (e.detail.errMsg == 'getPhoneNumber:fail auth deny') {
+				if (e.detail.errMsg != 'getPhoneNumber:ok') {
 					this.isok = 0
 					that.show(that.bid, '动态页+订阅楼盘动态', 0)
 
@@ -272,18 +271,35 @@
 								},
 								success: (res) => {
 									console.log(res)
-									uni.setStorageSync('openid', res.data.openid)
-									uni.setStorageSync('session', res.data.session_key)
+									uni.setStorageSync('openid', res.data.data.openid)
+									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
-											session_key: res.data.session_key
+											sessionKey: res.data.data.session_key
 										},
 										success: (res) => {
 											console.log(res)
-											let tel = res.data.mobile
+											let data = JSON.parse(res.data.message)
+											let tel = data.purePhoneNumber
+											let token = uni.getStorageSync('token')
+											if (!token) {
+												let openid = uni.getStorageSync('openid')
+												uni.request({
+													url: "https://api.edefang.net/applets/login",
+													method: 'GET',
+													data: {
+														phone: tel,
+														openid: openid
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.token)
+													}
+												})
+											}
 											uni.setStorageSync('phone', tel)
 											let openid = uni.getStorageSync('openid')
 											that.tel = tel
@@ -341,7 +357,6 @@
 	.topimg {
 		width: 100%;
 		height: 199.2rpx;
-		margin-top: 88rpx;
 	}
 
 	.box {

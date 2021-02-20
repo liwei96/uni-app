@@ -1,11 +1,11 @@
 <template>
 	<view class="login">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<navigator class="nav_top" open-type="navigateBack" delta="1">
 				<image src="../../static/all-back.png" mode=""></image>
 				<text>手机快捷登录</text>
 			</navigator>
-		</view>
+		</view> -->
 		<view class="login_box">
 			<view class="title">
 				<image src="../../static/other/login_img.png"></image>

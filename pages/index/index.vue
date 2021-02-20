@@ -1,11 +1,10 @@
 <template>
 	<view class="content">
-		<view class="toptitle">
+		<!-- <view class="toptitle">
 			<view class="status_bar">
-				<!-- 这里是状态栏 -->
 			</view>
 			<text>允家新房</text>
-		</view>
+		</view> -->
 		<view class="search">
 			<view class="searchbox">
 				<image src="../../static/index/index-path.png" mode="" class="search-path" @tap="gopath"></image>
@@ -454,9 +453,6 @@
 
 	.search {
 		padding: 0 29.88rpx;
-		margin-top: var(--status-bar-height);
-		padding-top: 88rpx;
-
 		.searchbox {
 			height: 71.71rpx;
 			border-radius: 35.85rpx;

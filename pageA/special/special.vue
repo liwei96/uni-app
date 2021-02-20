@@ -1,13 +1,12 @@
 <template>
 	<view>
-		<view :class="type ==0?'toptitle':'toptitle centitle'" @tap="back">
+		<!-- <view :class="type ==0?'toptitle':'toptitle centitle'" @tap="back">
 			<view class="status_bar">
-				<!-- 这里是状态栏 -->
 			</view>
 			<image v-if="type == 0" src="../../static/all-back1.png" mode=""></image>
 			<image v-if="type == 1" src="../../static/all-back.png" mode=""></image>
 			<text>特价房源</text>
-		</view>
+		</view> -->
 		<image src="../static/special/special-top.jpg" mode="" class="topimg"></image>
 		<view class="limit-time" v-if="limits.length>0">
 			<view class="limit-tit">
@@ -210,7 +209,7 @@
 			this.pass = uni.getStorageSync('pass')
 			this.getdata()
 			// #ifdef  MP-WEIXIN
-			this.weixin = true
+			// this.weixin = true
 			// #endif
 		},
 		onPageScroll(e) {
@@ -316,22 +315,41 @@
 									},
 									success: (res) => {
 										console.log(res)
-										uni.setStorageSync('openid', res.data.openid)
-										uni.setStorageSync('session', res.data.session_key)
+										uni.setStorageSync('openid', res.data.data.openid)
+										uni.setStorageSync('session', res.data.data.session_key)
 										uni.request({
 											url: "https://ll.edefang.net/api/weichat/decryptData",
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												session_key: res.data.session_key
+												sessionKey: res.data.data.session_key
 											},
 											success: (res) => {
 												console.log(res)
-												let tel = res.data.mobile
+												
+												let data = JSON.parse(res.data.message)
+												let tel = data.purePhoneNumber
+												let token = uni.getStorageSync('token')
+												if (!token) {
+													let openid = uni.getStorageSync('openid')
+													uni.request({
+														url: "https://api.edefang.net/applets/login",
+														method: 'GET',
+														data: {
+															phone: tel,
+															openid: openid
+														},
+														success: (res) => {
+															console.log(res)
+															uni.setStorageSync('token', res.data.token)
+														}
+													})
+												}
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel
 												that.show(bid,txt, 1)
+												that.isok = 1
 											}
 										})
 				
@@ -456,6 +474,7 @@
 				this.remark = txt
 				this.position = 94
 				console.log(this.pid)
+				console.log(this.isok)
 				this.$refs.popup.show()
 			},
 			setiscode() {
@@ -530,8 +549,6 @@
 		width: 100%;
 		height: 278.88rpx;
 		margin-bottom: 47.8rpx;
-		margin-top: var(--status-bar-height);
-		padding-top: 87rpx;
 	}
 
 	.limit-time {
