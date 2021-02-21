@@ -25,7 +25,7 @@
 					<text>新房</text>
 				</navigator>
 			</view>
-			<view class="nav-li">
+			<view class="nav-li" v-if="!isweixin">
 				<navigator url="/pageA/special/special" open-type="navigate">
 					<image src="../../static/index/index-luck.png" mode=""></image>
 					<text>特价房</text>
@@ -48,6 +48,12 @@
 				<navigator url="../map/map" open-type="navigate">
 					<image src="../../static/index/index-map.png" mode=""></image>
 					<text>地图</text>
+				</navigator>
+			</view>
+			<view class="nav-li" v-if="isweixin">
+				<navigator url="/pages/alliance/alliance" open-type="navigate">
+					<image src="../../static/index/index-join.png" mode=""></image>
+					<text>招商加盟</text>
 				</navigator>
 			</view>
 		</view>
@@ -245,8 +251,8 @@
 		<view class="recommend">
 			<text class="tit">为你推荐</text>
 			<view class="recommend-box">
-				<view class="item" v-for="item in recommends" :key="item.id">
-					<navigator :url="`/pageA/content/content?id=${item.id}`" class="nav_to">
+				<view class="item" v-for="item in recommends" :key="item.id" @tap="godetail(item.id)">
+					<!-- <navigator :url="`/pageA/content/content?id=${item.id}`" class="nav_to"> -->
 
 						<view class="left">
 							<image :src="item.img" mode=""></image>
@@ -270,7 +276,7 @@
 							</view>
 						</view>
 
-					</navigator>
+					<!-- </navigator> -->
 				</view>
 
 
@@ -304,14 +310,17 @@
 					people: false,
 					jiao: false,
 				},
-				cityname: '杭州'
+				cityname: '杭州',
+				isweixin: false
 			}
 		},
 		components:{
 			tabbar
 		},
 		onLoad(options) {
-			
+			// #ifdef  MP-WEIXIN
+			this.isweixin = true
+			// #endif
 			console.log(options)
 			this.cityname = uni.getStorageSync('cityname') || '杭州'
 			let city = options.city || uni.getStorageSync('city');
@@ -368,6 +377,11 @@
 			}).exec();
 		},
 		methods: {
+			godetail(id) {
+				uni.navigateTo({
+					url:`/pageA/content/content?id=${id}`
+				})
+			},
 			godynamicdetail() {
 				let id = this.dynamics[0].id
 				console.log(id)
@@ -1107,11 +1121,8 @@
 		.item {
 			//display: flex;
 			margin-bottom: 59.76rpx;
-
-			.nav_to {
-				width: 100%;
-				display: flex;
-
+			width: 100%;
+			display: flex;
 				.left {
 					margin-right: 27.88rpx;
 
@@ -1211,7 +1222,6 @@
 						}
 					}
 				}
-			}
 		}
 	}
 </style>
