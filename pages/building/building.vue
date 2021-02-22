@@ -1146,7 +1146,7 @@
 	.iconsbox {
 		position: fixed;
 		width: 100%;
-		top: 126rpx;
+		top: 0rpx;
 		background-color: #FFFFFF;
 		z-index: 10;
 	}
@@ -1175,7 +1175,7 @@
 	}
 
 	.typesbox {
-		margin-top: 88rpx;
+		margin-top: 0rpx;
 	}
 
 	.box {

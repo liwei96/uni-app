@@ -1,5 +1,5 @@
 <template>
-	<view class="feature">
+	<view class="feature" v-if="isover">
 		<!-- <view class="toptitle" @tap="back">
 			<view class="status_bar">
 			</view>
@@ -130,7 +130,8 @@
 				isok: 0,
 				pass: false,
 				cityid: 1,
-				weixin: false
+				weixin: false,
+				isover: false
 			}
 		},
 		methods: {
@@ -163,6 +164,7 @@
 					},
 					success: (res) => {
 						console.log(res)
+						that.isover = true
 						that.features = res.data.data.features
 						that.other = res.data.data.recommends
 						that.city = res.data.data.city_info.current.short

@@ -123,9 +123,9 @@
 		<view class="hui">
 			<view class="tit">
 				<text>优惠信息</text>
-				<image src="../../static/content/wen.png" mode="" @tap="showRules"></image>
+				<image src="../../static/content/wen.png" mode="" @tap="showRules" v-if="!isweixin"></image>
 			</view>
-			<view class="youhui_01">
+			<view class="youhui_01" v-if="!isweixin">
 				<text class="text">
 					售楼处专供允家平台客户
 					<text class="jie">
@@ -550,6 +550,19 @@
 			</view>
 		</view>
 		<view class="bg_hui"></view>
+		<!-- 相关资讯 -->
+		<view class="lou_infos" v-if="infos.length>0">
+			<view class="infos-tit">
+				<text class="kk">相关资讯</text>
+				<view class="right" @tap="goloudong">更多资讯<image src="../../static/content/right.png" mode=""></image></view>
+			</view>
+			<view class="ul">
+				<view class="li" v-for="(item,key) in infos" :key="key" v-if="key<=2" @tap="goinfo(item.id)">
+					{{item.title}}
+				</view>
+			</view>
+		</view>
+		<view class="bg_hui"></view>
 		<!-- 看了该楼盘的人还看了 -->
 		<view class="about_lou">
 			<view class="tit">
@@ -753,13 +766,15 @@
 				collect: 0,
 				shou_old: require("../../static/content/shou.png"),
 				has_shou: require("../../static/content/has_shou.png"),
-				map_image: ""
-
+				map_image: "",
+				isweixin: false,
+				// 资讯
+				infos: []
 			};
 		},
 		onLoad(option) {
 			// #ifdef  MP-WEIXIN
-			// this.weixin = true
+			this.isweixin = true
 			// #endif
 			_self = this;
 			this.cWidth = uni.upx2px(750);
@@ -778,6 +793,16 @@
 			}
 		},
 		methods: {
+			goloudong() {
+				uni.navigateTo({
+					url:'/pages/loudong/loudong?id='+this.pid+'&type=1'
+				})
+			},
+			goinfo(id) {
+				uni.navigateTo({
+					url:'/pages/info/info?id='+id
+				})
+			},
 			gowen(id) {
 				uni.navigateTo({
 					url: "/pages/wendadetail/wendadetail?id=" + id
@@ -1504,7 +1529,7 @@
 										}
 									})
 									// #endif
-
+									this.infos = data.article
 									uni.hideLoading()
 
 								}
@@ -1711,7 +1736,7 @@
 			},
 			allDong(id) {
 				uni.navigateTo({
-					url: "/pages/loudong/loudong?id=" + id
+					url: "/pages/loudong/loudong?id=" + id+'&type=0'
 				})
 			},
 			allDian(id) {
@@ -2278,12 +2303,13 @@
 		//  优惠信息 
 		.hui {
 			width: 100%;
-			height: 475rpx;
+			// height: 475rpx;
 			background: #F7F7F7;
 			padding-left: 30rpx;
 			padding-right: 30rpx;
 			box-sizing: border-box;
 			background-color: #fff;
+			padding-bottom: 20rpx;
 
 			.tit {
 				text {
@@ -2463,8 +2489,10 @@
 
 					.te {
 						color: #FF6040;
-						.t-th,.t-td {
-							color: #FF6040!important;
+
+						.t-th,
+						.t-td {
+							color: #FF6040 !important;
 						}
 					}
 				}
@@ -2588,6 +2616,7 @@
 							background: #F5F5F5;
 							border: 1rpx solid #EDEDED;
 							border-radius: 12rpx 12rpx 0rpx 0rpx;
+
 							image {
 								width: 164rpx;
 								height: 211rpx;
@@ -3526,6 +3555,8 @@
 			}
 		}
 
+		
+
 		//看了该楼盘的人还看了
 		.about_lou {
 			background-color: #fff;
@@ -3645,7 +3676,54 @@
 			}
 		}
 
-
+		// 相关资讯
+		.lou_infos {
+			background-color: #fff;
+			padding-left: 30rpx;
+			padding-right: 30rpx;
+			.infos-tit {
+				padding-top: 40rpx;
+				margin-bottom: 48rpx;
+				.kk {
+					color: #121212;
+					font-size: 32rpx;
+					font-weight: bold;
+				}
+				.right {
+					color: #646466;
+					font-size: 28rpx;
+					float: right;
+					image {
+						width: 24rpx;
+						height: 24rpx;
+					}
+				}
+			}
+			.ul {
+				.li {
+					color: #323233;
+					font-size: 28rpx;
+					line-height: 44rpx;
+					padding-bottom: 30rpx;
+					border-bottom: 1rpx solid #F2F2F2;
+					margin-bottom: 26rpx;
+				}
+				.li:before {
+				      content: "";
+				      display: inline-block;
+				      width: 6rpx;
+				      height: 6rpx;
+				      background-color: #333;
+				      border-radius: 50%;
+				      margin-right: 5rpx;
+				      vertical-align: middle;
+				    }
+				.li:last-child {
+					border: 0;
+					margin-bottom: 14rpx;
+				}
+			}
+		}
 
 		.rules {
 			width: 650rpx;

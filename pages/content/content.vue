@@ -573,6 +573,18 @@
 			</view>
 		</view>
 		<view class="bg_hui"></view>
+		<view class="lou_infos">
+			<view class="infos-tit">
+				<text class="kk">相关资讯</text>
+				<view class="right">跟多资讯<image src="../../static/content/right.png" mode=""></image></view>
+			</view>
+			<view class="ul">
+				<view class="li">
+					2020杭州临安锦云澜天里售楼部电话！位置地址！
+				</view>
+			</view>
+		</view>
+		<view class="bg_hui"></view>
 		<!-- 看了该楼盘的人还看了 -->
 		<view class="about_lou">
 			<view class="tit">
@@ -3515,6 +3527,31 @@
 					text-align: center;
 					background: #F2F9FC;
 					margin-top: 35rpx;
+				}
+			}
+		}
+
+		// 相关资讯
+		.lou_infos {
+			background-color: #fff;
+			padding-left: 30rpx;
+			padding-right: 30rpx;
+			width: 100%;
+			.infos-tit {
+				padding-top: 40rpx;
+				.kk {
+					color: #121212;
+					font-size: 32rpx;
+					font-weight: bold;
+				}
+				.right {
+					color: #646466;
+					font-size: 28rpx;
+					float: right;
+					image {
+						width: 24rpx;
+						height: 24rpx;
+					}
 				}
 			}
 		}

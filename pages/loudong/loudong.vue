@@ -9,21 +9,21 @@
 			</view>
 		</view> -->
 		<view class="dong_nav">
-			<view :class="{active:dong_show}" @click="dongClick">
+			<view :class="{active:type==0}" @click="type=0">
 				实时动态
 			</view>
-			<view :class="{active:push_time_show}" @click="pushTimeClick">
-				加推时间
+			<view :class="{active:type==1}" @click="type=1">
+				相关资讯
 			</view>
-			<view :class="{active:jiao_time_show}" @click="jiaoTimeClick">
+			<view :class="{active:type==2}" @click="type=2">
 				交房时间
 			</view>
-			<view :class="{active:wu_zheng_show}" @click="zhengClick">
+			<view :class="{active:type==3}" @click="type=3">
 				五证信息
 			</view>
 		</view>
 		<!-- 动态列表 -->
-		<view class="dong_list" v-show='dong_show'>
+		<view class="dong_list" v-show='type==0'>
 			<view class="dong_list_one" v-for="item in data" :key="item.id">
 				<navigator :url="`../dynamicdetail/dynamicdetail?id=${item.id}`">
 					<view class="time">{{item.time}}</view>
@@ -46,21 +46,39 @@
 
 		</view>
 		<!-- 加推时间 -->
-		<view class="push_time" v-show='push_time_show'>
-			<view class="time_one" v-if="pull_time!==''">
+		<view class="push_time" v-show='type==1'>
+			<!-- <view class="time_one" v-if="pull_time!==''">
 				<text class="yuan"></text>
 				加推时间：{{pull_time}}
+			</view> -->
+			<view class="lists">
+				<view class="other">
+					<view class="other-li" v-for="(item,key) in infos" :key="item.id" @tap="go(item.id)">
+						<view class="left">
+							<view class="li-tit">
+								<view v-if="key == 0">新</view>{{item.title}}
+							</view>
+							<view class="li-icons">
+								<text>{{item.source}}</text>
+								<text>{{item.begin}}</text>
+							</view>
+						</view>
+						<view class="right">
+							<image :src="item.img" mode=""></image>
+						</view>
+					</view>
+				</view>
 			</view>
 		</view>
 		<!-- 交房时间 -->
-		<view class="jiao_time" v-show="jiao_time_show">
+		<view class="jiao_time" v-show="type==2">
 			<view class="time_one" v-if="jiao_time !== ''">
 				<text class="yuan"></text>
 				交房时间：{{jiao_time}}
 			</view>
 		</view>
 		<!-- 五证信息 -->
-		<view class="wu_zheng" v-show="wu_zheng_show">
+		<view class="wu_zheng" v-show="type==3">
 			<view class="time_one" v-if="zheng!==''">
 				<text class="yuan"></text>
 				{{zheng}}
@@ -93,6 +111,8 @@
 				zheng: '',
 				page: 1,
 				hua: true,
+				type: 0,
+				infos: []
 			};
 		},
 		components: {
@@ -102,6 +122,7 @@
 			console.log(option.id);
 			this.getdata(option.id);
 			this.project_id = option.id;
+			this.type = option.type
 		},
 		// onPullDownRefresh (){
 		// 	console.log("触发下拉刷新了");
@@ -114,6 +135,11 @@
 
 		},
 		methods: {
+			go(id) {
+				uni.navigateTo({
+					url: "/pages/info/info?id="+id
+				})
+			},
 			back() {
 				uni.navigateBack({
 					data:1
@@ -214,6 +240,26 @@
 							this.pull_time = res.data.building.push_time;
 							this.jiao_time = res.data.building.give_time;
 							this.zheng = res.data.building.license;
+						}
+					}
+				})
+				uni.request({
+					url: this.apiserve + "/jy/project/article",
+					data: {
+						// id 项目id
+						// city 城市id
+						// page 第几页
+						// limit 每页几条
+						project: id,
+						page: 1,
+						limit: 20,
+						site: 2
+					},
+					method: 'GET',
+					success: (res) => {
+						if (res.data.code == 200) {
+							console.log(res);
+							this.infos = res.data.data
 						}
 					}
 				})
@@ -403,6 +449,58 @@
 				font-weight: 500;
 				color: #323233;
 				line-height: 60rpx;
+			}
+			.other {
+				.other-li {
+					display: flex;
+					margin-bottom: 18rpx;
+			
+					.left {
+						flex: 1;
+			
+						.li-tit {
+							color: #303233;
+							font-size: 28rpx;
+							line-height: 42rpx;
+							display: -webkit-box;
+							-webkit-box-orient: vertical;
+							-webkit-line-clamp: 2;
+							overflow: hidden;
+							margin-bottom: 20rpx;
+			
+							view {
+								font-size: 24rpx;
+								color: #FFFFFF;
+								background-color: #FF4040;
+								border-radius: 4rpx;
+								width: 30rpx;
+								height: 30rpx;
+								display: inline-block;
+								text-align: center;
+								line-height: 30rpx;
+							}
+						}
+			
+						.li-icons {
+							text {
+								color: #626466;
+								font-size: 22rpx;
+								margin-right: 16rpx;
+							}
+						}
+					}
+			
+					.right {
+						width: 200rpx;
+						margin-left: 42rpx;
+			
+						image {
+							width: 100%;
+							height: 140rpx;
+							border-radius: 12rpx;
+						}
+					}
+				}
 			}
 		}
 

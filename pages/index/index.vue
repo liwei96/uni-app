@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="content" v-if="isover">
 		<!-- <view class="toptitle">
 			<view class="status_bar">
 			</view>
@@ -311,7 +311,8 @@
 					jiao: false,
 				},
 				cityname: '杭州',
-				isweixin: false
+				isweixin: false,
+				isover: false
 			}
 		},
 		components:{
@@ -325,6 +326,9 @@
 			this.cityname = uni.getStorageSync('cityname') || '杭州'
 			let city = options.city || uni.getStorageSync('city');
 			let token = uni.getStorageSync("token");
+			uni.showLoading({
+				title: "加载中"
+			})
 			uni.request({
 				url: this.apiserve + '/applets/first',
 				data: {
@@ -334,6 +338,8 @@
 				success: (res) => {
 					console.log(res);
 					if (res.data.code == 200) {
+						this.isover = true
+						uni.hideLoading()
 						this.tops = res.data.data.tops;
 						this.avg_prices = res.data.data.avg_prices;
 						this.rigid_demand = res.data.data.rigid_demand;
