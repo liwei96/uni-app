@@ -26,7 +26,7 @@
 							<view class="pro_one">
 								<image :src="item.img" mode=""></image>
 								<view class="right_name">
-									<view class="name">{{item.name}}{{item.id}}</view>
+									<view class="name">{{item.name}}</view>
 									<view class="price">{{item.price}}元/m²</view>
 									<view class="type">{{item.type}}<text class="ge">|</text>{{item.city}}-{{item.country}}<text class="ge">|</text>{{item.area}}m²</view>
 									<view class="tese">
@@ -240,10 +240,15 @@
 				console.log(arr)
 				let id_arr = [];
 				arr.map(p => {
-					id_arr.push(p)
+					if (p instanceof Object) {
+						id_arr.push(p.id)
+					}else{
+						id_arr.push(p)
+					}
 				})
 
 				let checkbox = id_arr.join(',');
+				console.log(checkbox)
 				uni.navigateTo({
 					url: '../loupkdetail/loupkdetail?id=' + checkbox
 				})

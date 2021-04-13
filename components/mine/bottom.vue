@@ -311,7 +311,6 @@
 
 <style lang="less" scoped>
 	button {
-		width: 256rpx;
 		padding: 0;
 	}
 
@@ -326,6 +325,7 @@
 		left: 0rpx;
 		border-top: none;
 		z-index: 1000;
+		display: flex;
 
 		//border-top:1rpx solid #fff;
 		.zixun {
@@ -379,7 +379,6 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			margin-right: 20rpx;
 		}
 
 		button::after {
@@ -392,6 +391,7 @@
 			background: linear-gradient(-45deg, #348AFF, #6ACCFF);
 			border-radius: 12rpx;
 			float: left;
+			margin-left: 20rpx;
 
 			image {
 				width: 36rpx;

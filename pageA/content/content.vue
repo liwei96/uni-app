@@ -554,7 +554,8 @@
 		<view class="lou_infos" v-if="infos.length>0">
 			<view class="infos-tit">
 				<text class="kk">相关资讯</text>
-				<view class="right" @tap="goloudong">更多资讯<image src="../../static/content/right.png" mode=""></image></view>
+				<view class="right" @tap="goloudong">更多资讯<image src="../../static/content/right.png" mode=""></image>
+				</view>
 			</view>
 			<view class="ul">
 				<view class="li" v-for="(item,key) in infos" :key="key" v-if="key<=2" @tap="goinfo(item.id)">
@@ -587,13 +588,18 @@
 
 			</view>
 		</view>
-		<bottom :remark="'项目落地页+预约看房'" :point="103" :title="'预约看房'" :pid="detail.id" :telphone="old_telphone"></bottom>
+		<bottom ref="bomnav" :remark="'项目落地页+预约看房'" :point="103" :title="'预约看房'" :pid="detail.id" :telphone="old_telphone"></bottom>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign ref="sign" :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"
 			 :isok="isok"></sign>
 		</wyb-popup>
 		<mytoast :txt="msg" ref="msg"></mytoast>
-
+		<!-- 自动获取授权 -->
+		<wyb-popup ref="zidong" type="center" height="500" width="660" radius="20" @hide="setiscode">
+		<shou @closeshou="clsshou"></shou>
+		</wyb-popup>
+		
+		
 		<wyb-popup ref="rules" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<view class="rules">
 				<view class="title">
@@ -639,6 +645,7 @@
 	import uCharts from '@/components/u-charts/u-charts/u-charts.min.js'
 	import wybPopup from '@/components/wyb-popup/wyb-popup.vue'
 	import sign from '@/components/sign.vue'
+	import shou from '@/components/zidong.vue'
 	import mytoast from "@/components/mytoast/mytoast.vue"
 	import bottom from "@/components/mine/bottom.vue"
 	var _self;
@@ -653,7 +660,8 @@
 			sign,
 			wybPopup,
 			mytoast,
-			bottom
+			bottom,
+			shou
 		},
 		data() {
 			return {
@@ -773,6 +781,9 @@
 			};
 		},
 		onLoad(option) {
+			if(!uni.getStorageSync('pass')){
+				this.$refs.zidong.show()
+			}
 			// #ifdef  MP-WEIXIN
 			this.isweixin = true
 			// #endif
@@ -795,12 +806,12 @@
 		methods: {
 			goloudong() {
 				uni.navigateTo({
-					url:'/pages/loudong/loudong?id='+this.pid+'&type=1'
+					url: '/pages/loudong/loudong?id=' + this.pid + '&type=1'
 				})
 			},
 			goinfo(id) {
 				uni.navigateTo({
-					url:'/pages/info/info?id='+id
+					url: '/pages/info/info?id=' + id
 				})
 			},
 			gowen(id) {
@@ -1683,6 +1694,14 @@
 					}
 				});
 			},
+			clsshou(e){
+				console.log(e)
+				if (e) {
+					this.pass = true
+					this.$refs.bomnav.pass = true
+				}
+				this.$refs.zidong.hide()
+			},
 			changeData() {
 				canvaColumn.updateData({
 					series: _self.serverData.ColumnB.series,
@@ -1736,7 +1755,7 @@
 			},
 			allDong(id) {
 				uni.navigateTo({
-					url: "/pages/loudong/loudong?id=" + id+'&type=0'
+					url: "/pages/loudong/loudong?id=" + id + '&type=0'
 				})
 			},
 			allDian(id) {
@@ -3555,7 +3574,7 @@
 			}
 		}
 
-		
+
 
 		//看了该楼盘的人还看了
 		.about_lou {
@@ -3681,24 +3700,29 @@
 			background-color: #fff;
 			padding-left: 30rpx;
 			padding-right: 30rpx;
+
 			.infos-tit {
 				padding-top: 40rpx;
 				margin-bottom: 48rpx;
+
 				.kk {
 					color: #121212;
 					font-size: 32rpx;
 					font-weight: bold;
 				}
+
 				.right {
 					color: #646466;
 					font-size: 28rpx;
 					float: right;
+
 					image {
 						width: 24rpx;
 						height: 24rpx;
 					}
 				}
 			}
+
 			.ul {
 				.li {
 					color: #323233;
@@ -3708,16 +3732,18 @@
 					border-bottom: 1rpx solid #F2F2F2;
 					margin-bottom: 26rpx;
 				}
+
 				.li:before {
-				      content: "";
-				      display: inline-block;
-				      width: 6rpx;
-				      height: 6rpx;
-				      background-color: #333;
-				      border-radius: 50%;
-				      margin-right: 5rpx;
-				      vertical-align: middle;
-				    }
+					content: "";
+					display: inline-block;
+					width: 6rpx;
+					height: 6rpx;
+					background-color: #333;
+					border-radius: 50%;
+					margin-right: 5rpx;
+					vertical-align: middle;
+				}
+
 				.li:last-child {
 					border: 0;
 					margin-bottom: 14rpx;

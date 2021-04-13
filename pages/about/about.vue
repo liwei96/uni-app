@@ -6,7 +6,7 @@
 		</view> -->
 		<image src="../../static/other/about-top.jpg" mode="" class="topimg"></image>
 		<view class="con">
-			<view class="tit">
+			<view class="tit" @tap="test">
 				关于我们
 			</view>
 			<view class="titabc">
@@ -92,6 +92,25 @@
 				uni.navigateBack({
 					data: 1
 				})
+			},
+			test() {
+				uni.chooseImage({
+				    success: (chooseImageRes) => {
+				        const tempFilePaths = chooseImageRes.tempFilePaths;
+						console.log(tempFilePaths)
+				        // uni.uploadFile({
+				        //     url: 'https://www.example.com/upload', //仅为示例，非真实的接口地址
+				        //     filePath: tempFilePaths[0],
+				        //     name: 'file',
+				        //     formData: {
+				        //         'user': 'test'
+				        //     },
+				        //     success: (uploadFileRes) => {
+				        //         console.log(uploadFileRes.data);
+				        //     }
+				        // });
+				    }
+				});
 			}
 		}
 	}

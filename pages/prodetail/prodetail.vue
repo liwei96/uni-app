@@ -521,15 +521,16 @@
 
 			.tese_line {
 				.tese {
-					width: 68rpx;
-					height: 36rpx;
+					// width: 68rpx;
+					// height: 36rpx;
+					padding: 8rpx 12rpx;
 					background: #E6FAF0;
 					border-radius: 6rpx;
 					font-size: 22rpx;
 					font-weight: 500;
 					color: #2AC66D;
 					text-align: center;
-					line-height: 36rpx;
+					// line-height: 36rpx;
 					display: inline-block;
 					margin-right: 12rpx;
 				}

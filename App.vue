@@ -155,5 +155,6 @@
 	/*每个页面公共css */
 	button {
 		background: rgba(0,0,0,0);
+		margin: 0;
 	}
 </style>

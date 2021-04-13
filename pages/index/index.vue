@@ -19,42 +19,42 @@
 		</view>
 		<image src="../../static/index/index-banner.jpg" mode="" class="banner"></image>
 		<view class="nav">
-			<view class="nav-li">
-				<navigator url="../building/building" open-type="navigate">
+			<view class="nav-li" @tap="gobuild">
+				<!-- <navigator url="../building/building" open-type="navigate"> -->
 					<image src="../../static/index/index-new.png" mode=""></image>
 					<text>新房</text>
-				</navigator>
+				<!-- </navigator> -->
 			</view>
-			<view class="nav-li" v-if="!isweixin">
-				<navigator url="/pageA/special/special" open-type="navigate">
+			<view class="nav-li" v-if="!isweixin" @tap="gospecial">
+				<!-- <navigator url="/pageA/special/special" open-type="navigate"> -->
 					<image src="../../static/index/index-luck.png" mode=""></image>
 					<text>特价房</text>
 					<!-- <text class="youhui">优惠</text> -->
-				</navigator>
+				<!-- </navigator> -->
 			</view>
-			<view class="nav-li">
-				<navigator url="../weike/weike" open-type="navigate">
+			<view class="nav-li" @tap="goweike">
+				<!-- <navigator url="../weike/weike" open-type="navigate"> -->
 					<image src="../../static/index/index-weike.png" mode=""></image>
 					<text>百科</text>
-				</navigator>
+				<!-- </navigator> -->
 			</view>
-			<view class="nav-li">
-				<navigator url="../infos/infos" open-type="navigate">
+			<view class="nav-li" @tap="goinfos">
+				<!-- <navigator url="../infos/infos" open-type="navigate"> -->
 					<image src="../../static/index/index-info.png" mode=""></image>
 					<text>资讯</text>
-				</navigator>
+				<!-- </navigator> -->
 			</view>
-			<view class="nav-li">
-				<navigator url="../map/map" open-type="navigate">
+			<view class="nav-li" @tap="gomap">
+				<!-- <navigator url="../map/map" open-type="navigate"> -->
 					<image src="../../static/index/index-map.png" mode=""></image>
 					<text>地图</text>
-				</navigator>
+				<!-- </navigator> -->
 			</view>
-			<view class="nav-li" v-if="isweixin">
-				<navigator url="/pages/alliance/alliance" open-type="navigate">
+			<view class="nav-li" v-if="isweixin" @tap="gojoin">
+				<!-- <navigator url="/pages/alliance/alliance" open-type="navigate"> -->
 					<image src="../../static/index/index-join.png" mode=""></image>
 					<text>招商加盟</text>
-				</navigator>
+				<!-- </navigator> -->
 			</view>
 		</view>
 		<view class="topnew">
@@ -383,6 +383,36 @@
 			}).exec();
 		},
 		methods: {
+			gobuild() {
+				uni.navigateTo({
+					url:`/pages/building/building`
+				})
+			},
+			gojoin() {
+				uni.navigateTo({
+					url:`/pages/alliance/alliance`
+				})
+			},
+			gomap() {
+				uni.navigateTo({
+					url:`/pages/map/map`
+				})
+			},
+			goinfos() {
+				uni.navigateTo({
+					url:`/pages/infos/infos`
+				})
+			},
+			gospecial() {
+				uni.navigateTo({
+					url:`/pageA/special/special`
+				})
+			},
+			goweike() {
+				uni.navigateTo({
+					url:`/pages/weike/weike`
+				})
+			},
 			godetail(id) {
 				uni.navigateTo({
 					url:`/pageA/content/content?id=${id}`
