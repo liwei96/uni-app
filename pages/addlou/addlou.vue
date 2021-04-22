@@ -119,6 +119,8 @@
 					data:{
 						city:city_id,
 						token:token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success:(res)=> {
 					   if(res.data.code==200){

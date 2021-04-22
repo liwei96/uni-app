@@ -139,7 +139,9 @@
 					data:{
 						id:id,
 						other:other,
-						token:token
+						token:token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					method:"GET",
 					success: (res) => {

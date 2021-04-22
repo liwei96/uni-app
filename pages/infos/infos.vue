@@ -141,7 +141,9 @@
 					method: "GET",
 					data: {
 						city: city,
-						token: token
+						token: token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						that.tops = res.data.tops
@@ -177,7 +179,9 @@
 						position: that.navnum,
 						page: that.page,
 						limit: 10,
-						token: token
+						token: token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						console.log(res)
@@ -202,7 +206,9 @@
 						position: that.navnum,
 						page: that.page,
 						limit: 10,
-						token: token
+						token: token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						console.log(res)

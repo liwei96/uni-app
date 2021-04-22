@@ -281,7 +281,9 @@
 					data: {
 						ids: ids,
 						city: city_id,
-						token: token
+						token: token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						if (res.data.code == 200) {

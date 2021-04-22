@@ -73,7 +73,8 @@
 					url:this.apiserve+"/applets/house/listing",
 				    data:{
 						id:id,
-						other:other,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid'),
 						token:token
 					},
 					method:"GET",

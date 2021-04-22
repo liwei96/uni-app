@@ -321,7 +321,7 @@
 			</view>
 		</view>
 		<toast ref="toast" :txt="toasttxt"></toast>
-		<tabbar :type="1"></tabbar>
+		<!-- <tabbar :type="1"></tabbar> -->
 	</view>
 </template>
 
@@ -620,7 +620,9 @@
 						method:"GET",
 						data:{
 							city: city,
-							token:token
+							token:token,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid')
 						},
 						success: (res) => {
 							that.citys = res.data.conditions.countries
@@ -648,6 +650,8 @@
 				
 				let data = this.search
 				data.city = city
+				data.other = uni.getStorageSync('other')
+				data.uuid = uni.getStorageSync('uuid')
 				uni.request({
 					url:that.apiserve+"/applets/search/info",
 					method:"GET",
@@ -676,7 +680,9 @@
 								method:"GET",
 								data:{
 									city: city,
-									count: 4
+									count: 4,
+									other: uni.getStorageSync('other'),
+									uuid: uni.getStorageSync('uuid')
 								},
 								success: (response) => {
 									console.log(response)
@@ -697,6 +703,8 @@
 				let city = uni.getStorageSync('city')
 				let data = this.search
 				data.city = city
+				data.other = uni.getStorageSync('other')
+				data.uuid = uni.getStorageSync('uuid')
 				// let num = this.total
 				let num = Math.ceil((this.total/10))
 				if(this.page > num) {
@@ -735,7 +743,6 @@
 <style lang="less">
 	page{
 		background: #FFFFFF;
-		padding-bottom: 100rpx;
 	}
 	.toptitle {
 		color: #17181A;

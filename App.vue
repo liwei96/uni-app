@@ -1,8 +1,15 @@
 <script>
 	var that
 	export default {
+		data() {
+			return {
+				socket: {}
+			}
+		},
 		onLaunch: function() {
 			that = this
+		},
+		onShow: async () => {
 			if (!uni.getStorageSync('city')) {
 				uni.setStorageSync('city', 1)
 				uni.setStorageSync('cityname', '杭州')
@@ -22,14 +29,18 @@
 				uni.setStorageSync('uuid', timestamp)
 				uuid = timestamp
 			}
-			uni.connectSocket({
-				url: 'wss://ws.edefang.net?uuid=' + uuid
+			let socket = await uni.connectSocket({
+				url: 'wss://ws.edefang.net?uuid=' + uuid,
+				complete: ()=> {}
 			});
-			uni.onSocketOpen(function (res) {
+			console.log(socket)
+			that.$store.state.socket = socket
+			that.socket = socket
+			socket.onOpen(function(res) {
 				console.log('WebSocket连接已打开！');
 				that.checkOpenSocket()
 			});
-			
+
 			uni.request({
 				url: 'https://ll.edefang.net/getIp.php',
 				method: 'GET',
@@ -41,21 +52,18 @@
 					uni.setStorageSync('ip', ip)
 				}
 			})
-
-		},
-		onShow: function() {
 			console.log('App Show')
 		},
 		onHide: function() {
 			console.log('App Hide')
-			uni.onSocketClose(function(res) {
+			this.socket.onClose(function(){
 				console.log('WebSocket 已关闭！');
-			});
+			})
 		},
 		onUnload() {
-			uni.onSocketClose(function(res) {
+			this.socket.onClose(function(){
 				console.log('WebSocket 已关闭！');
-			});
+			})
 		},
 		data() {
 			return {
@@ -67,7 +75,7 @@
 		methods: {
 			// 判断是否已连接
 			checkOpenSocket() {
-				uni.sendSocketMessage({
+				this.socket.send({
 					data: 'PING',
 					success: res => {
 						that.onSocketMessage()
@@ -78,7 +86,7 @@
 					}
 				});
 			},
-			openConnection() {
+			async openConnection() {
 				// 打开连接
 				uni.closeSocket(); // 确保已经关闭后再重新打开
 				let uuid = uni.getStorageSync('uuid')
@@ -96,16 +104,14 @@
 					uni.setStorageSync('uuid', timestamp)
 					uuid = timestamp
 				}
-				uni.connectSocket({
-					url: 'wss://ws.edefang.net?uuid=' + uuid,
-					success(res) {
-						console.log('连接成功 connectSocket=', res);
-					},
-					fail(err) {
-						console.log('连接失败 connectSocket=', err);
-					}
-				});
-				uni.onSocketOpen(function (res) {
+				
+				let socket = await uni.connectSocket({
+								url: 'wss://ws.edefang.net?uuid=' + uuid,
+								complete: ()=> {}
+							});
+							this.$store.state.socket = socket
+							this.socket = socket
+				socket.onOpen(function(res) {
 					console.log('WebSocket连接已打开！');
 					that.checkOpenSocket()
 				});
@@ -115,7 +121,8 @@
 				// 消息
 				this.timeout = 6000;
 				this.timeoutObj = null;
-				uni.onSocketMessage(res => {
+				this.socket.onMessage(res => {
+					console.log(res)
 					that.getSocketMsg(res.data); // 监听到有新服务器消息
 				});
 			},
@@ -132,10 +139,9 @@
 			// 启动心跳 start
 			start() {
 				this.timeoutObj = setInterval(function() {
-					uni.sendSocketMessage({
+					that.socket.send({
 						data: 'PING',
-						success: res => {
-						},
+						success: res => {},
 						fail: err => {
 							console.log('连接失败重新连接....');
 							that.openConnection();
@@ -145,8 +151,8 @@
 			}
 
 		},
-		mounted(){
-			
+		mounted() {
+
 		}
 	}
 </script>
@@ -154,7 +160,7 @@
 <style>
 	/*每个页面公共css */
 	button {
-		background: rgba(0,0,0,0);
+		background: rgba(0, 0, 0, 0);
 		margin: 0;
 	}
 </style>

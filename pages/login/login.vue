@@ -83,7 +83,9 @@
 			  				position: "106",
 			  				tel: phone,
 			  				kid: kid,
-			  				other: other
+			  				other: other,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid')
 			  			},
 			  			method: "GET",
 			  			success: (res) => {
@@ -114,7 +116,9 @@
 			  								method:'GET',
 			  								data:{
 			  									phone: phone,
-			  									openid: openid
+			  									openid: openid,
+												other: uni.getStorageSync('other'),
+												uuid: uni.getStorageSync('uuid')
 			  								},
 			  								success: (res) => {
 			  									console.log(res)
@@ -139,7 +143,9 @@
 			  			data: {
 			  				ip: ip,
 			  				phone: phone,
-			  				source: 3
+			  				source: 3,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid')
 			  			},
 						header: {
 							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -175,7 +181,9 @@
 					data: {
 						phone: phone,
 						source: 3,
-						code: that.code
+						code: that.code,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'

@@ -217,7 +217,9 @@
 						position: that.listnum,
 						page: that.page,
 						limit: 10,
-						token: token
+						token: token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						console.log(res)
@@ -255,7 +257,9 @@
 						position: that.listnum,
 						page: that.page,
 						limit: 10,
-						token: token
+						token: token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						console.log(res)

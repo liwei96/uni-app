@@ -100,13 +100,16 @@
 						method: 'POST',
 						data: {
 							name: that.name,
-							limit: 5,
-							page: 1
+							limit: 50,
+							page: 1,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid'),
+							city: that.city
 						},
 						success: (res) => {
 							console.log(res)
 							that.other = res.data.data
-							that.num = res.data.data.length
+							that.num = res.data.total
 						}
 					})
 				} else {
@@ -125,11 +128,13 @@
 					data: {
 						name: that.name,
 						limit: 5,
-						page: that.page
+						page: that.page,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid'),
+						city: that.city
 					},
 					success: (res) => {
 						that.other = that.other.concat(res.data.data)
-						that.num = that.other.length
 					}
 				})
 			},
@@ -153,7 +158,9 @@
 						city: city,
 						token: token,
 						limit: 5,
-						page: 1
+						page: 1,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						console.log(res)
@@ -314,10 +321,9 @@
 
 	.up-box {
 		position: fixed;
-		height: 50vh;
 		padding: 0 4%;
 		width: 92%;
-		top: 15vh;
+		top: 14vh;
 		height: 86vh;
 		background-color: #FFFFFF;
 		display: flex;
@@ -337,7 +343,7 @@
 		.up-content {
 			flex: 1;
 			.scroll {
-				height: 100%;
+				height: 500vh;
 			}
 			.li {
 				display: flex;

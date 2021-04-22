@@ -13,6 +13,7 @@
 			<text>获得你的公开新消息（昵称、头像）</text>
 		</view>
 		<view class="bom">
+			<!-- <button contact open-type="login" bindlogin="login" class="yes">确定</button> -->
 			<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="yes">确定</button>
 			<button class="cls" @click="sls">取消</button>
 		</view>
@@ -23,25 +24,23 @@
 	var that
 	export default {
 		data() {
-			return {
-			};
+			return {};
 		},
 		methods: {
 			getPhoneNumber(e) {
 				that = this
-				uni.setStorageSync("pass", true);
-				uni.login({
-					provider: 'baidu',
-					success: function(res) {
-						console.log(res.code);
+				swan.getLoginCode({
+					success: res => {
+						console.log('getLoginCode success', res);
 						uni.request({
 							url: 'https://api.edefang.net/applets/baidu/get_session_key',
 							method: 'get',
 							data: {
-								code: res.code
+								code: res.code,
+								other: uni.getStorageSync('other'),
+								uuid: uni.getStorageSync('uuid')
 							},
 							success: (res) => {
-								console.log(res)
 								uni.setStorageSync('openid', res.data.openid)
 								uni.setStorageSync('session', res.data.session_key)
 								uni.request({
@@ -49,35 +48,50 @@
 									data: {
 										data: e.detail.encryptedData,
 										iv: e.detail.iv,
-										session_key: res.data.session_key
+										session_key: res.data.session_key,
+										other: uni.getStorageSync('other'),
+										uuid: uni.getStorageSync('uuid')
 									},
 									success: (res) => {
-										console.log(res)
 										let tel = res.data.mobile
 										uni.setStorageSync('phone', tel)
 										let openid = uni.getStorageSync('openid')
 										that.tel = tel
+										let city = uni.getStorageSync('city')
+										let bid = uni.getStorageSync('bid')
 										uni.request({
 											url: "https://api.edefang.net/applets/login",
 											method: 'GET',
 											data: {
 												phone: tel,
-												openid: openid
+												openid: openid,
+												bid: bid,
+												city: city,
+												source: 1,
+												other: uni.getStorageSync('other'),
+												uuid: uni.getStorageSync('uuid')
 											},
 											success: (res) => {
-												console.log(res)
-												uni.setStorageSync('token', res.data.token)
-												that.$emit('closeshou', true)
+												if (res.data.code === 200) {
+													uni.setStorageSync('token', res.data.token)
+													that.$emit('closeshou', true)
+													uni.setStorageSync("pass", true);
+												} else {
+													that.$emit('closeshou', false)
+												}
 											}
 										})
 									}
 								})
 							}
 						})
+					},
+					fail: err => {
+						console.log('getLoginCode fail', err);
 					}
 				});
 			},
-			sls(){
+			sls() {
 				this.$emit('closeshou', false)
 			}
 		}
@@ -91,21 +105,21 @@
 		border-radius: 20rpx;
 		background: #FFFFFF;
 		padding: 0 55rpx;
-		padding-top: 60rpx;
+		padding-top: 57rpx;
 
 		.tit {
 			font-size: 34rpx;
 			color: #1A1A1A;
 			font-weight: 800;
-			margin-bottom: 30rpx;
+			margin-bottom: 29rpx;
 		}
 
 		.txt {
 			display: flex;
 			align-items: center;
-			padding-bottom: 35rpx;
+			padding-bottom: 34rpx;
 			border-bottom: 1rpx solid #EDEDED;
-			margin-bottom: 40rpx;
+			margin-bottom: 38rpx;
 
 			image {
 				width: 88rpx;
@@ -124,7 +138,7 @@
 		.msg {
 			display: flex;
 			align-items: center;
-			margin-bottom: 40rpx;
+			margin-bottom: 42rpx;
 
 			.round {
 				width: 24rpx;

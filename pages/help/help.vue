@@ -206,7 +206,9 @@
 							data: {
 								iv: e.detail.iv,
 								data: e.detail.encryptedData,
-								session_key: session
+								session_key: session,
+								other: uni.getStorageSync('other'),
+								uuid: uni.getStorageSync('uuid')
 							},
 							success: (res) => {
 								console.log(res)
@@ -217,15 +219,16 @@
 							}
 						})
 					} else {
-						uni.login({
-							provider: 'baidu',
-							success: function(res) {
+						swan.getLoginCode({
+											success: res => {
 								console.log(res.code);
 								uni.request({
 									url: 'https://api.edefang.net/applets/baidu/get_session_key',
 									method: 'get',
 									data: {
-										code: res.code
+										code: res.code,
+										other: uni.getStorageSync('other'),
+										uuid: uni.getStorageSync('uuid')
 									},
 									success: (res) => {
 										console.log(res)
@@ -236,7 +239,9 @@
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												session_key: res.data.session_key
+												session_key: res.data.session_key,
+												other: uni.getStorageSync('other'),
+												uuid: uni.getStorageSync('uuid')
 											},
 											success: (res) => {
 												console.log(res)
@@ -269,7 +274,9 @@
 									url: 'https://ll.edefang.net/api/weichat/jscode2session',
 									method: 'get',
 									data: {
-										code: res.code
+										code: res.code,
+										other: uni.getStorageSync('other'),
+										uuid: uni.getStorageSync('uuid')
 									},
 									success: (res) => {
 										console.log(res)
@@ -280,7 +287,9 @@
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												sessionKey: res.data.data.session_key
+												sessionKey: res.data.data.session_key,
+												other: uni.getStorageSync('other'),
+												uuid: uni.getStorageSync('uuid')
 											},
 											success: (res) => {
 												console.log(res)
@@ -356,7 +365,9 @@
 								position: 110,
 								tel: phone,
 								kid: kid,
-								other: other
+								other: other,
+								other: uni.getStorageSync('other'),
+								uuid: uni.getStorageSync('uuid')
 							},
 							method: "GET",
 							success: (res) => {
@@ -395,7 +406,9 @@
 												method:'GET',
 												data:{
 													phone: phone,
-													openid: openid
+													openid: openid,
+													other: uni.getStorageSync('other'),
+													uuid: uni.getStorageSync('uuid')
 												},
 												success: (res) => {
 													console.log(res)
@@ -418,7 +431,9 @@
 								data: {
 									ip: ip,
 									phone: phone,
-									source: 3
+									source: 3,
+									other: uni.getStorageSync('other'),
+									uuid: uni.getStorageSync('uuid')
 								},
 								header: {
 									'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -455,7 +470,9 @@
 							data: {
 								ip: ip,
 								phone: phone,
-								source: 3
+								source: 3,
+								other: uni.getStorageSync('other'),
+								uuid: uni.getStorageSync('uuid')
 							},
 							header: {
 								'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -503,7 +520,9 @@
 					data: {
 						code: code,
 						phone: phone,
-						source: 3
+						source: 3,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -553,7 +572,9 @@
 					method:'GET',
 					data:{
 						city: city,
-						token: token
+						token: token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						console.log(res)

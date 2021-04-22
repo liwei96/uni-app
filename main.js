@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import App from './App'
-
+import store from './store'
+//把vuex定义成全局组件
+Vue.prototype.$store = store
 Vue.config.productionTip = false
 import websocket from './socket/index.js'
 App.mpType = 'app'
@@ -91,7 +93,6 @@ Vue.prototype.login = function(e,that){
 		  }
 		});
 	}
-	
 }
 
 Vue.prototype.httpsapi = 'https://api.edefang.net'

@@ -22,9 +22,10 @@
 			<image src="../../static/content/yuyue.png" mode=""></image>
 			预约看房
 		</view>
-		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
-			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"
-			 :isok="isok"></sign>
+		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true"
+			@hide="setiscode">
+			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k"
+				:position="position_n" :isok="isok"></sign>
 		</wyb-popup>
 	</view>
 </template>
@@ -72,6 +73,7 @@
 			};
 		},
 		mounted() {
+			console.log(this.$store.state,78979798789)
 			let that = this
 			this.pass = uni.getStorageSync('pass')
 			// this.num = uni.getStorageSync('total')
@@ -80,16 +82,31 @@
 					return
 				}
 				let data = JSON.parse(res.data)
-				console.log(res.data)
-
-				console.log(data)
 				if (data.action == 302) {
 					that.sid = data.sid
 				} else if (data.action == 301) {
+					console.log(that.pid,uni.getStorageSync(String(that.pid)))
+					if (!uni.getStorageSync(String(that.pid))) {
+						that.$store.state.socket.send({
+							data: JSON.stringify({
+								controller: "Staff",
+								action: "info",
+								params: {
+									uuid: data.fromUserName,
+									host: 'www.jy8006.com'
+								},
+							}),
+							success: res => {
+								uni.setStorageSync(String(that.pid), data.fromUserName)
+							}
+						});
+					}
 					if (String(data.fromUserName).length < 10) {
+
 						that.sid = data.fromUserName
 						if (uni.getStorageSync(String(data.fromUserName))) {
-							uni.setStorageSync(String(data.fromUserName), parseInt(uni.getStorageSync(String(data.fromUserName))) + 1)
+							uni.setStorageSync(String(data.fromUserName), parseInt(uni.getStorageSync(String(data
+								.fromUserName))) + 1)
 						} else {
 							uni.setStorageSync(String(data.fromUserName), 1)
 						}
@@ -101,6 +118,19 @@
 							that.num = 1;
 						}
 					}
+				} else if (data.action == 206) {
+					let msg = {
+						usernum: data.num.user_num,
+						looknum: data.num.look_num,
+						rate: data.num.rate,
+						stafftel: data.staff.tel,
+						staffname: data.staff.name,
+						staffimg: data.staff.img,
+						staffid: data.staff.id
+					}
+					that.$parent.staffmsg = msg
+					that.$parent.$refs.talkbox.show()
+					console.log(msg)
 				}
 			})
 		},
@@ -184,7 +214,9 @@
 							data: {
 								iv: e.detail.iv,
 								data: e.detail.encryptedData,
-								session_key: session
+								session_key: session,
+								other: uni.getStorageSync('other'),
+								uuid: uni.getStorageSync('uuid')
 							},
 							success: (res) => {
 								console.log(res)
@@ -196,15 +228,16 @@
 							}
 						})
 					} else {
-						uni.login({
-							provider: 'baidu',
-							success: function(res) {
+						swan.getLoginCode({
+							success: res => {
 								console.log(res.code);
 								uni.request({
 									url: 'https://api.edefang.net/applets/baidu/get_session_key',
 									method: 'get',
 									data: {
-										code: res.code
+										code: res.code,
+										other: uni.getStorageSync('other'),
+										uuid: uni.getStorageSync('uuid')
 									},
 									success: (res) => {
 										console.log(res)
@@ -215,15 +248,20 @@
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												session_key: res.data.session_key
+												session_key: res.data.session_key,
+												other: uni.getStorageSync('other'),
+												uuid: uni.getStorageSync('uuid')
 											},
 											success: (res) => {
 												console.log(res)
 												let tel = res.data.mobile
 												uni.setStorageSync('phone', tel)
-												let openid = uni.getStorageSync('openid')
+												let openid = uni.getStorageSync(
+													'openid')
 												that.tel = tel
-												that.baoMing(that.remark, that.point, that.title, that.pid, 1)
+												that.baoMing(that.remark, that
+													.point, that.title, that
+													.pid, 1)
 											}
 										})
 
@@ -249,7 +287,9 @@
 								url: 'https://ll.edefang.net/api/weichat/jscode2session',
 								method: 'get',
 								data: {
-									code: res.code
+									code: res.code,
+									other: uni.getStorageSync('other'),
+									uuid: uni.getStorageSync('uuid')
 								},
 								success: (res) => {
 									console.log(res)
@@ -260,7 +300,9 @@
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
-											sessionKey: res.data.data.session_key
+											sessionKey: res.data.data.session_key,
+											other: uni.getStorageSync('other'),
+											uuid: uni.getStorageSync('uuid')
 										},
 										success: (res) => {
 											console.log(res)
@@ -271,22 +313,31 @@
 											uni.setStorageSync('phone', tel)
 											let token = uni.getStorageSync('token')
 											if (!token) {
-												let openid = uni.getStorageSync('openid')
+												let openid = uni.getStorageSync(
+													'openid')
 												uni.request({
 													url: "https://api.edefang.net/applets/login",
 													method: 'GET',
 													data: {
 														phone: tel,
-														openid: openid
+														openid: openid,
+														other: uni.getStorageSync('other'),
+														uuid: uni.getStorageSync('uuid')
 													},
 													success: (res) => {
-														console.log(res)
-														uni.setStorageSync('token', res.data.token)
+														console.log(
+															res)
+														uni.setStorageSync(
+															'token',
+															res
+															.data
+															.token)
 													}
 												})
 											}
 											that.tel = tel
-											that.baoMing(that.remark, that.point, that.title, that.pid, 1)
+											that.baoMing(that.remark, that.point,
+												that.title, that.pid, 1)
 										}
 									})
 

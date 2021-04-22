@@ -164,6 +164,8 @@
 						city: city_id,
 						page: this.page,
 						limit: 10,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					method: 'GET',
 					success: (res) => {
@@ -196,6 +198,8 @@
 						city: city_id,
 						page: this.page,
 						limit: 10,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					method: 'GET',
 					success: (res) => {
@@ -232,6 +236,8 @@
 						id: id,
 						other: other,
 						token: token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					method: 'GET',
 					success: (res) => {
@@ -253,7 +259,9 @@
 						project: id,
 						page: 1,
 						limit: 20,
-						site: 2
+						site: 2,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					method: 'GET',
 					success: (res) => {

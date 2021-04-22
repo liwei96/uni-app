@@ -93,15 +93,16 @@
 					if(session){
 						that.submitDian(that.building.id)
 					}else {
-						uni.login({
-						  provider: 'baidu',
-						  success: function (res) {
+						swan.getLoginCode({
+											success: res => {
 						    console.log(res.code);
 							uni.request({
 								url: 'https://api.edefang.net/applets/baidu/get_session_key',
 								method:'get',
 								data:{
-									code: res.code
+									code: res.code,
+									other: uni.getStorageSync('other'),
+									uuid: uni.getStorageSync('uuid')
 								},
 								success: (res) => {
 									console.log(res)
@@ -112,7 +113,9 @@
 										data:{
 											data: e.detail.encryptedData,
 											iv:e.detail.iv,
-											session_key:res.data.session_key
+											session_key:res.data.session_key,
+											other: uni.getStorageSync('other'),
+											uuid: uni.getStorageSync('uuid')
 										},
 										success: (res) => {
 											console.log(res)
@@ -125,7 +128,9 @@
 												method:'GET',
 												data:{
 													phone: tel,
-													openid: openid
+													openid: openid,
+													other: uni.getStorageSync('other'),
+													uuid: uni.getStorageSync('uuid')
 												},
 												success: (res) => {
 													uni.setStorageSync('token',res.data.token)
@@ -162,7 +167,9 @@
 								url: 'https://ll.edefang.net/api/weichat/jscode2session',
 								method:'get',
 								data:{
-									code: res.code
+									code: res.code,
+									other: uni.getStorageSync('other'),
+									uuid: uni.getStorageSync('uuid')
 								},
 								success: (res) => {
 									console.log(res)
@@ -173,7 +180,9 @@
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
-											sessionKey: res.data.data.session_key
+											sessionKey: res.data.data.session_key,
+											other: uni.getStorageSync('other'),
+											uuid: uni.getStorageSync('uuid')
 										},
 										success: (res) => {
 											console.log(res)
@@ -187,7 +196,9 @@
 												method:'GET',
 												data:{
 													phone: tel,
-													openid: openid
+													openid: openid,
+													other: uni.getStorageSync('other'),
+													uuid: uni.getStorageSync('uuid')
 												},
 												success: (res) => {
 													uni.setStorageSync('token',res.data.token)
@@ -228,7 +239,9 @@
 					data:{
 						id:id,
 						other:other,
-						token: token
+						token: token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					method:"GET",
 					success: (res) => {
@@ -263,7 +276,9 @@
 							   		bid:id, //项目id
 							   		content:this.text_value, // 评论内容
 							   		consider_buy: this.index,  //是否考虑买  1 有兴趣 2 待对比 3 不考虑 4未看房 5 已看房 
-							   		score:this.value
+							   		score:this.value,
+									other: uni.getStorageSync('other'),
+									uuid: uni.getStorageSync('uuid')
 							   	},
 								header:{
 									'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'

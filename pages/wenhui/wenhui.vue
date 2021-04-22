@@ -54,7 +54,9 @@
 						},
 						data: {
 							id: this.data.id,
-							answer: this.text
+							answer: this.text,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid')
 						},
 						success: (res) => {
 							if (res.data.code == 200) {
@@ -84,8 +86,9 @@
 					url: this.apiserve + "/applets/question/detail",
 					data: {
 						id: id,
-						other: other,
-						token: token
+						token: token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					method: "GET",
 					success: (res) => {

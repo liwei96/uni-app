@@ -6,7 +6,8 @@
 		</view> -->
 		<view class="tit">
 			<image src="../../static/other/weike-search.png" mode=""></image>
-			<input type="text" value="" placeholder="搜搜你想要了解的房产知识吧" placeholder-class="txt" v-model="name" @input="sou" />
+			<input type="text" value="" placeholder="搜搜你想要了解的房产知识吧" placeholder-class="txt" v-model="name"
+				@input="sou" />
 		</view>
 		<view class="box">
 			<view class="guess-tit">
@@ -72,7 +73,7 @@
 		},
 		onLoad(options) {
 			that = this
-			this.city =  uni.getStorageSync('city');
+			this.city = uni.getStorageSync('city');
 			this.getinfo()
 		},
 		methods: {
@@ -84,18 +85,22 @@
 			sou() {
 				this.page = 1
 				if (that.name) {
+					let city = this.city
 					uni.request({
 						url: that.putserve + '/api/article/e_search',
 						method: 'POST',
 						data: {
 							name: that.name,
-							limit: 5,
-							page: 1
+							limit: 50,
+							page: 1,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid'),
+							city: city
 						},
 						success: (res) => {
 							console.log(res)
 							that.other = res.data.data
-							that.num = res.data.data.length
+							that.num = res.data.total
 						}
 					})
 				} else {
@@ -109,21 +114,24 @@
 				})
 			},
 			lower() {
-				this.page = this.page+1
+				this.page = this.page + 1
 				this.getmore()
 			},
 			getmore() {
+				let city = this.city
 				uni.request({
 					url: that.putserve + '/api/article/e_search',
 					method: 'POST',
 					data: {
 						name: that.name,
 						limit: 5,
-						page: that.page
+						page: that.page,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid'),
+						city: city
 					},
 					success: (res) => {
 						that.other = that.other.concat(res.data.data)
-						that.num = that.other.length
 					}
 				})
 			},
@@ -137,7 +145,9 @@
 						city: city,
 						token: token,
 						limit: 5,
-						page: 1
+						page: 1,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						console.log(res)
@@ -163,9 +173,10 @@
 </script>
 
 <style lang="less">
-	page{
+	page {
 		background: #FFFFFF;
 	}
+
 	.toptitle {
 		color: #17181A;
 		font-size: 36rpx;
@@ -276,7 +287,7 @@
 		height: 50vh;
 		padding: 0 4%;
 		width: 92%;
-		top: 15vh;
+		top: 14vh;
 		height: 86vh;
 		background-color: #FFFFFF;
 		display: flex;
@@ -297,7 +308,7 @@
 			flex: 1;
 
 			.scroll {
-				height: 100%;
+				height: 500vh;
 			}
 
 			.li {

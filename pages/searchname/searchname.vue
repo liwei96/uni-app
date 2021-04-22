@@ -79,7 +79,9 @@
 					method: 'GET',
 					data: {
 						city: city,
-						token: token
+						token: token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						console.log(res)
@@ -124,7 +126,9 @@
 						name: that.name,
 						page: 1,
 						limit: 10,
-						city: city
+						city: city,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						console.log(res)

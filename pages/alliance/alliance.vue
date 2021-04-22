@@ -463,10 +463,10 @@
 			</view>
 		</view>
 		<view class="img">
-			<image src="../../static/other/alliance-code.jpg" mode=""></image>
-			<view class="sao">
+			<!-- <image src="../../static/other/alliance-code.jpg" mode=""></image v-if="false">
+			<view class="sao" v-if="false">
 				扫码加盟官方微信号
-			</view>
+			</view> -->
 			<view class="tel">
 				加盟热线：400-718-6686
 			</view>
@@ -606,6 +606,8 @@
 					that.$refs.toast.show()
 					return
 				}
+				that.add.other =uni.getStorageSync('other')
+				that.add.uuid = uni.getStorageSync('uuid')
 				uni.request({
 					url:that.putserve+'/api/map/cooperate',
 					method:'POST',

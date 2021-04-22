@@ -121,7 +121,9 @@
 					data:{
 						token: token,
 						page: 1,
-						limit: 10
+						limit: 10,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						console.log(res)

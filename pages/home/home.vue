@@ -81,7 +81,7 @@
 						<text>地图找房</text>
 					</view>
 				</view>
-				<view class="nav" @tap="gojia">
+				<view class="nav" @tap="gojia" v-if="!baidu">
 					<image src="../../static/home/home-join.png" mode=""></image>
 					<view>
 						<text>城市加盟</text>
@@ -143,7 +143,7 @@
 				</view>
 			</view>
 		</popup>
-		<tabbar :type="3"></tabbar>
+		<!-- <tabbar :type="3"></tabbar> -->
 	</view>
 </template>
 
@@ -164,7 +164,8 @@
 				talknum: 0,
 				tel: '',
 				pass: false,
-				weixin: false
+				weixin: false,
+				baidu: true
 			}
 		},
 		onShow() {
@@ -181,6 +182,7 @@
 			}
 			// #ifdef  MP-WEIXIN
 			// this.weixin = true
+			this.baidu = false
 			// #endif
 			//#ifdef MP-BAIDU
 			swan.setPageInfo({
@@ -237,7 +239,9 @@
 						data: {
 							token: token,
 							page: 1,
-							limit: 10
+							limit: 10,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid')
 						},
 						success: (res) => {
 							that.footnum = res.data.total
@@ -250,7 +254,9 @@
 						data: {
 							token: token,
 							page: 1,
-							limit: 10
+							limit: 10,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid')
 						},
 						success: (res) => {
 							that.collectnum = res.data.total
@@ -261,7 +267,9 @@
 						url: this.apiserve + "/applets/mine/ticket",
 						method: "GET",
 						data: {
-							token: token
+							token: token,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid')
 						},
 						success: (res) => {
 							if (res.data.code == 200) {
@@ -422,7 +430,9 @@
 							data: {
 								iv: e.detail.iv,
 								data: e.detail.encryptedData,
-								session_key: session
+								session_key: session,
+								other: uni.getStorageSync('other'),
+								uuid: uni.getStorageSync('uuid')
 							},
 							success: (res) => {
 								console.log(res)
@@ -455,7 +465,9 @@
 										method: 'GET',
 										data: {
 											phone: tel,
-											openid: openid
+											openid: openid,
+											other: uni.getStorageSync('other'),
+											uuid: uni.getStorageSync('uuid')
 										},
 										success: (res) => {
 											console.log(res)
@@ -484,15 +496,16 @@
 							}
 						})
 					} else {
-						uni.login({
-							provider: 'baidu',
-							success: function(res) {
+						swan.getLoginCode({
+							success: res => {
 								console.log(res.code);
 								uni.request({
 									url: 'https://api.edefang.net/applets/baidu/get_session_key',
 									method: 'get',
 									data: {
-										code: res.code
+										code: res.code,
+										other: uni.getStorageSync('other'),
+										uuid: uni.getStorageSync('uuid')
 									},
 									success: (res) => {
 										console.log(res)
@@ -503,7 +516,9 @@
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												session_key: res.data.session_key
+												session_key: res.data.session_key,
+												other: uni.getStorageSync('other'),
+												uuid: uni.getStorageSync('uuid')
 											},
 											success: (res) => {
 												console.log(res)
@@ -536,7 +551,9 @@
 														method: 'GET',
 														data: {
 															phone: tel,
-															openid: openid
+															openid: openid,
+															other: uni.getStorageSync('other'),
+															uuid: uni.getStorageSync('uuid')
 														},
 														success: (res) => {
 															console.log(res)
@@ -583,7 +600,9 @@
 								url: 'https://ll.edefang.net/api/weichat/jscode2session',
 								method: 'get',
 								data: {
-									code: res.code
+									code: res.code,
+									other: uni.getStorageSync('other'),
+									uuid: uni.getStorageSync('uuid')
 								},
 								success: (res) => {
 									console.log(res)
@@ -594,7 +613,9 @@
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
-											sessionKey: res.data.data.session_key
+											sessionKey: res.data.data.session_key,
+											other: uni.getStorageSync('other'),
+											uuid: uni.getStorageSync('uuid')
 										},
 										success: (res) => {
 											let data = JSON.parse(res.data.message)
@@ -627,7 +648,9 @@
 													method: 'GET',
 													data: {
 														phone: tel,
-														openid: openid
+														openid: openid,
+														other: uni.getStorageSync('other'),
+														uuid: uni.getStorageSync('uuid')
 													},
 													success: (res) => {
 														console.log(res)
@@ -658,7 +681,7 @@
 							})
 						}
 					})
-				}else{
+				} else {
 					let url = ''
 					switch (that.type) {
 						case 1:
@@ -688,7 +711,7 @@
 		mounted() {
 			let that = this
 
-			uni.onSocketMessage(function(res) {
+			this.$store.state.socket.onMessage(function(res) {
 				let data = JSON.parse(res.data)
 				console.log(data)
 				if (data.action == 105) {
@@ -705,8 +728,7 @@
 <style lang="less">
 	.home {
 		background-color: #F5F5F5;
-		min-height: 100vh;
-		padding-bottom: 100rpx;
+		// min-height: 100vh;
 	}
 
 	.toptitle {

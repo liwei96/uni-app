@@ -101,7 +101,7 @@
 				// uni.onSocketOpen(function (res) {
 				// 	console.log(22)
 				// });
-				uni.sendSocketMessage({
+				this.$store.state.socket.send({
 					data: JSON.stringify(pp)
 				});
 				
@@ -113,7 +113,7 @@
 		mounted() {
 			let that = this
 			
-			uni.onSocketMessage(function(res) {
+			this.$store.state.socket.onMessage(function(res) {
 				if(res.data =='PONG') {
 					return
 				}

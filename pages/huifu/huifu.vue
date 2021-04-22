@@ -59,7 +59,9 @@
 				    data:{
 						id:id,
 						other:other,
-						token:token
+						token:token,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					method:"GET",
 					success: (res) => {
@@ -81,6 +83,8 @@
 							  pid:this.huifu_id,
 							  bid:this.project_id,
 							  content:this.text,
+							  other: uni.getStorageSync('other'),
+							  uuid: uni.getStorageSync('uuid')
 						},
 						method:"POST",
 						header:{

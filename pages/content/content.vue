@@ -974,9 +974,8 @@
 								})
 							} else {
 								console.log(session, "没保存session")
-								uni.login({
-									provider: 'baidu',
-									success: function(res) {
+								swan.getLoginCode({
+									success: res => {
 										// console.log(res.code);
 										uni.request({
 											url: 'https://api.edefang.net/applets/baidu/get_session_key',

@@ -210,7 +210,7 @@
 		</view>
 		<view class="bg_hui" v-if="tejia.length>0"></view>
 		<!-- 主力户型 -->
-		<view class="huxing">
+		<view class="huxing" v-if="goodsList.length>0">
 			<view class="tit huxing_tit">
 				<view class="left">
 					主力户型
@@ -596,10 +596,10 @@
 		<mytoast :txt="msg" ref="msg"></mytoast>
 		<!-- 自动获取授权 -->
 		<wyb-popup ref="zidong" type="center" height="500" width="660" radius="20" @hide="setiscode">
-		<shou @closeshou="clsshou"></shou>
+			<shou @closeshou="clsshou"></shou>
 		</wyb-popup>
-		
-		
+
+
 		<wyb-popup ref="rules" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<view class="rules">
 				<view class="title">
@@ -630,6 +630,54 @@
 						注：活动最终解释权归允家所有
 					</view>
 				</scroll-view>
+			</view>
+		</wyb-popup>
+		<wyb-popup ref="talkbox" type="bottom" height="440" width="750" radius="0" :showCloseIcon="true" @hide="setiscode">
+			<view class="talkbox">
+				<view class="topbox">
+					<view class="imgbos">
+						<image :src="staffmsg.staffimg" mode=""></image>
+					</view>
+					<view class="peoname">
+						<view class="name">
+							{{staffmsg.staffname}}
+							<text>新房咨询</text>
+						</view>
+						<view class="peonum">
+							从业咨询服务6年
+						</view>
+					</view>
+				</view>
+				<view class="peomsg">
+					<view class="li">
+						<view class="litop">
+							{{staffmsg.usernum}}<text>人</text>
+						</view>
+						<view class="libom">
+							服务客户
+						</view>
+					</view>
+					<view class="li">
+						<view class="litop">
+							{{staffmsg.looknum}}<text>次</text>
+						</view>
+						<view class="libom">
+							带看客户
+						</view>
+					</view>
+					<view class="li">
+						<view class="litop">
+							{{staffmsg.rate}}<text>%</text>
+						</view>
+						<view class="libom">
+							好评率
+						</view>
+					</view>
+				</view>
+				<view class="btn">
+					<button class="talknow" @tap="nowtal">在线咨询</button>
+					<button class="talklate" @tap="late">稍后咨询</button>
+				</view>
 			</view>
 		</wyb-popup>
 	</view>
@@ -665,6 +713,7 @@
 		},
 		data() {
 			return {
+				staffmsg:{},
 				pass: false,
 				did: 0,
 				total: '',
@@ -781,12 +830,25 @@
 			};
 		},
 		onLoad(option) {
-			if(!uni.getStorageSync('pass')){
+			if (!uni.getStorageSync('pass')) {
 				this.$refs.zidong.show()
 			}
+			// this.$refs.talkbox.show()
+			// var u = navigator.userAgent;
+			
+			// var isbaidu = u.indexOf('baiduboxapp') > -1 ; //百度小程序
+			
+			// if( !isbaidu ){
+			// 	console.log(879878978979)
+			// }else{
+			// 	console.log(22223131231)
+			// }
 			// #ifdef  MP-WEIXIN
 			this.isweixin = true
 			// #endif
+			if (option.other) {
+				uni.setStorageSync('other', option.other)
+			}
 			_self = this;
 			this.cWidth = uni.upx2px(750);
 			this.cHeight = uni.upx2px(500);
@@ -804,6 +866,15 @@
 			}
 		},
 		methods: {
+			nowtal() {
+				this.$refs.talkbox.hide()
+				uni.navigateTo({
+					url:'/pages/talk/talk?id='+this.staffmsg.staffid+'&bid='+this.pid
+				})
+			},
+			late(){
+				this.$refs.talkbox.hide()
+			},
 			goloudong() {
 				uni.navigateTo({
 					url: '/pages/loudong/loudong?id=' + this.pid + '&type=1'
@@ -946,7 +1017,9 @@
 									data: {
 										iv: e.detail.iv,
 										data: e.detail.encryptedData,
-										session_key: session
+										session_key: session,
+										other: uni.getStorageSync('other'),
+										uuid: uni.getStorageSync('uuid')
 									},
 									success: (res) => {
 										console.log(res, 'session')
@@ -958,7 +1031,9 @@
 											method: 'GET',
 											data: {
 												phone: tel,
-												openid: openid
+												openid: openid,
+												other: uni.getStorageSync('other'),
+												uuid: uni.getStorageSync('uuid')
 											},
 											success: (res) => {
 												console.log(res)
@@ -980,15 +1055,16 @@
 								})
 							} else {
 								console.log(session, "没保存session")
-								uni.login({
-									provider: 'baidu',
-									success: function(res) {
+								swan.getLoginCode({
+									success: res => {
 										// console.log(res.code);
 										uni.request({
 											url: 'https://api.edefang.net/applets/baidu/get_session_key',
 											method: 'get',
 											data: {
-												code: res.code
+												code: res.code,
+												other: uni.getStorageSync('other'),
+												uuid: uni.getStorageSync('uuid')
 											},
 											success: (res) => {
 												console.log(res)
@@ -999,7 +1075,9 @@
 													data: {
 														data: e.detail.encryptedData,
 														iv: e.detail.iv,
-														session_key: res.data.session_key
+														session_key: res.data.session_key,
+														other: uni.getStorageSync('other'),
+														uuid: uni.getStorageSync('uuid')
 													},
 													success: (res) => {
 														console.log(res)
@@ -1011,7 +1089,9 @@
 															method: 'GET',
 															data: {
 																phone: tel,
-																openid: openid
+																openid: openid,
+																other: uni.getStorageSync('other'),
+																uuid: uni.getStorageSync('uuid')
 															},
 															success: (res) => {
 																console.log(res)
@@ -1049,7 +1129,9 @@
 								data: {
 									iv: e.detail.iv,
 									data: e.detail.encryptedData,
-									session_key: session
+									session_key: session,
+									other: uni.getStorageSync('other'),
+									uuid: uni.getStorageSync('uuid')
 								},
 								success: (res) => {
 									console.log(res, 'session')
@@ -1070,7 +1152,9 @@
 										url: 'https://api.edefang.net/applets/baidu/get_session_key',
 										method: 'get',
 										data: {
-											code: res.code
+											code: res.code,
+											other: uni.getStorageSync('other'),
+											uuid: uni.getStorageSync('uuid')
 										},
 										success: (res) => {
 											console.log(res)
@@ -1081,7 +1165,9 @@
 												data: {
 													data: e.detail.encryptedData,
 													iv: e.detail.iv,
-													session_key: res.data.session_key
+													session_key: res.data.session_key,
+													other: uni.getStorageSync('other'),
+													uuid: uni.getStorageSync('uuid')
 												},
 												success: (res) => {
 													console.log(res)
@@ -1151,7 +1237,9 @@
 										url: 'https://ll.edefang.net/api/weichat/jscode2session',
 										method: 'get',
 										data: {
-											code: res.code
+											code: res.code,
+											other: uni.getStorageSync('other'),
+											uuid: uni.getStorageSync('uuid')
 										},
 										success: (res) => {
 											console.log(res)
@@ -1162,7 +1250,9 @@
 												data: {
 													data: e.detail.encryptedData,
 													iv: e.detail.iv,
-													sessionKey: res.data.data.session_key
+													sessionKey: res.data.data.session_key,
+													other: uni.getStorageSync('other'),
+													uuid: uni.getStorageSync('uuid')
 												},
 												success: (res) => {
 													console.log(res)
@@ -1178,7 +1268,9 @@
 															method: 'GET',
 															data: {
 																phone: tel,
-																openid: openid
+																openid: openid,
+																other: uni.getStorageSync('other'),
+																uuid: uni.getStorageSync('uuid')
 															},
 															success: (res) => {
 																console.log(res)
@@ -1219,7 +1311,9 @@
 									url: 'https://ll.edefang.net/api/weichat/jscode2session',
 									method: 'get',
 									data: {
-										code: res.code
+										code: res.code,
+										other: uni.getStorageSync('other'),
+										uuid: uni.getStorageSync('uuid')
 									},
 									success: (res) => {
 										console.log(res)
@@ -1230,7 +1324,9 @@
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												sessionKey: res.data.data.session_key
+												sessionKey: res.data.data.session_key,
+												other: uni.getStorageSync('other'),
+												uuid: uni.getStorageSync('uuid')
 											},
 											success: (res) => {
 												console.log(res)
@@ -1247,7 +1343,9 @@
 															method: 'GET',
 															data: {
 																phone: tel,
-																openid: openid
+																openid: openid,
+																other: uni.getStorageSync('other'),
+																uuid: uni.getStorageSync('uuid')
 															},
 															success: (res) => {
 																console.log(res)
@@ -1321,6 +1419,8 @@
 						data: {
 							token: token,
 							id: id,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid')
 						},
 						header: {
 							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -1355,6 +1455,8 @@
 						data: {
 							token: token,
 							id: id,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid')
 						},
 						header: {
 							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -1404,7 +1506,9 @@
 								id: id,
 								other: other,
 								ip: ip,
-								token: token
+								token: token,
+								other: uni.getStorageSync('other'),
+								uuid: uni.getStorageSync('uuid')
 							},
 							success: (res) => {
 								if (res.data.code == 200) {
@@ -1559,7 +1663,9 @@
 						data: {
 							token: token,
 							id: this.detail.id,
-							type: 1
+							type: 1,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid')
 						},
 						header: {
 							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -1694,7 +1800,7 @@
 					}
 				});
 			},
-			clsshou(e){
+			clsshou(e) {
 				console.log(e)
 				if (e) {
 					this.pass = true
@@ -2537,8 +2643,8 @@
 			}
 
 			.xiaoxi {
-				width: 100%;
-				padding-left: 26rpx;
+				// width: 100%;
+				padding: 0 26rpx;
 				height: 36rpx;
 				margin-top: 37rpx;
 
@@ -3780,6 +3886,95 @@
 					font-weight: 500;
 					color: #999999;
 					line-height: 44rpx;
+				}
+			}
+		}
+		
+		// im弹框
+		.talkbox {
+			padding: 50rpx 50rpx 0 50rpx;
+			.topbox {
+				display: flex;
+				align-items: center;
+				margin-bottom: 40rpx;
+				.imgbos {
+					width: 96rpx;
+					height: 96rpx;
+					border-radius: 50%;
+					overflow: hidden;
+					margin-right: 24rpx;
+					image {
+						width: 96rpx;
+						height: 96rpx;
+					}
+				}
+				.peoname {
+					.name {
+						color: #1F1F1F;
+						font-size: 34rpx;
+						font-weight: bold;
+						margin-bottom: 18rpx;
+						text {
+							color: #7495BD;
+							font-size: 22rpx;
+							padding: 6rpx 10rpx;
+							background-color: #F2F8FF;
+							border-radius: 3rpx;
+						}
+					}
+					.peonum {
+						color: #646466;
+						font-size: 26rpx;
+					}
+				}
+			}
+			.peomsg {
+				display: flex;
+				margin-bottom: 60rpx;
+				.li {
+					text-align: center;
+					width: 33%;
+					border-right: 1rpx solid #F0F0F2;
+					.litop {
+						color: #121212;
+						font-size: 36rpx;
+						font-weight: bold;
+						text {
+							color: #121212;
+							font-size: 20rpx;
+						}
+					}
+					.libom {
+						margin-top: 12rpx;
+						color: #646466;
+						font-size: 22rpx;
+					}
+				}
+				.li:nth-of-type(3) {
+					border: 0;
+				}
+			}
+			.btn {
+				display: flex;
+				button {
+					width: 300rpx;
+					height: 80rpx;
+					border-radius: 8rpx;
+					text-align: center;
+					line-height: 80rpx;
+					border: 0;
+					outline: none;
+					font-size: 30rpx;
+				}
+				.talknow {
+					color: #FFFFFF;
+					background: linear-gradient(-270deg,#348aff,#6accff);
+				}
+				.talklate {
+					background-color: #edf5fa;
+					border: 1rpx solid #3eacf0;
+					color: #3eacf0;
+					margin-left: auto;
 				}
 			}
 		}

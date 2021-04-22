@@ -39,7 +39,7 @@
 				</view>
 			</view>
 		</view>
-		<tabbar :type="2"></tabbar>
+		<!-- <tabbar :type="2"></tabbar> -->
 	</view>
 </template>
 
@@ -60,7 +60,7 @@
 			let that = this
 			this.timer = setInterval(()=>{
 				that.getlist()
-			},2000)
+			},4000)
 			//#ifdef MP-BAIDU
 			swan.setPageInfo({
 				title: '允家新房-我的联系',
@@ -99,7 +99,7 @@
 					}
 				};
 				try{
-					uni.sendSocketMessage({
+					this.$store.state.socket.send({
 						data: JSON.stringify(pp)
 					});
 				}catch(e){
@@ -111,7 +111,7 @@
 		mounted() {
 			let that = this
 			
-			uni.onSocketMessage(function(res) {
+			this.$store.state.socket.onMessage(function(res) {
 				if(res.data =='PONG') {
 					return
 				}
@@ -181,7 +181,6 @@
 <style lang="less">
 	page{
 		background: #FFFFFF;
-		padding-bottom: 100rpx;
 	}
 	.toptitle {
 		color: #17181A;

@@ -282,7 +282,7 @@
 
 			</view>
 		</view>
-		<tabbar :type="0"></tabbar>
+		<!-- <tabbar :type="0"></tabbar> -->
 	</view>
 </template>
 
@@ -333,7 +333,9 @@
 				url: this.apiserve + '/applets/first',
 				data: {
 					token: token,
-					city: city
+					city: city,
+					other: uni.getStorageSync('other'),
+					uuid: uni.getStorageSync('uuid')
 				},
 				success: (res) => {
 					console.log(res);
@@ -384,7 +386,7 @@
 		},
 		methods: {
 			gobuild() {
-				uni.navigateTo({
+				uni.switchTab({
 					url:`/pages/building/building`
 				})
 			},
@@ -481,7 +483,6 @@
 <style lang="less">
 	page {
 		background: #fff;
-		padding-bottom: 100rpx;
 	}
 
 	.toptitle {
@@ -503,6 +504,7 @@
 
 	.search {
 		padding: 0 29.88rpx;
+		margin-top: 10rpx;
 		.searchbox {
 			height: 71.71rpx;
 			border-radius: 35.85rpx;

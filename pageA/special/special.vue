@@ -247,7 +247,9 @@
 							data: {
 								iv: e.detail.iv,
 								data: e.detail.encryptedData,
-								session_key: session
+								session_key: session,
+								other: uni.getStorageSync('other'),
+								uuid: uni.getStorageSync('uuid')
 							},
 							success: (res) => {
 								console.log(res)
@@ -259,15 +261,16 @@
 							}
 						})
 					} else {
-						uni.login({
-							provider: 'baidu',
-							success: function(res) {
+						swan.getLoginCode({
+							success: res => {
 								console.log(res.code);
 								uni.request({
 									url: 'https://api.edefang.net/applets/baidu/get_session_key',
 									method: 'get',
 									data: {
-										code: res.code
+										code: res.code,
+										other: uni.getStorageSync('other'),
+										uuid: uni.getStorageSync('uuid')
 									},
 									success: (res) => {
 										console.log(res)
@@ -278,7 +281,9 @@
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												session_key: res.data.session_key
+												session_key: res.data.session_key,
+												other: uni.getStorageSync('other'),
+												uuid: uni.getStorageSync('uuid')
 											},
 											success: (res) => {
 												console.log(res)
@@ -311,7 +316,9 @@
 									url: 'https://ll.edefang.net/api/weichat/jscode2session',
 									method: 'get',
 									data: {
-										code: res.code
+										code: res.code,
+										other: uni.getStorageSync('other'),
+										uuid: uni.getStorageSync('uuid')
 									},
 									success: (res) => {
 										console.log(res)
@@ -322,7 +329,9 @@
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
-												sessionKey: res.data.data.session_key
+												sessionKey: res.data.data.session_key,
+												other: uni.getStorageSync('other'),
+												uuid: uni.getStorageSync('uuid')
 											},
 											success: (res) => {
 												console.log(res)
@@ -337,7 +346,9 @@
 														method: 'GET',
 														data: {
 															phone: tel,
-															openid: openid
+															openid: openid,
+															other: uni.getStorageSync('other'),
+															uuid: uni.getStorageSync('uuid')
 														},
 														success: (res) => {
 															console.log(res)
@@ -370,7 +381,9 @@
 					url: that.apiserve + '/applets/discounts',
 					method: "GET",
 					data: {
-						city: city
+						city: city,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					success: (res) => {
 						let data = res.data.data
@@ -438,7 +451,9 @@
 					data: {
 						city: city,
 						page: that.page,
-						limit: 6
+						limit: 6,
+						other: uni.getStorageSync('other'),
+						uuid: uni.getStorageSync('uuid')
 					},
 					method: "GET",
 					success: (res) => {

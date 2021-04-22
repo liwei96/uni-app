@@ -52,7 +52,7 @@
 					return
 				}
 				console.log(789,url)
-				uni.reLaunch({
+				uni.navigateTo({
 					url: url
 				})
 			}
