@@ -830,9 +830,11 @@
 			};
 		},
 		onLoad(option) {
+			// #ifdef  MP-BAIDU
 			if (!uni.getStorageSync('pass')) {
 				this.$refs.zidong.show()
 			}
+			// #endif
 			// this.$refs.talkbox.show()
 			// var u = navigator.userAgent;
 			
@@ -853,6 +855,12 @@
 			this.cWidth = uni.upx2px(750);
 			this.cHeight = uni.upx2px(500);
 			let id = option.id;
+			if (!id) {
+				if (option.scene) {
+					let str = decodeURIComponent(option.scene)
+					id = str.split('=')[1]
+				}
+			}
 			this.pid = id
 			uni.setStorageSync('bid', id)
 			this.getdata(id);

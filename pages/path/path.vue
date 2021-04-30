@@ -23,11 +23,12 @@
 			</view>
 		</view>
 		<view v-for="(item,key) in list" :key="key">
-			<view class="line" :id="item" >
+			<view class="line" :id="item">
 				{{item}}
 			</view>
 			<view class="box">
-				<view class="cityitem" v-for="(val,index) in lists[item]" :key="val.area_id" @tap="gocity(val.area_id,lists[item],index)">
+				<view class="cityitem" v-for="(val,index) in lists[item]" :key="val.area_id"
+					@tap="gocity(val.area_id,lists[item],index)">
 					{{val.short}}
 				</view>
 			</view>
@@ -37,7 +38,8 @@
 				{{item}}
 			</view>
 		</view>
-		<wyb-popup ref="popup" type="center" height="650" width="550" radius="20" :showCloseIcon="true" closeIcon="../../static/close.png" closeIconSize="32">
+		<wyb-popup ref="popup" type="center" height="650" width="550" radius="20" :showCloseIcon="true"
+			closeIcon="../../static/close.png" closeIconSize="32">
 			<view class="bbox">
 				<image class="bbimg" src="../../static/path-null.png" mode=""></image>
 				<view class="btn" @tap="showff">
@@ -78,7 +80,8 @@
 		},
 		data() {
 			return {
-				list: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+				list: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+					'U', 'V',
 					'W', 'X', 'Y', 'Z'
 				],
 				toView: 'A',
@@ -86,7 +89,7 @@
 				lists: [],
 				name: '',
 				bname: '',
-				show:false
+				show: false
 			};
 		},
 		methods: {
@@ -97,14 +100,14 @@
 			showff() {
 				this.show = true
 				let that = this
-				setTimeout(()=>{
+				setTimeout(() => {
 					that.show = false
 					that.bname = ''
 					that.$refs.popup.hide()
 					uni.navigateTo({
-						url:'/pages/alliance/alliance'
+						url: '/pages/alliance/alliance'
 					})
-				},2000)
+				}, 2000)
 			},
 			back() {
 				uni.navigateBack({
@@ -140,15 +143,15 @@
 				uni.setStorageSync('city', id)
 				uni.setStorageSync('cityname', name)
 				uni.reLaunch({
-					url: "/pages/index/index?city="+id
+					url: "/pages/index/index?city=" + id
 				})
 			},
-			gocity(id, name,k) {
+			gocity(id, name, k) {
 				let type = false
 				for (let item of this.hots) {
 					if (id == item.area_id) {
 						this.setcity(id, name)
-					}else {
+					} else {
 						this.showdd(name[k].short)
 					}
 				}
@@ -158,9 +161,10 @@
 </script>
 
 <style lang="less">
-	page{
+	page {
 		background: #FFFFFF;
 	}
+
 	.toptitle {
 		color: #17181A;
 		font-size: 29.88rpx;
@@ -184,7 +188,7 @@
 			margin-bottom: -4rpx;
 		}
 	}
-	
+
 	.nowcity {
 		height: 98rpx;
 		padding: 0 30rpx;
@@ -286,16 +290,18 @@
 			margin-bottom: 20rpx;
 		}
 	}
-	
+
 	.bbox {
 		position: relative;
 		width: 100%;
 		height: 100%;
+
 		.bbimg {
 			width: 100%;
 			height: 100%;
 			border-radius: 20rpx;
 		}
+
 		.btn {
 			width: 300rpx;
 			height: 72rpx;
@@ -311,10 +317,11 @@
 			margin-left: -150rpx;
 			bottom: 42rpx;
 		}
+
 		.txt {
 			width: 260rpx;
 			height: 160rpx;
-			background: rgba(0,0,0,0.8);
+			background: rgba(0, 0, 0, 0.8);
 			padding: 40rpx;
 			color: #DADADA;
 			font-size: 28rpx;

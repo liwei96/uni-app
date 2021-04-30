@@ -81,7 +81,7 @@
 				swiperCurrentColor:'#58BBEC',//选中当前导航栏字体颜色
 				currentSwiperWidth:'20%',//当前导航的宽度 % upx rpx px  （导航超出可左右滑动 ）
 				currentSwiperHeight:60,//当前导航的高度度 rpx px
-				mainHeight:200,//全屏或者局部滑动设置的高度
+				mainHeight:400,//全屏或者局部滑动设置的高度
 				currentSwiperLineShow:true,//是否显示导航栏的线条 （线条距离标题太近的话可自行修改.swiperLine的css）
 				currentSwiperLineActiveBg:'#58BBEC',//当前选中的导航栏线条颜色
 				currentSwiperLineActiveWidth:'30rpx', //当前选中的导航栏线条的宽度 upx rpx px
@@ -324,7 +324,7 @@
 	}
 	.swiperCont{ 
 		width: 100%;
-		margin-top: 250rpx;
+		margin-top: 80rpx;
 	 }
 	
 	 /* #ifdef H5 */

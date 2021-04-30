@@ -73,7 +73,6 @@
 			};
 		},
 		mounted() {
-			console.log(this.$store.state,78979798789)
 			let that = this
 			this.pass = uni.getStorageSync('pass')
 			// this.num = uni.getStorageSync('total')
@@ -128,6 +127,7 @@
 						staffimg: data.staff.img,
 						staffid: data.staff.id
 					}
+					console.log(that.$parent)
 					that.$parent.staffmsg = msg
 					that.$parent.$refs.talkbox.show()
 					console.log(msg)
