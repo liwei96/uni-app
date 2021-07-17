@@ -13,11 +13,12 @@
 				{{building.name}}
 			</view>
 			<view class="tese_line">
-				<text class="tese" v-if="building.state">{{building.state}}</text>
+				<text class="tese" v-if="building.sale_state">{{building.sale_state}}</text>
 				<text class="other" v-if="building.type">{{building.type}}</text>
-				<text class="other" v-if="building.railway">{{building.railway}}</text>
+				<text class="other" v-if="building.railways.length">{{building.railways[0]}}</text>
 				<template v-if="building.features">
-					<text class="other" v-for="(item,index) in building.features" :key="item.id" v-if="index<=3">{{item}}</text>
+					<text class="other" v-for="(item,index) in building.features" :key="item.id"
+						v-if="index<=3">{{item}}</text>
 				</template>
 			</view>
 		</view>
@@ -30,7 +31,7 @@
 			<view class="dan_price">
 				<text class="left">参考单价：</text>
 				<text class="jia_right">
-					{{building.price}}
+					{{building.single_price}}
 					<text class="dan">元/m²</text>
 				</text>
 			</view>
@@ -54,7 +55,7 @@
 			</view>
 			<view class="huxing">
 				<text class="left">户 型：</text>
-				<text class="con">{{building.room_types}}</text>
+				<text class="con">{{building.house_types?building.house_types.join('、'):''}}</text>
 				<view class="more" @tap="goHuxing(building.id)">
 					更多户型
 					<image src="../../static/content/right.png" mode=""></image>
@@ -85,10 +86,10 @@
 					<text class="kai_btn">开盘通知</text>
 				</button>
 			</view>
-			<view class="push_time">
+			<view class="push_time" v-if="building.add_push_time">
 				<text class="left">加推时间：</text>
 				<text class="time">
-					{{building.push_time}}
+					{{building.add_push_time!=null?building.add_push_time:''}}
 				</text>
 			</view>
 			<view class="jiao_time">
@@ -100,7 +101,7 @@
 			<view class="yu_zheng">
 				<text class="left">预 售 证：</text>
 				<text class="zheng">
-					{{building.license}}
+					{{building.pre_sale_license}}
 				</text>
 			</view>
 			<view class="chan_nian">
@@ -112,7 +113,7 @@
 			<view class="kai_shang">
 				<text class="left">开 发 商：</text>
 				<text class="shang">
-					{{building.developer}}
+					{{building.builder}}
 				</text>
 			</view>
 		</view>
@@ -137,7 +138,7 @@
 			<view class="common">
 				<text class="left">容积率：</text>
 				<text class="right">
-					{{building.capacity_rate}}
+					{{building.plot_ratio}}
 				</text>
 			</view>
 			<view class="common">
@@ -149,13 +150,13 @@
 			<view class="common">
 				<text class="left">层高：</text>
 				<text class="right">
-					{{building.height}}年
+					{{building.floor_height}}米
 				</text>
 			</view>
 			<view class="common">
 				<text class="left">车位情况：</text>
 				<text class="right">
-					{{building.parking_rate}}（{{building.parking_num}}个车位）
+					{{building.house_num}}户（{{building.parking_num}}个车位）
 				</text>
 			</view>
 			<view class="common">
@@ -173,13 +174,13 @@
 			<view class="common">
 				<text class="left">物业费用：</text>
 				<text class="right">
-					{{building.property_fee}}元/m²月
+					{{building.fee}}元/m²月
 				</text>
 			</view>
 			<view class="common">
 				<text class="left">物业公司：</text>
 				<text class="right">
-					{{building.proprety_company}}
+					{{building.property_company}}
 				</text>
 			</view>
 		</view>
@@ -190,8 +191,8 @@
 				项目介绍
 			</view>
 			<view class="content">
-				<text class="text">{{text}}</text>
-				<text class="zhan" v-show="zhan" v-if="building.introduce.length>=82" @click="showHide">[展开]</text>
+				<text class="text">{{text_all}}</text>
+				<!-- <text class="zhan" v-show="zhan" v-if="building.introduce.length>=82" @click="showHide">[展开]</text> -->
 			</view>
 		</view>
 		<bottom :remark="'楼盘详情页+预约看房'" :point="103" :title="'预约看房'" :pid="building.id" :telphone="telphone"></bottom>
@@ -224,7 +225,8 @@
 				position_n: 0,
 				telphone: '',
 				isok: 0,
-				weixin: false
+				weixin: false,
+				project_id: 0
 			};
 		},
 		components: {
@@ -235,6 +237,7 @@
 		onLoad(option) {
 			console.log(option);
 			this.getData(option.id);
+			this.project_id = option.id
 			this.pass = uni.getStorageSync('pass')
 			// #ifdef  MP-WEIXIN
 			// this.weixin = true
@@ -310,8 +313,30 @@
 												let tel = res.data.mobile
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
-												that.$refs.sign.tel = tel
-												that.baoMing(pid, remark, point, title, 1)
+												let city = uni.getStorageSync('city')
+												uni.request({
+													// url: "https://api.edefang.net/applets/login",
+													url: this.javaapi+"/applets_yun_jia_new/login",
+													method: 'POST',
+													header: {
+														"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+													},
+													data: {
+														phone: tel,
+														openid: openid,
+														city: city,
+														bid:this.project_id,
+														other: uni.getStorageSync('other'),
+														uuid: uni.getStorageSync('uuid')
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.data.token)
+														uni.setStorageSync('userid', res.data.data.userId)
+														that.baoMing(pid, remark, point, title, 1)
+													}
+												})
+												
 											}
 										})
 
@@ -350,6 +375,7 @@
 									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
+										method:'POST',
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
@@ -366,18 +392,26 @@
 											let token = uni.getStorageSync('token')
 											if (!token) {
 												let openid = uni.getStorageSync('openid')
+												let city = uni.getStorageSync('city')
 												uni.request({
-													url: "https://api.edefang.net/applets/login",
-													method: 'GET',
+													// url: "https://api.edefang.net/applets/login",
+													url: this.javaapi+"/applets_yun_jia_new/login",
+													method: 'POST',
+													header: {
+														"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+													},
 													data: {
 														phone: tel,
 														openid: openid,
+														city: city,
+														bid:this.project_id,
 														other: uni.getStorageSync('other'),
 														uuid: uni.getStorageSync('uuid')
 													},
 													success: (res) => {
 														console.log(res)
-														uni.setStorageSync('token', res.data.token)
+														uni.setStorageSync('token', res.data.data.token)
+														uni.setStorageSync('userid', res.data.data.userId)
 													}
 												})
 											}
@@ -415,10 +449,9 @@
 				});
 
 				let that = this;
-				let other = uni.getStorageSync("other");
 				let token = uni.getStorageSync("token");
 				uni.request({
-					url: this.apiserve + "/applets/building/base",
+					url: this.javatest + '/applets/jy/building/abstract',
 					data: {
 						id: id,
 						token: token,
@@ -427,19 +460,24 @@
 					},
 					method: "GET",
 					success: (res) => {
-						if (res.data.code == 200) {
-							console.log(res);
-							this.building = res.data.building;
-							this.text_all = res.data.building.introduce;
-							this.text = res.data.building.introduce.substring(0, 82);
-							this.telphone = res.data.common.phone;
+						console.log(res, 888)
+						if (res.data.status == 200) {
+							let data = res.data.data
+							this.building = data.building;
+							uni.setNavigationBarTitle({
+								title: data.building.name+'详情',
+							});
+							this.text_all = data.building.introduce;
+							this.text = data.building.introduce.substring(0, 82);
+							this.telphone = data.phone;
+							uni.hideLoading();
 							// #ifdef MP-BAIDU
-							let header = res.data.common.header;
+							let header = data.header;
 							swan.setPageInfo({
 								title: header.title,
 								keywords: header.keywords,
 								description: header.description,
-								image: [that.building.img],
+								// image: [that.building.img],
 								success: res => {
 									console.log('setPageInfo success', res);
 								},
@@ -463,9 +501,6 @@
 				this.zhan = false;
 			},
 			goHuxing(id) {
-				// uni.navigateBack({
-				// 	delta:1
-				// })
 				uni.navigateTo({
 					url: "../prohuxing/prohuxing?id=" + id
 				})
@@ -566,7 +601,7 @@
 		}
 
 		.xinxi {
-			height: 587rpx;
+			// height: 587rpx;
 			width: 100%;
 			padding-left: 30rpx;
 			padding-right: 30rpx;
@@ -701,24 +736,25 @@
 			}
 
 			.address {
-				height: 94rpx;
+				// height: 94rpx;
 				width: 100%;
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
+				// overflow: hidden;
+				// white-space: nowrap;
+				// text-overflow: ellipsis;
+				padding: 20rpx 0;
 
 				.left {
 					font-size: 28rpx;
 					font-weight: 500;
 					color: #808080;
-					line-height: 94rpx;
+					// line-height: 94rpx;
 				}
 
 				.add {
 					font-size: 28rpx;
 					font-weight: 500;
 					color: #323233;
-					line-height: 94rpx;
+					// line-height: 94rpx;
 
 				}
 			}

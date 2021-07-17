@@ -30,7 +30,7 @@
 				uuid = timestamp
 			}
 			let socket = await uni.connectSocket({
-				url: 'wss://ws.edefang.net?uuid=' + uuid,
+				url: 'wss://ws.jy8006.com?uuid=' + uuid,
 				complete: ()=> {}
 			});
 			console.log(socket)
@@ -106,7 +106,7 @@
 				}
 				
 				let socket = await uni.connectSocket({
-								url: 'wss://ws.edefang.net?uuid=' + uuid,
+								url: 'wss://ws.jy8006.com?uuid=' + uuid,
 								complete: ()=> {}
 							});
 							this.$store.state.socket = socket

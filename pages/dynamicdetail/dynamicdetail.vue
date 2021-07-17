@@ -276,6 +276,28 @@
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel
 												that.show(that.build.id, title, message, 1, p)
+												let city = uni.getStorageSync('city')
+												uni.request({
+													// url: "https://api.edefang.net/applets/login",
+													url: this.javaapi+"/applets_yun_jia_new/login",
+													method: 'POST',
+													header: {
+														"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+													},
+													data: {
+														phone: tel,
+														openid: openid,
+														city: city,
+														bid:this.build.id,
+														other: uni.getStorageSync('other'),
+														uuid: uni.getStorageSync('uuid')
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.data.token)
+														uni.setStorageSync('userid', res.data.data.userId)
+													}
+												})
 
 											}
 										})
@@ -312,6 +334,7 @@
 									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
+										method:'POST',
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
@@ -326,18 +349,26 @@
 											let token = uni.getStorageSync('token')
 											if (!token) {
 												let openid = uni.getStorageSync('openid')
+												let city = uni.getStorageSync('city')
 												uni.request({
-													url: "https://api.edefang.net/applets/login",
-													method: 'GET',
+													// url: "https://api.edefang.net/applets/login",
+													url: this.javaapi+"/applets_yun_jia_new/login",
+													method: 'POST',
+													header: {
+														"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+													},
 													data: {
 														phone: tel,
 														openid: openid,
+														city: city,
+														bid:this.build.id,
 														other: uni.getStorageSync('other'),
 														uuid: uni.getStorageSync('uuid')
 													},
 													success: (res) => {
 														console.log(res)
-														uni.setStorageSync('token', res.data.token)
+														uni.setStorageSync('token', res.data.data.token)
+														uni.setStorageSync('userid', res.data.data.userId)
 													}
 												})
 											}

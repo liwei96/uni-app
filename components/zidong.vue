@@ -1,7 +1,7 @@
 <template>
 	<view class="zidong">
 		<view class="tit">
-			百度授权
+			{{name}}授权
 		</view>
 		<view class="txt">
 			<image src="../static/content/shouquan.png" mode=""></image>
@@ -24,11 +24,23 @@
 	var that
 	export default {
 		data() {
-			return {};
+			return {
+				name: '百度'
+			};
+		},
+		props: ['pid'],
+		mounted(){
+			// #ifdef  MP-BAIDU
+			this.name="百度"
+			// #endif
+			// #ifdef  MP-WEIXIN
+			this.name="微信"
+			// #endif
 		},
 		methods: {
 			getPhoneNumber(e) {
 				that = this
+				// #ifdef  MP-BAIDU
 				swan.getLoginCode({
 					success: res => {
 						console.log('getLoginCode success', res);
@@ -60,20 +72,27 @@
 										let city = uni.getStorageSync('city')
 										let bid = uni.getStorageSync('bid')
 										uni.request({
-											url: "https://api.edefang.net/applets/login",
-											method: 'GET',
+											// url: "https://api.edefang.net/applets/login",
+											url: this.javaapi + "/applets_yun_jia_new/login",
+											method: 'POST',
+											header: {
+												"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+											},
 											data: {
 												phone: tel,
 												openid: openid,
-												bid: bid,
 												city: city,
-												source: 1,
+												bid: this.pid,
 												other: uni.getStorageSync('other'),
 												uuid: uni.getStorageSync('uuid')
 											},
 											success: (res) => {
-												if (res.data.code === 200) {
-													uni.setStorageSync('token', res.data.token)
+												console.log(res)
+												if(res.data.status==200){
+												uni.setStorageSync('token', res.data.data
+													.token)
+												uni.setStorageSync('userid', res.data.data
+													.userId)
 													that.$emit('closeshou', true)
 													uni.setStorageSync("pass", true);
 												} else {
@@ -90,6 +109,86 @@
 						console.log('getLoginCode fail', err);
 					}
 				});
+				// #endif
+				// #ifdef  MP-WEIXIN
+				if(e.detail.errMsg != 'getPhoneNumber:ok') {
+					that.$emit('closeshou', false)
+				} else {
+					this.pass = true
+					uni.setStorageSync('pass',true)
+					let session = uni.getStorageSync('token')
+					if(session){
+					}else {
+						uni.login({
+						  provider: 'weixin',
+						  success: function (res) {
+						    console.log(res.code);
+							uni.request({
+								url: 'https://ll.edefang.net/api/weichat/jscode2session',
+								method:'get',
+								data:{
+									code: res.code,
+									other: uni.getStorageSync('other'),
+									uuid: uni.getStorageSync('uuid')
+								},
+								success: (res) => {
+									console.log(res)
+									uni.setStorageSync('openid', res.data.data.openid)
+									uni.setStorageSync('session', res.data.data.session_key)
+									uni.request({
+										url: "https://ll.edefang.net/api/weichat/decryptData",
+										method:'POST',
+										data: {
+											data: e.detail.encryptedData,
+											iv: e.detail.iv,
+											sessionKey: res.data.data.session_key,
+											other: uni.getStorageSync('other'),
+											uuid: uni.getStorageSync('uuid')
+										},
+										success: (res) => {
+											console.log(res)
+											let data = JSON.parse(res.data.message)
+											let tel = data.purePhoneNumber
+											uni.setStorageSync('phone',tel)
+											let openid = uni.getStorageSync('openid')
+											that.tel = tel
+											let city = uni.getStorageSync('city')
+											uni.request({
+												// url: "https://api.edefang.net/applets/login",
+												url: this.javaapi + "/applets_yun_jia_new/login",
+												method: 'POST',
+												header: {
+													"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+												},
+												data: {
+													phone: tel,
+													openid: openid,
+													city: city,
+													bid: this.pid,
+													other: uni.getStorageSync('other'),
+													uuid: uni.getStorageSync('uuid')
+												},
+												success: (res) => {
+													console.log(res)
+													uni.setStorageSync('token', res.data.data
+														.token)
+													uni.setStorageSync('userid', res.data.data
+														.userId)
+													that.$emit('closeshou', true)
+												}
+											})
+											
+										}
+									})
+									
+								}
+							})
+						  }
+						});
+						}
+					this.isok = 1
+				}
+				// #endif
 			},
 			sls() {
 				this.$emit('closeshou', false)

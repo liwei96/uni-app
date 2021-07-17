@@ -161,6 +161,7 @@
 				let url = arr[arr.length - 1].route
 				let host = this.host
 				let pro = this.pid
+					url=url+'?id='+pro+'&host='+host+'&uuid='+uuid+'&kid='+uni.getStorageSync('kid')+'&other='+uni.getStorageSync('other')
 				let pp = {
 					controller: "Info",
 					action: "register",
@@ -297,6 +298,7 @@
 									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
+										method:'POST',
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,

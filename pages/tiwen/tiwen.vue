@@ -87,17 +87,26 @@
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel
+												let city = uni.getStorageSync('city')
 												uni.request({
-													url: "https://api.edefang.net/applets/login",
-													method: 'GET',
+													// url: "https://api.edefang.net/applets/login",
+													url: this.javaapi+"/applets_yun_jia_new/login",
+													method: 'POST',
+													header: {
+														"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+													},
 													data: {
 														phone: tel,
 														openid: openid,
+														city: city,
+														bid:this.project_id,
 														other: uni.getStorageSync('other'),
 														uuid: uni.getStorageSync('uuid')
 													},
 													success: (res) => {
-														uni.setStorageSync('token', res.data.token)
+														console.log(res)
+														uni.setStorageSync('token', res.data.data.token)
+														uni.setStorageSync('userid', res.data.data.userId)
 														that.SendTiwen()
 													}
 												})
@@ -142,6 +151,7 @@
 										uni.setStorageSync('session', res.data.data.session_key)
 										uni.request({
 											url: "https://ll.edefang.net/api/weichat/decryptData",
+											method:'POST',
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
@@ -156,17 +166,26 @@
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel
+												let city = uni.getStorageSync('city')
 												uni.request({
-													url: "https://api.edefang.net/applets/login",
-													method: 'GET',
+													// url: "https://api.edefang.net/applets/login",
+													url: this.javaapi+"/applets_yun_jia_new/login",
+													method: 'POST',
+													header: {
+														"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+													},
 													data: {
 														phone: tel,
 														openid: openid,
+														city: city,
+														bid:this.project_id,
 														other: uni.getStorageSync('other'),
 														uuid: uni.getStorageSync('uuid')
 													},
 													success: (res) => {
-														uni.setStorageSync('token', res.data.token)
+														console.log(res)
+														uni.setStorageSync('token', res.data.data.token)
+														uni.setStorageSync('userid', res.data.data.userId)
 														that.SendTiwen()
 													}
 												})
@@ -185,22 +204,23 @@
 
 			},
 			SendTiwen() {
-				let token = uni.getStorageSync('token');
-				let city_id = uni.getStorageSync("city");
+				let userid = uni.getStorageSync('userid');
 				if (this.text.length > 0) {
 					uni.request({
-						url: this.apiserve + "/jy/ask",
+						url: this.javatest + "/add_question",
 						data: {
-							token: token,
-							project: this.project_id,
-							city: city_id,
+							userId: userid,
+							bid: this.project_id,
 							question: this.text,
 							other: uni.getStorageSync('other'),
 							uuid: uni.getStorageSync('uuid')
 						},
-						method: "GET",
+						method: "POST",
+						header: {
+							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+						},
 						success: (res) => {
-							if (res.data.code == 200) {
+							if (res.data.status == 200) {
 								this.msg = "提交成功";
 								this.$refs.msg.show();
 								let baseurl = uni.getStorageSync('backurl');
@@ -208,7 +228,8 @@
 									url: baseurl
 								})
 							} else {
-								console.log(res)
+								this.msg = res.data.data;
+								this.$refs.msg.show();
 							}
 						}
 					})

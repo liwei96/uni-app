@@ -286,6 +286,7 @@
 									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
+										method:'POST',
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,

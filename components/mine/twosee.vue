@@ -6,15 +6,15 @@
 		<view class="pro_list">
 			<view class="peo_one" v-for="item in project" :key="item.id">
 				<navigator :url="`/pageA/content/content?id=${item.id}`">
-					<image :src="item.img" mode=""></image>
+					<image :src="item.img||item.image" mode=""></image>
 					<view class="right_pro">
-						<view class="pro_name"><text class="name">{{item.name}}</text><text class="status" v-if="item.status">{{item.status}}</text></view>
-						<view class="price">{{item.single_price}}元/m²</view>
+						<view class="pro_name"><text class="name">{{item.name}}</text><text class="status" v-if="item.status">{{item.status||item.state}}</text></view>
+						<view class="price">{{item.single_price||item.price}}元/m²</view>
 						<view class="type">{{item.type}}<text>|</text>{{item.city}}-{{item.country}}<text>|</text>{{item.area}}m² </view>
 						<view class="tese">
 							<text class="zhuang" v-if="item.decorate">{{item.decorate}}</text> 
 							<text class="other" v-if="item.railway">{{item.railway}}</text>
-							<text class="other" v-for="ite in item.features">{{ite}}</text>
+							<text class="other" v-if="item.feature">{{item.feature}}</text>
 						</view>
 					</view>
 				</navigator>

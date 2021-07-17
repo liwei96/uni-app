@@ -52,53 +52,71 @@
 		},
 		methods:{
 			getdata(id){
-				let token = uni.getStorageSync("token");
+				let userid = uni.getStorageSync("userid");
 				let other = uni.getStorageSync("other");
 				uni.request({
-					url:this.apiserve+"/applets/comment/detail",
-				    data:{
-						id:id,
-						other:other,
-						token:token,
+					url: this.javatest + "/applets/jy/comment",
+					data: {
+						id: id,
+						other: other,
+						userId: userid,
 						other: uni.getStorageSync('other'),
 						uuid: uni.getStorageSync('uuid')
 					},
-					method:"GET",
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+					},
+					method: "POST",
 					success: (res) => {
-						if(res.data.code==200){
-							this.comment= res.data.comment;
-							this.huifu = res.data.comment.content;
+						console.log(res)
+						if (res.data.status == 200) {
+							this.comment= res.data.data.comment;
+							this.huifu = res.data.data.comment.content;
+							uni.setStorageSync('city', res.data.data.city.id)
+							uni.setStorageSync('cityname', res.data.data.city.name)
+							//#ifdef MP-BAIDU
+							let header = res.data.data.header
+							swan.setPageInfo({
+								title: header.title,
+								keywords: header.keywords,
+								description: header.description,
+								image: [res.data.data.building.image],
+								success: res => {
+									console.log('setPageInfo success', res);
+								},
+								fail: err => {
+									console.log('setPageInfo fail', err);
+								}
+							})
+							//#endif
 						}
 					}
 				})
 			},
 			SendHuiFu(){
-				let token = uni.getStorageSync('token');
+				let userid = uni.getStorageSync('userid');
 				let city_id = uni.getStorageSync("city");
 					if(this.text.length>0){
 					uni.request({
-						url:this.apiserve+"/comment/save",
-						data:{
-							 token:token,
-							  pid:this.huifu_id,
-							  bid:this.project_id,
-							  content:this.text,
-							  other: uni.getStorageSync('other'),
-							  uuid: uni.getStorageSync('uuid')
+						url: this.javatest + "/applets/jy/comment/one",
+						data: {
+							userId: userid,
+							id: this.huifu_id,
+							content: this.text,
+							other: uni.getStorageSync('other'),
+							uuid: uni.getStorageSync('uuid')
 						},
-						method:"POST",
-						header:{
-							'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
+						method: "POST",
+						header: {
+							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
 						},
-						success:(res)=>{
-							if(res.data.code == 200){
-								this.msg = res.data.msg;
-								this.$refs.msg.show();
+						success: (res) => {
+							if (res.data.status == 200) {
 								uni.navigateTo({
 									url:"../diandetail/diandetail?id="+this.huifu_id
 								})
 							}else{
-								this.msg = res.data.msg;
+								this.msg = res.data.data;
 								this.$refs.msg.show();
 							}
 						}

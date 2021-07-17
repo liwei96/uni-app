@@ -136,7 +136,9 @@
 								tel: phone,
 								kid: kid,
 								other: uni.getStorageSync('other'),
-								uuid: uni.getStorageSync('uuid')
+								uuid: uni.getStorageSync('uuid'),
+								site: 2,
+								device: 3
 							},
 							method: "GET",
 							success: (res) => {

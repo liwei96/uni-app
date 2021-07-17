@@ -88,6 +88,7 @@
 				let host = this.host
 				let pro = this.projectid
 				console.log(pro)
+					url=url+'?id='+pro+'&host='+host+'&uuid='+uuid+'&kid='+uni.getStorageSync('kid')+'&other='+uni.getStorageSync('other')
 				let pp = {
 				      controller: "Info",
 				      action: "register",

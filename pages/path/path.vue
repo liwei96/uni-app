@@ -14,8 +14,8 @@
 		<view class="hots">
 			<text class="tit">热门城市</text>
 			<view class="hots-con">
-				<view class="item" v-for="item in hots" :key="item.area_id" @tap="setcity(item.area_id,item.short)">
-					{{item.short}}
+				<view class="item" v-for="item in hots" :key="item.id" @tap="setcity(item.id,item.name)">
+					{{item.name}}
 				</view>
 			</view>
 			<view class="allmsg">
@@ -27,9 +27,9 @@
 				{{item}}
 			</view>
 			<view class="box">
-				<view class="cityitem" v-for="(val,index) in lists[item]" :key="val.area_id"
-					@tap="gocity(val.area_id,lists[item],index)">
-					{{val.short}}
+				<view class="cityitem" v-for="(val,index) in lists[item]" :key="val.id"
+					@tap="gocity(val.id,lists[item],index)">
+					{{val.name}}
 				</view>
 			</view>
 		</view>
@@ -132,10 +132,22 @@
 					url: that.putserve + "/api/first/city",
 					method: "POST",
 					success: (res) => {
+						// that.hots = res.data.data.hots
+						// that.lists = res.data.data.city
+						uni.hideLoading()
+					}
+				})
+				let city = uni.getStorageSync('city')
+				uni.request({
+					url: that.javatest + "/cities/all",
+					method: "get",
+					data:{
+						city: city
+					},
+					success: (res) => {
 						console.log(res)
 						that.hots = res.data.data.hots
-						that.lists = res.data.data.city
-						uni.hideLoading()
+						that.lists = res.data.data.cities
 					}
 				})
 			},
@@ -149,10 +161,10 @@
 			gocity(id, name, k) {
 				let type = false
 				for (let item of this.hots) {
-					if (id == item.area_id) {
+					if (id == item.id) {
 						this.setcity(id, name)
 					} else {
-						this.showdd(name[k].short)
+						this.showdd(name[k].name)
 					}
 				}
 			}

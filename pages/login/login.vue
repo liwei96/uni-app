@@ -85,7 +85,9 @@
 			  				kid: kid,
 			  				other: other,
 							other: uni.getStorageSync('other'),
-							uuid: uni.getStorageSync('uuid')
+							uuid: uni.getStorageSync('uuid'),
+							site: 2,
+							device: 3
 			  			},
 			  			method: "GET",
 			  			success: (res) => {
@@ -199,11 +201,12 @@
 							that.msg = "订阅成功";
 							that.$refs.toast.show()
 							uni.setStorageSync('token',res.data.token)
+							uni.setStorageSync('userid', res.data.userId)
 							uni.setStorageSync('pass',true)
 							if(basurl){
 								uni.removeStorageSync('backurl')
 								if(basurl == '/pages/home/home') {
-									uni.navigateTo({
+									uni.switchTab({
 										url:basurl
 									})
 								}else{
@@ -213,7 +216,7 @@
 								}
 								
 							} else {
-								uni.navigateTo({
+								uni.switchTab({
 									url:'/pages/home/home'
 								})
 							}

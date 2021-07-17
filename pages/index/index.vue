@@ -57,13 +57,13 @@
 				<!-- </navigator> -->
 			</view>
 		</view>
-		<view class="topnew">
+		<view class="topnew" v-if="tops.length">
 			<view class="topnew-box">
 				<image class="icon" src="../../static/index/index-topnew.png" mode=""></image>
 				<swiper class="swiper" :vertical="true" :circular="true" :autoplay="true" interval="2000">
 					<swiper-item class="swiper-item" v-for="item in tops" :key="item.id">
 						<navigator :url="`../article/article?id=${item.id}`">
-							<view class="swiper-item uni-bg-red">{{item.title}}</view>
+							<view class="swiper-item uni-bg-red">{{item.name}}</view>
 						</navigator>
 					</swiper-item>
 				</swiper>
@@ -75,7 +75,7 @@
 			<text class="help-txt">快速响应/精准快捷/一次到位</text>
 			<text class="help-btn" @tap="bangZhao">帮我找房</text>
 		</view>
-		<view class="trend">
+		<view class="trend" v-if="false">
 			<view class="trend-box">
 				<view class="trend-top">
 					<text>房价趋势</text>
@@ -124,7 +124,7 @@
 					</view>
 				</view>
 				<view class="scroll-item" @tap="ganglou(5,'投资')">
-					<text class="feature-txt">投资地产</text>
+					<text class="feature-txt">品牌楼盘</text>
 					<view class="feature-imgbox">
 						<image :src="investment[0].img" mode=""></image>
 						<image :src="investment[1].img" mode=""></image>
@@ -134,7 +134,7 @@
 					</view>
 				</view>
 				<view class="scroll-item" @tap="ganglou(2,'改善')">
-					<text class="feature-txt">改善住宅</text>
+					<text class="feature-txt">教育地产</text>
 					<view class="feature-imgbox">
 						<image :src="improvement[0].img" mode=""></image>
 
@@ -145,7 +145,7 @@
 					</view>
 				</view>
 				<view class="scroll-item" @tap="ganglou(8,'现房')">
-					<text class="feature-txt">现房住宅</text>
+					<text class="feature-txt">地铁地产</text>
 					<view class="feature-imgbox">
 						<image :src="completed_houses[0].img" mode=""></image>
 
@@ -183,7 +183,7 @@
 				<view class="scroll-item" v-for="(item,index) in common" :key="item.id">
 					<navigator :url="`/pageA/content/content?id=${item.id}`">
 						<view class="top">
-							<image :src="item.img" mode=""></image>
+							<image :src="item.image" mode=""></image>
 							<text>TOP{{index+1}}</text>
 						</view>
 						<view class="bom">
@@ -217,7 +217,7 @@
 							<text class="title">{{dynamics[0].name}}</text>
 						</view>
 						<view class="con1-bom">
-							<text class="txt">{{dynamics[0].introduce}}</text>
+							<text class="txt">{{dynamics[0].title}}</text>
 						</view>
 						<!-- </navigator> -->
 					</view>
@@ -225,7 +225,7 @@
 						<view class="con2">
 							<navigator :url="`../dynamicdetail/dynamicdetail?id=${dynamics[1].id}`" class="nav_nav">
 								<view class="con2-left">
-									<text class="msg">{{dynamics[1].introduce}}</text>
+									<text class="msg">{{dynamics[1].title}}</text>
 								</view>
 								<view class="con2-right">
 									<image :src="dynamics[1].img" mode=""></image>
@@ -236,7 +236,7 @@
 						<view class="con2 con3">
 							<navigator :url="`../dynamicdetail/dynamicdetail?id=${dynamics[2].id}`" class="nav_nav">
 								<view class="con2-left">
-									<text class="msg">{{dynamics[2].introduce}}</text>
+									<text class="msg">{{dynamics[2].title}}</text>
 								</view>
 								<view class="con2-right">
 									<image :src="dynamics[2].img" mode=""></image>
@@ -255,7 +255,7 @@
 					<!-- <navigator :url="`/pageA/content/content?id=${item.id}`" class="nav_to"> -->
 
 					<view class="left">
-						<image :src="item.img" mode=""></image>
+						<image :src="item.image" mode=""></image>
 					</view>
 					<view class="right">
 						<view class="right-name">
@@ -281,6 +281,10 @@
 
 
 			</view>
+		</view>
+		<view class="morebtombtn" @click="gobuild">
+			更多楼盘
+			<image src="../../static/bommore.png" mode=""></image>
 		</view>
 		<!-- <tabbar :type="0"></tabbar> -->
 	</view>
@@ -334,8 +338,55 @@
 			uni.showLoading({
 				title: "加载中"
 			})
+			// uni.request({
+			// 	url: this.apiserve + '/applets/first',
+			// 	data: {
+			// 		token: token,
+			// 		city: city,
+			// 		other: uni.getStorageSync('other'),
+			// 		uuid: uni.getStorageSync('uuid')
+			// 	},
+			// 	success: (res) => {
+			// 		if (res.data.code == 200) {
+			// 			this.isover = true
+			// 			uni.hideLoading()
+			// 			// this.tops = res.data.data.tops;
+			// 			// this.avg_prices = res.data.data.avg_prices;
+			// 			// this.rigid_demand = res.data.data.rigid_demand;
+			// 			// this.investment = res.data.data.investment;
+			// 			// this.improvement = res.data.data.improvement;
+			// 			// this.hot_searches = res.data.data.hot_searches;
+			// 			// this.completed_houses = res.data.data.completed_houses;
+			// 			// this.common = this.hot_searches;
+			// 			// this.popularity = res.data.data.popularity;
+			// 			// this.deals = res.data.data.deals;
+			// 			// this.dynamics = res.data.data.dynamics;
+			// 			// this.recommends = res.data.data.recommends;
+			// 			// this.cityname = res.data.data.city_info.current.short
+			// 			// // #ifdef  MP-WEIXIN
+			// 			// uni.setStorageSync('cityname',this.cityname)
+			// 			// // #endif
+			// 			// // #ifdef MP-BAIDU
+			// 			// let header = res.data.data.common.header;
+			// 			// swan.setPageInfo({
+			// 			// 	title: header.title,
+			// 			// 	keywords: header.keywords,
+			// 			// 	description: header.description,
+			// 			// 	success: res => {
+			// 			// 		console.log('setPageInfo success', res);
+			// 			// 	},
+			// 			// 	fail: err => {
+			// 			// 		console.log('setPageInfo fail', err);
+			// 			// 	}
+			// 			// })
+			// 			// // #endif
+			// 		}
+
+			// 	}
+			// })
 			uni.request({
-				url: this.apiserve + '/applets/first',
+				url: this.javaapi + '/applets_yun_jia_new/first',
+				method:"GET",
 				data: {
 					token: token,
 					city: city,
@@ -343,28 +394,27 @@
 					uuid: uni.getStorageSync('uuid')
 				},
 				success: (res) => {
-					console.log(res);
-					if (res.data.code == 200) {
+					console.log(res,'res')
+					if(res.data.status == 200) {
 						this.isover = true
 						uni.hideLoading()
-						this.tops = res.data.data.tops;
-						this.avg_prices = res.data.data.avg_prices;
-						this.rigid_demand = res.data.data.rigid_demand;
-						this.investment = res.data.data.investment;
-						this.improvement = res.data.data.improvement;
-						this.hot_searches = res.data.data.hot_searches;
-						this.completed_houses = res.data.data.completed_houses;
+						this.tops = res.data.data.news;
+						this.rigid_demand = res.data.data.rigid_demands;
+						this.investment = res.data.data.brands;
+						this.improvement = res.data.data.educations;
+						this.completed_houses = res.data.data.railways;
+						this.hot_searches = res.data.data.hots;
 						this.common = this.hot_searches;
-						this.popularity = res.data.data.popularity;
+						this.popularity = res.data.data.populars;
 						this.deals = res.data.data.deals;
 						this.dynamics = res.data.data.dynamics;
-						this.recommends = res.data.data.recommends;
-						this.cityname = res.data.data.city_info.current.short
+						this.recommends = res.data.data.footRecommend;
+						this.cityname = res.data.data.city.name
 						// #ifdef  MP-WEIXIN
 						uni.setStorageSync('cityname',this.cityname)
 						// #endif
 						// #ifdef MP-BAIDU
-						let header = res.data.data.common.header;
+						let header = res.data.data.header;
 						swan.setPageInfo({
 							title: header.title,
 							keywords: header.keywords,
@@ -378,9 +428,7 @@
 						})
 						// #endif
 					}
-
 				}
-
 			})
 		},
 		onReady() {
@@ -1276,6 +1324,23 @@
 					}
 				}
 			}
+		}
+	}
+	.morebtombtn {
+		width: 690rpx;
+		height: 92rpx;
+		border-radius: 16rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background: #caebff;
+		color: #3EACF0;
+		font-size: 30rpx;
+		margin-left: 30rpx;
+		margin-bottom: 30rpx;
+		image {
+			width: 32rpx;
+			height: 32rpx;
 		}
 	}
 </style>

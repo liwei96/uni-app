@@ -10,15 +10,15 @@
 		</view> -->
 		<view class="pro">
 			<view class="pro_one">
-				<image :src="building.img" mode=""></image>
+				<image :src="building.image" mode=""></image>
 				<view class="right_pro">
 					<view class="pro_name">{{building.name}}<text class="status">{{building.state}}</text></view>
 					<view class="price">{{building.price}}元/m²</view>
-					<view class="type">{{building.type}}<text>|</text>{{building.city}}-江干<text>|</text>{{building.area}}m² </view>
+					<view class="type">{{building.type}}<text>|</text>{{building.city}}-{{building.country}}<text>|</text>{{building.area}}m² </view>
 					<view class="tese">
 						<text class="zhuang">{{building.decorate}}</text>
-						<text class="other">{{building.railway}}</text>
-						<text class="other" v-if="building.features">{{building.features[0]}}</text>
+						<text class="other" v-if="building.railway">{{building.railway}}</text>
+						<text class="other" v-if="building.feature">{{building.feature}}</text>
 					</view>
 				</view>
 			</view>
@@ -69,15 +69,18 @@
 				select:0,
 				text:["极差","差",'一般',"好","非常好"],
 				index:0,
-				has_xing:false,
+				has_xing:true,
 				has_sel:false,
-				msg:''
+				msg:'',
+				project_id: 0,
+				value: 1,
 				//极差，差，一般，好，非常好
 			};
 		},
 		onLoad(option){
 			console.log(option);
 			this.getData(option.id);
+			this.project_id = option.id
 		},
 		methods:{
 			getPhoneNumber(e) {
@@ -123,17 +126,26 @@
 											uni.setStorageSync('phone',tel)
 											let openid = uni.getStorageSync('openid')
 											that.tel = tel
+											let city = uni.getStorageSync('city')
 											uni.request({
-												url:"https://api.edefang.net/applets/login",
-												method:'GET',
-												data:{
+												// url: "https://api.edefang.net/applets/login",
+												url: this.javaapi+"/applets_yun_jia_new/login",
+												method: 'POST',
+												header: {
+													"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+												},
+												data: {
 													phone: tel,
 													openid: openid,
+													city: city,
+													bid: this.project_id,
 													other: uni.getStorageSync('other'),
 													uuid: uni.getStorageSync('uuid')
 												},
 												success: (res) => {
-													uni.setStorageSync('token',res.data.token)
+													console.log(res)
+													uni.setStorageSync('token', res.data.data.token)
+													uni.setStorageSync('userid', res.data.data.userId)
 													that.submitDian(that.building.id)
 												}
 											})
@@ -177,6 +189,7 @@
 									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
+										method:'POST',
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
@@ -191,17 +204,26 @@
 											uni.setStorageSync('phone',tel)
 											let openid = uni.getStorageSync('openid')
 											that.tel = tel
+											let city = uni.getStorageSync('city')
 											uni.request({
-												url:"https://api.edefang.net/applets/login",
-												method:'GET',
-												data:{
+												// url: "https://api.edefang.net/applets/login",
+												url: this.javaapi+"/applets_yun_jia_new/login",
+												method: 'POST',
+												header: {
+													"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+												},
+												data: {
 													phone: tel,
 													openid: openid,
+													city: city,
+													bid: this.project_id,
 													other: uni.getStorageSync('other'),
 													uuid: uni.getStorageSync('uuid')
 												},
 												success: (res) => {
-													uni.setStorageSync('token',res.data.token)
+													console.log(res)
+													uni.setStorageSync('token', res.data.data.token)
+													uni.setStorageSync('userid', res.data.data.userId)
 													that.submitDian(that.building.id)
 												}
 											})
@@ -235,20 +257,32 @@
 				let  other = uni.getStorageSync("other");
 				let  token =  uni.getStorageSync("token");
 				uni.request({
-					url:this.apiserve+"/applets/building/base",
-					data:{
-						id:id,
-						other:other,
-						token: token,
+					url: this.javaapi + "/applets/jy/building/card",
+					data: {
+						id: id,
 						other: uni.getStorageSync('other'),
 						uuid: uni.getStorageSync('uuid')
 					},
-					method:"GET",
+					method: "GET",
 					success: (res) => {
-						if(res.data.code==200){
+						if (res.data.status == 200) {
 							 console.log(res);
-						    this.building = res.data.building; 
+						    this.building = res.data.data; 
 							  uni.hideLoading();
+							  //#ifdef MP-BAIDU
+							  swan.setPageInfo({
+							  	title: this.building.name + '点评',
+							  	keywords: this.building.name + '点评',
+							  	description: this.building.name + '点评',
+							  	image: [this.building.image],
+							  	success: res => {
+							  		console.log('setPageInfo success', res);
+							  	},
+							  	fail: err => {
+							  		console.log('setPageInfo fail', err);
+							  	}
+							  })
+							  //#endif
 							// this.text_all = res.data.building.introduce;
 							// this.text = res.data.building.introduce.substring(0,82);
 						}else {
@@ -262,38 +296,35 @@
 				})
 			},
 			submitDian(id){
-				let token = uni.getStorageSync("token");
+				let userid = uni.getStorageSync("userid");
 				//判空
 				if(this.has_sel ==true){
 					 if(this.has_xing ==true){
 						  if(this.text_value.length!==0){
 							   uni.request({
-							   	url:this.dianserve+"comment/save",
-							   	method:"POST",
-							   	data:{
-							   		token:token,
-							   		pid:"", //被评论id
-							   		bid:id, //项目id
-							   		content:this.text_value, // 评论内容
-							   		consider_buy: this.index,  //是否考虑买  1 有兴趣 2 待对比 3 不考虑 4未看房 5 已看房 
-							   		score:this.value,
-									other: uni.getStorageSync('other'),
-									uuid: uni.getStorageSync('uuid')
+							   	url: this.javatest + "/applets/jy/comment/project",
+							   	method: "POST",
+							   	data: {
+							   		userId: userid,
+							   		id: id, //项目id
+							   		content: this.text_value, // 评论内容
+							   		consider: this.select, //是否考虑买  1 有兴趣 2 待对比 3 不考虑 4未看房 5 已看房 
+							   		score: this.value
+							   		// other: uni.getStorageSync('other'),
+							   		// uuid: uni.getStorageSync('uuid')
 							   	},
-								header:{
-									'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'
-								},
-							   	success:(res)=>{
-							   		if(res.data.code== 200){
+							   	header: {
+							   		'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+							   	},
+							   	success: (res) => {
+							   		if (res.data.status == 200) {
 							   			console.log(res);
-										this.msg = res.data.message;
-										this.$refs.msg.show() ;
 										let baseurl = uni.getStorageSync('backurl');
 										uni.navigateTo({
 											url:baseurl
 										})
 							   		}else{
-										 this.msg = res.data.message;
+										 this.msg = res.data.data || res.data.msg;
 										 this.$refs.msg.show() ;
 									}
 							   	},

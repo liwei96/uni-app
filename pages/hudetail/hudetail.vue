@@ -191,7 +191,7 @@
 		<bottom :remark="'项目户型详情页+预约看房'" :point="103" :title="'预约看房'" :pid="one.bid" :telphone="telphone"></bottom>
 		<wyb-popup ref="popup" type="center" height="750" width="650" radius="12" :showCloseIcon="true" @hide="setiscode">
 			<sign :type="codenum" @closethis="setpop" :title="title_e" :pid="pid_d" :remark="remark_k" :position="position_n"
-			 :isok="isok"></sign>
+			 :isok="isok" ref="sign"></sign>
 		</wyb-popup>
 		<wyb-popup ref="popup1" type="center" height="1000" width="700" radius="0" :showCloseIcon="false" @hide="setiscode">
 			<image :src="url" mode="" class="bigimg" @tap="hideimg"></image>
@@ -236,6 +236,7 @@
 		},
 		onLoad(option) {
 			this.getdata(option.id);
+			console.log(this.$refs)
 			this.pass = uni.getStorageSync('pass')
 			// #ifdef  MP-WEIXIN
 			// this.weixin = true
@@ -322,8 +323,31 @@
 												let tel = res.data.mobile
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
-												that.$refs.sign.tel = tel
-												that.baoMing(pid, remark, point, title, 1)
+												// that.$refs.sign.tel = tel
+												
+												let city = uni.getStorageSync('city')
+												uni.request({
+													// url: "https://api.edefang.net/applets/login",
+													url: this.javaapi+"/applets_yun_jia_new/login",
+													method: 'POST',
+													header: {
+														"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+													},
+													data: {
+														phone: tel,
+														openid: openid,
+														city: city,
+														bid:this.one.bid,
+														other: uni.getStorageSync('other'),
+														uuid: uni.getStorageSync('uuid')
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.data.token)
+														uni.setStorageSync('userid', res.data.data.userId)
+														that.baoMing(pid, remark, point, title, 1)
+													}
+												})
 											}
 										})
 
@@ -363,6 +387,7 @@
 									uni.setStorageSync('session', res.data.data.session_key)
 									uni.request({
 										url: "https://ll.edefang.net/api/weichat/decryptData",
+										method:'POST',
 										data: {
 											data: e.detail.encryptedData,
 											iv: e.detail.iv,
@@ -379,18 +404,26 @@
 											let token = uni.getStorageSync('token')
 											if (!token) {
 												let openid = uni.getStorageSync('openid')
+												let city = uni.getStorageSync('city')
 												uni.request({
-													url: "https://api.edefang.net/applets/login",
-													method: 'GET',
+													// url: "https://api.edefang.net/applets/login",
+													url: this.javaapi+"/applets_yun_jia_new/login",
+													method: 'POST',
+													header: {
+														"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+													},
 													data: {
 														phone: tel,
 														openid: openid,
+														city: city,
+														bid:this.one.bid,
 														other: uni.getStorageSync('other'),
 														uuid: uni.getStorageSync('uuid')
 													},
 													success: (res) => {
 														console.log(res)
-														uni.setStorageSync('token', res.data.token)
+														uni.setStorageSync('token', res.data.data.token)
+														uni.setStorageSync('userid', res.data.data.userId)
 													}
 												})
 											}

@@ -242,7 +242,7 @@
 		width: 96%;
 		padding-left: 4%;
 		position: fixed;
-		top: 220rpx;
+		top: 180rpx;
 		min-height: 60vh;
 		max-height: 83vh;
 		background-color: #FFFFFF;

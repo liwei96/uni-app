@@ -249,6 +249,27 @@
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel
+												let city = uni.getStorageSync('city')
+												uni.request({
+													// url: "https://api.edefang.net/applets/login",
+													url: this.javaapi+"/applets_yun_jia_new/login",
+													method: 'POST',
+													header: {
+														"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+													},
+													data: {
+														phone: tel,
+														openid: openid,
+														city: city,
+														other: uni.getStorageSync('other'),
+														uuid: uni.getStorageSync('uuid')
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.data.token)
+														uni.setStorageSync('userid', res.data.data.userId)
+													}
+												})
 											}
 										})
 							
@@ -284,6 +305,7 @@
 										uni.setStorageSync('session', res.data.data.session_key)
 										uni.request({
 											url: "https://ll.edefang.net/api/weichat/decryptData",
+											method:'POST',
 											data: {
 												data: e.detail.encryptedData,
 												iv: e.detail.iv,
@@ -298,6 +320,27 @@
 												uni.setStorageSync('phone', tel)
 												let openid = uni.getStorageSync('openid')
 												that.tel = tel
+												let city = uni.getStorageSync('city')
+												uni.request({
+													// url: "https://api.edefang.net/applets/login",
+													url: this.javaapi+"/applets_yun_jia_new/login",
+													method: 'POST',
+													header: {
+														"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+													},
+													data: {
+														phone: tel,
+														openid: openid,
+														city: city,
+														other: uni.getStorageSync('other'),
+														uuid: uni.getStorageSync('uuid')
+													},
+													success: (res) => {
+														console.log(res)
+														uni.setStorageSync('token', res.data.data.token)
+														uni.setStorageSync('userid', res.data.data.userId)
+													}
+												})
 											}
 										})
 							
@@ -401,18 +444,25 @@
 										that.$refs.popup1.hide()
 										if(!uni.getStorageSync('token')) {
 											let openid = uni.getStorageSync('openid')
+											let city = uni.getStorageSync('city')
 											uni.request({
-												url:"https://api.edefang.net/applets/login",
-												method:'GET',
-												data:{
-													phone: phone,
+												// url: "https://api.edefang.net/applets/login",
+												url: this.javaapi+"/applets_yun_jia_new/login",
+												method: 'POST',
+												header: {
+													"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+												},
+												data: {
+													phone: tel,
 													openid: openid,
+													city: city,
 													other: uni.getStorageSync('other'),
 													uuid: uni.getStorageSync('uuid')
 												},
 												success: (res) => {
 													console.log(res)
-													uni.setStorageSync('token',res.data.token)
+													uni.setStorageSync('token', res.data.data.token)
+													uni.setStorageSync('userid', res.data.data.userId)
 												}
 											})
 										}

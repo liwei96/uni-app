@@ -9,7 +9,7 @@ App.mpType = 'app'
 Vue.prototype.apiserve = 'https://api.edefang.net'
 Vue.prototype.putserve = 'https://ll.edefang.net/'
 Vue.prototype.dianserve = 'https://api.edefang.net/'
-Vue.prototype.host = 'm.jy1980.com'
+Vue.prototype.host = 'm.jy8006.com'
 
 Vue.prototype.login = function(e,that){
 	let session = uni.getStorageSync('session')
@@ -96,6 +96,8 @@ Vue.prototype.login = function(e,that){
 }
 
 Vue.prototype.httpsapi = 'https://api.edefang.net'
+Vue.prototype.javaapi = 'https://java.edefang.net'
+Vue.prototype.javatest = 'http://39.98.227.114:8989'
 
 // Vue.prototype.ip = ip_arr['ip'];
 const app = new Vue({

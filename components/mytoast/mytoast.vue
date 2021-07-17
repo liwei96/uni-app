@@ -31,18 +31,22 @@
 <style lang="less">
 	.toast {
 		position: fixed;
-		width: 360rpx;
+		width: 380rpx;
+		padding: 0 10rpx;
 		height: 120rpx;
 		border-radius: 12rpx;
 		text-align: center;
-		line-height: 120rpx;
 		background: rgba(0,0,0,0.9);
 		color: #F2F2F2;
-		font-size: 32rpx;
+		font-size: 28rpx;
 		left: 50%;
-		margin-left: -180rpx;
+		margin-left: -200rpx;
 		top: 50%;
 		margin-top: -60rpx;
 		z-index: 999999999;
+		word-break:break-all;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 </style>
